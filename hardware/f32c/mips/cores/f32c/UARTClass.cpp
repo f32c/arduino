@@ -157,7 +157,10 @@ UARTClass::peek(void)
 {
 
 	sio_probe_rx();
-	return (sio_rxbuf[sio_rxbuf_tail]);
+	if (sio_rxbuf_tail == sio_rxbuf_head)
+		return (-1);
+	else
+		return (sio_rxbuf[sio_rxbuf_tail]);
 }
 
 
