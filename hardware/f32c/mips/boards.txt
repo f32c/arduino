@@ -1,0 +1,24 @@
+#
+# FER ULX2S board, f32c/mips SoC
+#
+ulx2s_mips.name=FER ULX2S f32c/mips (Lattice XP2)
+ulx2s_mips.vid.0=0x0403
+ulx2s_mips.pid.0=0x6001
+ulx2s_mips.build.mcu=f32c
+ulx2s_mips.build.core=f32c
+ulx2s_mips.build.usb_product="ULX2S board UART / JTAG"
+ulx2s_mips.build.board=ulx2s-f32c-mips
+ulx2s_mips.build.extra_flags=-mno-div {build.usb_flags}
+ulx2s_mips.build.ldscript=linker_scripts/gcc/flash.ld
+ulx2s_mips.build.variant=mips
+ulx2s_mips.build.vid=0x0403
+ulx2s_mips.build.pid=0x6001
+
+ulx2s_mips.bootloader.file=f32c_mips/f32c_mips_timer_boot_2380.jed
+
+ulx2s_mips.upload.tool=ujprog
+ulx2s_mips.upload.protocol=ujprog
+ulx2s_mips.upload.maximum_size=1048576
+ulx2s_mips.upload.use_1200bps_touch=true
+ulx2s_mips.upload.wait_for_upload_port=false
+ulx2s_mips.upload.native_usb=false

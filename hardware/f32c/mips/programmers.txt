@@ -1,0 +1,7 @@
+ujprog.name=ujprog
+ujprog.communication=usb
+ujprog.protocol=ujprog
+ujprog.program.protocol=ujprog
+ujprog.program.tool=ujprog
+ujprog.program.extra_params=
+ujprog.bootloader.tool=ujprog

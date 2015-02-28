@@ -1,0 +1,83 @@
+
+#
+# f32c MI32 (mips) Core and platform.
+#
+
+name=f32c/mips FPGA Boards
+version=1.6.0
+
+# Compile variables
+# ----------------------
+
+compiler.path={runtime.ide.path}/hardware/tools/f32c/bin/
+compiler.c.cmd=mips-elf-gcc
+compiler.c.flags=-c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -Werror -nostdinc "-I{build.system.path}/include" -include sys/param.h
+compiler.S.flags=-c -g -x assembler-with-cpp
+compiler.cpp.cmd=mips-elf-g++
+compiler.cpp.flags=-c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -Werror -nostdinc "-I{build.system.path}/include" -include sys/param.h
+compiler.ld.cmd=mips-elf-ld
+compiler.ld.flags=-N -EL --section-start=.init=0x80000000 -nostdlib -gc-sections
+compiler.ar.cmd=mips-elf-ar
+compiler.ar.flags=rcs
+compiler.objcopy.cmd=mips-elf-objcopy
+compiler.objcopy.eep.flags=-O srec
+compiler.elf2hex.flags=-O binary
+compiler.elf2hex.cmd=mips-elf-objcopy
+compiler.size.cmd=mips-elf-size
+compiler.define=-DARDUINO=
+
+# this can be overriden in boards.txt
+build.extra_flags=
+
+# These can be overridden in platform.local.txt
+compiler.c.extra_flags=
+compiler.c.elf.extra_flags=
+compiler.cpp.extra_flags=
+compiler.ar.extra_flags=
+compiler.elf2hex.extra_flags=
+
+
+# USB Flags
+# ---------
+build.usb_flags=
+
+# Compile patterns
+# ---------------------
+
+## Compile S files
+recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" -march={build.mcu} {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c files
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" -march={build.mcu} {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c++ files
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -march={build.mcu} {compiler.cpp.flags} -DARDUINO={runtime.ide.version} {compiler.cpp.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Create archives
+recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{build.path}/{archive_file}" "{object_file}"
+
+## Link gc-sections, archives, and objects
+recipe.c.combine.pattern="{compiler.path}{compiler.ld.cmd}" {compiler.ld.flags} {object_files} "{build.path}/{archive_file}" -o "{build.path}/{build.project_name}.elf"
+
+## Create eeprom
+recipe.objcopy.eep.pattern=
+
+## Create hex
+recipe.objcopy.hex.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+
+## Compute size
+recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
+recipe.size.regex=\.text\s+([0-9]+).*
+
+
+# Uploader tools
+# -------------------
+
+tools.ujprog.cmd=ujprog
+tools.ujprog.cmd.windows=ujprog.exe
+#tools.ujprog.path={runtime.ide.path}/hardware/tools
+tools.ujprog.path=C:/Windows
+
+tools.ujprog.upload.params.verbose=
+tools.ujprog.upload.params.quiet=
+tools.ujprog.upload.pattern="{path}/{cmd}" -e "{build.path}/{build.project_name}.bin"
