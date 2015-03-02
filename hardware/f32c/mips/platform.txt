@@ -81,3 +81,11 @@ tools.ujprog.path=C:/Windows
 tools.ujprog.upload.params.verbose=
 tools.ujprog.upload.params.quiet=
 tools.ujprog.upload.pattern="{path}/{cmd}" -e "{build.path}/{build.project_name}.bin"
+
+tools.ujprog.erase.params.verbose=
+tools.ujprog.erase.params.quiet=
+tools.ujprog.erase.pattern=true
+
+tools.ujprog.bootloader.params.verbose=
+tools.ujprog.bootloader.params.quiet=
+tools.ujprog.bootloader.pattern="{path}/{cmd}" -j FLASH "{runtime.platform.path}/bootloaders/{bootloader.file}"
