@@ -51,13 +51,13 @@ digitalWrite(uint32_t pin, uint32_t val)
 		return;
 
 	if (pin >= 32) {
+		pin -= 32;
 		if (val)
 			gpio_out |= (1 << pin);
 		else
 			gpio_out &= ~(1 << pin);
 		OUTW(IO_GPIO_DATA, gpio_out);
 	} else {
-		pin -= 32;
 		if (val)
 			led_out |= (1 << pin);
 		else
