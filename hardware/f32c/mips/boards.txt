@@ -18,7 +18,7 @@ ulx2s_mips.bootloader.file=f32c_mips/f32c_mips_timer_boot_2380.jed
 
 ulx2s_mips.upload.tool=ujprog
 ulx2s_mips.upload.protocol=ujprog
-ulx2s_mips.upload.maximum_size=1048576
+ulx2s_mips.upload.maximum_size=1015808
 ulx2s_mips.upload.use_1200bps_touch=true
 ulx2s_mips.upload.wait_for_upload_port=false
 ulx2s_mips.upload.native_usb=false
