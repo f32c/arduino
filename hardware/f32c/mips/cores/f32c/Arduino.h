@@ -33,6 +33,7 @@
 
 #include "binary.h"
 #include "itoa.h"
+#include "pins_arduino.h"
 
 #ifdef __cplusplus
 extern "C"{
