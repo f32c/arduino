@@ -20,14 +20,6 @@ static struct
 } pin_map[64] = VARIANT_DIGITAL_PIN_MAP;
 
 
-void delay(uint32_t ms)
-{
-
-	/* XXX hardwired, imprecise */
-	DELAY(ms * 81250);
-}
-
-
 void
 pinMode(uint32_t pin, uint32_t mode)
 {
