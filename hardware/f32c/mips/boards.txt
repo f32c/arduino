@@ -1,49 +1,111 @@
 #
-# FER ULX2S board, f32c/mips SoC, logical pin mapping
+# FER ULX2S Board, f32c/mips SoC, logical pin mapping
 #
-ulx2s_mips.name=FER ULX2S f32c/mips (Lattice XP2) logical pin mapping
-ulx2s_mips.vid.0=0x0403
-ulx2s_mips.pid.0=0x6001
-ulx2s_mips.build.mcu=f32c
-ulx2s_mips.build.core=f32c
-ulx2s_mips.build.usb_product="ULX2S board UART / JTAG"
-ulx2s_mips.build.board=ulx2s-f32c-mips
-ulx2s_mips.build.extra_flags=-mno-div {build.usb_flags}
-ulx2s_mips.build.ldscript=linker_scripts/gcc/flash.ld
-ulx2s_mips.build.variant=ulx2s_logical
-ulx2s_mips.build.vid=0x0403
-ulx2s_mips.build.pid=0x6001
-
-ulx2s_mips.bootloader.file=f32c_mips/f32c_mips_timer_boot_2380.jed
-
-ulx2s_mips.upload.tool=ujprog
-ulx2s_mips.upload.protocol=ujprog
-ulx2s_mips.upload.maximum_size=1015808
-ulx2s_mips.upload.use_1200bps_touch=true
-ulx2s_mips.upload.wait_for_upload_port=false
-ulx2s_mips.upload.native_usb=false
+ulx2s_sram.name=FER ULX2S (81.25 MHz, Lattice XP2, 1 MB SRAM)
+ulx2s_sram.vid.0=0x0403
+ulx2s_sram.pid.0=0x6001
+ulx2s_sram.build.mcu=f32c
+ulx2s_sram.build.core=f32c
+ulx2s_sram.build.variant=ulx2s_logical
+ulx2s_sram.upload.tool=ujprog
+ulx2s_sram.upload.protocol=ujprog
+ulx2s_sram.upload.maximum_size=1015808
+ulx2s_sram.upload.wait_for_upload_port=false
+ulx2s_sram.upload.native_usb=false
+ulx2s_sram.bootloader.file=f32c_mips/f32c_mips_timer_boot_2380.jed
 
 #
-# FER ULX2S board, f32c/mips SoC, pyhsical pin mapping
+# FER ULX2S Board, f32c/mips SoC, pyhsical pin mapping
 #
-ulx2s_mips_phys.name=FER ULX2S f32c/mips (Lattice XP2) physical pin mapping
-ulx2s_mips_phys.vid.0=0x0403
-ulx2s_mips_phys.pid.0=0x6001
-ulx2s_mips_phys.build.mcu=f32c
-ulx2s_mips_phys.build.core=f32c
-ulx2s_mips_phys.build.usb_product="ULX2S board UART / JTAG"
-ulx2s_mips_phys.build.board=ulx2s-f32c-mips
-ulx2s_mips_phys.build.extra_flags=-mno-div {build.usb_flags}
-ulx2s_mips_phys.build.ldscript=linker_scripts/gcc/flash.ld
-ulx2s_mips_phys.build.variant=ulx2s_physical
-ulx2s_mips_phys.build.vid=0x0403
-ulx2s_mips_phys.build.pid=0x6001
+ulx2s_sram_phys.name=FER ULX2S (81.25 MHz, Lattice XP2, 1 MB SRAM), phy. pinmap
+ulx2s_sram_phys.vid.0=0x0403
+ulx2s_sram_phys.pid.0=0x6001
+ulx2s_sram_phys.build.mcu=f32c
+ulx2s_sram_phys.build.core=f32c
+ulx2s_sram_phys.build.variant=ulx2s_physical
+ulx2s_sram_phys.upload.tool=ujprog
+ulx2s_sram_phys.upload.protocol=ujprog
+ulx2s_sram_phys.upload.maximum_size=1015808
+ulx2s_sram_phys.upload.wait_for_upload_port=false
+ulx2s_sram_phys.upload.native_usb=false
+ulx2s_sram_phys.bootloader.file=f32c_mips/f32c_mips_timer_boot_2380.jed
 
-ulx2s_mips_phys.bootloader.file=f32c_mips/f32c_mips_timer_boot_2380.jed
+#
+# FER ULX2S Board, f32c/mips SoC, logical pin mapping
+#
+ulx2s_bram.name=FER ULX2S (110 MHz, Lattice XP2, 16 KB BRAM)
+ulx2s_bram.vid.0=0x0403
+ulx2s_bram.pid.0=0x6001
+ulx2s_bram.build.mcu=f32c
+ulx2s_bram.build.core=f32c
+ulx2s_bram.build.variant=ulx2s_bram
+ulx2s_bram.upload.tool=ujprog
+ulx2s_bram.upload.protocol=ujprog
+ulx2s_bram.upload.maximum_size=15800
+ulx2s_bram.upload.wait_for_upload_port=false
+ulx2s_bram.upload.native_usb=false
 
-ulx2s_mips_phys.upload.tool=ujprog
-ulx2s_mips_phys.upload.protocol=ujprog
-ulx2s_mips_phys.upload.maximum_size=1015808
-ulx2s_mips_phys.upload.use_1200bps_touch=true
-ulx2s_mips_phys.upload.wait_for_upload_port=false
-ulx2s_mips_phys.upload.native_usb=false
+#
+# Lattice Brevia Board, f32c/mips SoC
+#
+brevia.name=Lattice Brevia (110 MHz, Lattice XP2, 16 KB BRAM)
+brevia.build.mcu=f32c
+brevia.build.core=f32c
+brevia.build.variant=
+brevia.upload.tool=ujprog
+brevia.upload.protocol=ujprog
+brevia.upload.maximum_size=15800
+brevia.upload.wait_for_upload_port=false
+brevia.upload.native_usb=false
+
+#
+# Digilent / Xilinx Spartan-3E Starter Board, f32c/mips SoC
+#
+s3e500.name=Xilinx Spartan-3E Starter (100 MHz, XC3S500E, 32 KB BRAM)
+s3e500.build.mcu=f32c
+s3e500.build.core=f32c
+s3e500.build.variant=
+s3e500.upload.tool=ujprog
+s3e500.upload.protocol=ujprog
+s3e500.upload.maximum_size=15800
+s3e500.upload.wait_for_upload_port=false
+s3e500.upload.native_usb=false
+
+#
+# Digilent / Xilinx Spartan-3E Starter Board, f32c/mips SoC
+#
+s3e1600.name=Xilinx Spartan-3E-1600 (100 MHz, XC3S1600E, 64 KB BRAM)
+s3e1600.build.mcu=f32c
+s3e1600.build.core=f32c
+s3e1600.build.variant=
+s3e1600.upload.tool=ujprog
+s3e1600.upload.protocol=ujprog
+s3e1600.upload.maximum_size=15800
+s3e1600.upload.wait_for_upload_port=false
+s3e1600.upload.native_usb=false
+
+#
+# Digilent / Xilinx Nexys-3 Spartan-6 Board, f32c/mips SoC
+#
+nexys3_bram.name=Xilinx Nexys-3 (150 MHz, Spartan-6, 64 KB BRAM)
+nexys3_bram.build.mcu=f32c
+nexys3_bram.build.core=f32c
+nexys3_bram.build.variant=
+nexys3_bram.upload.tool=ujprog
+nexys3_bram.upload.protocol=ujprog
+nexys3_bram.upload.maximum_size=15800
+nexys3_bram.upload.wait_for_upload_port=false
+nexys3_bram.upload.native_usb=false
+
+#
+# Altera DE0-Nano Board, f32c/mips SoC
+#
+de0_nano_bram.name=Altera DE0-Nano (120 MHz, Cyclone-IV, 64 KB BRAM)
+de0_nano_bram.build.mcu=f32c
+de0_nano_bram.build.core=f32c
+de0_nano_bram.build.variant=
+de0_nano_bram.upload.tool=ujprog
+de0_nano_bram.upload.protocol=ujprog
+de0_nano_bram.upload.maximum_size=15800
+de0_nano_bram.upload.wait_for_upload_port=false
+de0_nano_bram.upload.native_usb=false
