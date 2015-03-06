@@ -16,24 +16,36 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef _WIRING_PULSE_
-#define _WIRING_PULSE_
+#include "Arduino.h"
+//#include "wiring_private.h"
 
-#ifdef __cplusplus
- extern "C" {
-#endif
-
-/*
- * \brief Measures the length (in microseconds) of a pulse on the pin; state is HIGH
+/* Measures the length (in microseconds) of a pulse on the pin; state is HIGH
  * or LOW, the type of pulse to measure.  Works on pulses from 2-3 microseconds
  * to 3 minutes in length, but must be called at least a few dozen microseconds
- * before the start of the pulse.
- */
-extern uint32_t pulseIn(uint32_t ulPin, bool ulState, uint32_t ulTimeout = 1000000L);
+ * before the start of the pulse. */
+extern uint32_t
+pulseIn(uint32_t pin, bool state, uint32_t timeout)
+{
+	uint32_t numloops = 0;
+	uint32_t maxloops = microsecondsToClockCycles(timeout) / 16;
+	uint32_t start, end;
+	
+	// wait for any previous pulse to end
+	while (digitalRead(pin) == state)
+		if (numloops++ == maxloops)
+			return 0;
+	
+	// wait for the pulse to start
+	while (digitalRead(pin) != state)
+		if (numloops++ == maxloops)
+			return 0;
+	
+	// wait for the pulse to stop
+	start = micros();
+	while (digitalRead(pin) == state)
+		if (numloops++ == maxloops)
+			return 0;
+	end  = micros();
 
-
-#ifdef __cplusplus
+	return (end - start);
 }
-#endif
-
-#endif /* _WIRING_PULSE_ */
