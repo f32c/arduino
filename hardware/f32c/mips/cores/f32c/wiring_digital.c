@@ -13,27 +13,23 @@ extern "C" {
 
 static uint32_t gpio_cfg, gpio_out, led_out;
 
-static struct 
-{
-	volatile uint32_t *port;
-	uint32_t bitmask;
-} pin_map[64] = VARIANT_DIGITAL_PIN_MAP;
+struct variant_pin_map_s variant_pin_map[] = VARIANT_DIGITAL_PIN_MAP;
 
 
 void
 pinMode(uint32_t pin, uint32_t mode)
 {
 
-	if (pin >= 64 ||
-	    (pin_map[pin].port == (volatile uint32_t *) IO_PUSHBTN))
+	if (pin >= sizeof(variant_pin_map) ||
+	    (variant_pin_map[pin].port == (volatile uint32_t *) IO_PUSHBTN))
 		return;
 
 	switch (mode) {
 	case INPUT:
-		gpio_cfg &= ~pin_map[pin].bitmask;
+		gpio_cfg &= ~variant_pin_map[pin].bitmask;
 		break ;
 	case OUTPUT:
-		gpio_cfg |= pin_map[pin].bitmask;
+		gpio_cfg |= variant_pin_map[pin].bitmask;
 		break ;
 	}
 
@@ -47,28 +43,28 @@ digitalWrite(uint32_t pin, uint32_t val)
 	volatile uint32_t *port;
 	uint32_t *var = &gpio_out;
 
-	if (pin >= 64)
+	if (pin >= sizeof(variant_pin_map))
 		return;
 
-	port = pin_map[pin].port;
+	port = variant_pin_map[pin].port;
 
 	if (port == (volatile uint32_t *) IO_PUSHBTN)
 		var = &led_out;
 
 	if (val)
-		*port = (*var |= pin_map[pin].bitmask);
+		*port = (*var |= variant_pin_map[pin].bitmask);
 	else
-		*port = (*var &= ~pin_map[pin].bitmask);
+		*port = (*var &= ~variant_pin_map[pin].bitmask);
 }
 
 
 int
 digitalRead(uint32_t pin)
 {
-	if (pin >= 64)
+	if (pin >= sizeof(variant_pin_map))
 		return 0;
 
-	return ((*pin_map[pin].port & pin_map[pin].bitmask) != 0);
+	return ((*variant_pin_map[pin].port & variant_pin_map[pin].bitmask) != 0);
 }
 
 #ifdef __cplusplus

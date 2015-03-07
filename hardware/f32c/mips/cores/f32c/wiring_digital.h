@@ -23,6 +23,18 @@
  extern "C" {
 #endif
 
+struct variant_pin_map_s 
+{
+	volatile uint32_t *port;
+	uint32_t bitmask;
+};
+
+extern struct variant_pin_map_s variant_pin_map[];
+
+#define digitalPinToPort(pin) variant_pin_map[pin].port
+#define digitalPinToBitMask(pin) variant_pin_map[pin].bitmask
+#define portOutputRegister(port) port
+
 /**
  * \brief Configures the specified pin to behave either as an input or an output. See the description of digital pins for details.
  *
