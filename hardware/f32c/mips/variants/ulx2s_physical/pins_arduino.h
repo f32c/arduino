@@ -9,14 +9,14 @@
   { /*  2 */  (volatile uint32_t *) IO_GPIO_DATA, 1<<0  /* lcd3 */ }, \
   { /*  3 */  (volatile uint32_t *) IO_GPIO_DATA, 1<<1  /* lcd2 */ }, \
   { /*  4 */  (volatile uint32_t *) IO_GPIO_DATA, 1<<2  /* lcd1 */ }, \
-  { /*  5 */  (volatile uint32_t *) IO_PUSHBTN,   1<<7  /* led7 */ }, \
-  { /*  6 */  (volatile uint32_t *) IO_PUSHBTN,   1<<6  /* led6 */ }, \
-  { /*  7 */  (volatile uint32_t *) IO_PUSHBTN,   1<<5  /* led5 */ }, \
+  { /*  5 */  (volatile uint32_t *) IO_PUSHBTN,   1<<(8+7)  /* led7 */ }, \
+  { /*  6 */  (volatile uint32_t *) IO_PUSHBTN,   1<<(8+6)  /* led6 */ }, \
+  { /*  7 */  (volatile uint32_t *) IO_PUSHBTN,   1<<(8+5)  /* led5 */ }, \
   { /*  8 */  (volatile uint32_t *) IO_GPIO_DATA, 1<<3  /* lcd0 */ }, \
   { /*  9 */  (volatile uint32_t *) IO_GPIO_DATA, 1<<4  /* lcd5 */ }, \
   { /* 10 */  (volatile uint32_t *) IO_PUSHBTN,   1<<2  /* btn_down */ }, \
   { /* 11 */  (volatile uint32_t *) IO_PUSHBTN,   1<<1  /* btn_left */ }, \
-  { /* 12 */  (volatile uint32_t *) IO_PUSHBTN,   1<<4  /* led 4 */ }, \
+  { /* 12 */  (volatile uint32_t *) IO_PUSHBTN,   1<<(8+4)  /* led 4 */ }, \
   { /* 13 */  (volatile uint32_t *) IO_GPIO_DATA, 1<<5  /* lcd4 */ }, \
   { /* 14 */  (volatile uint32_t *) IO_GPIO_DATA, 1<<6  }, \
   { /* 15 */  (volatile uint32_t *) IO_GPIO_DATA, 1<<7  }, \
@@ -45,10 +45,10 @@
   { /* 38 */  (volatile uint32_t *) IO_PUSHBTN,   1<<0  /* btn_right */ }, \
   { /* 39 */  (volatile uint32_t *) IO_PUSHBTN,   1<<4  /* btn_center */ }, \
   { /* 40 */  (volatile uint32_t *) IO_GPIO_DATA, 1<<28 }, \
-  { /* 41 */  (volatile uint32_t *) IO_PUSHBTN,   1<<0  /* led_0 */ }, \
-  { /* 42 */  (volatile uint32_t *) IO_PUSHBTN,   1<<1  /* led_1 */ }, \
-  { /* 43 */  (volatile uint32_t *) IO_PUSHBTN,   1<<2  /* led_2 */ }, \
-  { /* 44 */  (volatile uint32_t *) IO_PUSHBTN,   1<<3  /* led_3 */ }, \
+  { /* 41 */  (volatile uint32_t *) IO_PUSHBTN,   1<<(8+0)  /* led_0 */ }, \
+  { /* 42 */  (volatile uint32_t *) IO_PUSHBTN,   1<<(8+1)  /* led_1 */ }, \
+  { /* 43 */  (volatile uint32_t *) IO_PUSHBTN,   1<<(8+2)  /* led_2 */ }, \
+  { /* 44 */  (volatile uint32_t *) IO_PUSHBTN,   1<<(8+3)  /* led_3 */ }, \
   { /* 45 */  (volatile uint32_t *) IO_GPIO_DATA,    0  /* p_tip_0 */ }, \
   { /* 46 */  (volatile uint32_t *) IO_GPIO_DATA,    0  /* p_tip_1 */ }, \
   { /* 47 */  (volatile uint32_t *) IO_GPIO_DATA,    0  /* p_tip_2 */ }, \
