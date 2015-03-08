@@ -57,7 +57,7 @@ recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -march={build.mcu} {com
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{build.path}/{archive_file}" "{object_file}"
 
 ## Link gc-sections, archives, and objects
-recipe.c.combine.pattern="{compiler.path}{compiler.ld.cmd}" {compiler.ld.flags} -nostdlib -lcrt0 {object_files} "{build.path}/{archive_file}" -lm -lc -o "{build.path}/{build.project_name}.elf"
+recipe.c.combine.pattern="{compiler.path}{compiler.ld.cmd}" {compiler.ld.flags} -nostdlib -lcrt0 {object_files} "{build.path}/{archive_file}" -lulx2s -lm -lc -o "{build.path}/{build.project_name}.elf"
 
 ## Create eeprom
 recipe.objcopy.eep.pattern=
