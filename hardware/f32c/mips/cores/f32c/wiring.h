@@ -30,6 +30,16 @@ extern "C" {
 extern void initVariant( void ) ;
 extern void init( void ) ;
 
+struct variant_pin_map_s 
+{
+	volatile uint32_t *port;
+	uint32_t bitmask;
+	int8_t pwm;
+};
+
+extern struct variant_pin_map_s variant_pin_map[];
+extern const uint32_t variant_pin_map_size;
+
 /**
  * \brief Returns the number of milliseconds since the Arduino board began running the current program.
  *
