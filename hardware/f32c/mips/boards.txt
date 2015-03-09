@@ -13,7 +13,7 @@ ulx2s_sram.upload.protocol=ujprog
 ulx2s_sram.upload.maximum_size=1015808
 ulx2s_sram.upload.wait_for_upload_port=false
 ulx2s_sram.upload.native_usb=false
-ulx2s_sram.bootloader.file=f32c_mips/f32c_mips_boot_2433.jed
+ulx2s_sram.bootloader.file=f32c_mips/f32c_mips_timer_2463.jed
 
 #
 # FER ULX2S Board, f32c/mips SoC, pyhsical pin mapping
@@ -30,7 +30,7 @@ ulx2s_sram_phys.upload.protocol=ujprog
 ulx2s_sram_phys.upload.maximum_size=1015808
 ulx2s_sram_phys.upload.wait_for_upload_port=false
 ulx2s_sram_phys.upload.native_usb=false
-ulx2s_sram_phys.bootloader.file=f32c_mips/f32c_mips_timer_boot_2380.jed
+ulx2s_sram_phys.bootloader.file=f32c_mips/f32c_mips_timer_2463.jed
 
 #
 # FER ULX2S Board, f32c/mips SoC, logical pin mapping
