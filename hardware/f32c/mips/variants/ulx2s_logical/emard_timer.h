@@ -8,11 +8,11 @@
 // #define CLOCK 81207000L
 #define TIMER_CLOCK  VARIANT_MCK
 /* bits of the timer counter C_bits */
-#define TIMER_BITS 10
+#define TIMER_BITS 12
 /* register of size more or equal max(C_bits, C_bits+C_pres), max 32 bits */
 #define R_TYPE uint32_t
 /* number of prescaler bits from vhd C_pres */
-#define PRESCALER_BITS 16
+#define PRESCALER_BITS 10
 /* number of fractional period bits from vhd C_period_frac */
 #define FRAC_BITS 0
 
@@ -65,3 +65,4 @@ extern volatile uint32_t *EMARD_TIMER;
 #define EMARD_TIMER_ADDRESS (uint32_t *)(EMARD_TIMADR)
 
 #endif /* _f32c_mips_emard_timer_h */
+
