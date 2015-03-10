@@ -70,6 +70,14 @@ extern void analogReadResolution(int res);
  */
 extern void analogWriteResolution(int res);
 
+/*
+ * \brief Set the frequency of analogWrite PWM output. Default is 980 Hz (range from 20 to 25000).
+ *
+ * \param res
+ */
+extern void analogWriteFrequency(int freq);
+
+
 extern void analogOutputInit( void ) ;
 
 #ifdef __cplusplus

@@ -7,11 +7,13 @@ extern "C" {
 #endif
 
 static uint8_t analog_write_resolution_bits = 8;
+static uint32_t analog_write_frequency = 980;
 
 /* old arduino uses 490 Hz */
 // #define ANALOG_WRITE_PWM_FREQUENCY_HZ 490
 /* new arduino uses 980 Hz */
 #define ANALOG_WRITE_PWM_FREQUENCY_HZ 980
+
 
 uint32_t analogRead(uint32_t ulPin)
 {
@@ -25,6 +27,17 @@ uint32_t analogRead(uint32_t ulPin)
 void analogWriteResolution(int res)
 {
   analog_write_resolution_bits = res;
+}
+
+void analogWriteFrequency(int freq)
+{
+  analog_write_frequency = freq;
+}
+
+/* setup the common parameters (why isn't it called at startup?)
+*/
+void analogOutputInit( void )
+{
 }
 
 void analogWrite(uint32_t ulPin, uint32_t ulValue)
@@ -42,7 +55,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
     ** to calculate increment:
     ** increment = (frequency_hz << (TIMER_BITS+PRESCALER_BITS) ) / TIMER_CLOCK_hz;
     */
-    EMARD_TIMER[TC_INCREMENT] = (((uint64_t)ANALOG_WRITE_PWM_FREQUENCY_HZ) 
+    EMARD_TIMER[TC_INCREMENT] = (((uint64_t)analog_write_frequency) 
                                    << (TIMER_BITS+PRESCALER_BITS)) / TIMER_CLOCK;
 
     EMARD_TIMER[TC_CONTROL] = (1<<TCTRL_AND_OR_OCP1) | (1<<TCTRL_AND_OR_OCP2)
