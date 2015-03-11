@@ -41,7 +41,7 @@ void analogOutputInit( void )
 
 void analogWrite(uint32_t ulPin, uint32_t ulValue)
 {
-  int32_t pwm_channel;
+  int8_t pwm_channel;
   
   if(ulPin >= variant_pin_map_size)
     return;
