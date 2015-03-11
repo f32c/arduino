@@ -7,13 +7,9 @@ extern "C" {
 #endif
 
 static uint8_t analog_write_resolution_bits = 8;
-static uint32_t analog_write_frequency = 980;
-
 /* old arduino uses 490 Hz */
-// #define ANALOG_WRITE_PWM_FREQUENCY_HZ 490
 /* new arduino uses 980 Hz */
-#define ANALOG_WRITE_PWM_FREQUENCY_HZ 980
-
+static uint32_t analog_write_frequency = 980;
 
 uint32_t analogRead(uint32_t ulPin)
 {
@@ -58,7 +54,13 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
     EMARD_TIMER[TC_INCREMENT] = (((uint64_t)analog_write_frequency) 
                                    << (TIMER_BITS+PRESCALER_BITS)) / TIMER_CLOCK;
 
-    EMARD_TIMER[TC_CONTROL] = (1<<TCTRL_AND_OR_OCP1) | (1<<TCTRL_AND_OR_OCP2)
+    EMARD_TIMER[TC_CONTROL] = ( EMARD_TIMER[TC_CONTROL] & 
+                               (
+ 	                      (1<<TCTRL_ENABLE_OCP1) | (1<<TCTRL_ENABLE_OCP2)
+	                    | (1<<TCTRL_ENABLE_ICP1) | (1<<TCTRL_ENABLE_ICP2)
+                               )
+                              )
+                            | (1<<TCTRL_AND_OR_OCP1) | (1<<TCTRL_AND_OR_OCP2)
 	                    | (1<<TCTRL_AND_OR_ICP1) | (1<<TCTRL_AND_OR_ICP2)
 	                    | (0<<TCTRL_IE_OCP1)     | (0<<TCTRL_IE_OCP2)
 	                    | (0<<TCTRL_IE_ICP1)     | (0<<TCTRL_IE_ICP2)
@@ -79,6 +81,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
       EMARD_TIMER[TC_OCP1_START] = 0;
       EMARD_TIMER[TC_OCP1_STOP]  = ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS);
 
+      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_ENABLE_OCP1);
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL)
                             | (1<<TC_INCREMENT)
                             | (1<<TC_OCP1_START) | (1<<TC_OCP1_STOP) 
@@ -95,6 +98,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
       EMARD_TIMER[TC_OCP2_START] = 0;
       EMARD_TIMER[TC_OCP2_STOP]  = ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS);
 
+      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_ENABLE_OCP2);
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL)
                             | (1<<TC_INCREMENT)
                             | (0<<TC_OCP1_START) | (0<<TC_OCP1_STOP) 

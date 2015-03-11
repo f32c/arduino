@@ -60,6 +60,10 @@
 #define TCTRL_AFCEN_ICP2 (18)
 #define TCTRL_AFCINV_ICP1 (17)
 #define TCTRL_AFCINV_ICP2 (19)
+#define TCTRL_ENABLE_OCP1 (20)
+#define TCTRL_ENABLE_OCP2 (21)
+#define TCTRL_ENABLE_ICP1 (23)
+#define TCTRL_ENABLE_ICP2 (22)
 
 extern volatile uint32_t *EMARD_TIMER; 
 #define EMARD_TIMER_ADDRESS (uint32_t *)(EMARD_TIMADR)
