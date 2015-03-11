@@ -23,6 +23,14 @@
 extern "C" {
 #endif
 
+struct pwm_enable_bitmask_s
+{
+  uint32_t control;
+  uint32_t apply;
+  uint8_t ocp_start;
+  uint8_t ocp_stop;
+};
+
 /*
  * \brief SAM3 products have only one reference for ADC
  */
@@ -30,6 +38,11 @@ typedef enum _eAnalogReference
 {
   AR_DEFAULT,
 } eAnalogReference ;
+
+/*
+ * array index is pwm channel number starting from 0
+ */
+extern const struct pwm_enable_bitmask_s pwm_enable_bitmask[];
 
 /*
  * \brief Configures the reference voltage used for analog input (i.e. the value used as the top of the input range).

@@ -1,6 +1,7 @@
 /* EMARD */
 
 #include "Arduino.h"
+#include "wiring_analog.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,6 +11,8 @@ static uint8_t analog_write_resolution_bits = 8;
 /* old arduino uses 490 Hz */
 /* new arduino uses 980 Hz */
 static uint32_t analog_write_frequency = 980;
+
+const struct pwm_enable_bitmask_s pwm_enable_bitmask[] = VARIANT_PWM_CHANNEL_ENABLE;
 
 uint32_t analogRead(uint32_t ulPin)
 {
@@ -38,9 +41,13 @@ void analogOutputInit( void )
 
 void analogWrite(uint32_t ulPin, uint32_t ulValue)
 {
+  int32_t pwm_channel;
+  
   if(ulPin >= variant_pin_map_size)
     return;
-  if(variant_pin_map[ulPin].pwm >= 0)
+    
+  pwm_channel = variant_pin_map[ulPin].pwm;
+  if(pwm_channel >= 0)
   {
     /* standard PWM frequency is 
     ** 490 Hz on old arduino
@@ -75,40 +82,12 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
       ulValue <<= (TIMER_BITS-analog_write_resolution_bits);
     if(analog_write_resolution_bits > TIMER_BITS)
       ulValue >>= (analog_write_resolution_bits-analog_write_resolution_bits);
-    
-    if(variant_pin_map[ulPin].pwm == 0)
-    {
-      EMARD_TIMER[TC_OCP1_START] = 0;
-      EMARD_TIMER[TC_OCP1_STOP]  = ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS);
 
-      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_ENABLE_OCP1);
-      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL)
-                            | (1<<TC_INCREMENT)
-                            | (1<<TC_OCP1_START) | (1<<TC_OCP1_STOP) 
-                            | (0<<TC_OCP2_START) | (0<<TC_OCP2_STOP)
-                            | (0<<TC_ICP1_START) | (0<<TC_ICP1_STOP) 
-                            | (0<<TC_ICP2_START) | (0<<TC_ICP2_STOP)
-                            | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)
-                            | (0<<TC_ICP1)       | (0<<TC_ICP2)
-                          ;
-    }
-      
-    if(variant_pin_map[ulPin].pwm == 1)
-    {
-      EMARD_TIMER[TC_OCP2_START] = 0;
-      EMARD_TIMER[TC_OCP2_STOP]  = ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS);
+    EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_start] = 0;
+    EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_stop]  = 
+      ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS);
 
-      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_ENABLE_OCP2);
-      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL)
-                            | (1<<TC_INCREMENT)
-                            | (0<<TC_OCP1_START) | (0<<TC_OCP1_STOP) 
-                            | (1<<TC_OCP2_START) | (1<<TC_OCP2_STOP)
-                            | (0<<TC_ICP1_START) | (0<<TC_ICP1_STOP) 
-                            | (0<<TC_ICP2_START) | (0<<TC_ICP2_STOP)
-                            | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)
-                            | (0<<TC_ICP1)       | (0<<TC_ICP2)
-                          ;
-    }
-
+    EMARD_TIMER[TC_CONTROL] |= pwm_enable_bitmask[pwm_channel].control;
+    EMARD_TIMER[TC_APPLY] = pwm_enable_bitmask[pwm_channel].apply;
   }
 }
