@@ -68,5 +68,35 @@
 extern volatile uint32_t *EMARD_TIMER; 
 #define EMARD_TIMER_ADDRESS (uint32_t *)(EMARD_TIMADR)
 
-#endif /* _f32c_mips_emard_timer_h */
+/* timer pwm channel intializer 
+ * for bitmask struct
+ */
+#define VARIANT_PWM_CHANNEL_ENABLE \
+{ \
+  {   (1<<TCTRL_ENABLE_OCP1), /* control */  \
+      (1<<TC_CONTROL)         /* apply */    \
+    | (1<<TC_INCREMENT)                      \
+    | (1<<TC_OCP1_START) | (1<<TC_OCP1_STOP) \
+    | (0<<TC_OCP2_START) | (0<<TC_OCP2_STOP) \
+    | (0<<TC_ICP1_START) | (0<<TC_ICP1_STOP) \
+    | (0<<TC_ICP2_START) | (0<<TC_ICP2_STOP) \
+    | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)   \
+    | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
+    /* indexes of start/stop register */     \
+    TC_OCP1_START, TC_OCP1_STOP              \
+  },                                         \
+  {   (1<<TCTRL_ENABLE_OCP2),                \
+      (1<<TC_CONTROL)                        \
+    | (1<<TC_INCREMENT)                      \
+    | (0<<TC_OCP1_START) | (0<<TC_OCP1_STOP) \
+    | (1<<TC_OCP2_START) | (1<<TC_OCP2_STOP) \
+    | (0<<TC_ICP1_START) | (0<<TC_ICP1_STOP) \
+    | (0<<TC_ICP2_START) | (0<<TC_ICP2_STOP) \
+    | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)   \
+    | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
+    /* indexes of start/stop register */     \
+    TC_OCP2_START, TC_OCP2_STOP              \
+  },                                         \
+}
 
+#endif /* _f32c_mips_emard_timer_h */
