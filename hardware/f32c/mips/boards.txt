@@ -7,7 +7,7 @@ ulx2s_sram.pid.0=0x6001
 ulx2s_sram.build.mcu=f32c
 ulx2s_sram.build.core=f32c
 ulx2s_sram.build.variant=ulx2s_logical
-ulx2s_sram.build.extra_flags=-D__F32C_MIPS__
+ulx2s_sram.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
 ulx2s_sram.upload.tool=ujprog
 ulx2s_sram.upload.protocol=ujprog
 ulx2s_sram.upload.maximum_size=1015808
@@ -24,7 +24,7 @@ ulx2s_sram_phys.pid.0=0x6001
 ulx2s_sram_phys.build.mcu=f32c
 ulx2s_sram_phys.build.core=f32c
 ulx2s_sram_phys.build.variant=ulx2s_physical
-ulx2s_sram_phys.build.extra_flags=-D__F32C_MIPS__
+ulx2s_sram.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
 ulx2s_sram_phys.upload.tool=ujprog
 ulx2s_sram_phys.upload.protocol=ujprog
 ulx2s_sram_phys.upload.maximum_size=1015808
@@ -35,13 +35,13 @@ ulx2s_sram_phys.bootloader.file=f32c_mips/bitstream.jed
 #
 # FER ULX2S Board, f32c/mips SoC, logical pin mapping
 #
-ulx2s_bram.name=FER ULX2S (110 MHz, Lattice XP2, 16 KB BRAM)
+ulx2s_bram.name=FER ULX2S (100 MHz, Lattice XP2, 16 KB BRAM)
 ulx2s_bram.vid.0=0x0403
 ulx2s_bram.pid.0=0x6001
 ulx2s_bram.build.mcu=f32c
 ulx2s_bram.build.core=f32c
-ulx2s_bram.build.variant=ulx2s_bram
-ulx2s_bram.build.extra_flags=-D__F32C_MIPS__
+ulx2s_bram.build.variant=ulx2s_logical
+ulx2s_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 ulx2s_bram.upload.tool=ujprog
 ulx2s_bram.upload.protocol=ujprog
 ulx2s_bram.upload.maximum_size=15800
@@ -51,11 +51,11 @@ ulx2s_bram.upload.native_usb=false
 #
 # Lattice Brevia Board, f32c/mips SoC
 #
-brevia.name=Lattice Brevia (110 MHz, Lattice XP2, 16 KB BRAM)
+brevia.name=Lattice Brevia (100 MHz, Lattice XP2, 16 KB BRAM)
 brevia.build.mcu=f32c
 brevia.build.core=f32c
 brevia.build.variant=
-brevia.build.extra_flags=-D__F32C_MIPS__
+brevia.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 brevia.upload.tool=ujprog
 brevia.upload.protocol=ujprog
 brevia.upload.maximum_size=15800
@@ -65,11 +65,11 @@ brevia.upload.native_usb=false
 #
 # Digilent / Xilinx Spartan-3E Starter Board, f32c/mips SoC
 #
-s3e500.name=Xilinx Spartan-3E Starter (100 MHz, XC3S500E, 32 KB BRAM)
+s3e500.name=Xilinx Spartan-3E Starter (80 MHz, XC3S500E, 32 KB BRAM)
 s3e500.build.mcu=f32c
 s3e500.build.core=f32c
 s3e500.build.variant=
-s3e500.build.extra_flags=-D__F32C_MIPS__
+s3e500.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 s3e500.upload.tool=ujprog
 s3e500.upload.protocol=ujprog
 s3e500.upload.maximum_size=15800
@@ -79,11 +79,11 @@ s3e500.upload.native_usb=false
 #
 # Digilent / Xilinx Spartan-3E Starter Board, f32c/mips SoC
 #
-s3e1600.name=Xilinx Spartan-3E-1600 (100 MHz, XC3S1600E, 64 KB BRAM)
+s3e1600.name=Xilinx Spartan-3E-1600 (80 MHz, XC3S1600E, 32 KB BRAM)
 s3e1600.build.mcu=f32c
 s3e1600.build.core=f32c
 s3e1600.build.variant=
-s3e1600.build.extra_flags=-D__F32C_MIPS__
+s3e1600.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 s3e1600.upload.tool=ujprog
 s3e1600.upload.protocol=ujprog
 s3e1600.upload.maximum_size=15800
@@ -93,11 +93,11 @@ s3e1600.upload.native_usb=false
 #
 # Digilent / Xilinx Nexys-3 Spartan-6 Board, f32c/mips SoC
 #
-nexys3_bram.name=Xilinx Nexys-3 (150 MHz, Spartan-6, 64 KB BRAM)
+nexys3_bram.name=Xilinx Nexys-3 (80 MHz, Spartan-6, 32 KB BRAM)
 nexys3_bram.build.mcu=f32c
 nexys3_bram.build.core=f32c
 nexys3_bram.build.variant=
-nexys3_bram.build.extra_flags=-D__F32C_MIPS__
+nexys3_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 nexys3_bram.upload.tool=ujprog
 nexys3_bram.upload.protocol=ujprog
 nexys3_bram.upload.maximum_size=15800
@@ -107,11 +107,11 @@ nexys3_bram.upload.native_usb=false
 #
 # Altera DE0-Nano Board, f32c/mips SoC
 #
-de0_nano_bram.name=Altera DE0-Nano (120 MHz, Cyclone-IV, 64 KB BRAM)
+de0_nano_bram.name=Altera DE0-Nano (50 MHz, Cyclone-IV, 32 KB BRAM)
 de0_nano_bram.build.mcu=f32c
 de0_nano_bram.build.core=f32c
 de0_nano_bram.build.variant=
-de0_nano_bram.build.extra_flags=-D__F32C_MIPS__
+de0_nano_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 de0_nano_bram.upload.tool=ujprog
 de0_nano_bram.upload.protocol=ujprog
 de0_nano_bram.upload.maximum_size=15800

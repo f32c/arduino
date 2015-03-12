@@ -16,7 +16,7 @@ compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=mips-elf-g++
 compiler.cpp.flags=-c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti -fno-exceptions
 compiler.ld.cmd=mips-elf-ld
-compiler.ld.flags=-N -EL --section-start=.init=0x80000000 -gc-sections "--library-path={build.system.path}/lib"
+compiler.ld.flags=-N -EL -gc-sections "--library-path={build.system.path}/lib"
 compiler.ar.cmd=mips-elf-ar
 compiler.ar.flags=rcs
 compiler.objcopy.cmd=mips-elf-objcopy
@@ -45,19 +45,19 @@ build.usb_flags=
 # ---------------------
 
 ## Compile S files
-recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" -march={build.mcu} {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" -march={build.mcu} {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" -march={build.mcu} {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" -march={build.mcu} {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile c++ files
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -march={build.mcu} {compiler.cpp.flags} -DARDUINO={runtime.ide.version} {compiler.cpp.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -march={build.mcu} {compiler.cpp.flags} -DARDUINO={runtime.ide.version} {compiler.cpp.extra_flags} {includes} "{source_file}" -o "{object_file}"
 
 ## Create archives
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{build.path}/{archive_file}" "{object_file}"
 
 ## Link gc-sections, archives, and objects
-recipe.c.combine.pattern="{compiler.path}{compiler.ld.cmd}" {compiler.ld.flags} -nostdlib -lcrt0 {object_files} "{build.path}/{archive_file}" -lulx2s -lm -lc -o "{build.path}/{build.project_name}.elf"
+recipe.c.combine.pattern="{compiler.path}{compiler.ld.cmd}" {compiler.ld.flags} -nostdlib {build.extra_flags} {object_files} "{build.path}/{archive_file}" -lulx2s -lm -lc -o "{build.path}/{build.project_name}.elf"
 
 ## Create eeprom
 recipe.objcopy.eep.pattern=
