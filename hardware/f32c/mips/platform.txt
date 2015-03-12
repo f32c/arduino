@@ -30,9 +30,9 @@ compiler.define=-DARDUINO=
 build.extra_flags=
 
 # These can be overridden in platform.local.txt
-compiler.c.extra_flags=
+compiler.c.extra_flags=-D__F32C_MIPS__
 compiler.c.elf.extra_flags=
-compiler.cpp.extra_flags=
+compiler.cpp.extra_flags=-D__F32C_MIPS__
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
 
