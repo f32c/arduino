@@ -24,7 +24,7 @@ ulx2s_sram_phys.pid.0=0x6001
 ulx2s_sram_phys.build.mcu=f32c
 ulx2s_sram_phys.build.core=f32c
 ulx2s_sram_phys.build.variant=ulx2s_physical
-ulx2s_sram.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
+ulx2s_sram_phys.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
 ulx2s_sram_phys.upload.tool=ujprog
 ulx2s_sram_phys.upload.protocol=ujprog
 ulx2s_sram_phys.upload.maximum_size=1015808
