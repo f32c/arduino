@@ -21,7 +21,7 @@ compiler.ar.cmd=mips-elf-ar
 compiler.ar.flags=rcs
 compiler.objcopy.cmd=mips-elf-objcopy
 compiler.objcopy.eep.flags=-O srec
-compiler.elf2hex.flags=-O binary
+compiler.elf2hex.flags=
 compiler.elf2hex.cmd=mips-elf-objcopy
 compiler.size.cmd=mips-elf-size
 compiler.define=-DARDUINO=
@@ -59,11 +59,11 @@ recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compil
 ## Link gc-sections, archives, and objects
 recipe.c.combine.pattern="{compiler.path}{compiler.ld.cmd}" {compiler.ld.flags} -nostdlib {build.extra_flags} {object_files} "{build.path}/{archive_file}" -lulx2s -lm -lc -o "{build.path}/{build.project_name}.elf"
 
-## Create eeprom
-recipe.objcopy.eep.pattern=
+## Create binary
+recipe.objcopy.eep.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} -O binary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
 
 ## Create hex
-recipe.objcopy.hex.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+recipe.objcopy.hex.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} -O srec "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.hex"
 
 ## Compute size
 recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
