@@ -80,7 +80,7 @@ tools.ujprog.path={runtime.ide.path}/hardware/tools
 
 tools.ujprog.upload.params.verbose=
 tools.ujprog.upload.params.quiet=
-tools.ujprog.upload.pattern="{path}/{cmd}" -e "{build.path}/{build.project_name}.bin"
+tools.ujprog.upload.pattern="{path}/{cmd}" {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
 
 tools.ujprog.erase.params.verbose=
 tools.ujprog.erase.params.quiet=
