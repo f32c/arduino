@@ -77,7 +77,7 @@ s3e500.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 s3e500.upload.tool=ujprog
 s3e500.upload.protocol=hex
 s3e500.upload.flags=-a
-s3e500.upload.maximum_size=15800
+s3e500.upload.maximum_size=32184
 s3e500.upload.wait_for_upload_port=false
 s3e500.upload.native_usb=false
 
@@ -92,7 +92,7 @@ s3e1600.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 s3e1600.upload.tool=ujprog
 s3e1600.upload.protocol=hex
 s3e1600.upload.flags=-a
-s3e1600.upload.maximum_size=15800
+s3e1600.upload.maximum_size=32184
 s3e1600.upload.wait_for_upload_port=false
 s3e1600.upload.native_usb=false
 
@@ -107,7 +107,7 @@ nexys3_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 nexys3_bram.upload.tool=ujprog
 nexys3_bram.upload.protocol=hex
 nexys3_bram.upload.flags=-a
-nexys3_bram.upload.maximum_size=15800
+nexys3_bram.upload.maximum_size=32184
 nexys3_bram.upload.wait_for_upload_port=false
 nexys3_bram.upload.native_usb=false
 
@@ -122,6 +122,21 @@ de0_nano_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 de0_nano_bram.upload.tool=ujprog
 de0_nano_bram.upload.protocol=hex
 de0_nano_bram.upload.flags=-a
-de0_nano_bram.upload.maximum_size=15800
+de0_nano_bram.upload.maximum_size=32184
+de0_nano_bram.upload.wait_for_upload_port=false
+de0_nano_bram.upload.native_usb=false
+
+#
+# Altera tb276 Board, f32c/mips SoC
+#
+de0_nano_bram.name=Altera tb276 (100 MHz, Cyclone-IV, 8 KB BRAM)
+de0_nano_bram.build.mcu=f32c
+de0_nano_bram.build.core=f32c
+de0_nano_bram.build.variant=ulx2s_logical
+de0_nano_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+de0_nano_bram.upload.tool=ujprog
+de0_nano_bram.upload.protocol=hex
+de0_nano_bram.upload.flags=-a
+de0_nano_bram.upload.maximum_size=7608
 de0_nano_bram.upload.wait_for_upload_port=false
 de0_nano_bram.upload.native_usb=false
