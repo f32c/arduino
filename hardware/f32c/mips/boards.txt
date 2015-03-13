@@ -129,7 +129,7 @@ de0_nano_bram.upload.native_usb=false
 #
 # Altera tb276 Board, f32c/mips SoC
 #
-de0_nano_bram.name=Altera tb276 (100 MHz, Cyclone-IV, 8 KB BRAM)
+de0_nano_bram.name=Altera TB276 (100 MHz, Cyclone-IV, 8 KB BRAM)
 de0_nano_bram.build.mcu=f32c
 de0_nano_bram.build.core=f32c
 de0_nano_bram.build.variant=ulx2s_logical
