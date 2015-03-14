@@ -14,7 +14,7 @@ ulx2s_sram.upload.flags=-e
 ulx2s_sram.upload.maximum_size=1015808
 ulx2s_sram.upload.wait_for_upload_port=false
 ulx2s_sram.upload.native_usb=false
-ulx2s_sram.bootloader.file=f32c_mips/bitstream.jed
+ulx2s_sram.bootloader.file=ulx2s/bitstream.jed
 
 #
 # FER ULX2S Board, f32c/mips SoC, pyhsical pin mapping
@@ -32,7 +32,7 @@ ulx2s_sram_phys.upload.flags=-e
 ulx2s_sram_phys.upload.maximum_size=1015808
 ulx2s_sram_phys.upload.wait_for_upload_port=false
 ulx2s_sram_phys.upload.native_usb=false
-ulx2s_sram_phys.bootloader.file=f32c_mips/bitstream.jed
+ulx2s_sram_phys.bootloader.file=ulx2s/bitstream.jed
 
 #
 # FER ULX2S Board, f32c/mips SoC, logical pin mapping
@@ -114,7 +114,7 @@ nexys3_bram.upload.native_usb=false
 #
 # Altera DE0-Nano Board, f32c/mips SoC
 #
-de0_nano_bram.name=Altera DE0-Nano (50 MHz, Cyclone-IV, 32 KB BRAM)
+de0_nano_bram.name=Altera DE0-Nano (50 MHz, Cyclone IV E EP4CE22F17C6, 32 KB BRAM)
 de0_nano_bram.build.mcu=f32c
 de0_nano_bram.build.core=f32c
 de0_nano_bram.build.variant=ulx2s_logical
@@ -125,11 +125,12 @@ de0_nano_bram.upload.flags=-a
 de0_nano_bram.upload.maximum_size=32184
 de0_nano_bram.upload.wait_for_upload_port=false
 de0_nano_bram.upload.native_usb=false
+de0_nano_bram.bootloader.file=de0_nano/bitstream.jed
 
 #
 # Altera tb276 Board, f32c/mips SoC
 #
-tb276_bram.name=Altera TB276 (100 MHz, Cyclone-IV, 8 KB BRAM)
+tb276_bram.name=Altera TB276 (100 MHz, Cyclone IV E EP4CE6E22C8, 8 KB BRAM)
 tb276_bram.build.mcu=f32c
 tb276_bram.build.core=f32c
 tb276_bram.build.variant=ulx2s_logical
@@ -140,3 +141,4 @@ tb276_bram.upload.flags=-a
 tb276_bram.upload.maximum_size=7608
 tb276_bram.upload.wait_for_upload_port=false
 tb276_bram.upload.native_usb=false
+tb276_bram.bootloader.file=tb276/bitstream.jed
