@@ -130,7 +130,7 @@ de0_nano_bram.bootloader.file=de0_nano/bitstream.jed
 #
 # Altera tb276 Board, f32c/mips SoC
 #
-tb276_bram.name=Altera TB276 (100 MHz, Cyclone IV E EP4CE6E22C8, 8 KB BRAM)
+tb276_bram.name=Altera TB276 (112.5 MHz, Cyclone IV E EP4CE6E22C8, 8 KB BRAM)
 tb276_bram.build.mcu=f32c
 tb276_bram.build.core=f32c
 tb276_bram.build.variant=ulx2s_logical
