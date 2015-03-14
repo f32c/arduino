@@ -73,9 +73,11 @@ recipe.size.regex=\.text\s+([0-9]+).*
 # Uploader tools
 # -------------------
 
+#
+# lattice
+#
 tools.ujprog.cmd=ujprog
 tools.ujprog.cmd.windows=ujprog.exe
-#tools.ujprog.path={runtime.ide.path}/hardware/tools
 tools.ujprog.path=/usr/local/bin
 tools.ujprog.path.windows=C:/Windows
 
@@ -90,3 +92,25 @@ tools.ujprog.erase.pattern=true
 tools.ujprog.bootloader.params.verbose=
 tools.ujprog.bootloader.params.quiet=
 tools.ujprog.bootloader.pattern="{path}/{cmd}" -j FLASH "{runtime.platform.path}/bootloaders/{bootloader.file}"
+
+
+#
+# altera
+#
+tools.ujprog_altera.cmd=ujprog_anyftdi
+tools.ujprog_altera.cmd.windows=ujprog.exe
+tools.ujprog_altera.path={runtime.ide.path}/hardware/tools
+tools.ujprog_altera.path=/usr/local/bin
+tools.ujprog_altera.path.windows=C:/Windows
+
+tools.ujprog_altera.upload.params.verbose=
+tools.ujprog_altera.upload.params.quiet=
+tools.ujprog_altera.upload.pattern="{path}/{cmd}" {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+
+tools.ujprog_altera.erase.params.verbose=
+tools.ujprog_altera.erase.params.quiet=
+tools.ujprog_altera.erase.pattern=true
+
+tools.ujprog_altera.bootloader.params.verbose=
+tools.ujprog_altera.bootloader.params.quiet=
+tools.ujprog_altera.bootloader.pattern="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IPV;{runtime.platform.path}/bootloaders/{bootloader.file}"

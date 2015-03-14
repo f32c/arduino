@@ -125,7 +125,7 @@ de0_nano_bram.upload.flags=-a
 de0_nano_bram.upload.maximum_size=32184
 de0_nano_bram.upload.wait_for_upload_port=false
 de0_nano_bram.upload.native_usb=false
-de0_nano_bram.bootloader.file=de0_nano/bitstream.jed
+de0_nano_bram.bootloader.file=de0_nano/bitstream.jic
 
 #
 # Altera tb276 Board, f32c/mips SoC
@@ -135,10 +135,10 @@ tb276_bram.build.mcu=f32c
 tb276_bram.build.core=f32c
 tb276_bram.build.variant=ulx2s_logical
 tb276_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
-tb276_bram.upload.tool=ujprog
+tb276_bram.upload.tool=ujprog_altera
 tb276_bram.upload.protocol=hex
 tb276_bram.upload.flags=-a
 tb276_bram.upload.maximum_size=7608
 tb276_bram.upload.wait_for_upload_port=false
 tb276_bram.upload.native_usb=false
-tb276_bram.bootloader.file=tb276/bitstream.jed
+tb276_bram.bootloader.file=tb276/bitstream.jic

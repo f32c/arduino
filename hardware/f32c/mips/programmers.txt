@@ -1,7 +1,15 @@
-ujprog.name=ujprog
+ujprog.name=ujprog for Lattice
 ujprog.communication=usb
 ujprog.protocol=ujprog
 ujprog.program.protocol=ujprog
 ujprog.program.tool=ujprog
 ujprog.program.extra_params=
 ujprog.bootloader.tool=ujprog
+
+ujprog_altera.name=ujprog for Altera
+ujprog_altera.communication=usb
+ujprog_altera.protocol=ujprog
+ujprog_altera.program.protocol=ujprog
+ujprog_altera.program.tool=ujprog
+ujprog_altera.program.extra_params=
+ujprog_altera.bootloader.tool=ujprog_altera
