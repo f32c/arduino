@@ -82,8 +82,8 @@ tools.ujprog.path=/usr/local/bin
 tools.ujprog.path.windows=C:/Windows
 
 tools.ujprog.upload.params.verbose=
-tools.ujprog.upload.params.quiet=
-tools.ujprog.upload.pattern="{path}/{cmd}" {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+tools.ujprog.upload.params.quiet=-q
+tools.ujprog.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
 
 tools.ujprog.erase.params.verbose=
 tools.ujprog.erase.params.quiet=
@@ -104,8 +104,8 @@ tools.ujprog_altera.path=/usr/local/bin
 tools.ujprog_altera.path.windows=C:/Windows
 
 tools.ujprog_altera.upload.params.verbose=
-tools.ujprog_altera.upload.params.quiet=
-tools.ujprog_altera.upload.pattern="{path}/{cmd}" {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+tools.ujprog_altera.upload.params.quiet=-q
+tools.ujprog_altera.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
 
 tools.ujprog_altera.erase.params.verbose=
 tools.ujprog_altera.erase.params.quiet=
