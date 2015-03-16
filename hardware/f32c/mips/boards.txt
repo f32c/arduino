@@ -112,6 +112,21 @@ nexys3_bram.upload.wait_for_upload_port=false
 nexys3_bram.upload.native_usb=false
 
 #
+# Xilinx XC6SLX9 (ebay) Spartan-6 Board, f32c/mips SoC
+#
+xc6slx9_bram.name=Xilinx XC6SLX9 (112.5 MHz, Spartan-6, 32 KB BRAM)
+xc6slx9_bram.build.mcu=f32c
+xc6slx9_bram.build.core=f32c
+xc6slx9_bram.build.variant=ulx2s_logical
+xc6slx9_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+xc6slx9_bram.upload.tool=ujprog
+xc6slx9_bram.upload.protocol=hex
+xc6slx9_bram.upload.flags=-a
+xc6slx9_bram.upload.maximum_size=32184
+xc6slx9_bram.upload.wait_for_upload_port=false
+xc6slx9_bram.upload.native_usb=false
+
+#
 # Altera DE0-Nano Board, f32c/mips SoC
 #
 de0_nano_bram.name=Altera DE0-Nano (50 MHz, Cyclone IV E EP4CE22F17C6, 32 KB BRAM)
