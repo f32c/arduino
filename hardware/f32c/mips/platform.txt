@@ -114,3 +114,24 @@ tools.ujprog_altera.erase.pattern=true
 tools.ujprog_altera.bootloader.params.verbose=
 tools.ujprog_altera.bootloader.params.quiet=
 tools.ujprog_altera.bootloader.pattern="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IPV;{runtime.platform.path}/bootloaders/{bootloader.file}"
+
+#
+# ujprog (any ftdi) + openocd
+#
+tools.ujprog_openocd.cmd=ujprog_anyftdi
+tools.ujprog_openocd.cmd.windows=ujprog.exe
+tools.ujprog_openocd.path={runtime.ide.path}/hardware/tools
+tools.ujprog_openocd.path=/usr/local/bin
+tools.ujprog_openocd.path.windows=C:/Windows
+
+tools.ujprog_openocd.upload.params.verbose=
+tools.ujprog_openocd.upload.params.quiet=-q
+tools.ujprog_openocd.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+
+tools.ujprog_openocd.erase.params.verbose=
+tools.ujprog_openocd.erase.params.quiet=
+tools.ujprog_openocd.erase.pattern=true
+
+tools.ujprog_openocd.bootloader.params.verbose=
+tools.ujprog_openocd.bootloader.params.quiet=
+tools.ujprog_openocd.bootloader.pattern="openocd" "--file={bootloader.interface}" "--command=jtag newtap chip tap -expected-id {bootloader.expected_id} -irlen {bootloader.irlen}" "--command=scan_chain" "--command=init" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file}" "--command=shutdown"

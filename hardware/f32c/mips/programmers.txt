@@ -6,10 +6,18 @@ ujprog.program.tool=ujprog
 ujprog.program.extra_params=
 ujprog.bootloader.tool=ujprog
 
-ujprog_altera.name=ujprog for Altera
+ujprog_altera.name=ujprog + quartus (Altera Blaster)
 ujprog_altera.communication=usb
 ujprog_altera.protocol=ujprog
 ujprog_altera.program.protocol=ujprog
 ujprog_altera.program.tool=ujprog
 ujprog_altera.program.extra_params=
 ujprog_altera.bootloader.tool=ujprog_altera
+
+ujprog_openocd.name=ujprog + openocd
+ujprog_openocd.communication=usb
+ujprog_openocd.protocol=ujprog
+ujprog_openocd.program.protocol=openocd
+ujprog_openocd.program.tool=ujprog_openocd
+ujprog_openocd.program.extra_params=
+ujprog_openocd.bootloader.tool=ujprog_openocd
