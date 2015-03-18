@@ -34,7 +34,7 @@
 extern "C"{
 #endif
 
-#define EXTERNAL_NUM_INTERRUPTS 1
+#define EXTERNAL_NUM_INTERRUPTS 2
 
 typedef void (*voidFuncPtr)(void);
 

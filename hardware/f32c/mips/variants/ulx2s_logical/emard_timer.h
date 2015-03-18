@@ -99,4 +99,9 @@ extern volatile uint32_t *EMARD_TIMER;
   },                                         \
 }
 
+/*
+ *  timer interrupt
+ */
+#define VARIANT_TIMER_INTERRUPT 4
+
 #endif /* _f32c_mips_emard_timer_h */
