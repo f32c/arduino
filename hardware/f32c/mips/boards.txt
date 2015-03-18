@@ -11,7 +11,7 @@ ulx2s_sram.build.variant=ulx2s_logical
 ulx2s_sram.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
 ulx2s_sram.upload.tool=ujprog
 ulx2s_sram.upload.protocol=bin
-ulx2s_sram.upload.flags=-e
+ulx2s_sram.upload.flags=-re
 ulx2s_sram.upload.maximum_size=1015808
 ulx2s_sram.upload.wait_for_upload_port=false
 ulx2s_sram.upload.native_usb=false
@@ -29,7 +29,7 @@ ulx2s_sram_phys.build.variant=ulx2s_physical
 ulx2s_sram_phys.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
 ulx2s_sram_phys.upload.tool=ujprog
 ulx2s_sram_phys.upload.protocol=bin
-ulx2s_sram_phys.upload.flags=-e
+ulx2s_sram_phys.upload.flags=-re
 ulx2s_sram_phys.upload.maximum_size=1015808
 ulx2s_sram_phys.upload.wait_for_upload_port=false
 ulx2s_sram_phys.upload.native_usb=false
