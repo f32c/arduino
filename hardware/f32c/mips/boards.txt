@@ -54,6 +54,24 @@ ulx2s_bram.upload.native_usb=false
 ulx2s_bram.bootloader.file=ulx2s/bitstream_bram.jed
 
 #
+# FER ULX2S Board, f32c/mips SoC, physical pin mapping
+#
+ulx2s_bram_phys.name=FER ULX2S (100 MHz, Lattice XP2, 16 KB BRAM), phy. pinmap
+#ulx2s_bram_phys.vid.0=0x0403
+#ulx2s_bram_phys.pid.0=0x6001
+ulx2s_bram_phys.build.mcu=f32c
+ulx2s_bram_phys.build.core=f32c
+ulx2s_bram_phys.build.variant=ulx2s_physical
+ulx2s_bram_phys.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+ulx2s_bram_phys.upload.tool=ujprog
+ulx2s_bram_phys.upload.protocol=hex
+ulx2s_bram_phys.upload.flags=-P{serial.port} -ra
+ulx2s_bram_phys.upload.maximum_size=15800
+ulx2s_bram_phys.upload.wait_for_upload_port=false
+ulx2s_bram_phys.upload.native_usb=false
+ulx2s_bram_phys.bootloader.file=ulx2s/bitstream_bram.jed
+
+#
 # Lattice Brevia Board, f32c/mips SoC
 #
 brevia.name=Lattice Brevia (100 MHz, Lattice XP2, 16 KB BRAM)
