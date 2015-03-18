@@ -26,6 +26,7 @@
 #define digitalPinToPort(pin) variant_pin_map[pin].port
 #define digitalPinToBitMask(pin) variant_pin_map[pin].bitmask
 #define portOutputRegister(port) port
+#define portInputRegister(port) port
 
 /**
  * \brief Configures the specified pin to behave either as an input or an output. See the description of digital pins for details.
