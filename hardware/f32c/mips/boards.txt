@@ -15,7 +15,7 @@ ulx2s_sram.upload.flags=-e
 ulx2s_sram.upload.maximum_size=1015808
 ulx2s_sram.upload.wait_for_upload_port=false
 ulx2s_sram.upload.native_usb=false
-ulx2s_sram.bootloader.file=ulx2s/bitstream.jed
+ulx2s_sram.bootloader.file=ulx2s/bitstream_sram.jed
 
 #
 # FER ULX2S Board, f32c/mips SoC, pyhsical pin mapping
@@ -33,7 +33,7 @@ ulx2s_sram_phys.upload.flags=-e
 ulx2s_sram_phys.upload.maximum_size=1015808
 ulx2s_sram_phys.upload.wait_for_upload_port=false
 ulx2s_sram_phys.upload.native_usb=false
-ulx2s_sram_phys.bootloader.file=ulx2s/bitstream.jed
+ulx2s_sram_phys.bootloader.file=ulx2s/bitstream_sram.jed
 
 #
 # FER ULX2S Board, f32c/mips SoC, logical pin mapping
@@ -51,6 +51,7 @@ ulx2s_bram.upload.flags=-P{serial.port} -ra
 ulx2s_bram.upload.maximum_size=15800
 ulx2s_bram.upload.wait_for_upload_port=false
 ulx2s_bram.upload.native_usb=false
+ulx2s_bram.bootloader.file=ulx2s/bitstream_bram.jed
 
 #
 # Lattice Brevia Board, f32c/mips SoC
