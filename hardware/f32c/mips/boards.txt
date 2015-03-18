@@ -122,8 +122,7 @@ xc6slx9_bram.build.variant=ulx2s_logical
 xc6slx9_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 xc6slx9_bram.upload.tool=ujprog_openocd
 xc6slx9_bram.upload.protocol=hex
-#xc6slx9_bram.upload.flags=-P{serial.port} -ra
-xc6slx9_bram.upload.flags=-ra
+xc6slx9_bram.upload.flags=-P{serial.port} -ra
 xc6slx9_bram.upload.maximum_size=32184
 xc6slx9_bram.upload.wait_for_upload_port=false
 xc6slx9_bram.upload.native_usb=false
