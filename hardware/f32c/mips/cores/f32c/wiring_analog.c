@@ -11,7 +11,6 @@ static uint8_t analog_write_resolution_bits = 8;
 /* old arduino uses 490 Hz */
 /* new arduino uses 980 Hz */
 static uint32_t analog_write_frequency = 980;
-static uint32_t analog_write_phase = 0;
 
 const struct pwm_enable_bitmask_s pwm_enable_bitmask[] = VARIANT_PWM_CHANNEL_ENABLE;
 
@@ -34,9 +33,26 @@ void analogWriteFrequency(int freq)
   analog_write_frequency = freq;
 }
 
-void analogWritePhase(int phase)
+/* todo: handle the pin */
+void analogWritePhase(uint32_t pin, uint32_t phase)
 {
-  analog_write_phase = phase;
+  int8_t pwm_channel;
+  volatile uint32_t *start, *stop;
+
+  if(pin >= variant_pin_map_size)
+    return;
+
+  pwm_channel = variant_pin_map[pin].pwm;
+  if(pwm_channel >= 0)
+  {
+    start  = &EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_start];
+    stop   = &EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_stop];
+    
+    *stop  = phase + (*stop - *start);
+    *start = phase;
+    
+    EMARD_TIMER[TC_APPLY] = pwm_enable_bitmask[pwm_channel].apply;
+  }
 }
 
 /* setup the common parameters (why isn't it called at startup?)
@@ -48,7 +64,7 @@ void analogOutputInit( void )
 void analogWrite(uint32_t ulPin, uint32_t ulValue)
 {
   int8_t pwm_channel;
-  uint32_t *start, *stop;
+  volatile uint32_t *start, *stop;
   
   if(ulPin >= variant_pin_map_size)
     return;
@@ -78,10 +94,8 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
     start = &EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_start];
     stop  = &EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_stop];
 
-    *start = ((1<<TIMER_BITS)-1) 
-           &   analog_write_phase;
-    *stop  = ((1<<TIMER_BITS)-1)
-           & ( analog_write_phase
+    *stop  = /* ((1<<TIMER_BITS)-1) & */
+             ( *start
              + ( ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS) )
              );
 

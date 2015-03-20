@@ -92,7 +92,7 @@ extern void analogWriteResolution(int res);
  */
 extern void analogWriteFrequency(int freq);
 
-extern void analogWritePhase(int phase);
+extern void analogWritePhase(uint32_t pin, uint32_t phase);
 
 
 extern void analogOutputInit( void ) ;
