@@ -114,6 +114,47 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 
 void detachInterrupt(uint32_t pin)
 {
+  if(pin == 13)
+  {
+    int irq = 7;
+    asm("di");
+    #if 0
+    isr_remove_handler(irq, &tsc_isr_link); // 7 is MIPS timer interrput
+    #endif
+    asm("ei");
+  }
+  if(pin == 14 || pin == 15)
+  {
+    int irq = 4;
+    if(pin == 14)
+    {
+      EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_OCP1);
+      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
+      timerFunc[0] = NULL;
+    }
+    if(pin == 15)
+    {
+      EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_OCP2);
+      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
+      timerFunc[1] = NULL;
+    }
+    if( (EMARD_TIMER[TC_CONTROL] 
+        & ( (1<<TCTRL_IE_OCP1)
+          | (1<<TCTRL_IE_OCP2) 
+          | (1<<TCTRL_IE_ICP1)
+          | (1<<TCTRL_IE_ICP2)
+          )
+        ) == 0
+      )
+    {
+      asm("di");
+      #if 0
+      isr_remove_handler(irq, &timer_isr_link); // 4 is EMARD timer interrput
+      intFunc[irq] = NULL;
+      #endif
+      asm("ei");
+    }
+  }
 }
 
 #ifdef __cplusplus
