@@ -126,7 +126,6 @@ void detachInterrupt(uint32_t pin)
   }
   if(pin == 14 || pin == 15)
   {
-    int irq = 4;
     if(pin == 14)
     {
       EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_OCP1);
@@ -148,12 +147,13 @@ void detachInterrupt(uint32_t pin)
         ) == 0
       )
     {
-      asm("di");
       #if 0
+      int irq = 4;
+      asm("di");
       isr_remove_handler(irq, &timer_isr_link); // 4 is EMARD timer interrput
       intFunc[irq] = NULL;
-      #endif
       asm("ei");
+      #endif
     }
   }
 }
