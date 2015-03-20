@@ -48,6 +48,7 @@ void analogOutputInit( void )
 void analogWrite(uint32_t ulPin, uint32_t ulValue)
 {
   int8_t pwm_channel;
+  uint32_t *start, *stop;
   
   if(ulPin >= variant_pin_map_size)
     return;
@@ -67,31 +68,25 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
     EMARD_TIMER[TC_INCREMENT] = (((uint64_t)analog_write_frequency) 
                                    << (TIMER_BITS+PRESCALER_BITS)) / TIMER_CLOCK;
 
-    EMARD_TIMER[TC_CONTROL] = ( EMARD_TIMER[TC_CONTROL] & 
-                               (
- 	                      (1<<TCTRL_ENABLE_OCP1) | (1<<TCTRL_ENABLE_OCP2)
-	                    | (1<<TCTRL_ENABLE_ICP1) | (1<<TCTRL_ENABLE_ICP2)
-	                    | (1<<TCTRL_IE_OCP1)     | (1<<TCTRL_IE_OCP2)
-	                    | (1<<TCTRL_IE_ICP1)     | (1<<TCTRL_IE_ICP2)
-                               )
-                              )
-                            | (1<<TCTRL_AND_OR_OCP1) | (1<<TCTRL_AND_OR_OCP2)
-	                    | (1<<TCTRL_AND_OR_ICP1) | (1<<TCTRL_AND_OR_ICP2)
-	                    | (0<<TCTRL_AFCEN_ICP1)  | (0<<TCTRL_AFCINV_ICP1)
-	                    | (0<<TCTRL_AFCEN_ICP2)  | (0<<TCTRL_AFCINV_ICP2)
-	                    | (0<<TCTRL_XOR_OCP1)    | (0<<TCTRL_XOR_OCP2)
-	                    | (1<<TCTRL_XOR_ICP1)    | (1<<TCTRL_XOR_ICP2)
-	                  ;
-	                  
+    EMARD_TIMER[TC_CONTROL] &= pwm_enable_bitmask[pwm_channel].control_and;
     /* shift timer step value to match the set resolution */
     if(analog_write_resolution_bits < TIMER_BITS)
       ulValue <<= (TIMER_BITS-analog_write_resolution_bits);
     if(analog_write_resolution_bits > TIMER_BITS)
       ulValue >>= (analog_write_resolution_bits-analog_write_resolution_bits);
+      
+    start = &EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_start];
+    stop  = &EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_stop];
 
-    EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_start] = analog_write_phase;
-    EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_stop]  = analog_write_phase
-     + ( ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS) );
+    *start = ((1<<TIMER_BITS)-1) 
+           &   analog_write_phase;
+    *stop  = ((1<<TIMER_BITS)-1)
+           & ( analog_write_phase
+             + ( ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS) )
+             );
+
+    if( *start < *stop )
+      EMARD_TIMER[TC_CONTROL] |= pwm_enable_bitmask[pwm_channel].control_and_or;
 
     EMARD_TIMER[TC_CONTROL] |= pwm_enable_bitmask[pwm_channel].control_or;
     EMARD_TIMER[TC_APPLY] = pwm_enable_bitmask[pwm_channel].apply;
