@@ -11,7 +11,7 @@ extern "C" {
 
 /* 8 main MIPS interrupts, all initially disabled */
 static volatile voidFuncPtr intFunc[8] = 
-  { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, };
+  { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, };
 /* some interrupts sources are multiplexed on same mips irq, 
    here are callbacks for timer */
 static volatile voidFuncPtr timerFunc[4] = {
@@ -94,7 +94,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     if(intFunc[irq] == NULL)
     {
       isr_register_handler(irq, &timer_isr_link); // 4 is EMARD timer interrput
-      intFunc[irq] = timer_isr; // not used as callback, just as non-zero to init only once
+      intFunc[irq] = NULL+1; // not used as callback, just as non-zero to init only once
     }
     if(pin == 14)
     {

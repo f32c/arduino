@@ -49,7 +49,7 @@ digitalWrite(uint32_t pin, uint32_t val)
 	pwm_channel = variant_pin_map[pin].pwm;
 	if(pwm_channel >= 0)
 	{
-          EMARD_TIMER[TC_CONTROL] &= ~pwm_enable_bitmask[pwm_channel].control;
+          EMARD_TIMER[TC_CONTROL] &= ~pwm_enable_bitmask[pwm_channel].control_or;
           EMARD_TIMER[TC_APPLY] = pwm_enable_bitmask[pwm_channel].apply;
 	}
 

@@ -25,7 +25,8 @@ extern "C" {
 
 struct pwm_enable_bitmask_s
 {
-  uint32_t control;
+  uint32_t control_and;   // first and'ed to preserve bits
+  uint32_t control_or;    // last or'ed to set bits that enable this timer
   uint32_t apply;
   uint8_t ocp_start;
   uint8_t ocp_stop;
@@ -89,6 +90,8 @@ extern void analogWriteResolution(int res);
  * \param res
  */
 extern void analogWriteFrequency(int freq);
+
+extern void analogWritePhase(int phase);
 
 
 extern void analogOutputInit( void ) ;

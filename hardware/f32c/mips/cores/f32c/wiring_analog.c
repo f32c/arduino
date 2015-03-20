@@ -11,6 +11,7 @@ static uint8_t analog_write_resolution_bits = 8;
 /* old arduino uses 490 Hz */
 /* new arduino uses 980 Hz */
 static uint32_t analog_write_frequency = 980;
+static uint32_t analog_write_phase = 0;
 
 const struct pwm_enable_bitmask_s pwm_enable_bitmask[] = VARIANT_PWM_CHANNEL_ENABLE;
 
@@ -31,6 +32,11 @@ void analogWriteResolution(int res)
 void analogWriteFrequency(int freq)
 {
   analog_write_frequency = freq;
+}
+
+void analogWritePhase(int phase)
+{
+  analog_write_phase = phase;
 }
 
 /* setup the common parameters (why isn't it called at startup?)
@@ -83,11 +89,11 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
     if(analog_write_resolution_bits > TIMER_BITS)
       ulValue >>= (analog_write_resolution_bits-analog_write_resolution_bits);
 
-    EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_start] = 0;
-    EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_stop]  = 
-      ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS);
+    EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_start] = analog_write_phase;
+    EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_stop]  = analog_write_phase
+     + ( ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS) );
 
-    EMARD_TIMER[TC_CONTROL] |= pwm_enable_bitmask[pwm_channel].control;
+    EMARD_TIMER[TC_CONTROL] |= pwm_enable_bitmask[pwm_channel].control_or;
     EMARD_TIMER[TC_APPLY] = pwm_enable_bitmask[pwm_channel].apply;
   }
 }
