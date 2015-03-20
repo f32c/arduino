@@ -121,6 +121,7 @@ void detachInterrupt(uint32_t pin)
     #if 0
     isr_remove_handler(irq, &tsc_isr_link); // 7 is MIPS timer interrput
     #endif
+    intFunc[irq] = NULL;
     asm("ei");
   }
   if(pin == 14 || pin == 15)
