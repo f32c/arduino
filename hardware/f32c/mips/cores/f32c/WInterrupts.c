@@ -118,7 +118,7 @@ void detachInterrupt(uint32_t pin)
   {
     int irq = 7;
     asm("di");
-    #if 0
+    #if 1
     isr_remove_handler(irq, &tsc_isr_link); // 7 is MIPS timer interrput
     #endif
     intFunc[irq] = NULL;
@@ -147,7 +147,7 @@ void detachInterrupt(uint32_t pin)
         ) == 0
       )
     {
-      #if 0
+      #if 1
       int irq = 4;
       asm("di");
       isr_remove_handler(irq, &timer_isr_link); // 4 is EMARD timer interrput
