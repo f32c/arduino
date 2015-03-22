@@ -70,10 +70,11 @@ extern volatile uint32_t *EMARD_TIMER;
 
 /* timer pwm channel intializer 
  * for bitmask struct
+ * struct initializer for each OCP (pwm) channel
  */
 #define VARIANT_PWM_CHANNEL_ENABLE \
 { \
-  {                                          \
+  { \
       /* control_and */  \
       (1<<TCTRL_ENABLE_OCP1) | (1<<TCTRL_ENABLE_OCP2) \
     | (1<<TCTRL_ENABLE_ICP1) | (1<<TCTRL_ENABLE_ICP2) \
@@ -85,9 +86,12 @@ extern volatile uint32_t *EMARD_TIMER;
     | (0<<TCTRL_AFCEN_ICP2)  | (0<<TCTRL_AFCINV_ICP2) \
     | (0<<TCTRL_XOR_OCP1)    | (0<<TCTRL_XOR_OCP2)    \
     | (1<<TCTRL_XOR_ICP1)    | (1<<TCTRL_XOR_ICP2),   \
-      (1<<TCTRL_ENABLE_OCP1), /* control_or */     \
-      (1<<TCTRL_AND_OR_OCP1), /* control_and_or */ \
-      (1<<TC_CONTROL)         /* apply */          \
+      /* control_or */        \
+      (1<<TCTRL_ENABLE_OCP1), \
+      /* control_and_or */    \
+      (1<<TCTRL_AND_OR_OCP1), \
+      /* apply */             \
+      (1<<TC_CONTROL)                        \
     | (1<<TC_INCREMENT)                      \
     | (1<<TC_OCP1_START) | (1<<TC_OCP1_STOP) \
     | (0<<TC_OCP2_START) | (0<<TC_OCP2_STOP) \
@@ -97,8 +101,8 @@ extern volatile uint32_t *EMARD_TIMER;
     | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
     /* indexes of start/stop register */     \
     TC_OCP1_START, TC_OCP1_STOP              \
-  },                                         \
-  {                                          \
+  },\
+  { \
       /* control_and */  \
       (1<<TCTRL_ENABLE_OCP1) | (1<<TCTRL_ENABLE_OCP2) \
     | (1<<TCTRL_ENABLE_ICP1) | (1<<TCTRL_ENABLE_ICP2) \
@@ -110,9 +114,12 @@ extern volatile uint32_t *EMARD_TIMER;
     | (0<<TCTRL_AFCEN_ICP2)  | (0<<TCTRL_AFCINV_ICP2) \
     | (0<<TCTRL_XOR_OCP1)    | (0<<TCTRL_XOR_OCP2)    \
     | (1<<TCTRL_XOR_ICP1)    | (1<<TCTRL_XOR_ICP2),   \
-      (1<<TCTRL_ENABLE_OCP2), /* control_or */     \
-      (1<<TCTRL_AND_OR_OCP2), /* control_and_or */ \
-      (1<<TC_CONTROL)         /* apply */          \
+      /* control_or */        \
+      (1<<TCTRL_ENABLE_OCP2), \
+      /* control_and_or */    \
+      (1<<TCTRL_AND_OR_OCP2), \
+      /* apply */             \
+      (1<<TC_CONTROL)         \
     | (1<<TC_INCREMENT)                      \
     | (0<<TC_OCP1_START) | (0<<TC_OCP1_STOP) \
     | (1<<TC_OCP2_START) | (1<<TC_OCP2_STOP) \
@@ -122,6 +129,81 @@ extern volatile uint32_t *EMARD_TIMER;
     | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
     /* indexes of start/stop register */     \
     TC_OCP2_START, TC_OCP2_STOP              \
+  },                                         \
+}
+
+/*
+struct initializer for each icp (input capture) channel
+*/
+#define VARIANT_ICP_CONTROL \
+{ \
+  { \
+      /* control_and */  \
+      (1<<TCTRL_ENABLE_OCP1) | (1<<TCTRL_ENABLE_OCP2) \
+    | (1<<TCTRL_ENABLE_ICP1) | (1<<TCTRL_ENABLE_ICP2) \
+    | (1<<TCTRL_IE_OCP1)     | (1<<TCTRL_IE_OCP2)     \
+    | (1<<TCTRL_IE_ICP1)     | (1<<TCTRL_IE_ICP2)     \
+    | (0<<TCTRL_AND_OR_OCP1) | (1<<TCTRL_AND_OR_OCP2) \
+    | (1<<TCTRL_AND_OR_ICP1) | (1<<TCTRL_AND_OR_ICP2) \
+    | (0<<TCTRL_AFCEN_ICP1)  | (0<<TCTRL_AFCINV_ICP1) \
+    | (0<<TCTRL_AFCEN_ICP2)  | (0<<TCTRL_AFCINV_ICP2) \
+    | (0<<TCTRL_XOR_OCP1)    | (0<<TCTRL_XOR_OCP2)    \
+    | (1<<TCTRL_XOR_ICP1)    | (1<<TCTRL_XOR_ICP2),   \
+      /* control_or */        \
+      (1<<TCTRL_ENABLE_ICP1), \
+      /* control_and_or */    \
+      (1<<TCTRL_AND_OR_ICP1), \
+      /* apply */             \
+      (1<<TC_CONTROL)                        \
+    | (1<<TC_INCREMENT)                      \
+    | (1<<TC_OCP1_START) | (1<<TC_OCP1_STOP) \
+    | (0<<TC_OCP2_START) | (0<<TC_OCP2_STOP) \
+    | (0<<TC_ICP1_START) | (0<<TC_ICP1_STOP) \
+    | (0<<TC_ICP2_START) | (0<<TC_ICP2_STOP) \
+    | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)   \
+    | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
+    /* indexes of window start/stop register */ \
+    TC_ICP1_START, TC_ICP1_STOP,             \
+    /* interrupt enable */                   \
+    (1<<TCTRL_IE_ICP1),                      \
+    /* interrupt flag */                     \
+    (1<<TCTRL_IF_ICP1),                      \
+    /* index of readout register */          \
+    TC_ICP1,                                 \
+  },\
+  { \
+      /* control_and */  \
+      (1<<TCTRL_ENABLE_OCP1) | (1<<TCTRL_ENABLE_OCP2) \
+    | (1<<TCTRL_ENABLE_ICP1) | (1<<TCTRL_ENABLE_ICP2) \
+    | (1<<TCTRL_IE_OCP1)     | (1<<TCTRL_IE_OCP2)     \
+    | (1<<TCTRL_IE_ICP1)     | (1<<TCTRL_IE_ICP2)     \
+    | (1<<TCTRL_AND_OR_OCP1) | (0<<TCTRL_AND_OR_OCP2) \
+    | (1<<TCTRL_AND_OR_ICP1) | (1<<TCTRL_AND_OR_ICP2) \
+    | (0<<TCTRL_AFCEN_ICP1)  | (0<<TCTRL_AFCINV_ICP1) \
+    | (0<<TCTRL_AFCEN_ICP2)  | (0<<TCTRL_AFCINV_ICP2) \
+    | (0<<TCTRL_XOR_OCP1)    | (0<<TCTRL_XOR_OCP2)    \
+    | (1<<TCTRL_XOR_ICP1)    | (1<<TCTRL_XOR_ICP2),   \
+      /* control_or */        \
+      (1<<TCTRL_ENABLE_ICP2), \
+      /* control_and_or */    \
+      (1<<TCTRL_AND_OR_ICP2), \
+      /* apply */             \
+      (1<<TC_CONTROL)         \
+    | (1<<TC_INCREMENT)                      \
+    | (0<<TC_OCP1_START) | (0<<TC_OCP1_STOP) \
+    | (1<<TC_OCP2_START) | (1<<TC_OCP2_STOP) \
+    | (0<<TC_ICP1_START) | (0<<TC_ICP1_STOP) \
+    | (0<<TC_ICP2_START) | (0<<TC_ICP2_STOP) \
+    | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)   \
+    | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
+    /* indexes of window start/stop register */ \
+    TC_ICP1_START, TC_ICP1_STOP,             \
+    /* interrupt enable */                   \
+    (1<<TCTRL_IE_ICP1),                      \
+    /* interrupt flag */                     \
+    (1<<TCTRL_IF_ICP1),                      \
+    /* index of readout register */          \
+    TC_ICP1,                                 \
   },                                         \
 }
 

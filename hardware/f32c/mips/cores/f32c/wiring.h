@@ -35,6 +35,7 @@ struct variant_pin_map_s
 	volatile uint32_t *port;
 	uint32_t bitmask;
 	int8_t pwm;
+	int8_t icp;
 };
 
 extern struct variant_pin_map_s variant_pin_map[];

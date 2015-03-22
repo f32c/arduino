@@ -51,6 +51,18 @@ static int timer_isr(void)
     if(timerFunc[1])
       timerFunc[1]();
   }
+  if( (EMARD_TIMER[TC_CONTROL] & (1<<TCTRL_IF_ICP1)) != 0 )
+  {
+    EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IF_ICP1); // clear interrupt flag
+    if(timerFunc[2])
+      timerFunc[2]();
+  }
+  if( (EMARD_TIMER[TC_CONTROL] & (1<<TCTRL_IF_ICP2)) != 0 )
+  {
+    EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IF_ICP2); // clear interrupt flag
+    if(timerFunc[3])
+      timerFunc[3]();
+  }
   return 1;
 }
 static struct isr_link timer_isr_link = {.handler_fn = &timer_isr};
@@ -88,7 +100,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     }
     asm("ei");
   }
-  if(pin == 14 || pin == 15)
+  if(pin == 8 || pin == 9 || pin == 14 || pin == 15)
   {
     irq = 4;
     if(intFunc[irq] == NULL)
@@ -106,6 +118,18 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     {
       timerFunc[1] = callback;
       EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_IE_OCP2);
+      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
+    }
+    if(pin == 8)
+    {
+      timerFunc[2] = callback;
+      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_IE_ICP1);
+      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
+    }
+    if(pin == 9)
+    {
+      timerFunc[3] = callback;
+      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_IE_ICP2);
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
     }
     asm("ei");
@@ -137,6 +161,18 @@ void detachInterrupt(uint32_t pin)
       EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_OCP2);
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
       timerFunc[1] = NULL;
+    }
+    if(pin == 8)
+    {
+      EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_ICP1);
+      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
+      timerFunc[2] = NULL;
+    }
+    if(pin == 9)
+    {
+      EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_ICP2);
+      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
+      timerFunc[3] = NULL;
     }
     if( (EMARD_TIMER[TC_CONTROL] 
         & ( (1<<TCTRL_IE_OCP1)
