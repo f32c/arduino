@@ -94,7 +94,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
              + ( ulValue < (1<<TIMER_BITS) ? ulValue : (1<<TIMER_BITS) )
              );
 
-    if( *start < *stop )
+    if( *start <= *stop )
       EMARD_TIMER[TC_CONTROL] |= pwm_enable_bitmask[pwm_channel].control_and_or;
     
     #if 0
