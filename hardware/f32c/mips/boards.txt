@@ -42,7 +42,7 @@ ulx2s_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 ulx2s_bram.upload.tool=ujprog
 ulx2s_bram.upload.protocol=hex
 ulx2s_bram.upload.flags=-P{serial.port} -ra
-ulx2s_bram.upload.maximum_size=15800
+ulx2s_bram.upload.maximum_size=15360
 ulx2s_bram.upload.wait_for_upload_port=false
 ulx2s_bram.upload.native_usb=false
 ulx2s_bram.bootloader.file=ulx2s/bitstream_bram.jed
@@ -58,7 +58,7 @@ ulx2s_bram_phys.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 ulx2s_bram_phys.upload.tool=ujprog
 ulx2s_bram_phys.upload.protocol=hex
 ulx2s_bram_phys.upload.flags=-P{serial.port} -ra
-ulx2s_bram_phys.upload.maximum_size=15800
+ulx2s_bram_phys.upload.maximum_size=15360
 ulx2s_bram_phys.upload.wait_for_upload_port=false
 ulx2s_bram_phys.upload.native_usb=false
 ulx2s_bram_phys.bootloader.file=ulx2s/bitstream_bram.jed
@@ -74,7 +74,7 @@ brevia.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 brevia.upload.tool=ujprog
 brevia.upload.protocol=hex
 brevia.upload.flags=-P{serial.port} -ra
-brevia.upload.maximum_size=15800
+brevia.upload.maximum_size=15360
 brevia.upload.wait_for_upload_port=false
 brevia.upload.native_usb=false
 
@@ -89,7 +89,7 @@ s3e500.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 s3e500.upload.tool=ujprog
 s3e500.upload.protocol=hex
 s3e500.upload.flags=-P{serial.port} -ra
-s3e500.upload.maximum_size=32184
+s3e500.upload.maximum_size=31744
 s3e500.upload.wait_for_upload_port=false
 s3e500.upload.native_usb=false
 
@@ -104,7 +104,7 @@ s3e1600.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 s3e1600.upload.tool=ujprog
 s3e1600.upload.protocol=hex
 s3e1600.upload.flags=-P{serial.port} -ra
-s3e1600.upload.maximum_size=32184
+s3e1600.upload.maximum_size=31744
 s3e1600.upload.wait_for_upload_port=false
 s3e1600.upload.native_usb=false
 
@@ -119,7 +119,7 @@ nexys3_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 nexys3_bram.upload.tool=ujprog
 nexys3_bram.upload.protocol=hex
 nexys3_bram.upload.flags=-P{serial.port} -ra
-nexys3_bram.upload.maximum_size=32184
+nexys3_bram.upload.maximum_size=31744
 nexys3_bram.upload.wait_for_upload_port=false
 nexys3_bram.upload.native_usb=false
 
@@ -134,7 +134,7 @@ xc6slx9_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 xc6slx9_bram.upload.tool=ujprog_openocd
 xc6slx9_bram.upload.protocol=hex
 xc6slx9_bram.upload.flags=-P{serial.port} -ra
-xc6slx9_bram.upload.maximum_size=32184
+xc6slx9_bram.upload.maximum_size=31744
 xc6slx9_bram.upload.wait_for_upload_port=false
 xc6slx9_bram.upload.native_usb=false
 xc6slx9_bram.bootloader.file=xc6slx9/bitstream.svf
@@ -153,7 +153,7 @@ de0_nano_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 de0_nano_bram.upload.tool=ujprog
 de0_nano_bram.upload.protocol=hex
 de0_nano_bram.upload.flags=-P{serial.port} -ra
-de0_nano_bram.upload.maximum_size=32184
+de0_nano_bram.upload.maximum_size=31744
 de0_nano_bram.upload.wait_for_upload_port=false
 de0_nano_bram.upload.native_usb=false
 de0_nano_bram.bootloader.file=de0_nano/bitstream.jic
@@ -169,7 +169,7 @@ tb276_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 tb276_bram.upload.tool=ujprog_altera
 tb276_bram.upload.protocol=hex
 tb276_bram.upload.flags=-P{serial.port} -ra
-tb276_bram.upload.maximum_size=7608
+tb276_bram.upload.maximum_size=7168
 tb276_bram.upload.wait_for_upload_port=false
 tb276_bram.upload.native_usb=false
 tb276_bram.bootloader.file=tb276/bitstream.jic
