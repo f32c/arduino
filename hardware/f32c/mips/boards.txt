@@ -2,8 +2,6 @@
 # FER ULX2S Board, f32c/mips SoC, logical pin mapping
 #
 ulx2s_sram.name=FER ULX2S (81.25 MHz, Lattice XP2, 1 MB SRAM)
-#ulx2s_sram.vid.0=0x0403
-#ulx2s_sram.pid.0=0x6001
 ulx2s_sram.build.usb_product="FER ULX2S board JTAG / UART"
 ulx2s_sram.build.mcu=f32c
 ulx2s_sram.build.core=f32c
@@ -21,8 +19,6 @@ ulx2s_sram.bootloader.file=ulx2s/bitstream_sram.jed
 # FER ULX2S Board, f32c/mips SoC, pyhsical pin mapping
 #
 ulx2s_sram_phys.name=FER ULX2S (81.25 MHz, Lattice XP2, 1 MB SRAM), phy. pinmap
-#ulx2s_sram_phys.vid.0=0x0403
-#ulx2s_sram_phys.pid.0=0x6001
 ulx2s_sram_phys.build.mcu=f32c
 ulx2s_sram_phys.build.core=f32c
 ulx2s_sram_phys.build.variant=ulx2s_physical
@@ -39,8 +35,6 @@ ulx2s_sram_phys.bootloader.file=ulx2s/bitstream_sram.jed
 # FER ULX2S Board, f32c/mips SoC, logical pin mapping
 #
 ulx2s_bram.name=FER ULX2S (100 MHz, Lattice XP2, 16 KB BRAM)
-#ulx2s_bram.vid.0=0x0403
-#ulx2s_bram.pid.0=0x6001
 ulx2s_bram.build.mcu=f32c
 ulx2s_bram.build.core=f32c
 ulx2s_bram.build.variant=ulx2s_logical
@@ -57,8 +51,6 @@ ulx2s_bram.bootloader.file=ulx2s/bitstream_bram.jed
 # FER ULX2S Board, f32c/mips SoC, physical pin mapping
 #
 ulx2s_bram_phys.name=FER ULX2S (100 MHz, Lattice XP2, 16 KB BRAM), phy. pinmap
-#ulx2s_bram_phys.vid.0=0x0403
-#ulx2s_bram_phys.pid.0=0x6001
 ulx2s_bram_phys.build.mcu=f32c
 ulx2s_bram_phys.build.core=f32c
 ulx2s_bram_phys.build.variant=ulx2s_physical
