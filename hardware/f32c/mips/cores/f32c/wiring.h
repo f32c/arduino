@@ -88,6 +88,8 @@ static inline void delayMicroseconds(uint32_t usec){
         : "+r" (n) :
     );
 #endif
+    int32_t endwait = micros() + usec;
+    while( ((int32_t)micros())-endwait < 0);
 }
 
 #ifdef __cplusplus
