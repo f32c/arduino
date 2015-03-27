@@ -74,7 +74,7 @@ recipe.size.regex=\s*[0-9]+\s+[0-9]+\s+[0-9]+\s+([0-9]+).*
 # -------------------
 
 #
-# lattice
+# lattice (bootloader FLASH)
 #
 tools.ujprog.cmd=ujprog
 tools.ujprog.cmd.windows=ujprog.exe
@@ -92,6 +92,26 @@ tools.ujprog.erase.pattern=true
 tools.ujprog.bootloader.params.verbose=
 tools.ujprog.bootloader.params.quiet=
 tools.ujprog.bootloader.pattern="{path}/{cmd}" -j FLASH "{runtime.platform.path}/bootloaders/{bootloader.file}"
+
+#
+# lattice (bootloader SRAM)
+#
+tools.ujprog_sram.cmd=ujprog
+tools.ujprog_sram.cmd.windows=ujprog.exe
+tools.ujprog_sram.path=/usr/local/bin
+tools.ujprog_sram.path.windows=C:/Windows
+
+tools.ujprog_sram.upload.params.verbose=
+tools.ujprog_sram.upload.params.quiet=-q
+tools.ujprog_sram.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+
+tools.ujprog_sram.erase.params.verbose=
+tools.ujprog_sram.erase.params.quiet=
+tools.ujprog_sram.erase.pattern=true
+
+tools.ujprog_sram.bootloader.params.verbose=
+tools.ujprog_sram.bootloader.params.quiet=
+tools.ujprog_sram.bootloader.pattern="{path}/{cmd}" -j SRAM "{runtime.platform.path}/bootloaders/{bootloader.file}"
 
 
 #

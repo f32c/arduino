@@ -34,6 +34,39 @@ ulx2s_sram_phys.bootloader.file=ulx2s/bitstream_sram.jed
 #
 # FER ULX2S Board, f32c/mips SoC, logical pin mapping
 #
+ulx2s_sram_433.name=FER ULX2S (81.25 MHz, Lattice XP2, 1 MB SRAM) -fb -dds +433MHz
+ulx2s_sram_433.build.usb_product="FER ULX2S board JTAG / UART"
+ulx2s_sram_433.build.mcu=f32c
+ulx2s_sram_433.build.core=f32c
+ulx2s_sram_433.build.variant=ulx2s_logical
+ulx2s_sram_433.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
+ulx2s_sram_433.upload.tool=ujprog
+ulx2s_sram_433.upload.protocol=bin
+ulx2s_sram_433.upload.flags=-re
+ulx2s_sram_433.upload.maximum_size=1015808
+ulx2s_sram_433.upload.wait_for_upload_port=false
+ulx2s_sram_433.upload.native_usb=false
+ulx2s_sram_433.bootloader.file=ulx2s/bitstream_sram_433MHz.jed
+
+#
+# FER ULX2S Board, f32c/mips SoC, pyhsical pin mapping
+#
+ulx2s_sram_433_phys.name=FER ULX2S (81.25 MHz, Lattice XP2, 1 MB SRAM) -fb -dds +433MHz, phy. pinmap
+ulx2s_sram_433_phys.build.mcu=f32c
+ulx2s_sram_433_phys.build.core=f32c
+ulx2s_sram_433_phys.build.variant=ulx2s_physical
+ulx2s_sram_433_phys.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
+ulx2s_sram_433_phys.upload.tool=ujprog
+ulx2s_sram_433_phys.upload.protocol=bin
+ulx2s_sram_433_phys.upload.flags=-re
+ulx2s_sram_433_phys.upload.maximum_size=1015808
+ulx2s_sram_433_phys.upload.wait_for_upload_port=false
+ulx2s_sram_433_phys.upload.native_usb=false
+ulx2s_sram_433_phys.bootloader.file=ulx2s/bitstream_sram_433MHz.jed
+
+#
+# FER ULX2S Board, f32c/mips SoC, logical pin mapping
+#
 ulx2s_bram.name=FER ULX2S (100 MHz, Lattice XP2, 16 KB BRAM)
 ulx2s_bram.build.mcu=f32c
 ulx2s_bram.build.core=f32c
