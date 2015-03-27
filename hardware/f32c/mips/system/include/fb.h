@@ -22,7 +22,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $Id: fb.h 2353 2015-02-08 10:39:15Z marko $
+ * $Id$
  */
 
 void fb_set_mode(int);

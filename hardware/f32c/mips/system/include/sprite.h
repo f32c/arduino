@@ -22,7 +22,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $Id: sprite.h 1916 2014-03-31 08:40:21Z marko $
+ * $Id$
  */
 
 void spr_flush(void);

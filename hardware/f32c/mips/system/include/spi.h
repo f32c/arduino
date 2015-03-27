@@ -22,7 +22,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $Id: spi.h 2386 2015-02-28 14:53:43Z marko $
+ * $Id$
  */
 
 #ifndef _SPI_H_
