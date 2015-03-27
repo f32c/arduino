@@ -1,16 +1,14 @@
 //
 // ULX2S sprites demo
 //
-// Pressing a button toggles between drawing random
-// lines, circles, dots, rectangles and text
+// One sprite is moveable using the cursor keys
+// Another one bounces from screen borders
 //
-
 
 extern "C" {
 #include <fb.h>
 #include <sprite.h>
 #include <io.h>
-//uint32_t random();
 }
 
 int spr0_x = 210, spr0_y = 65, spr1_x, spr1_y;

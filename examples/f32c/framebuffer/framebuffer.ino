@@ -5,17 +5,14 @@
 // lines, circles, dots, rectangles and text
 //
 
-
 extern "C" {
 #include <fb.h>
 #include <io.h>
-//uint32_t random();
 }
-
 
 void setup() {
   // put your setup code here, to run once:
-  fb_set_mode(1);
+  fb_set_mode(1); // 16-bit color pallete
 }
 
 int test;
