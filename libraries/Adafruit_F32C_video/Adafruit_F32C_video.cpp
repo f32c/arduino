@@ -8,8 +8,6 @@ This is a library for F32C framebuffer
 #endif
 #include <stdlib.h>
 
-#include <Wire.h>
-
 #include "Adafruit_GFX.h"
 #include "Adafruit_F32C_video.h"
 
