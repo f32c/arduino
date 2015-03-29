@@ -115,7 +115,7 @@ tools.ujprog_sram.bootloader.pattern="{path}/{cmd}" -j SRAM "{runtime.platform.p
 
 
 #
-# altera
+# altera flash (needs quartus-II)
 #
 tools.ujprog_altera.cmd=ujprog_anyftdi
 tools.ujprog_altera.cmd.windows=ujprog.exe
@@ -133,10 +133,10 @@ tools.ujprog_altera.erase.pattern=true
 
 tools.ujprog_altera.bootloader.params.verbose=
 tools.ujprog_altera.bootloader.params.quiet=
-tools.ujprog_altera.bootloader.pattern="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IPV;{runtime.platform.path}/bootloaders/{bootloader.file}"
+tools.ujprog_altera.bootloader.pattern="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IPV;{runtime.platform.path}/bootloaders/{bootloader.file_jic}"
 
 #
-# ujprog (any ftdi) + openocd
+# ujprog (any ftdi) + openocd, alera or xilinx sram
 #
 tools.ujprog_openocd.cmd=ujprog_anyftdi
 tools.ujprog_openocd.cmd.windows=ujprog.exe
@@ -154,4 +154,4 @@ tools.ujprog_openocd.erase.pattern=true
 
 tools.ujprog_openocd.bootloader.params.verbose=
 tools.ujprog_openocd.bootloader.params.quiet=
-tools.ujprog_openocd.bootloader.pattern="openocd" "--file={bootloader.interface}" "--command=jtag newtap chip tap -expected-id {bootloader.expected_id} -irlen {bootloader.irlen}" "--command=init" "--command=scan_chain" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file}" "--command=shutdown"
+tools.ujprog_openocd.bootloader.pattern="openocd" "--file={bootloader.interface}" "--command=jtag newtap chip tap -expected-id {bootloader.expected_id} -irlen {bootloader.irlen}" "--command=init" "--command=scan_chain" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"

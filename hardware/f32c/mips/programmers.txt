@@ -21,7 +21,7 @@ ujprog_altera.program.tool=ujprog
 ujprog_altera.program.extra_params=
 ujprog_altera.bootloader.tool=ujprog_altera
 
-ujprog_openocd.name=ujprog + openocd hw: Altera Blaster, target: Xilinx SRAM
+ujprog_openocd.name=ujprog + openocd hw: Altera Blaster, target: Altera/Xilinx SRAM
 ujprog_openocd.communication=usb
 ujprog_openocd.protocol=ujprog
 ujprog_openocd.program.protocol=openocd
