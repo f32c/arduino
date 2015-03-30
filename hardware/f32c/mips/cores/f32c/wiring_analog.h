@@ -31,6 +31,8 @@ struct pwm_enable_bitmask_s
   uint32_t apply;
   uint8_t ocp_start;
   uint8_t ocp_stop;
+  uint32_t ocp_ie;
+  uint32_t ocp_if;
 };
 
 /*

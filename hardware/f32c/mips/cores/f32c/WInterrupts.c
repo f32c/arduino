@@ -4,6 +4,7 @@
 #include <mips/cpuregs.h>
 #include <sys/isr.h>
 #include "wiring_private.h"
+#include "emard_timer.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -14,10 +15,12 @@ static volatile voidFuncPtr intFunc[8] =
   { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, };
 /* some interrupts sources are multiplexed on same mips irq, 
    here are callbacks for timer */
-static volatile voidFuncPtr timerFunc[4] = {
+static volatile voidFuncPtr timerFunc[VARIANT_ICPN+VARIANT_OCPN] = {
     NULL, NULL, // OCP1, OCP2
     NULL, NULL, // ICP1, ICP2
 };
+
+const struct variant_icp_control_s variant_icp_control[2] = VARIANT_ICP_CONTROL;
 
 static int tsc_next;
 int timerInterval = VARIANT_MCK; // default timer interval is 1 second
@@ -70,6 +73,7 @@ static struct isr_link timer_isr_link = {.handler_fn = &timer_isr};
 void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 {
   int32_t irq = -1;
+  int8_t icp, ocp;
   /* attachInterrupt is ment to assign pin change interrupt
   ** on digital input pins
   ** but we will here misuse it to create timer interrupt.
@@ -82,6 +86,12 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
   ** it can be changed at any time
   ** but beware of race condition
   */
+  if(pin >= variant_pin_map_size)
+    return;
+  
+  icp = variant_pin_map[pin].icp;
+  ocp = variant_pin_map[pin].pwm;
+  
   if(pin == 13)
   {
     uint8_t init_required = 0;
@@ -100,36 +110,25 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     }
     asm("ei");
   }
-  if(pin == 8 || pin == 9 || pin == 14 || pin == 15)
+
+  if(ocp >= 0 || icp >= 0)
   {
-    irq = 4;
+    irq = VARIANT_TIMER_INTERRUPT;
     if(intFunc[irq] == NULL)
     {
       isr_register_handler(irq, &timer_isr_link); // 4 is EMARD timer interrput
       intFunc[irq] = NULL+1; // not used as callback, just as non-zero to init only once
     }
-    if(pin == 14)
+    if(ocp >= 0)
     {
-      timerFunc[0] = callback;
-      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_IE_OCP1);
+      timerFunc[ocp] = callback;
+      EMARD_TIMER[TC_CONTROL] |= pwm_enable_bitmask[ocp].ocp_ie;
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
     }
-    if(pin == 15)
+    if(icp >= 0)
     {
-      timerFunc[1] = callback;
-      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_IE_OCP2);
-      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
-    }
-    if(pin == 8)
-    {
-      timerFunc[2] = callback;
-      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_IE_ICP1);
-      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
-    }
-    if(pin == 9)
-    {
-      timerFunc[3] = callback;
-      EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_IE_ICP2);
+      timerFunc[VARIANT_ICPN+ocp] = callback;
+      EMARD_TIMER[TC_CONTROL] |= variant_icp_control[icp].icp_ie;
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
     }
     asm("ei");
@@ -138,6 +137,11 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 
 void detachInterrupt(uint32_t pin)
 {
+  int8_t icp, ocp;
+  if(pin >= variant_pin_map_size)
+    return;
+  icp = variant_pin_map[pin].icp;
+  ocp = variant_pin_map[pin].pwm;
   if(pin == 13)
   {
     int irq = 7;
@@ -148,31 +152,19 @@ void detachInterrupt(uint32_t pin)
     intFunc[irq] = NULL;
     asm("ei");
   }
-  if(pin == 14 || pin == 15)
+  if(ocp >= 0 || icp >= 0)
   {
-    if(pin == 14)
+    if(ocp >= 0)
     {
-      EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_OCP1);
+      EMARD_TIMER[TC_CONTROL] &= ~pwm_enable_bitmask[ocp].ocp_ie;
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
-      timerFunc[0] = NULL;
+      timerFunc[icp] = NULL;
     }
-    if(pin == 15)
+    if(icp >= 0)
     {
-      EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_OCP2);
+      EMARD_TIMER[TC_CONTROL] &= ~variant_icp_control[icp].icp_ie;
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
-      timerFunc[1] = NULL;
-    }
-    if(pin == 8)
-    {
-      EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_ICP1);
-      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
-      timerFunc[2] = NULL;
-    }
-    if(pin == 9)
-    {
-      EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IE_ICP2);
-      EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
-      timerFunc[3] = NULL;
+      timerFunc[VARIANT_ICPN+ocp] = NULL;
     }
     if( (EMARD_TIMER[TC_CONTROL] 
         & ( (1<<TCTRL_IE_OCP1)
@@ -184,7 +176,7 @@ void detachInterrupt(uint32_t pin)
       )
     {
       #if 1
-      int irq = 4;
+      int irq = VARIANT_TIMER_INTERRUPT;
       asm("di");
       isr_remove_handler(irq, &timer_isr_link); // 4 is EMARD timer interrput
       intFunc[irq] = NULL;

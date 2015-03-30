@@ -100,7 +100,11 @@ extern volatile uint32_t *EMARD_TIMER;
     | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)   \
     | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
     /* indexes of start/stop register */     \
-    TC_OCP1_START, TC_OCP1_STOP              \
+    TC_OCP1_START, TC_OCP1_STOP,             \
+    /* interrupt enable */                   \
+    (1<<TCTRL_IE_OCP1),                      \
+    /* interrupt flag */                     \
+    (1<<TCTRL_IF_OCP1),                      \
   },\
   { \
       /* control_and */  \
@@ -128,7 +132,11 @@ extern volatile uint32_t *EMARD_TIMER;
     | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)   \
     | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
     /* indexes of start/stop register */     \
-    TC_OCP2_START, TC_OCP2_STOP              \
+    TC_OCP2_START, TC_OCP2_STOP,             \
+    /* interrupt enable */                   \
+    (1<<TCTRL_IE_OCP2),                      \
+    /* interrupt flag */                     \
+    (1<<TCTRL_IF_OCP2),                      \
   },                                         \
 }
 
@@ -208,8 +216,18 @@ struct initializer for each icp (input capture) channel
 }
 
 /*
- *  timer interrupt
+ *  timer interrupt (mips bit number)
  */
 #define VARIANT_TIMER_INTERRUPT 4
+
+/*
+ *  how many ICP units do we have:
+*/
+#define VARIANT_ICPN 2
+
+/*
+ *  how many OCP units do we have:
+*/
+#define VARIANT_OCPN 2
 
 #endif /* _f32c_mips_emard_timer_h */

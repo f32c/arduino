@@ -13,13 +13,13 @@
   { /*  6 */  (volatile uint32_t *) IO_PUSHBTN, 1<<6,      -1, -1 }, \
   { /*  7 */  (volatile uint32_t *) IO_PUSHBTN, 1<<7,      -1, -1 }, \
   { /*  8 */  (volatile uint32_t *) IO_PUSHBTN, 1<<8,      -1,  0 /* led0, icp0 */ }, \
-  { /*  9 */  (volatile uint32_t *) IO_PUSHBTN, 1<<9,      -1,  1 /* led1, icp1 */ }, \
-  { /* 10 */  (volatile uint32_t *) IO_PUSHBTN, 1<<10,     -1, -1 /* led2 */ }, \
-  { /* 11 */  (volatile uint32_t *) IO_PUSHBTN, 1<<11,     -1, -1 /* led3 */ }, \
+  { /*  9 */  (volatile uint32_t *) IO_PUSHBTN, 1<<9,       0, -1 /* led1, ocp0 */ }, \
+  { /* 10 */  (volatile uint32_t *) IO_PUSHBTN, 1<<10,      1, -1 /* led2, ocp1 */ }, \
+  { /* 11 */  (volatile uint32_t *) IO_PUSHBTN, 1<<11,     -1,  1 /* led3, icp1 */ }, \
   { /* 12 */  (volatile uint32_t *) IO_PUSHBTN, 1<<12,     -1, -1 /* led4 */ }, \
   { /* 13 */  (volatile uint32_t *) IO_PUSHBTN, 1<<13,     -1, -1 /* led5 */ }, \
-  { /* 14 */  (volatile uint32_t *) IO_PUSHBTN, 1<<14,      0, -1 /* led6, pwm0 */ }, \
-  { /* 15 */  (volatile uint32_t *) IO_PUSHBTN, 1<<15,      1, -1 /* led7, pwm1 */ }, \
+  { /* 14 */  (volatile uint32_t *) IO_PUSHBTN, 1<<14,     -1, -1 /* led6, pwm0 */ }, \
+  { /* 15 */  (volatile uint32_t *) IO_PUSHBTN, 1<<15,     -1, -1 /* led7, pwm1 */ }, \
   { /* 16 */  (volatile uint32_t *) IO_PUSHBTN, 1<<16,     -1, -1 }, \
   { /* 17 */  (volatile uint32_t *) IO_PUSHBTN, 1<<17,     -1, -1 }, \
   { /* 18 */  (volatile uint32_t *) IO_PUSHBTN, 1<<18,     -1, -1 }, \

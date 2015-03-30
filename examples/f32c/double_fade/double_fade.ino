@@ -1,14 +1,14 @@
 /*
- Fade
+ Double Fade
 
- This example shows how to fade an LED on pin 9
+ This example shows how to fade an LEDs on pin 9 and 10
  using the analogWrite() function.
 
  This example code is in the public domain.
  */
 
-int led1 = 14;           // the pin that the LED is attached to
-int led2 = 15;
+int led1 = 9;           // the pin that the LED is attached to
+int led2 = 10;
 int brightness = 0;    // how bright the LED is
 int fadeAmount = 5;    // how many points to fade the LED by
 

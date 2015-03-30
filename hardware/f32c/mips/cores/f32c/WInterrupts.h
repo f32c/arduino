@@ -25,6 +25,21 @@
 extern "C" {
 #endif
 
+struct variant_icp_control_s
+{
+  uint32_t control_and;   // first and'ed to preserve bits
+  uint32_t control_or;    // last or'ed to set bits that enable this timer
+  uint32_t control_and_or;// 1-use and logic, 0-use or logic
+  uint32_t apply;
+  uint8_t icp_start;
+  uint8_t icp_stop;
+  uint32_t icp_ie;
+  uint32_t icp_if;
+  uint8_t icp_register;
+};
+
+extern const struct variant_icp_control_s variant_icp_control[];
+
 extern int timerInterval;
 void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode);
 void detachInterrupt(uint32_t pin);

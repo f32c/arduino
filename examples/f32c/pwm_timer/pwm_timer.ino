@@ -8,8 +8,8 @@
  This example code is in the public domain.
 */
 
-int led1 = 14;         // the pin for OCP1 channel (hardwired)
-int led2 = 15;         // the pin for OCP2 channel (hardwired)
+int led1 = 9;         // the pin for OCP1 channel (hardwired)
+int led2 = 10;         // the pin for OCP2 channel (hardwired)
 int led_activ1 = 12;   // interrupt activity indicator for OCP1
 int led_activ2 = 13;   // interrupt activity indicator for OCP2
 
