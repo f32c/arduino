@@ -157,6 +157,25 @@ nexys3_bram.upload.wait_for_upload_port=false
 nexys3_bram.upload.native_usb=false
 
 #
+# Digilent / Xilinx ZYBO Zinq-7000, f32c/mips SoC
+#
+zybo_bram.name=Xilinx Digilent ZYBO (125 MHz, ZINQ XC7Z010, 128 KB BRAM)
+zybo_bram.build.mcu=f32c
+zybo_bram.build.core=f32c
+zybo_bram.build.variant=ulx2s_logical
+zybo_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+zybo_bram.upload.tool=ujprog
+zybo_bram.upload.protocol=hex
+zybo_bram.upload.flags=-P{serial.port} -ra
+zybo_bram.upload.maximum_size=130048
+zybo_bram.upload.wait_for_upload_port=false
+zybo_bram.upload.native_usb=false
+zybo_bram.bootloader.file_svf=zybo/bitstream.svf
+zybo_bram.bootloader.interface={runtime.platform.path}/bootloaders/zybo/ftdi-zybo.ocd
+zybo_bram.bootloader.expected_id=0x13722093
+zybo_bram.bootloader.irlen=6
+
+#
 # Xilinx XC6SLX9 (ebay) Spartan-6 Board, f32c/mips SoC
 #
 xc6slx9_bram.name=Xilinx XC6SLX9 (112.5 MHz, Spartan-6, 32 KB BRAM)
