@@ -13,11 +13,19 @@ extern "C" {
 /* 8 main MIPS interrupts, all initially disabled */
 static volatile voidFuncPtr intFunc[8] = 
   { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, };
+
 /* some interrupts sources are multiplexed on same mips irq, 
    here are callbacks for timer */
 static volatile voidFuncPtr timerFunc[VARIANT_ICPN+VARIANT_OCPN] = {
     NULL, NULL, // OCP1, OCP2
     NULL, NULL, // ICP1, ICP2
+};
+/* todo: join flags with timeFunc with above in a suitable struct
+** struct will help programmer that interrupt flags match called functions
+*/
+static uint32_t timerIFlags[VARIANT_ICPN+VARIANT_OCPN] = {
+  1<<TCTRL_IF_OCP1, 1<<TCTRL_IF_OCP2,
+  1<<TCTRL_IF_ICP1, 1<<TCTRL_IF_ICP2,
 };
 
 const struct variant_icp_control_s variant_icp_control[2] = VARIANT_ICP_CONTROL;
@@ -41,30 +49,16 @@ static struct isr_link tsc_isr_link = {.handler_fn = &tsc_isr};
 /* emard advanced timer, memory mapped I/O (outside of the core) */
 static int timer_isr(void)
 {
-  // check hardware registers to determine source of interrupt
-  if( (EMARD_TIMER[TC_CONTROL] & (1<<TCTRL_IF_OCP1)) != 0 )
+  int8_t i;
+  
+  for(i = VARIANT_ICPN+VARIANT_OCPN-1; i >= 0; i--)
   {
-    EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IF_OCP1); // clear interrupt flag
-    if(timerFunc[0])
-      timerFunc[0]();
-  }
-  if( (EMARD_TIMER[TC_CONTROL] & (1<<TCTRL_IF_OCP2)) != 0 )
-  {
-    EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IF_OCP2); // clear interrupt flag
-    if(timerFunc[1])
-      timerFunc[1]();
-  }
-  if( (EMARD_TIMER[TC_CONTROL] & (1<<TCTRL_IF_ICP1)) != 0 )
-  {
-    EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IF_ICP1); // clear interrupt flag
-    if(timerFunc[2])
-      timerFunc[2]();
-  }
-  if( (EMARD_TIMER[TC_CONTROL] & (1<<TCTRL_IF_ICP2)) != 0 )
-  {
-    EMARD_TIMER[TC_CONTROL] &= ~(1<<TCTRL_IF_ICP2); // clear interrupt flag
-    if(timerFunc[3])
-      timerFunc[3]();
+    if( (EMARD_TIMER[TC_CONTROL] & timerIFlags[i]) != 0 )
+    {
+      EMARD_TIMER[TC_CONTROL] &= ~timerIFlags[i]; // clear the interrupt flag
+      if(timerFunc[i])
+        timerFunc[i](); // call the function
+    }
   }
   return 1;
 }
