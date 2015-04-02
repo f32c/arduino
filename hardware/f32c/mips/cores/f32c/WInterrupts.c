@@ -64,6 +64,33 @@ static int timer_isr(void)
 }
 static struct isr_link timer_isr_link = {.handler_fn = &timer_isr};
 
+void icpFilter(uint32_t pin, uint32_t icp_start, uint32_t icp_stop)
+{
+  int8_t icp_channel;
+  volatile uint32_t *start, *stop;
+  
+  if(pin >= variant_pin_map_size)
+    return;
+  
+  icp_channel = variant_pin_map[pin].icp;
+  if(icp_channel >= 0)
+  {
+    EMARD_TIMER[TC_CONTROL] &= variant_icp_control[icp_channel].control_and;
+    
+    start = &EMARD_TIMER[variant_icp_control[icp_channel].icp_start];
+    stop  = &EMARD_TIMER[variant_icp_control[icp_channel].icp_stop];
+    
+    *start = icp_start;
+    *stop = icp_stop;
+    
+    EMARD_TIMER[TC_CONTROL] &= variant_icp_control[icp_channel].control_and;
+    if( start <= stop )
+      EMARD_TIMER[TC_CONTROL] |= variant_icp_control[icp_channel].control_and_or;
+    EMARD_TIMER[TC_CONTROL] |= variant_icp_control[icp_channel].control_or;
+    EMARD_TIMER[TC_APPLY] = variant_icp_control[icp_channel].apply;
+  }
+}
+
 void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 {
   int32_t irq = -1;
@@ -121,7 +148,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     }
     if(icp >= 0)
     {
-      timerFunc[VARIANT_ICPN+ocp] = callback;
+      timerFunc[VARIANT_OCPN+icp] = callback;
       EMARD_TIMER[TC_CONTROL] |= variant_icp_control[icp].icp_ie;
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
     }
@@ -158,7 +185,7 @@ void detachInterrupt(uint32_t pin)
     {
       EMARD_TIMER[TC_CONTROL] &= ~variant_icp_control[icp].icp_ie;
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
-      timerFunc[VARIANT_ICPN+ocp] = NULL;
+      timerFunc[VARIANT_OCPN+icp] = NULL;
     }
     if( (EMARD_TIMER[TC_CONTROL] 
         & ( (1<<TCTRL_IE_OCP1)
