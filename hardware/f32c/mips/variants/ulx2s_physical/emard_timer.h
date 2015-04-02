@@ -141,21 +141,21 @@ extern volatile uint32_t *EMARD_TIMER;
 }
 
 /*
-struct initializer for each icp (input capture) channel
+** struct initializer for each icp (input capture) channel
 */
 #define VARIANT_ICP_CONTROL \
 { \
   { \
-      /* control_and */  \
+      /* control_and - preserve bits */  \
       (1<<TCTRL_ENABLE_OCP1) | (1<<TCTRL_ENABLE_OCP2) \
     | (1<<TCTRL_ENABLE_ICP1) | (1<<TCTRL_ENABLE_ICP2) \
     | (1<<TCTRL_IE_OCP1)     | (1<<TCTRL_IE_OCP2)     \
     | (1<<TCTRL_IE_ICP1)     | (1<<TCTRL_IE_ICP2)     \
-    | (0<<TCTRL_AND_OR_OCP1) | (1<<TCTRL_AND_OR_OCP2) \
-    | (1<<TCTRL_AND_OR_ICP1) | (1<<TCTRL_AND_OR_ICP2) \
+    | (1<<TCTRL_AND_OR_OCP1) | (1<<TCTRL_AND_OR_OCP2) \
+    | (0<<TCTRL_AND_OR_ICP1) | (1<<TCTRL_AND_OR_ICP2) /* and_or icp bit 0 */ \
     | (0<<TCTRL_AFCEN_ICP1)  | (0<<TCTRL_AFCINV_ICP1) \
     | (0<<TCTRL_AFCEN_ICP2)  | (0<<TCTRL_AFCINV_ICP2) \
-    | (0<<TCTRL_XOR_OCP1)    | (0<<TCTRL_XOR_OCP2)    \
+    | (1<<TCTRL_XOR_OCP1)    | (1<<TCTRL_XOR_OCP2)    \
     | (1<<TCTRL_XOR_ICP1)    | (1<<TCTRL_XOR_ICP2),   \
       /* control_or */        \
       (1<<TCTRL_ENABLE_ICP1), \
@@ -163,10 +163,10 @@ struct initializer for each icp (input capture) channel
       (1<<TCTRL_AND_OR_ICP1), \
       /* apply */             \
       (1<<TC_CONTROL)                        \
-    | (1<<TC_INCREMENT)                      \
-    | (1<<TC_OCP1_START) | (1<<TC_OCP1_STOP) \
+    | (0<<TC_INCREMENT)                      \
+    | (0<<TC_OCP1_START) | (0<<TC_OCP1_STOP) \
     | (0<<TC_OCP2_START) | (0<<TC_OCP2_STOP) \
-    | (0<<TC_ICP1_START) | (0<<TC_ICP1_STOP) \
+    | (1<<TC_ICP1_START) | (1<<TC_ICP1_STOP) /* icp1 start stop bits 1 */ \
     | (0<<TC_ICP2_START) | (0<<TC_ICP2_STOP) \
     | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)   \
     | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
@@ -180,16 +180,16 @@ struct initializer for each icp (input capture) channel
     TC_ICP1,                                 \
   },\
   { \
-      /* control_and */  \
+      /* control_and - preserve bits */  \
       (1<<TCTRL_ENABLE_OCP1) | (1<<TCTRL_ENABLE_OCP2) \
     | (1<<TCTRL_ENABLE_ICP1) | (1<<TCTRL_ENABLE_ICP2) \
     | (1<<TCTRL_IE_OCP1)     | (1<<TCTRL_IE_OCP2)     \
     | (1<<TCTRL_IE_ICP1)     | (1<<TCTRL_IE_ICP2)     \
-    | (1<<TCTRL_AND_OR_OCP1) | (0<<TCTRL_AND_OR_OCP2) \
-    | (1<<TCTRL_AND_OR_ICP1) | (1<<TCTRL_AND_OR_ICP2) \
+    | (1<<TCTRL_AND_OR_OCP1) | (1<<TCTRL_AND_OR_OCP2) \
+    | (1<<TCTRL_AND_OR_ICP1) | (0<<TCTRL_AND_OR_ICP2) /* and_or icp2 bit 0 */ \
     | (0<<TCTRL_AFCEN_ICP1)  | (0<<TCTRL_AFCINV_ICP1) \
     | (0<<TCTRL_AFCEN_ICP2)  | (0<<TCTRL_AFCINV_ICP2) \
-    | (0<<TCTRL_XOR_OCP1)    | (0<<TCTRL_XOR_OCP2)    \
+    | (1<<TCTRL_XOR_OCP1)    | (1<<TCTRL_XOR_OCP2)    \
     | (1<<TCTRL_XOR_ICP1)    | (1<<TCTRL_XOR_ICP2),   \
       /* control_or */        \
       (1<<TCTRL_ENABLE_ICP2), \
@@ -197,21 +197,21 @@ struct initializer for each icp (input capture) channel
       (1<<TCTRL_AND_OR_ICP2), \
       /* apply */             \
       (1<<TC_CONTROL)         \
-    | (1<<TC_INCREMENT)                      \
+    | (0<<TC_INCREMENT)                      \
     | (0<<TC_OCP1_START) | (0<<TC_OCP1_STOP) \
-    | (1<<TC_OCP2_START) | (1<<TC_OCP2_STOP) \
+    | (0<<TC_OCP2_START) | (0<<TC_OCP2_STOP) \
     | (0<<TC_ICP1_START) | (0<<TC_ICP1_STOP) \
-    | (0<<TC_ICP2_START) | (0<<TC_ICP2_STOP) \
+    | (1<<TC_ICP2_START) | (1<<TC_ICP2_STOP) /* these bits 1 */ \
     | (0<<TC_INC_MIN)    | (0<<TC_INC_MAX)   \
     | (0<<TC_ICP1)       | (0<<TC_ICP2),     \
     /* indexes of window start/stop register */ \
-    TC_ICP1_START, TC_ICP1_STOP,             \
+    TC_ICP2_START, TC_ICP2_STOP,             \
     /* interrupt enable */                   \
-    (1<<TCTRL_IE_ICP1),                      \
+    (1<<TCTRL_IE_ICP2),                      \
     /* interrupt flag */                     \
-    (1<<TCTRL_IF_ICP1),                      \
+    (1<<TCTRL_IF_ICP2),                      \
     /* index of readout register */          \
-    TC_ICP1,                                 \
+    TC_ICP2,                                 \
   },                                         \
 }
 
