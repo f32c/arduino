@@ -213,7 +213,7 @@ de0_nano_bram.bootloader.file_jic=de0_nano/bitstream.jic
 #
 # Altera tb276 Board, f32c/mips SoC
 #
-tb276_bram.name=Altera TB276 (112.5 MHz, Cyclone IV E EP4CE6E22C8, 8 KB BRAM)
+tb276_bram.name=Altera TB276 (112.5 MHz, Cyclone IV E EP4CE6E22C8, 16 KB BRAM)
 tb276_bram.build.mcu=f32c
 tb276_bram.build.core=f32c
 tb276_bram.build.variant=ulx2s_logical
@@ -221,7 +221,7 @@ tb276_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
 tb276_bram.upload.tool=ujprog_altera
 tb276_bram.upload.protocol=hex
 tb276_bram.upload.flags=-P{serial.port} -ra
-tb276_bram.upload.maximum_size=7168
+tb276_bram.upload.maximum_size=15360
 tb276_bram.upload.wait_for_upload_port=false
 tb276_bram.upload.native_usb=false
 tb276_bram.bootloader.file_jic=tb276/bitstream.jic
