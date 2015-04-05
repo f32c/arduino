@@ -17,10 +17,10 @@
 #include <Adafruit_SSD1306.h>
 
 //Define Pins
-#define OLED_MOSI  21
 #define OLED_CLK   20
-#define OLED_DC    23
+#define OLED_MOSI  21
 #define OLED_CS    22
+#define OLED_DC    23
 #define OLED_RESET 12
 #define BEEPER 3
 
