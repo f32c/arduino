@@ -9,6 +9,7 @@
   Written by Michael Teeuw | Xonay Labs.  
   Apache 2 license, all text above must be included 
   in any redistribution.
+  Self-play mode by RADIONA
  ****************************************************/
 
 #include <SPI.h>
@@ -46,6 +47,9 @@
 #define MIN_Y_SPEED 1
 #define MAX_Y_SPEED 3
 
+#define X_BOUNCE_DISTANCE (SCREEN_WIDTH-1*PADDLE_PADDING-1*BALL_SIZE)
+#define Y_BOUNCE_DISTANCE (SCREEN_HEIGHT-1*BALL_SIZE)
+
 #if 0
 #define abs(x) (x >= 0 ? x : -x)
 #endif
@@ -66,8 +70,48 @@ int ballSpeedY = 1;
 int lastPaddleLocationA = 0;
 int lastPaddleLocationB = 0;
 
+/* self-play mode ball Y position prediction
+** there we should place the paddle
+*/
+int expectAY = 0;
+int expectBY = 0; 
+
 int scoreA = 0;
 int scoreB = 0;
+
+int expect_y(int x_distance)
+{
+  int normalY; // normalized Y position
+  // as if ball is always traveling positive
+  int absSpeedX, absSpeedY;
+  int expectY;
+  int expect2Y;
+
+  absSpeedX = ballSpeedX > 0 ? ballSpeedX : -ballSpeedX;
+  absSpeedY = ballSpeedY > 0 ? ballSpeedY : -ballSpeedY;
+  normalY = ballSpeedY > 0 ? ballY : Y_BOUNCE_DISTANCE - ballY;
+
+  /* reflection from "double" y */
+  if(absSpeedX != 0)
+    expect2Y = (normalY + x_distance*absSpeedY/absSpeedX) % (2*Y_BOUNCE_DISTANCE);
+  else
+    expect2Y = normalY;
+  /* convert double Y to reflect up or down */
+  expectY = expect2Y < Y_BOUNCE_DISTANCE ? expect2Y : 2*Y_BOUNCE_DISTANCE - expect2Y;
+  if(ballSpeedY < 0)
+    expectY = (SCREEN_HEIGHT - BALL_SIZE) - expectY;
+  return expectY;
+}
+
+int expectA()
+{
+  return expect_y(ballX - PADDLE_PADDING-BALL_SIZE);
+}
+
+int expectB()
+{
+  return expect_y(SCREEN_WIDTH-PADDLE_PADDING-BALL_SIZE - ballX);
+}
 
 //Setup 
 void setup() 
@@ -84,6 +128,7 @@ void setup()
   display.setTextColor(WHITE);
   display.setTextSize(FONT_SIZE);
   display.clearDisplay(); 
+  expectBY = expectB();
 }
 
 #if 0
@@ -127,8 +172,8 @@ void loop()
 {
   calculateMovement();
   draw();
+  // delay(50);
 }
-
 
 void calculateMovement() 
 {
@@ -139,9 +184,9 @@ void calculateMovement()
   static int controlA = 0;
   static int controlB = 0;
   if(ballSpeedX < 0)
-    controlA += 16*(ballY-paddleLocationA-PADDLE_HEIGHT/2+BALL_SIZE/2);
+    controlA += 2*(expectAY-paddleLocationA-PADDLE_HEIGHT/2+BALL_SIZE/2);
   if(ballSpeedX > 0)
-    controlB += 16*(ballY-paddleLocationB-PADDLE_HEIGHT/2+BALL_SIZE/2);
+    controlB += 2*(expectBY-paddleLocationB-PADDLE_HEIGHT/2+BALL_SIZE/2);
 #endif
   paddleLocationA = map(controlA, 0, 1023, 0, SCREEN_HEIGHT - PADDLE_HEIGHT);
   paddleLocationB = map(controlB, 0, 1023, 0, SCREEN_HEIGHT - PADDLE_HEIGHT);
@@ -165,6 +210,7 @@ void calculateMovement()
       ballSpeedX = -ballSpeedX;
     
       addEffect(paddleSpeedA);
+      expectBY = expectB();
     }
 
   }
@@ -176,6 +222,7 @@ void calculateMovement()
       ballSpeedX = -ballSpeedX;
     
       addEffect(paddleSpeedB);
+      expectAY = expectA();
     }
 
   }
@@ -185,10 +232,12 @@ void calculateMovement()
     if (ballSpeedX > 0) {
       scoreA++;
       ballX = SCREEN_WIDTH / 4;
+      expectBY = expectB();
     }
     if (ballSpeedX < 0) {
       scoreB++;
       ballX = SCREEN_WIDTH / 4 * 3;
+      expectAY = expectA();
     }
 
     soundPoint();   
@@ -301,4 +350,3 @@ void centerPrint(char *text, int y, int size)
   display.setCursor(SCREEN_WIDTH/2 - ((strlen(text))*6*size)/2,y);
   display.print(text);
 }
-
