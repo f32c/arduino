@@ -49,9 +49,9 @@ _start:
 	la	s1, _end	/* End of BSS section */
 bss_bzero:
 	.set noreorder
-	sw	zero, (s0)
+	sb	zero, (s0)
 	bne	s0, s1, bss_bzero
-	addiu	s0, s0, 4
+	addiu	s0, s0, 1
 	.set reorder
 #endif /* !ONLY_I_ROM */
 #else /* !BRAM */
