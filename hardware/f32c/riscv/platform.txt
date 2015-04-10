@@ -1,0 +1,158 @@
+
+#
+# f32c MI32 (riscv) Core and platform.
+#
+
+name=f32c/riscv FPGA Boards
+version=1.6.0
+
+# Compile variables
+# ----------------------
+
+compiler.path={runtime.ide.path}/hardware/tools/f32c/bin/
+compiler.c.cmd=riscv-elf-gcc
+compiler.c.flags=-c -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h
+compiler.S.flags=-c -g -x assembler-with-cpp
+compiler.cpp.cmd=riscv-elf-g++
+compiler.cpp.flags=-c -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
+compiler.ld.cmd=riscv-elf-ld
+compiler.ld.flags=-N -EL -gc-sections "--library-path={build.system.path}/lib"
+compiler.ar.cmd=riscv-elf-ar
+compiler.ar.flags=rcs
+compiler.objcopy.cmd=riscv-elf-objcopy
+compiler.objcopy.eep.flags=-O srec
+compiler.elf2hex.flags=
+compiler.elf2hex.cmd=riscv-elf-objcopy
+compiler.size.cmd=riscv-elf-size
+compiler.define=-DARDUINO=
+
+# this can be overriden in boards.txt
+build.extra_flags=
+
+# These can be overridden in platform.local.txt
+# XXX cemu tocno ovo sluzi?
+compiler.c.extra_flags=-D__F32C_RISCV__
+compiler.c.elf.extra_flags=
+compiler.cpp.extra_flags=-D__F32C_RISCV__
+compiler.ar.extra_flags=
+compiler.elf2hex.extra_flags=
+
+
+# USB Flags
+# ---------
+build.usb_flags=
+
+# Compile patterns
+# ---------------------
+
+## Compile S files
+recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c files
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c++ files
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -DARDUINO={runtime.ide.version} {compiler.cpp.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Create archives
+recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{build.path}/{archive_file}" "{object_file}"
+
+## Link gc-sections, archives, and objects
+recipe.c.combine.pattern="{compiler.path}{compiler.ld.cmd}" {compiler.ld.flags} -nostdlib {build.extra_flags} -lcrt0 {object_files} "{build.path}/{archive_file}" -lulx2s -lm -lc -o "{build.path}/{build.project_name}.elf"
+
+## Create binary
+recipe.objcopy.eep.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} -O binary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+
+## Create hex
+recipe.objcopy.hex.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} -O srec "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.hex"
+
+## Compute size
+recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -B "{build.path}/{build.project_name}.elf"
+recipe.size.regex=\s*[0-9]+\s+[0-9]+\s+[0-9]+\s+([0-9]+).*
+
+
+# Uploader tools
+# -------------------
+
+#
+# lattice (bootloader FLASH)
+#
+tools.ujprog.cmd=ujprog
+tools.ujprog.cmd.windows=ujprog.exe
+tools.ujprog.path=/usr/local/bin
+tools.ujprog.path.windows=C:/Windows
+
+tools.ujprog.upload.params.verbose=
+tools.ujprog.upload.params.quiet=-q
+tools.ujprog.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+
+tools.ujprog.erase.params.verbose=
+tools.ujprog.erase.params.quiet=
+tools.ujprog.erase.pattern=true
+
+tools.ujprog.bootloader.params.verbose=
+tools.ujprog.bootloader.params.quiet=
+tools.ujprog.bootloader.pattern="{path}/{cmd}" -j FLASH "{runtime.platform.path}/bootloaders/{bootloader.file}"
+
+#
+# lattice (bootloader SRAM)
+#
+tools.ujprog_sram.cmd=ujprog
+tools.ujprog_sram.cmd.windows=ujprog.exe
+tools.ujprog_sram.path=/usr/local/bin
+tools.ujprog_sram.path.windows=C:/Windows
+
+tools.ujprog_sram.upload.params.verbose=
+tools.ujprog_sram.upload.params.quiet=-q
+tools.ujprog_sram.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+
+tools.ujprog_sram.erase.params.verbose=
+tools.ujprog_sram.erase.params.quiet=
+tools.ujprog_sram.erase.pattern=true
+
+tools.ujprog_sram.bootloader.params.verbose=
+tools.ujprog_sram.bootloader.params.quiet=
+tools.ujprog_sram.bootloader.pattern="{path}/{cmd}" -j SRAM "{runtime.platform.path}/bootloaders/{bootloader.file}"
+
+
+#
+# altera flash (needs quartus-II)
+#
+tools.ujprog_altera.cmd=ujprog_anyftdi
+tools.ujprog_altera.cmd.windows=ujprog.exe
+tools.ujprog_altera.path={runtime.ide.path}/hardware/tools
+tools.ujprog_altera.path=/usr/local/bin
+tools.ujprog_altera.path.windows=C:/Windows
+
+tools.ujprog_altera.upload.params.verbose=
+tools.ujprog_altera.upload.params.quiet=-q
+tools.ujprog_altera.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+
+tools.ujprog_altera.erase.params.verbose=
+tools.ujprog_altera.erase.params.quiet=
+tools.ujprog_altera.erase.pattern=true
+
+tools.ujprog_altera.bootloader.params.verbose=
+tools.ujprog_altera.bootloader.params.quiet=
+tools.ujprog_altera.bootloader.pattern="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IPV;{runtime.platform.path}/bootloaders/{bootloader.file_jic}"
+
+#
+# ujprog (any ftdi) + openocd, alera or xilinx sram
+#
+tools.ujprog_openocd.cmd=ujprog_anyftdi
+tools.ujprog_openocd.cmd.windows=ujprog.exe
+tools.ujprog_openocd.path={runtime.ide.path}/hardware/tools
+tools.ujprog_openocd.path=/usr/local/bin
+tools.ujprog_openocd.path.windows=C:/Windows
+
+tools.ujprog_openocd.upload.params.verbose=
+tools.ujprog_openocd.upload.params.quiet=-q
+tools.ujprog_openocd.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+
+tools.ujprog_openocd.erase.params.verbose=
+tools.ujprog_openocd.erase.params.quiet=
+tools.ujprog_openocd.erase.pattern=true
+
+tools.ujprog_openocd.bootloader.params.verbose=
+tools.ujprog_openocd.bootloader.params.quiet=
+tools.ujprog_openocd.bootloader.pattern="openocd" "--file={bootloader.interface}" "--command=jtag newtap chip tap -expected-id {bootloader.expected_id} -irlen {bootloader.irlen}" "--command=init" "--command=scan_chain" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
