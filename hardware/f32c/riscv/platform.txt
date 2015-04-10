@@ -11,10 +11,10 @@ version=1.6.0
 
 compiler.path={runtime.ide.path}/hardware/tools/f32c/bin/
 compiler.c.cmd=riscv-elf-gcc
-compiler.c.flags=-c -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h
+compiler.c.flags=-c -Os -m32 -msoft-float -mno-rvm -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h
 compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=riscv-elf-g++
-compiler.cpp.flags=-c -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
+compiler.cpp.flags=-c -Os -m32 -msoft-float -mno-rvm -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
 compiler.ld.cmd=riscv-elf-ld
 compiler.ld.flags=-N -EL -gc-sections "--library-path={build.system.path}/lib"
 compiler.ar.cmd=riscv-elf-ar
