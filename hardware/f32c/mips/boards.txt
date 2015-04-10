@@ -6,7 +6,7 @@ ulx2s_sram.build.usb_product="FER ULX2S board JTAG / UART"
 ulx2s_sram.build.mcu=f32c
 ulx2s_sram.build.core=f32c
 ulx2s_sram.build.variant=ulx2s_logical
-ulx2s_sram.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
+ulx2s_sram.build.extra_flags=--section-start=.init=0x80000000
 ulx2s_sram.upload.tool=ujprog
 ulx2s_sram.upload.protocol=bin
 ulx2s_sram.upload.flags=-re
@@ -22,7 +22,7 @@ ulx2s_sram_phys.name=FER ULX2S (81.25 MHz, Lattice XP2, 1 MB SRAM), phy. pinmap
 ulx2s_sram_phys.build.mcu=f32c
 ulx2s_sram_phys.build.core=f32c
 ulx2s_sram_phys.build.variant=ulx2s_physical
-ulx2s_sram_phys.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
+ulx2s_sram_phys.build.extra_flags=--section-start=.init=0x80000000
 ulx2s_sram_phys.upload.tool=ujprog
 ulx2s_sram_phys.upload.protocol=bin
 ulx2s_sram_phys.upload.flags=-re
@@ -39,7 +39,7 @@ ulx2s_sram_433.build.usb_product="FER ULX2S board JTAG / UART"
 ulx2s_sram_433.build.mcu=f32c
 ulx2s_sram_433.build.core=f32c
 ulx2s_sram_433.build.variant=ulx2s_logical
-ulx2s_sram_433.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
+ulx2s_sram_433.build.extra_flags=--section-start=.init=0x80000000
 ulx2s_sram_433.upload.tool=ujprog
 ulx2s_sram_433.upload.protocol=bin
 ulx2s_sram_433.upload.flags=-re
@@ -55,7 +55,7 @@ ulx2s_sram_433_phys.name=FER ULX2S (81.25 MHz, Lattice XP2, 1 MB SRAM) -fb -dds 
 ulx2s_sram_433_phys.build.mcu=f32c
 ulx2s_sram_433_phys.build.core=f32c
 ulx2s_sram_433_phys.build.variant=ulx2s_physical
-ulx2s_sram_433_phys.build.extra_flags=--section-start=.init=0x80000000 -lcrt0
+ulx2s_sram_433_phys.build.extra_flags=--section-start=.init=0x80000000
 ulx2s_sram_433_phys.upload.tool=ujprog
 ulx2s_sram_433_phys.upload.protocol=bin
 ulx2s_sram_433_phys.upload.flags=-re
@@ -71,7 +71,7 @@ ulx2s_bram.name=FER ULX2S (100 MHz, Lattice XP2, 16 KB BRAM)
 ulx2s_bram.build.mcu=f32c
 ulx2s_bram.build.core=f32c
 ulx2s_bram.build.variant=ulx2s_logical
-ulx2s_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+ulx2s_bram.build.extra_flags=--section-start=.init=0x200
 ulx2s_bram.upload.tool=ujprog
 ulx2s_bram.upload.protocol=hex
 ulx2s_bram.upload.flags=-P{serial.port} -ra
@@ -87,7 +87,7 @@ ulx2s_bram_phys.name=FER ULX2S (100 MHz, Lattice XP2, 16 KB BRAM), phy. pinmap
 ulx2s_bram_phys.build.mcu=f32c
 ulx2s_bram_phys.build.core=f32c
 ulx2s_bram_phys.build.variant=ulx2s_physical
-ulx2s_bram_phys.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+ulx2s_bram_phys.build.extra_flags=--section-start=.init=0x200
 ulx2s_bram_phys.upload.tool=ujprog
 ulx2s_bram_phys.upload.protocol=hex
 ulx2s_bram_phys.upload.flags=-P{serial.port} -ra
@@ -103,7 +103,7 @@ brevia.name=Lattice Brevia (100 MHz, Lattice XP2, 16 KB BRAM)
 brevia.build.mcu=f32c
 brevia.build.core=f32c
 brevia.build.variant=ulx2s_logical
-brevia.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+brevia.build.extra_flags=--section-start=.init=0x200
 brevia.upload.tool=ujprog
 brevia.upload.protocol=hex
 brevia.upload.flags=-P{serial.port} -ra
@@ -118,7 +118,7 @@ s3e500.name=Xilinx Spartan-3E Starter (80 MHz, XC3S500E, 32 KB BRAM)
 s3e500.build.mcu=f32c
 s3e500.build.core=f32c
 s3e500.build.variant=ulx2s_logical
-s3e500.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+s3e500.build.extra_flags=--section-start=.init=0x200
 s3e500.upload.tool=ujprog
 s3e500.upload.protocol=hex
 s3e500.upload.flags=-P{serial.port} -ra
@@ -133,7 +133,7 @@ s3e1600.name=Xilinx Spartan-3E-1600 (80 MHz, XC3S1600E, 32 KB BRAM)
 s3e1600.build.mcu=f32c
 s3e1600.build.core=f32c
 s3e1600.build.variant=ulx2s_logical
-s3e1600.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+s3e1600.build.extra_flags=--section-start=.init=0x200
 s3e1600.upload.tool=ujprog
 s3e1600.upload.protocol=hex
 s3e1600.upload.flags=-P{serial.port} -ra
@@ -148,7 +148,7 @@ nexys3_bram.name=Xilinx Nexys-3 (80 MHz, Spartan-6, 32 KB BRAM)
 nexys3_bram.build.mcu=f32c
 nexys3_bram.build.core=f32c
 nexys3_bram.build.variant=ulx2s_logical
-nexys3_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+nexys3_bram.build.extra_flags=--section-start=.init=0x200
 nexys3_bram.upload.tool=ujprog
 nexys3_bram.upload.protocol=hex
 nexys3_bram.upload.flags=-P{serial.port} -ra
@@ -182,7 +182,7 @@ xc6slx9_bram.name=Xilinx XC6SLX9 (112.5 MHz, Spartan-6, 32 KB BRAM)
 xc6slx9_bram.build.mcu=f32c
 xc6slx9_bram.build.core=f32c
 xc6slx9_bram.build.variant=ulx2s_logical
-xc6slx9_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+xc6slx9_bram.build.extra_flags=--section-start=.init=0x200
 xc6slx9_bram.upload.tool=ujprog_openocd
 xc6slx9_bram.upload.protocol=hex
 xc6slx9_bram.upload.flags=-P{serial.port} -ra
@@ -201,7 +201,7 @@ de0_nano_bram.name=Altera DE0-Nano (110 MHz, Cyclone IV E EP4CE22F17C6, 32 KB BR
 de0_nano_bram.build.mcu=f32c
 de0_nano_bram.build.core=f32c
 de0_nano_bram.build.variant=ulx2s_logical
-de0_nano_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+de0_nano_bram.build.extra_flags=--section-start=.init=0x200
 de0_nano_bram.upload.tool=ujprog
 de0_nano_bram.upload.protocol=hex
 de0_nano_bram.upload.flags=-P{serial.port} -ra
@@ -217,7 +217,7 @@ tb276_bram.name=Altera TB276 (112.5 MHz, Cyclone IV E EP4CE6E22C8, 16 KB BRAM)
 tb276_bram.build.mcu=f32c
 tb276_bram.build.core=f32c
 tb276_bram.build.variant=ulx2s_logical
-tb276_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+tb276_bram.build.extra_flags=--section-start=.init=0x200
 tb276_bram.upload.tool=ujprog_altera
 tb276_bram.upload.protocol=hex
 tb276_bram.upload.flags=-P{serial.port} -ra
