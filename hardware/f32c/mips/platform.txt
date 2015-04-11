@@ -11,10 +11,10 @@ version=1.6.0
 
 compiler.path={runtime.ide.path}/hardware/tools/f32c/bin/
 compiler.c.cmd=mips-elf-gcc
-compiler.c.flags=-c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h
+compiler.c.flags=-c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h
 compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=mips-elf-g++
-compiler.cpp.flags=-c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
+compiler.cpp.flags=-c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions
 compiler.ld.cmd=mips-elf-ld
 compiler.ld.flags=-N -EL -gc-sections "--library-path={build.system.path}/lib"
 compiler.ar.cmd=mips-elf-ar

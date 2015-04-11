@@ -20,16 +20,12 @@
 #ifndef Arduino_h
 #define Arduino_h
 
-#ifdef __cplusplus
-extern "C"{
-#endif // __cplusplus
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
+#include <stdint.h>
+#include <sys/stdint.h>
+
 
 // some libraries and sketches depend on this
 // AVR stuff, assuming Arduino.h or WProgram.h

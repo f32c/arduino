@@ -13,9 +13,14 @@
  * from: @(#)fdlibm.h 5.1 93/09/24
  * $FreeBSD: stable/9/lib/msun/src/math.h 236612 2012-06-05 11:42:34Z theraven $
  */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifndef _MATH_H_
 #define	_MATH_H_
+
+
 
 #include <sys/cdefs.h>
 #include <sys/_types.h>
@@ -483,3 +488,7 @@ __END_DECLS
 #endif /* !_DECLARE_C99_LDBL_MATH */
 #endif /* __ISO_C_VISIBLE >= 1999 */
 #endif /* !_MATH_EXTRA_H_ */
+
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus
