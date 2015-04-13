@@ -42,6 +42,10 @@
 
 #define	IO_GPIO_DATA	IO_ADDR(0x00)	/* word, RW */
 #define	IO_GPIO_CTL	IO_ADDR(0x04)	/* word, WR */
+#define	IO_GPIO_RISING_IF	IO_ADDR(0x08)	/* word, RW (clear only) */
+#define	IO_GPIO_RISING_IE	IO_ADDR(0x0C)	/* word, RW */
+#define	IO_GPIO_FALLING_IF	IO_ADDR(0xD0)	/* word, RW (clear only) */
+#define	IO_GPIO_FALLING_IE	IO_ADDR(0xD4)	/* word, RW */
 #define	IO_PUSHBTN	IO_ADDR(0x10)	/* byte, RD */
 #define	IO_LED		IO_ADDR(0x11)	/* byte, WR */
 #define	IO_DIPSW	IO_ADDR(0x12)	/* byte, RD */
