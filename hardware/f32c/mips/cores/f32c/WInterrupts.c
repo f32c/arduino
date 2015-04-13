@@ -28,6 +28,19 @@ static uint32_t timerIFlags[VARIANT_ICPN+VARIANT_OCPN] = {
   1<<TCTRL_IF_ICP1, 1<<TCTRL_IF_ICP2,
 };
 
+static volatile voidFuncPtr gpio_rising_Func[32] = {
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+};
+static volatile voidFuncPtr gpio_falling_Func[32] = {
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+  NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+};
+
 const struct variant_icp_control_s variant_icp_control[2] = VARIANT_ICP_CONTROL;
 
 static int tsc_next;
@@ -64,6 +77,33 @@ static int timer_isr(void)
 }
 static struct isr_link timer_isr_link = {.handler_fn = &timer_isr};
 
+/* gpio with interrupts */
+static int gpio_isr(void)
+{
+  int8_t i;
+  uint32_t bit;
+  volatile uint32_t *if_rising = (volatile uint32_t *)IO_GPIO_RISING_IF;
+  volatile uint32_t *if_falling = (volatile uint32_t *)IO_GPIO_FALLING_IF;
+  
+  for(i = 31, bit = (1<<31); i >= 0; i--, bit >>= 1)
+  {
+    if( (*if_rising & bit) != 0 )
+    {
+      *if_rising &= ~bit;
+      if(gpio_rising_Func[i])
+        gpio_rising_Func[i]();
+    }
+    if( (*if_falling & bit) != 0 )
+    {
+      *if_falling &= ~bit;
+      if(gpio_falling_Func[i])
+        gpio_falling_Func[i]();
+    }
+  }
+  return 1;
+}
+static struct isr_link gpio_isr_link = {.handler_fn = &gpio_isr};
+
 void icpFilter(uint32_t pin, uint32_t icp_start, uint32_t icp_stop)
 {
   int8_t icp_channel;
@@ -94,7 +134,7 @@ void icpFilter(uint32_t pin, uint32_t icp_start, uint32_t icp_stop)
 void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 {
   int32_t irq = -1;
-  int8_t icp, ocp;
+  int8_t icp, ocp, bit;
   /* attachInterrupt is ment to assign pin change interrupt
   ** on digital input pins
   ** but we will here misuse it to create timer interrupt.
@@ -154,6 +194,23 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     }
     asm("ei");
   }
+  if( variant_pin_map[pin].port == (volatile uint32_t *)IO_GPIO_DATA )
+  {
+    volatile uint32_t *ie_rising = (volatile uint32_t *)IO_GPIO_RISING_IE;
+    volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALLING_IE;
+    irq = 5; // VARIANT_GPIO_INTERRUPT
+    bit = variant_pin_map[pin].bit;
+    /* standard GPIO pin */
+    if(bit >= 0)
+    {
+      if(*ie_rising == 0 && *ie_falling == 0)
+        isr_register_handler(irq, &gpio_isr_link); // 5 is gpio interrput
+      if(mode == RISING)
+        *ie_rising |= (1<<bit);
+      if(mode == FALLING)
+        *ie_falling |= (1<<bit);
+    }        
+  }
 }
 
 void detachInterrupt(uint32_t pin)
@@ -204,6 +261,21 @@ void detachInterrupt(uint32_t pin)
       asm("ei");
       #endif
     }
+  }
+  if( variant_pin_map[pin].port == (volatile uint32_t *)IO_GPIO_DATA )
+  {
+    volatile uint32_t *ie_rising = (volatile uint32_t *)IO_GPIO_RISING_IE;
+    volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALLING_IE;
+    int irq = 5; // VARIANT_GPIO_INTERRUPT
+    int8_t bit = variant_pin_map[pin].bit;
+    /* standard GPIO pin */
+    if(bit >= 0)
+    {
+      *ie_rising &= ~(1<<bit);
+      *ie_falling &= ~(1<<bit);
+      if(*ie_rising == 0 && *ie_falling == 0)
+        isr_remove_handler(irq, &gpio_isr_link); // 5 is gpio interrput
+    }        
   }
 }
 
