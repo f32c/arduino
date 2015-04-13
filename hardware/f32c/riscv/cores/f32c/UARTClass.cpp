@@ -23,9 +23,6 @@
 
 #include <io.h>
 
-#include <mips/asm.h>
-#include <mips/cpuregs.h>
-
 
 #define	SIO_RXBUFSIZE	(1 << 3)
 #define	SIO_RXBUFMASK	(SIO_RXBUFSIZE - 1)
@@ -106,8 +103,13 @@ sio_setbaud(int bauds)
 {
 	uint32_t val, freq_khz;
 
+#if 0
 	mfc0_macro(val, MIPS_COP_0_CONFIG);
 	freq_khz = ((val >> 16) & 0xfff) * 1000 / ((val >> 29) + 1);
+#else
+	//freq_khz = VARIANT_MCK / 1000;
+	freq_khz = 100000; /* XXX testing only, hardcoded, FIXME!!! */
+#endif
 
 	val = bauds;
 	if (bauds > 1000000)
