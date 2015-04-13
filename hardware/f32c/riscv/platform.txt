@@ -16,7 +16,7 @@ compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=riscv-elf-g++
 compiler.cpp.flags=-c -Os -m32 -msoft-float -mno-rvm -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
 compiler.ld.cmd=riscv-elf-ld
-compiler.ld.flags=-N -EL -gc-sections "--library-path={build.system.path}/lib"
+compiler.ld.flags=-N -EL -melf32lriscv -gc-sections "--library-path={build.system.path}/lib"
 compiler.ar.cmd=riscv-elf-ar
 compiler.ar.flags=rcs
 compiler.objcopy.cmd=riscv-elf-objcopy
