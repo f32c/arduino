@@ -54,14 +54,19 @@ ifeq ($(LIB),crt0)
 endif
 
 ifeq ($(LIB),c)
- ASFILES = ${ARCH}/setjmp.S ${ARCH}/exception.S
+ ifeq ($(ARCH),mips)
+  ASFILES = ${ARCH}/setjmp.S ${ARCH}/exception.S
+ endif
 
  CFILES = assert.c atoi.c diskio.c div.c div64.c fatfs.c \
-	file.c gets.c isr.c malloc.c memcmp.c memcpy.c memmove.c \
-	memset.c mul.c printf.c qsort.c \
-	random.c sdcard.c setjmperr.c sio.c sio_baud.c sio_poll.c \
+	file.c gets.c malloc.c memcmp.c memcpy.c memmove.c \
+	memset.c mul.c printf.c qsort.c random.c sdcard.c sio_poll.c \
 	spi.c sprintf.c strcasecmp.c strcpy.c strncpy.c \
 	strstr.c strtol.c
+
+ ifeq ($(ARCH),mips)
+  CFILES += setjmperr.c isr.c sio.c sio_baud.c
+ endif
 
  CFILES += float/adddf3.c float/addsf3.c float/ashldi3.c float/clzsi2.c \
 	float/comparedf2.c float/comparesf2.c float/divdf3.c float/divsf3.c \
@@ -96,4 +101,4 @@ endif
 include ${POST_MK}
 
 ${LIB}: ${OBJS} Makefile
-	${AR} ../lib${LIB}.a ${OBJS}
+	${AR} ../../../../${ARCH}/system/lib/lib${LIB}.a ${OBJS}

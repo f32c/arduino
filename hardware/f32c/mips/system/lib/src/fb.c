@@ -29,7 +29,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#ifdef __mips__
+#if defined(__mips__) || defined(__riscv__)
 #include <io.h>
 #include <fb.h>
 #else
