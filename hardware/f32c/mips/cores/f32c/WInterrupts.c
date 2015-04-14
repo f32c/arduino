@@ -89,13 +89,13 @@ static int gpio_isr(void)
   {
     if( (bit & *if_rising) != 0 )
     {
-      *if_rising = ~bit; // implicit &=
+      *if_rising = ~bit; // clear flag with implicit &=
       if(gpio_rising_Func[i])
         gpio_rising_Func[i]();
     }
     if( (bit & *if_falling) != 0 )
     {
-      *if_falling = ~bit; // implicit &=
+      *if_falling = ~bit; // clear flag with implicit &=
       if(gpio_falling_Func[i])
         gpio_falling_Func[i]();
     }
