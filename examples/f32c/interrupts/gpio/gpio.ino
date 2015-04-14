@@ -2,26 +2,28 @@
 
  * every GPIO pin can have interrupt on
  * rising edge, falling edge or both edges.
- * each edge can have its own interrupt service routine
- * also both edges can share the same interrupt service routine
+ * each edge can have its own interrupt service routine or
+ * both edges can share the same interrupt service routine
  * if interrupt service routine is attached to output pin
  * then changing this pin can trigger software generated interrupts
  * detachInterrupt will detach all interrupts from a pin
 
- * in this example we will demonstrate software
- * generated interrupt (2 leds should blink)
- * then user can set input pin to different GPIO
- * and connect it with a wire, to test external interrupts
- * (2 leds should blink only when wire is connected)
+ * in this example we will demonstrate internal (software
+ * generated) interrupt (2 leds should blink)
+ * and external (hardware genrated)
+ * for this user should set input_pin to different GPIO
+ * and connect it with a wire to output_pin in order
+ * to test external interrupts.
+ * (2 leds should blink when wire is connected)
  * (1 led will blink when wire is not connected)
 */
  
-int output_pin = 14;        // GPIO pin as pulse generator
-int out_indicator_pin = 5;  // LED indicator blinks when pulse is on
+int output_pin = 32;        // GPIO pin as pulse generator
+int out_indicator_pin = 8;  // LED indicator blinks when pulse is on
 
 int input_pin = output_pin; // software interrupt (no external wiring)
-// int input_pin = 16;      // connect to output_pin with wire
-int in_indicator_pin = 7;   // LED indicator, if interrputs work it will blink in sync with output pin
+// int input_pin = 33;      // connect to output_pin with wire
+int in_indicator_pin =  9;  // LED indicator, if interrputs work it will blink in sync with output pin
 
 void gpio_isr(void)
 {
@@ -52,11 +54,11 @@ void setup() {
 
 // the loop function runs over and over again forever
 void loop() {
-  digitalWrite(output_pin, HIGH);   // turn the LED on (HIGH is the voltage level)
-  digitalWrite(out_indicator_pin, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);              // wait for a second
+  digitalWrite(output_pin, HIGH);         // turn the signal on (HIGH is the voltage level)
+  digitalWrite(out_indicator_pin, HIGH);  // turn the LED on (HIGH)
+  delay(1000);                            // wait for a second
 
-  digitalWrite(output_pin, LOW);    // turn the LED off by making the voltage LOW
-  digitalWrite(out_indicator_pin, LOW);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);              // wait for a second
+  digitalWrite(output_pin, LOW);          // turn the signal off by making the voltage LOW
+  digitalWrite(out_indicator_pin, LOW);   // turn the LED off (LOW)
+  delay(1000);                            // wait for a second
 }
