@@ -163,7 +163,7 @@ zybo_bram.name=Xilinx Digilent ZYBO (125 MHz, ZINQ XC7Z010, 128 KB BRAM)
 zybo_bram.build.mcu=f32c
 zybo_bram.build.core=f32c
 zybo_bram.build.variant=ulx2s_logical
-zybo_bram.build.extra_flags=--section-start=.init=0x200 -lcrt0bram
+zybo_bram.build.extra_flags=--section-start=.init=0x200
 zybo_bram.upload.tool=ujprog
 zybo_bram.upload.protocol=hex
 zybo_bram.upload.flags=-P{serial.port} -ra
