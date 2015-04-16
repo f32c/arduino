@@ -33,6 +33,7 @@ endif
 ifeq ($(MAKECMDGOALS),c)
  LIB = c
  .DEFAULT_GOAL = lib
+ CFLAGS += -DNO_PRINTF_FLOAT
 endif
 
 ifeq ($(MAKECMDGOALS),m)
