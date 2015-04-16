@@ -63,6 +63,7 @@
 #define	IO_PCM_VOLUME	IO_ADDR(0xF5C)	/* half, WR */
 #define	IO_LEGO_DATA	IO_ADDR(0xF60)	/* byte, WR */
 #define	IO_LEGO_CTL	IO_ADDR(0xF61)	/* byte, WR */
+#define	IO_TIMER	IO_ADDR(0xF80)	/* 16-byte, WR */
 #define	IO_CPU_RESET	IO_ADDR(0xFF0)	/* byte, WR */
 
 
