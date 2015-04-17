@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2013, 2014 Marko Zec, University of Zagreb
+ * Copyright (c) 2013-2015 Marko Zec, University of Zagreb
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -36,35 +36,44 @@
 #endif
 
 
-#define	IO_BASE		-4096
+#define	IO_BASE		0xfffff800
 
-#define	IO_ADDR(a)	(IO_BASE + (a))
+#define	IO_ADDR(a)	(IO_BASE | (a))
 
-#define	IO_GPIO_DATA	IO_ADDR(0x800)	/* word, RW */
-#define	IO_GPIO_CTL	IO_ADDR(0x804)	/* word, WR */
-#define	IO_GPIO_RISING_IF	IO_ADDR(0x808)	/* word, RW (clear only) */
-#define	IO_GPIO_RISING_IE	IO_ADDR(0x80C)	/* word, RW */
-#define	IO_GPIO_FALLING_IF	IO_ADDR(0x810)	/* word, RW (clear only) */
-#define	IO_GPIO_FALLING_IE	IO_ADDR(0x814)	/* word, RW */
-#define	IO_TIMER	IO_ADDR(0x900)	/* 16-byte, WR */
-#define	IO_PUSHBTN	IO_ADDR(0xF10)	/* byte, RD */
-#define	IO_LED		IO_ADDR(0xF11)	/* byte, WR */
-#define	IO_DIPSW	IO_ADDR(0xF12)	/* byte, RD */
-#define	IO_LCD		IO_ADDR(0xF13)	/* byte, WR */
-#define	IO_SIO_BYTE	IO_ADDR(0xF20)	/* byte, RW */
-#define	IO_SIO_STATUS	IO_ADDR(0xF21)	/* byte, RD */
-#define	IO_SIO_BAUD	IO_ADDR(0xF22)	/* half, WR */
-#define	IO_SPI_FLASH	IO_ADDR(0xB40)	/* half, RW */
-#define	IO_SPI_SDCARD	IO_ADDR(0xB50)	/* half, RW */
-#define	IO_FB		IO_ADDR(0xB80)	/* word, WR */
-#define	IO_PCM_CUR	IO_ADDR(0xBA0)	/* word, RD */
-#define	IO_PCM_FIRST	IO_ADDR(0xBA0)	/* word, WR */
-#define	IO_PCM_LAST	IO_ADDR(0xBA4)	/* word, WR */
-#define	IO_PCM_FREQ	IO_ADDR(0xBA8)	/* word, WR */
-#define	IO_PCM_VOLUME	IO_ADDR(0xBAC)	/* half, WR */
-#define	IO_LEGO_DATA	IO_ADDR(0xD20)	/* byte, WR */
-#define	IO_LEGO_CTL	IO_ADDR(0xD21)	/* byte, WR */
-#define	IO_CPU_RESET	IO_ADDR(0xFF0)	/* byte, WR */
+#define	IO_GPIO_DATA	IO_ADDR(0x000)	/* word, RW */
+#define	IO_GPIO_CTL	IO_ADDR(0x004)	/* word, WR */
+#define	IO_GPIO_RISE_IF	IO_ADDR(0x008)	/* word, RW (clear only) */
+#define	IO_GPIO_RISE_IE	IO_ADDR(0x00C)	/* word, RW */
+#define	IO_GPIO_FALL_IF	IO_ADDR(0x010)	/* word, RW (clear only) */
+#define	IO_GPIO_FALL_IE	IO_ADDR(0x014)	/* word, RW */
+
+#define	IO_TIMER	IO_ADDR(0x100)	/* 16-byte, WR */
+
+#define	IO_SIO_BYTE	IO_ADDR(0x300)	/* byte, RW */
+#define	IO_SIO_STATUS	IO_ADDR(0x301)	/* byte, RD */
+#define	IO_SIO_BAUD	IO_ADDR(0x302)	/* half, WR */
+
+#define	IO_SPI_FLASH	IO_ADDR(0x340)	/* half, RW */
+#define	IO_SPI_SDCARD	IO_ADDR(0x350)	/* half, RW */
+
+#define	IO_FB		IO_ADDR(0x380)	/* word, WR */
+
+#define	IO_PCM_CUR	IO_ADDR(0x3A0)	/* word, RD */
+#define	IO_PCM_FIRST	IO_ADDR(0x3A0)	/* word, WR */
+#define	IO_PCM_LAST	IO_ADDR(0x3A4)	/* word, WR */
+#define	IO_PCM_FREQ	IO_ADDR(0x3A8)	/* word, WR */
+#define	IO_PCM_VOLUME	IO_ADDR(0x3AC)	/* half, WR */
+
+#define	IO_LEGO_DATA	IO_ADDR(0x520)	/* byte, WR */
+#define	IO_LEGO_CTL	IO_ADDR(0x521)	/* byte, WR */
+
+#define	IO_PUSHBTN	IO_ADDR(0x700)	/* word, RD */
+#define	IO_DIPSW	IO_ADDR(0x702)	/* word, RD */
+#define	IO_LED		IO_ADDR(0x704)	/* word, WR */
+#define	IO_LCD		IO_ADDR(0x706)	/* word, WR */
+
+#define	IO_CPU_RESET	IO_ADDR(0x7F0)	/* byte, WR */
+
 
 /* SIO status bitmask */
 #define	SIO_TX_BUSY	0x4
