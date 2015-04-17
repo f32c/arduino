@@ -82,8 +82,8 @@ static int gpio_isr(void)
 {
   int8_t i;
   uint32_t bit;
-  volatile uint32_t *if_rising  = (volatile uint32_t *)IO_GPIO_RISING_IF;
-  volatile uint32_t *if_falling = (volatile uint32_t *)IO_GPIO_FALLING_IF;
+  volatile uint32_t *if_rising  = (volatile uint32_t *)IO_GPIO_RISE_IF;
+  volatile uint32_t *if_falling = (volatile uint32_t *)IO_GPIO_FALL_IF;
   
   for(i = 31, bit = (1<<31); i >= 0; i--, bit >>= 1)
   {
@@ -197,8 +197,8 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
   }
   if( variant_pin_map[pin].port == (volatile uint32_t *)IO_GPIO_DATA )
   {
-    volatile uint32_t *ie_rising  = (volatile uint32_t *)IO_GPIO_RISING_IE;
-    volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALLING_IE;
+    volatile uint32_t *ie_rising  = (volatile uint32_t *)IO_GPIO_RISE_IE;
+    volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALL_IE;
     irq = 5; // VARIANT_GPIO_INTERRUPT
     /* standard GPIO pin */
     if(bit >= 0)
@@ -272,8 +272,8 @@ void detachInterrupt(uint32_t pin)
   }
   if( variant_pin_map[pin].port == (volatile uint32_t *)IO_GPIO_DATA )
   {
-    volatile uint32_t *ie_rising =  (volatile uint32_t *)IO_GPIO_RISING_IE;
-    volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALLING_IE;
+    volatile uint32_t *ie_rising =  (volatile uint32_t *)IO_GPIO_RISE_IE;
+    volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALL_IE;
     int irq = 5; // VARIANT_GPIO_INTERRUPT
     /* standard GPIO pin */
     if(bit >= 0)
