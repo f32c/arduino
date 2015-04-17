@@ -33,7 +33,14 @@ endif
 ifeq ($(MAKECMDGOALS),c)
  LIB = c
  .DEFAULT_GOAL = lib
+endif
+
+ifeq ($(MAKECMDGOALS),cint)
+ LIB = c
+ .DEFAULT_GOAL = lib
+ # Omit floating point libs and corresponding printf parts
  CFLAGS += -DNO_PRINTF_FLOAT
+ INT_LIBC = true
 endif
 
 ifeq ($(MAKECMDGOALS),m)
@@ -47,7 +54,7 @@ ifeq ($(MAKECMDGOALS),ulx2s)
 endif
 
 ifeq ($(.DEFAULT_GOAL),)
-$(error Must specify library target: crt0 c m ulx2s)
+$(error Must specify library target: crt0 c cint m ulx2s)
 endif
 
 ifeq ($(LIB),crt0)
@@ -55,7 +62,7 @@ ifeq ($(LIB),crt0)
 endif
 
 ifeq ($(LIB),c)
- ifeq ($(ARCH),mips)
+ ifneq ($(ARCH),riscv)
   ASFILES = ${ARCH}/setjmp.S ${ARCH}/exception.S
  endif
 
@@ -65,11 +72,15 @@ ifeq ($(LIB),c)
 	spi.c sprintf.c strcasecmp.c strcpy.c strncpy.c \
 	strstr.c strtol.c
 
- ifeq ($(ARCH),mips)
-  CFILES += setjmperr.c isr.c sio.c sio_baud.c
+ ifneq ($(ARCH),riscv)
+  CFILES += sio.c sio_baud.c setjmperr.c isr.c
  endif
 
- CFILES += float/adddf3.c float/addsf3.c float/ashldi3.c float/clzsi2.c \
+ ifeq ($(INT_LIBC),true)
+  LIB = cint
+ endif
+ ifneq ($(INT_LIBC),true)
+  CFILES += float/adddf3.c float/addsf3.c float/ashldi3.c float/clzsi2.c \
 	float/comparedf2.c float/comparesf2.c float/divdf3.c float/divsf3.c \
 	float/extendsfdf2.c float/fixdfsi.c float/fixsfsi.c float/fixunsdfdi.c \
 	float/fixunsdfsi.c float/fixunssfsi.c float/floatsidf.c \
@@ -77,6 +88,7 @@ ifeq ($(LIB),c)
 	float/floatunsidf.c float/floatunsisf.c float/lshrdi3.c \
 	float/muldf3.c float/mulsf3.c float/negdf2.c float/negsf2.c \
 	float/subdf3.c float/subsf3.c float/truncdfsf2.c
+ endif
 endif
 
 ifeq ($(LIB),m)
@@ -100,6 +112,3 @@ ifeq ($(LIB),ulx2s)
 endif
 
 include ${POST_MK}
-
-${LIB}: ${OBJS} Makefile
-	${AR} ../../../../${ARCH}/system/lib/lib${LIB}.a ${OBJS}
