@@ -38,43 +38,41 @@
 
 #define	IO_BASE		0xfffff800
 
-#define	IO_UINT32(a)	((volatile uint32_t *) (IO_BASE | (a)))
-#define	IO_UINT16(a)	((volatile uint16_t *) (IO_BASE | (a)))
-#define	IO_UINT8(a)	((volatile uint8_t *)  (IO_BASE | (a)))
+#define	IO_ADDR(a)	(IO_BASE | (a))
 
-#define	IO_GPIO_DATA	IO_UINT32(0x000)	/* word, RW */
-#define	IO_GPIO_CTL	IO_UINT32(0x004)	/* word, WR */
-#define	IO_GPIO_RISE_IF	IO_UINT32(0x008)	/* word, RW (clear only) */
-#define	IO_GPIO_RISE_IE	IO_UINT32(0x00C)	/* word, RW */
-#define	IO_GPIO_FALL_IF	IO_UINT32(0x010)	/* word, RW (clear only) */
-#define	IO_GPIO_FALL_IE	IO_UINT32(0x014)	/* word, RW */
+#define	IO_GPIO_DATA	IO_ADDR(0x000)	/* word, RW */
+#define	IO_GPIO_CTL	IO_ADDR(0x004)	/* word, WR */
+#define	IO_GPIO_RISE_IF	IO_ADDR(0x008)	/* word, RW (clear only) */
+#define	IO_GPIO_RISE_IE	IO_ADDR(0x00C)	/* word, RW */
+#define	IO_GPIO_FALL_IF	IO_ADDR(0x010)	/* word, RW (clear only) */
+#define	IO_GPIO_FALL_IE	IO_ADDR(0x014)	/* word, RW */
 
-#define	IO_TIMER	IO_UINT32(0x100)	/* 16-byte, WR */
+#define	IO_TIMER	IO_ADDR(0x100)	/* 16-byte, WR */
 
-#define	IO_SIO_BYTE	IO_UINT8(0x300)	        /* byte, RW */
-#define	IO_SIO_STATUS	IO_UINT8(0x301)	        /* byte, RD */
-#define	IO_SIO_BAUD	IO_UINT16(0x302)	/* half, WR */
+#define	IO_SIO_BYTE	IO_ADDR(0x300)	        /* byte, RW */
+#define	IO_SIO_STATUS	IO_ADDR(0x301)	        /* byte, RD */
+#define	IO_SIO_BAUD	IO_ADDR(0x302)	/* half, WR */
 
-#define	IO_SPI_FLASH	IO_UINT16(0x340)	/* half, RW */
-#define	IO_SPI_SDCARD	IO_UINT16(0x350)	/* half, RW */
+#define	IO_SPI_FLASH	IO_ADDR(0x340)	/* half, RW */
+#define	IO_SPI_SDCARD	IO_ADDR(0x350)	/* half, RW */
 
-#define	IO_FB		IO_UINT32(0x380)	/* word, WR */
+#define	IO_FB		IO_ADDR(0x380)	/* word, WR */
 
-#define	IO_PCM_CUR	IO_UINT32(0x3A0)	/* word, RD */
-#define	IO_PCM_FIRST	IO_UINT32(0x3A0)	/* word, WR */
-#define	IO_PCM_LAST	IO_UINT32(0x3A4)	/* word, WR */
-#define	IO_PCM_FREQ	IO_UINT32(0x3A8)	/* word, WR */
-#define	IO_PCM_VOLUME	IO_UINT16(0x3AC)	/* half, WR */
+#define	IO_PCM_CUR	IO_ADDR(0x3A0)	/* word, RD */
+#define	IO_PCM_FIRST	IO_ADDR(0x3A0)	/* word, WR */
+#define	IO_PCM_LAST	IO_ADDR(0x3A4)	/* word, WR */
+#define	IO_PCM_FREQ	IO_ADDR(0x3A8)	/* word, WR */
+#define	IO_PCM_VOLUME	IO_ADDR(0x3AC)	/* half, WR */
 
-#define	IO_LEGO_DATA	IO_UINT8(0x520)		/* byte, WR */
-#define	IO_LEGO_CTL	IO_UINT8(0x521)		/* byte, WR */
+#define	IO_LEGO_DATA	IO_ADDR(0x520)		/* byte, WR */
+#define	IO_LEGO_CTL	IO_ADDR(0x521)		/* byte, WR */
 
-#define	IO_PUSHBTN	IO_UINT32(0x700)	/* word, RD */
-#define	IO_DIPSW	IO_UINT16(0x702)	/* word, RD */
-#define	IO_LED		IO_UINT32(0x710)	/* word, WR */
-#define	IO_LCD		IO_UINT16(0x712)	/* word, WR */
+#define	IO_PUSHBTN	IO_ADDR(0x700)	/* word, RD */
+#define	IO_DIPSW	IO_ADDR(0x702)	/* word, RD */
+#define	IO_LED		IO_ADDR(0x710)	/* word, WR */
+#define	IO_LCD		IO_ADDR(0x712)	/* word, WR */
 
-#define	IO_CPU_RESET	IO_UINT8(0x7F0)	        /* byte, WR */
+#define	IO_CPU_RESET	IO_ADDR(0x7F0)	        /* byte, WR */
 
 
 /* SIO status bitmask */
