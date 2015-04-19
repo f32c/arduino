@@ -34,7 +34,6 @@ struct variant_pin_map_s
 {
 	volatile uint32_t *port;
 	int8_t bit;
-	uint32_t bitmask;
 	int8_t pwm;
 	int8_t icp;
 };
