@@ -10,28 +10,26 @@
 extern "C" {
 #endif
 
-
-static uint32_t gpio_cfg, gpio_out, led_out;
-
-
 void
 pinMode(uint32_t pin, uint32_t mode)
 {
+	volatile uint32_t *port;
 
-	if (pin >= variant_pin_map_size ||
-	    (variant_pin_map[pin].port != (volatile uint32_t *) IO_GPIO_DATA))
+	if (pin >= variant_pin_map_size)
+                return;
+        
+        port = &(variant_pin_map[pin].port[1]); /* address of gpio control */
+	if (port != (volatile uint32_t *) (IO_GPIO_CTL) )
 		return;
 
 	switch (mode) {
 	case INPUT:
-		gpio_cfg &= ~(1<<variant_pin_map[pin].bit);
-		break ;
+		*port &= ~(1<<variant_pin_map[pin].bit);
+		break;
 	case OUTPUT:
-		gpio_cfg |=  (1<<variant_pin_map[pin].bit);
-		break ;
+		*port |=  (1<<variant_pin_map[pin].bit);
+		break;
 	}
-
-	OUTW(IO_GPIO_CTL, gpio_cfg);
 }
 
 
@@ -39,7 +37,6 @@ void
 digitalWrite(uint32_t pin, uint32_t val)
 {
 	volatile uint32_t *port;
-	uint32_t *var = &gpio_out;
 	int8_t pwm_channel;
 
 	if (pin >= variant_pin_map_size)
@@ -54,9 +51,6 @@ digitalWrite(uint32_t pin, uint32_t val)
 	}
 
 	port = variant_pin_map[pin].port;
-
-	//if (port == (volatile uint32_t *) IO_LED)
-	//	var = &led_out;
 
 	if (val)
 		*port |=  (1<<variant_pin_map[pin].bit);
