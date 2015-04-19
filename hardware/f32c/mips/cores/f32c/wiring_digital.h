@@ -24,7 +24,7 @@
 #endif
 
 #define digitalPinToPort(pin) variant_pin_map[pin].port
-#define digitalPinToBitMask(pin) variant_pin_map[pin].bitmask
+#define digitalPinToBitMask(pin) (1<<variant_pin_map[pin].bit)
 #define portOutputRegister(port) port
 #define portInputRegister(port) port
 

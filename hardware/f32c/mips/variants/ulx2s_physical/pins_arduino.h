@@ -49,25 +49,25 @@
   { /* 42 */  (volatile uint32_t *) IO_LED,        1, 1<<1,      0, -1  /* led_1, ocp0 */ }, \
   { /* 43 */  (volatile uint32_t *) IO_LED,        2, 1<<2,      1, -1  /* led_2, ocp1 */ }, \
   { /* 44 */  (volatile uint32_t *) IO_LED,        3, 1<<3,     -1,  1  /* led_3, icp1 */ }, \
-  { /* 45 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1  /* p_tip_0 */ }, \
-  { /* 46 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1  /* p_tip_1 */ }, \
-  { /* 47 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1  /* p_tip_2 */ }, \
-  { /* 48 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 49 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 50 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 51 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 52 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 53 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 54 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 55 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 56 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 57 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 58 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 59 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 60 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 61 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 62 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
-  { /* 63 */  (volatile uint32_t *) IO_GPIO_DATA,    0,     -1, -1 }, \
+  { /* 45 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1  /* p_tip_0 */ }, \
+  { /* 46 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1  /* p_tip_1 */ }, \
+  { /* 47 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1  /* p_tip_2 */ }, \
+  { /* 48 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 49 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 50 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 51 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 52 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 53 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 54 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 55 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 56 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 57 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 58 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 59 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 60 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 61 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 62 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
+  { /* 63 */  (volatile uint32_t *) IO_GPIO_DATA,  0,   -1,     -1 }, \
 }
 
 #endif
