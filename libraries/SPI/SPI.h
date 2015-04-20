@@ -971,7 +971,7 @@ class SPIClass {
 };
 
 
-#elif defined(__F32C_MIPS__)
+#elif defined(__F32C__)
 
 #define Spi uint32_t
 

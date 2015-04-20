@@ -519,7 +519,7 @@ static void SPI_0_Init(void) {
 SPIClass SPI(SPI_INTERFACE, SPI_INTERFACE_ID, SPI_0_Init);
 #endif
 
-#elif defined(__F32C_MIPS__)
+#elif defined(__F32C__)
 
 SPIClass::SPIClass(Spi *_spi, uint32_t _id, void(*_initCb)(void)) :
 	spi(_spi), id(_id), initCb(_initCb), initialized(false)

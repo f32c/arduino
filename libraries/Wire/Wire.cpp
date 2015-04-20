@@ -756,7 +756,7 @@ TwoWire Wire = TwoWire();
 
 #endif // __AVR__
 
-#if defined(__F32C_MIPS__)
+#if defined(__F32C__)
 
 extern "C" {
   #include <stdlib.h>
@@ -1039,4 +1039,4 @@ void TwoWire::onRequest( void (*function)(void) )
 
 TwoWire Wire = TwoWire();
 
-#endif // __F32C_MIPS__
+#endif // __F32C__

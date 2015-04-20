@@ -31,9 +31,11 @@ build.extra_flags=
 
 # These can be overridden in platform.local.txt
 # XXX cemu tocno ovo sluzi?
-compiler.c.extra_flags=-D__F32C_RISCV__
+# YYY ovo sluzi da arduino library zna koji architecture
+# specific feature moze upotrijebiti
+compiler.c.extra_flags=-D__F32C__
 compiler.c.elf.extra_flags=
-compiler.cpp.extra_flags=-D__F32C_RISCV__
+compiler.cpp.extra_flags=-D__F32C__
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
 

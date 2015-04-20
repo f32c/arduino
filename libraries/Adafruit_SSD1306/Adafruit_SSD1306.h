@@ -27,7 +27,7 @@ All text above, and the splash screen must be included in any redistribution
  typedef uint32_t PortMask;
 #endif
 
-#ifdef __F32C_MIPS__
+#ifdef __F32C__
  typedef volatile uint32_t PortReg;
  typedef uint32_t PortMask;
  #include <SPI.h>
