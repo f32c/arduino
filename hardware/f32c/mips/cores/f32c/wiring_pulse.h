@@ -19,9 +19,7 @@
 #ifndef _WIRING_PULSE_
 #define _WIRING_PULSE_
 
-#ifdef __cplusplus
- extern "C" {
-#endif
+__BEGIN_DECLS
 
 /*
  * \brief Measures the length (in microseconds) of a pulse on the pin; state is HIGH
@@ -31,9 +29,6 @@
  */
 extern uint32_t pulseIn(uint32_t ulPin, bool ulState, uint32_t ulTimeout = 1000000L);
 
-
-#ifdef __cplusplus
-}
-#endif
+__END_DECLS
 
 #endif /* _WIRING_PULSE_ */

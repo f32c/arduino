@@ -3,9 +3,7 @@
 #include "Arduino.h"
 #include "wiring_analog.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__BEGIN_DECLS
 
 static uint8_t analog_write_resolution_bits = 8;
 /* old arduino uses 490 Hz */
@@ -159,3 +157,5 @@ uint32_t setInputCapture(uint32_t ulPin)
   }
   return 0;
 }
+
+__END_DECLS

@@ -19,9 +19,7 @@
 #ifndef _ITOA_
 #define _ITOA_
 
-#ifdef __cplusplus
-extern "C"{
-#endif // __cplusplus
+__BEGIN_DECLS
 
 #if 0
 
@@ -35,8 +33,6 @@ extern char* utoa( unsigned long value, char *string, int radix ) ;
 extern char* ultoa( unsigned long value, char *string, int radix ) ;
 #endif /* 0 */
 
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
+__END_DECLS
 
 #endif // _ITOA_

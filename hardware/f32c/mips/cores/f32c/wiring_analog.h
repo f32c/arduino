@@ -19,9 +19,7 @@
 #ifndef _WIRING_ANALOG_
 #define _WIRING_ANALOG_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__BEGIN_DECLS
 
 struct pwm_enable_bitmask_s
 {
@@ -99,8 +97,6 @@ extern void analogWritePhase(uint32_t pin, uint32_t phase);
 
 extern void analogOutputInit( void ) ;
 
-#ifdef __cplusplus
-}
-#endif
+__END_DECLS
 
 #endif /* _WIRING_ANALOG_ */

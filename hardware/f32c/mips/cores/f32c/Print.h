@@ -20,8 +20,10 @@
 #ifndef Print_h
 #define Print_h
 
+__BEGIN_DECLS
 #include <inttypes.h>
 #include <stdio.h> // for size_t
+__END_DECLS
 
 #include "WString.h"
 #include "Printable.h"

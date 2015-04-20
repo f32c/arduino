@@ -19,9 +19,7 @@
 #include "itoa.h"
 #include <string.h>
 
-#ifdef __cplusplus
-extern "C"{
-#endif // __cplusplus
+__BEGIN_DECLS
 
 #if 0
 /* reverse:  reverse string s in place */
@@ -165,6 +163,4 @@ extern char* ultoa( unsigned long value, char *string, int radix )
 }
 #endif /* 0 */
 
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
+__END_DECLS

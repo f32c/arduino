@@ -19,9 +19,7 @@
 #ifndef _WIRING_CONSTANTS_
 #define _WIRING_CONSTANTS_
 
-#ifdef __cplusplus
-extern "C"{
-#endif // __cplusplus
+__BEGIN_DECLS
 
 #define HIGH 0x1
 #define LOW  0x0
@@ -92,8 +90,6 @@ typedef unsigned int word;
 typedef bool boolean ;
 typedef uint8_t byte ;
 
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
+__END_DECLS
 
 #endif /* _WIRING_CONSTANTS_ */

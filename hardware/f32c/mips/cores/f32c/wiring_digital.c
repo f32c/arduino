@@ -6,9 +6,7 @@
 #include "wiring_analog.h" // this is needed to turn off pwm
 #include <io.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__BEGIN_DECLS
 
 void
 pinMode(uint32_t pin, uint32_t mode)
@@ -68,6 +66,4 @@ digitalRead(uint32_t pin)
 	return ((*variant_pin_map[pin].port & (1<<variant_pin_map[pin].bit)) != 0);
 }
 
-#ifdef __cplusplus
-}
-#endif
+__END_DECLS

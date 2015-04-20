@@ -21,9 +21,7 @@
 
 #include "Arduino.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__BEGIN_DECLS
 
 struct variant_icp_control_s
 {
@@ -45,8 +43,6 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode);
 void detachInterrupt(uint32_t pin);
 void icpFilter(uint32_t pin, uint32_t icp_start, uint32_t icp_stop);
 
-#ifdef __cplusplus
-}
-#endif
+__END_DECLS
 
 #endif /* _WIRING_INTERRUPTS_ */

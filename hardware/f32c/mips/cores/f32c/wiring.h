@@ -20,9 +20,7 @@
 #ifndef _WIRING_
 #define _WIRING_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__BEGIN_DECLS
 
 /**
  *
@@ -92,8 +90,6 @@ static inline void delayMicroseconds(uint32_t usec){
     while( ((int32_t)micros())-endwait < 0);
 }
 
-#ifdef __cplusplus
-}
-#endif
+__END_DECLS
 
 #endif /* _WIRING_ */

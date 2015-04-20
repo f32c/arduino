@@ -6,9 +6,7 @@
 #include "wiring_private.h"
 #include "emard_timer.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__BEGIN_DECLS
 
 /* 8 main MIPS interrupts, all initially disabled */
 static volatile voidFuncPtr intFunc[8] = 
@@ -290,7 +288,4 @@ void detachInterrupt(uint32_t pin)
   }
 }
 
-
-#ifdef __cplusplus
-}
-#endif
+__END_DECLS

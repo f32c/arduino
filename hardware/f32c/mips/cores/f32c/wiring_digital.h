@@ -19,9 +19,7 @@
 #ifndef _WIRING_DIGITAL_
 #define _WIRING_DIGITAL_
 
-#ifdef __cplusplus
- extern "C" {
-#endif
+__BEGIN_DECLS
 
 #define digitalPinToPort(pin) variant_pin_map[pin].port
 #define digitalPinToBitMask(pin) (1<<variant_pin_map[pin].bit)
@@ -67,8 +65,6 @@ extern void digitalWrite( uint32_t dwPin, uint32_t dwVal ) ;
  */
 extern int digitalRead( uint32_t ulPin ) ;
 
-#ifdef __cplusplus
-}
-#endif
+__END_DECLS
 
 #endif /* _WIRING_DIGITAL_ */
