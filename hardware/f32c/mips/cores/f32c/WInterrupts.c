@@ -150,7 +150,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
   
   icp = variant_pin_map[pin].icp;
   ocp = variant_pin_map[pin].pwm;
-  bit = variant_pin_map[pin].bit;
+  bit = variant_pin_map[pin].bit_pos;
   
   if(bit == 13)
   {
@@ -193,7 +193,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     }
     asm("ei");
   }
-  if( variant_pin_map[pin].port == (volatile uint32_t *)IO_GPIO_DATA )
+  if (IO_ADDR(variant_pin_map[pin].io_port) == IO_GPIO_DATA)
   {
     volatile uint32_t *ie_rising  = (volatile uint32_t *)IO_GPIO_RISE_IE;
     volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALL_IE;
@@ -225,7 +225,7 @@ void detachInterrupt(uint32_t pin)
     return;
   icp = variant_pin_map[pin].icp;
   ocp = variant_pin_map[pin].pwm;
-  bit = variant_pin_map[pin].bit;
+  bit = variant_pin_map[pin].bit_pos;
   if(bit == 13)
   {
     int irq = 7;
@@ -268,7 +268,7 @@ void detachInterrupt(uint32_t pin)
       #endif
     }
   }
-  if( variant_pin_map[pin].port == (volatile uint32_t *)IO_GPIO_DATA )
+  if (IO_ADDR(variant_pin_map[pin].io_port) == IO_GPIO_DATA)
   {
     volatile uint32_t *ie_rising =  (volatile uint32_t *)IO_GPIO_RISE_IE;
     volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALL_IE;

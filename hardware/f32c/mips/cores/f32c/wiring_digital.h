@@ -19,10 +19,12 @@
 #ifndef _WIRING_DIGITAL_
 #define _WIRING_DIGITAL_
 
+#include <io.h>
+
 __BEGIN_DECLS
 
-#define digitalPinToPort(pin) variant_pin_map[pin].port
-#define digitalPinToBitMask(pin) (1<<variant_pin_map[pin].bit)
+#define digitalPinToPort(pin) ((volatile uint32_t *) IO_ADDR(variant_pin_map[pin].io_port))
+#define digitalPinToBitMask(pin) (1<<variant_pin_map[pin].bit_pos)
 #define portOutputRegister(port) port
 #define portInputRegister(port) port
 

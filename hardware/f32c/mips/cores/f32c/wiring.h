@@ -28,12 +28,11 @@ __BEGIN_DECLS
 extern void initVariant( void ) ;
 extern void init( void ) ;
 
-struct variant_pin_map_s 
-{
-	volatile uint32_t *port;
-	int8_t bit;
-	int8_t pwm;
-	int8_t icp;
+struct variant_pin_map_s {
+	uint16_t	io_port:11,
+			bit_pos:5;
+	int8_t		pwm;
+	int8_t 		icp;
 };
 
 extern struct variant_pin_map_s variant_pin_map[];

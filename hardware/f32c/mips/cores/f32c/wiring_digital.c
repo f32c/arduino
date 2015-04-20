@@ -11,21 +11,18 @@ __BEGIN_DECLS
 void
 pinMode(uint32_t pin, uint32_t mode)
 {
-	volatile uint32_t *port;
+	volatile uint32_t *port = (volatile uint32_t *) IO_GPIO_CTL;
 
-	if (pin >= variant_pin_map_size)
-                return;
-        
-        port = &(variant_pin_map[pin].port[1]); /* address of gpio control */
-	if (port != (volatile uint32_t *) (IO_GPIO_CTL) )
+	if (pin >= variant_pin_map_size ||
+	    IO_ADDR(variant_pin_map[pin].io_port) != IO_GPIO_DATA)
 		return;
 
 	switch (mode) {
 	case INPUT:
-		*port &= ~(1<<variant_pin_map[pin].bit);
+		*port &= ~(1<<variant_pin_map[pin].bit_pos);
 		break;
 	case OUTPUT:
-		*port |=  (1<<variant_pin_map[pin].bit);
+		*port |=  (1<<variant_pin_map[pin].bit_pos);
 		break;
 	}
 }
@@ -48,22 +45,25 @@ digitalWrite(uint32_t pin, uint32_t val)
           EMARD_TIMER[TC_APPLY] = pwm_enable_bitmask[pwm_channel].apply;
 	}
 
-	port = variant_pin_map[pin].port;
+	port = (volatile uint32_t *) IO_ADDR(variant_pin_map[pin].io_port);
 
 	if (val)
-		*port |=  (1<<variant_pin_map[pin].bit);
+		*port |=  (1<<variant_pin_map[pin].bit_pos);
 	else
-		*port &= ~(1<<variant_pin_map[pin].bit);
+		*port &= ~(1<<variant_pin_map[pin].bit_pos);
 }
 
 
 int
 digitalRead(uint32_t pin)
 {
+	volatile uint32_t *port;
+
 	if (pin >= variant_pin_map_size)
 		return 0;
 
-	return ((*variant_pin_map[pin].port & (1<<variant_pin_map[pin].bit)) != 0);
+	port = (volatile uint32_t *) IO_ADDR(variant_pin_map[pin].io_port);
+	return ((*port & (1<<variant_pin_map[pin].bit_pos)) != 0);
 }
 
 __END_DECLS

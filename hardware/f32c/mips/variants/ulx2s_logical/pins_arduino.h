@@ -1,7 +1,7 @@
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
 
-#define VU32P(x) ((volatile uint32_t *)(x))
+#define VU32P(x) ((x) & 0x7ff)
 #define VARIANT_DIGITAL_PIN_MAP \
 { \
 /* pin     port                 bit  pwm  icp  comment */ \
