@@ -35,7 +35,7 @@ struct variant_pin_map_s {
 	int8_t 		icp;
 };
 
-extern struct variant_pin_map_s variant_pin_map[];
+extern const struct variant_pin_map_s variant_pin_map[];
 extern const uint32_t variant_pin_map_size;
 
 /**
