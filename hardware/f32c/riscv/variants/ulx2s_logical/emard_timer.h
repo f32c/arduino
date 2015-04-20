@@ -17,7 +17,7 @@
 #define FRAC_BITS 0
 
 /* timer base address in i/o space */
-#define EMARD_TIMADR -128
+#define EMARD_TIMADR IO_TIMER
 
 /* timer registers */
 #define TC_COUNTER    0
