@@ -28,9 +28,7 @@
 #ifndef _STDLIB_H_
 #define	_STDLIB_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__BEGIN_DECLS
 
 double strtod(const char * __restrict, char ** __restrict);
 long strtol(const char * __restrict, char ** __restrict, int);
@@ -71,8 +69,6 @@ exit(int x __unused)
 	}
 }
 
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
+__END_DECLS
 
 #endif /* !_STDLIB_H_ */

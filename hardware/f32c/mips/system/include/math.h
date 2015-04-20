@@ -13,14 +13,11 @@
  * from: @(#)fdlibm.h 5.1 93/09/24
  * $FreeBSD: stable/9/lib/msun/src/math.h 236612 2012-06-05 11:42:34Z theraven $
  */
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #ifndef _MATH_H_
 #define	_MATH_H_
 
-
+__BEGIN_DECLS
 
 #include <sys/cdefs.h>
 #include <sys/_types.h>
@@ -174,7 +171,6 @@ extern int signgam;
  * effect of raising floating-point exceptions, so they are not declared
  * as __pure2.  In C99, FENV_ACCESS affects the purity of these functions.
  */
-__BEGIN_DECLS
 /*
  * ANSI/POSIX
  */
@@ -488,7 +484,3 @@ __END_DECLS
 #endif /* !_DECLARE_C99_LDBL_MATH */
 #endif /* __ISO_C_VISIBLE >= 1999 */
 #endif /* !_MATH_EXTRA_H_ */
-
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus

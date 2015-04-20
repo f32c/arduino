@@ -28,9 +28,7 @@
 #ifndef	_STRING_H_
 #define	_STRING_H_
 
-#ifdef __cplusplus
-extern "C"{
-#endif // __cplusplus
+__BEGIN_DECLS
 
 char *strstr(const char *, const char *) __pure;
 
@@ -234,9 +232,6 @@ strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
+__END_DECLS
 
 #endif /* !_STRING_H_ */
