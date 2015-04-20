@@ -25,21 +25,17 @@
 #ifndef WiringPrivate_h
 #define WiringPrivate_h
 
-#include <stdio.h>
-#include <stdarg.h>
+__BEGIN_DECLS
 
 #include "Arduino.h"
 
-#ifdef __cplusplus
-extern "C"{
-#endif
+#include <stdio.h>
+#include <stdarg.h>
 
 #define EXTERNAL_NUM_INTERRUPTS 2
 
 typedef void (*voidFuncPtr)(void);
 
-#ifdef __cplusplus
-} // extern "C"
-#endif
+__END_DECLS
 
 #endif

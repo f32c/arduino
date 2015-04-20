@@ -6,32 +6,28 @@
 #include "wiring_analog.h" // this is needed to turn off pwm
 #include <io.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-static uint32_t gpio_cfg, gpio_out, led_out;
-
+__BEGIN_DECLS
 
 void
 pinMode(uint32_t pin, uint32_t mode)
 {
+	volatile uint32_t *port;
 
-	if (pin >= variant_pin_map_size ||
-	    (variant_pin_map[pin].port == (volatile uint32_t *) IO_PUSHBTN))
+	if (pin >= variant_pin_map_size)
+                return;
+        
+        port = &(variant_pin_map[pin].port[1]); /* address of gpio control */
+	if (port != (volatile uint32_t *) (IO_GPIO_CTL) )
 		return;
 
 	switch (mode) {
 	case INPUT:
-		gpio_cfg &= ~variant_pin_map[pin].bitmask;
-		break ;
+		*port &= ~(1<<variant_pin_map[pin].bit);
+		break;
 	case OUTPUT:
-		gpio_cfg |= variant_pin_map[pin].bitmask;
-		break ;
+		*port |=  (1<<variant_pin_map[pin].bit);
+		break;
 	}
-
-	OUTW(IO_GPIO_CTL, gpio_cfg);
 }
 
 
@@ -39,7 +35,6 @@ void
 digitalWrite(uint32_t pin, uint32_t val)
 {
 	volatile uint32_t *port;
-	uint32_t *var = &gpio_out;
 	int8_t pwm_channel;
 
 	if (pin >= variant_pin_map_size)
@@ -55,13 +50,10 @@ digitalWrite(uint32_t pin, uint32_t val)
 
 	port = variant_pin_map[pin].port;
 
-	if (port == (volatile uint32_t *) IO_PUSHBTN)
-		var = &led_out;
-
 	if (val)
-		*port = (*var |= variant_pin_map[pin].bitmask);
+		*port |=  (1<<variant_pin_map[pin].bit);
 	else
-		*port = (*var &= ~variant_pin_map[pin].bitmask);
+		*port &= ~(1<<variant_pin_map[pin].bit);
 }
 
 
@@ -71,10 +63,7 @@ digitalRead(uint32_t pin)
 	if (pin >= variant_pin_map_size)
 		return 0;
 
-	return ((*variant_pin_map[pin].port & variant_pin_map[pin].bitmask) != 0);
+	return ((*variant_pin_map[pin].port & (1<<variant_pin_map[pin].bit)) != 0);
 }
 
-#ifdef __cplusplus
-}
-#endif
-
+__END_DECLS

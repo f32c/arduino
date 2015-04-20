@@ -22,9 +22,7 @@
 
 #include <ctype.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+__BEGIN_DECLS
 
 // WCharacter.h prototypes
 #if defined (  __GNUC__  )
@@ -173,8 +171,6 @@ inline int toUpperCase(int c)
   return toupper (c);
 }
 
-#ifdef __cplusplus
-}
-#endif
+__END_DECLS
 
 #endif
