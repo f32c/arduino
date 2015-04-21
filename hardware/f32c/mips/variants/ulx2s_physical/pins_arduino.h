@@ -1,74 +1,76 @@
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
 
-#define VU32P(x) ((x) & 0x7ff)
+/* PIN_TYPE_* are enum's defined in wiring.h */
+/* PIN_TYPE_OUTPUT is LED */
+/* PIN_TYPE_INPUT is PUSHBUTTON or SWITCH */
 #define VARIANT_DIGITAL_PIN_MAP \
 { \
 /* pin     port                 bit   pwm  icp   comment */ \
-  [ 0] = { VU32P(IO_PUSHBTN),   -1,   -1, -1 }, \
-  [ 1] = { VU32P(IO_PUSHBTN),   -1,   -1, -1 }, \
-  [ 2] = { VU32P(IO_GPIO_DATA),  0,   -1, -1  /* lcd3 */ }, \
-  [ 3] = { VU32P(IO_GPIO_DATA),  1,   -1, -1  /* lcd2 */ }, \
-  [ 4] = { VU32P(IO_GPIO_DATA),  2,   -1, -1  /* lcd1 */ }, \
-  [ 5] = { VU32P(IO_LED),        7,   -1, -1 }, \
-  [ 6] = { VU32P(IO_LED),        6,   -1, -1 }, \
-  [ 7] = { VU32P(IO_LED),        5,   -1, -1 }, \
-  [ 8] = { VU32P(IO_GPIO_DATA),  3,   -1, -1  /* lcd0 */ }, \
-  [ 9] = { VU32P(IO_GPIO_DATA),  4,   -1, -1  /* lcd5 */ }, \
-  [10] = { VU32P(IO_PUSHBTN),    2,   -1, -1  /* btn_down */ }, \
-  [11] = { VU32P(IO_PUSHBTN),    1,   -1, -1  /* btn_left */ }, \
-  [12] = { VU32P(IO_LED),        4,   -1, -1 }, \
-  [13] = { VU32P(IO_GPIO_DATA),  5,   -1, -1  /* lcd4 */ }, \
-  [14] = { VU32P(IO_GPIO_DATA),  6,   -1, -1 }, \
-  [15] = { VU32P(IO_GPIO_DATA),  7,   -1, -1 }, \
-  [16] = { VU32P(IO_GPIO_DATA),  8,   -1, -1 }, \
-  [17] = { VU32P(IO_GPIO_DATA),  9,   -1, -1 }, \
-  [18] = { VU32P(IO_GPIO_DATA), 10,   -1, -1 }, \
-  [19] = { VU32P(IO_GPIO_DATA), 11,   -1, -1 }, \
-  [20] = { VU32P(IO_GPIO_DATA), 12,   -1, -1 }, \
-  [21] = { VU32P(IO_GPIO_DATA), 13,   -1, -1 }, \
-  [22] = { VU32P(IO_GPIO_DATA), 14,   -1, -1 }, \
-  [23] = { VU32P(IO_GPIO_DATA), 15,   -1, -1 }, \
-  [24] = { VU32P(IO_PUSHBTN),   -1,   -1, -1 }, \
-  [25] = { VU32P(IO_PUSHBTN),   -1,   -1, -1 }, \
-  [26] = { VU32P(IO_GPIO_DATA), 16,   -1, -1 }, \
-  [27] = { VU32P(IO_GPIO_DATA), 17,   -1, -1 }, \
-  [28] = { VU32P(IO_GPIO_DATA), 18,   -1, -1 }, \
-  [29] = { VU32P(IO_GPIO_DATA), 19,   -1, -1 }, \
-  [30] = { VU32P(IO_GPIO_DATA), 20,   -1, -1 }, \
-  [31] = { VU32P(IO_GPIO_DATA), 21,   -1, -1 }, \
-  [32] = { VU32P(IO_GPIO_DATA), 22,   -1, -1 }, \
-  [33] = { VU32P(IO_GPIO_DATA), 23,   -1, -1 }, \
-  [34] = { VU32P(IO_GPIO_DATA), 24,   -1, -1 }, \
-  [35] = { VU32P(IO_GPIO_DATA), 25,   -1, -1 }, \
-  [36] = { VU32P(IO_GPIO_DATA), 26,   -1, -1 }, \
-  [37] = { VU32P(IO_GPIO_DATA), 27,   -1, -1 }, \
-  [38] = { VU32P(IO_PUSHBTN),    0,   -1, -1  /* btn_right */ }, \
-  [39] = { VU32P(IO_PUSHBTN),    4,   -1, -1  /* btn_center */ }, \
-  [40] = { VU32P(IO_GPIO_DATA), 28,   -1, -1 }, \
-  [41] = { VU32P(IO_LED),        0,   -1,  0  /* icp0 */ }, \
-  [42] = { VU32P(IO_LED),        1,    0, -1  /* ocp0 */ }, \
-  [43] = { VU32P(IO_LED),        2,    1, -1  /* ocp1 */ }, \
-  [44] = { VU32P(IO_LED),        3,   -1,  1  /* icp1 */ }, \
-  [45] = { VU32P(IO_GPIO_DATA),  0,   -1, -1  /* p_tip_0 */ }, \
-  [46] = { VU32P(IO_GPIO_DATA),  0,   -1, -1  /* p_tip_1 */ }, \
-  [47] = { VU32P(IO_GPIO_DATA),  0,   -1, -1  /* p_tip_2 */ }, \
-  [48] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [49] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [50] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [51] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [52] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [53] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [54] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [55] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [56] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [57] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [58] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [59] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [60] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [61] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [62] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
-  [63] = { VU32P(IO_GPIO_DATA),  0,   -1, -1}, \
+  [ 0] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE }, \
+  [ 1] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE }, \
+  [ 2] = { PIN_TYPE_GPIO,     0,   OCP_NONE, ICP_NONE  /* lcd3 */ }, \
+  [ 3] = { PIN_TYPE_GPIO,     1,   OCP_NONE, ICP_NONE  /* lcd2 */ }, \
+  [ 4] = { PIN_TYPE_GPIO,     2,   OCP_NONE, ICP_NONE  /* lcd1 */ }, \
+  [ 5] = { PIN_TYPE_OUTPUT,   7,   OCP_NONE, ICP_NONE }, \
+  [ 6] = { PIN_TYPE_OUTPUT,   6,   OCP_NONE, ICP_NONE }, \
+  [ 7] = { PIN_TYPE_OUTPUT,   5,   OCP_NONE, ICP_NONE }, \
+  [ 8] = { PIN_TYPE_GPIO,     3,   OCP_NONE, ICP_NONE  /* lcd0 */ }, \
+  [ 9] = { PIN_TYPE_GPIO,     4,   OCP_NONE, ICP_NONE  /* lcd5 */ }, \
+  [10] = { PIN_TYPE_INPUT,    2,   OCP_NONE, ICP_NONE  /* btn_down */ }, \
+  [11] = { PIN_TYPE_INPUT,    1,   OCP_NONE, ICP_NONE  /* btn_left */ }, \
+  [12] = { PIN_TYPE_OUTPUT,   4,   OCP_NONE, ICP_NONE }, \
+  [13] = { PIN_TYPE_GPIO,     5,   OCP_NONE, ICP_NONE  /* lcd4 */ }, \
+  [14] = { PIN_TYPE_GPIO,     6,   OCP_NONE, ICP_NONE }, \
+  [15] = { PIN_TYPE_GPIO,     7,   OCP_NONE, ICP_NONE }, \
+  [16] = { PIN_TYPE_GPIO,     8,   OCP_NONE, ICP_NONE }, \
+  [17] = { PIN_TYPE_GPIO,     9,   OCP_NONE, ICP_NONE }, \
+  [18] = { PIN_TYPE_GPIO,    10,   OCP_NONE, ICP_NONE }, \
+  [19] = { PIN_TYPE_GPIO,    11,   OCP_NONE, ICP_NONE }, \
+  [20] = { PIN_TYPE_GPIO,    12,   OCP_NONE, ICP_NONE }, \
+  [21] = { PIN_TYPE_GPIO,    13,   OCP_NONE, ICP_NONE }, \
+  [22] = { PIN_TYPE_GPIO,    14,   OCP_NONE, ICP_NONE }, \
+  [23] = { PIN_TYPE_GPIO,    15,   OCP_NONE, ICP_NONE }, \
+  [24] = { PIN_TYPE_NC,      -1,   OCP_NONE, ICP_NONE }, \
+  [25] = { PIN_TYPE_NC,      -1,   OCP_NONE, ICP_NONE }, \
+  [26] = { PIN_TYPE_GPIO,    16,   OCP_NONE, ICP_NONE }, \
+  [27] = { PIN_TYPE_GPIO,    17,   OCP_NONE, ICP_NONE }, \
+  [28] = { PIN_TYPE_GPIO,    18,   OCP_NONE, ICP_NONE }, \
+  [29] = { PIN_TYPE_GPIO,    19,   OCP_NONE, ICP_NONE }, \
+  [30] = { PIN_TYPE_GPIO,    20,   OCP_NONE, ICP_NONE }, \
+  [31] = { PIN_TYPE_GPIO,    21,   OCP_NONE, ICP_NONE }, \
+  [32] = { PIN_TYPE_GPIO,    22,   OCP_NONE, ICP_NONE }, \
+  [33] = { PIN_TYPE_GPIO,    23,   OCP_NONE, ICP_NONE }, \
+  [34] = { PIN_TYPE_GPIO,    24,   OCP_NONE, ICP_NONE }, \
+  [35] = { PIN_TYPE_GPIO,    25,   OCP_NONE, ICP_NONE }, \
+  [36] = { PIN_TYPE_GPIO,    26,   OCP_NONE, ICP_NONE }, \
+  [37] = { PIN_TYPE_GPIO,    27,   OCP_NONE, ICP_NONE }, \
+  [38] = { PIN_TYPE_INPUT,    0,   OCP_NONE, ICP_NONE  /* btn_right */ }, \
+  [39] = { PIN_TYPE_INPUT,    4,   OCP_NONE, ICP_NONE  /* btn_center */ }, \
+  [40] = { PIN_TYPE_GPIO,    28,   OCP_NONE, ICP_NONE }, \
+  [41] = { PIN_TYPE_OUTPUT,   0,   OCP_NONE,        0  /* icp0 */ }, \
+  [42] = { PIN_TYPE_OUTPUT,   1,          0, ICP_NONE  /* ocp0 */ }, \
+  [43] = { PIN_TYPE_OUTPUT,   2,          1, ICP_NONE  /* ocp1 */ }, \
+  [44] = { PIN_TYPE_OUTPUT,   3,   OCP_NONE,        1  /* icp1 */ }, \
+  [45] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE  /* p_tip_0 video */ }, \
+  [46] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE  /* p_tip_1 video */ }, \
+  [47] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE  /* p_tip_2 video */ }, \
+  [48] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [49] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [50] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [51] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [52] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [53] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [54] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [55] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [56] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [57] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [58] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [59] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [60] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [61] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [62] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
+  [63] = { PIN_TYPE_NC,       0,   OCP_NONE, ICP_NONE}, \
 }
 
 #endif

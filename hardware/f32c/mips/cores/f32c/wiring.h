@@ -36,13 +36,20 @@ enum PIN_TYPE {
   PIN_TYPE_SIZE // must be last, defines the size
 };
 
+enum OCP_TYPE {
+  OCP_NONE = 15
+};
+
+enum ICP_TYPE {
+  ICP_NONE = 15
+};
+
 extern const volatile uint32_t *pintype2ioaddr[];
 
 struct variant_pin_map_s {
-	uint16_t	io_port:11,
-			bit_pos:5;
-	int8_t		pwm;
-	int8_t 		icp;
+	uint8_t	io_port:3,  // max 8 pin types
+                bit_pos:5;  // max 32 bits
+	uint8_t	pwm:4, icp:4;
 };
 
 extern const struct variant_pin_map_s variant_pin_map[];

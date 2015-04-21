@@ -23,7 +23,7 @@
 
 __BEGIN_DECLS
 
-#define digitalPinToPort(pin) ((volatile uint32_t *) IO_ADDR(variant_pin_map[pin].io_port))
+#define digitalPinToPort(pin) ((volatile uint32_t *) pintype2ioaddr[variant_pin_map[pin].io_port])
 #define digitalPinToBitMask(pin) (1<<variant_pin_map[pin].bit_pos)
 #define portOutputRegister(port) port
 #define portInputRegister(port) port

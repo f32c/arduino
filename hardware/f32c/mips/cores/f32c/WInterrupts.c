@@ -111,7 +111,7 @@ void icpFilter(uint32_t pin, uint32_t icp_start, uint32_t icp_stop)
     return;
   
   icp_channel = variant_pin_map[pin].icp;
-  if(icp_channel >= 0)
+  if(icp_channel != ICP_NONE)
   {
     EMARD_TIMER[TC_CONTROL] &= variant_icp_control[icp_channel].control_and;
     
@@ -171,7 +171,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     asm("ei");
   }
 
-  if(ocp >= 0 || icp >= 0)
+  if(ocp != OCP_NONE || icp != ICP_NONE)
   {
     irq = VARIANT_TIMER_INTERRUPT;
     if(intFunc[irq] == NULL)
@@ -179,13 +179,13 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
       isr_register_handler(irq, &timer_isr_link); // 4 is EMARD timer interrput
       intFunc[irq] = NULL+1; // not used as callback, just as non-zero to init only once
     }
-    if(ocp >= 0)
+    if(ocp != OCP_NONE)
     {
       timerFunc[ocp] = callback;
       EMARD_TIMER[TC_CONTROL] |= pwm_enable_bitmask[ocp].ocp_ie;
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
     }
-    if(icp >= 0)
+    if(icp != ICP_NONE)
     {
       timerFunc[VARIANT_OCPN+icp] = callback;
       EMARD_TIMER[TC_CONTROL] |= variant_icp_control[icp].icp_ie;
@@ -193,7 +193,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     }
     asm("ei");
   }
-  if (IO_ADDR(variant_pin_map[pin].io_port) == IO_GPIO_DATA)
+  if (digitalPinToPort(pin) == (volatile uint32_t *) IO_GPIO_DATA)
   {
     volatile uint32_t *ie_rising  = (volatile uint32_t *)IO_GPIO_RISE_IE;
     volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALL_IE;
@@ -236,15 +236,15 @@ void detachInterrupt(uint32_t pin)
     intFunc[irq] = NULL;
     asm("ei");
   }
-  if(ocp >= 0 || icp >= 0)
+  if(ocp != OCP_NONE || icp != ICP_NONE)
   {
-    if(ocp >= 0)
+    if(ocp != OCP_NONE)
     {
       EMARD_TIMER[TC_CONTROL] &= ~pwm_enable_bitmask[ocp].ocp_ie;
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
       timerFunc[icp] = NULL;
     }
-    if(icp >= 0)
+    if(icp != ICP_NONE)
     {
       EMARD_TIMER[TC_CONTROL] &= ~variant_icp_control[icp].icp_ie;
       EMARD_TIMER[TC_APPLY] = (1<<TC_CONTROL);
@@ -268,7 +268,7 @@ void detachInterrupt(uint32_t pin)
       #endif
     }
   }
-  if (IO_ADDR(variant_pin_map[pin].io_port) == IO_GPIO_DATA)
+  if (digitalPinToPort(pin) == (volatile uint32_t *)IO_GPIO_DATA)
   {
     volatile uint32_t *ie_rising =  (volatile uint32_t *)IO_GPIO_RISE_IE;
     volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALL_IE;
