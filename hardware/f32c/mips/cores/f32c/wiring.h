@@ -28,6 +28,16 @@ __BEGIN_DECLS
 extern void initVariant( void ) ;
 extern void init( void ) ;
 
+enum PIN_TYPE {
+  PIN_TYPE_NC = 0, // not connected
+  PIN_TYPE_INPUT,
+  PIN_TYPE_OUTPUT,
+  PIN_TYPE_GPIO,
+  PIN_TYPE_SIZE // must be last, defines the size
+};
+
+extern const volatile uint32_t *pintype2ioaddr[];
+
 struct variant_pin_map_s {
 	uint16_t	io_port:11,
 			bit_pos:5;
