@@ -36,7 +36,7 @@ void analogWritePhase(uint32_t pin, uint32_t phase)
     return;
 
   pwm_channel = variant_pin_map[pin].pwm;
-  if(pwm_channel >= 0)
+  if(pwm_channel != OCP_NONE)
   {
     start  = &EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_start];
     stop   = &EMARD_TIMER[pwm_enable_bitmask[pwm_channel].ocp_stop];
@@ -63,7 +63,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
     return;
     
   pwm_channel = variant_pin_map[ulPin].pwm;
-  if(pwm_channel >= 0)
+  if(pwm_channel != OCP_NONE)
   {
     /* standard PWM frequency is 
     ** 490 Hz on old arduino
@@ -133,7 +133,7 @@ uint32_t setInputCapture(uint32_t ulPin)
     return 0;
     
   icp_channel = variant_pin_map[ulPin].icp;
-  if(icp_channel >= 0)
+  if(icp_channel != ICP_NONE)
   {
 
     #if 0

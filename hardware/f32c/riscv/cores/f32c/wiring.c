@@ -22,7 +22,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $Id: wiring.c 2458 2015-03-09 00:30:48Z davor $
+ * $Id: wiring.c 2951 2015-04-21 18:35:52Z davor $
  */
 
 #include "Arduino.h"
@@ -30,6 +30,13 @@
 
 
 static uint32_t tsc_hi, tsc_lo;
+
+const volatile uint32_t *pintype2ioaddr[PIN_TYPE_SIZE] = {
+  [PIN_TYPE_NC]     = NULL,
+  [PIN_TYPE_INPUT]  = (volatile uint32_t *)IO_PUSHBTN,
+  [PIN_TYPE_OUTPUT] = (volatile uint32_t *)IO_LED,
+  [PIN_TYPE_GPIO]   = (volatile uint32_t *)IO_GPIO_DATA
+};
 
 const struct variant_pin_map_s variant_pin_map[] = VARIANT_DIGITAL_PIN_MAP;
 const uint32_t variant_pin_map_size = sizeof(variant_pin_map);
