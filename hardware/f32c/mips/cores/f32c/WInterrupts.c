@@ -133,6 +133,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 {
   int32_t irq = -1;
   int8_t icp, ocp, bit;
+  volatile uint32_t *port;
   /* attachInterrupt is ment to assign pin change interrupt
   ** on digital input pins
   ** but we will here misuse it to create timer interrupt.
@@ -151,8 +152,9 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
   icp = variant_pin_map[pin].icp;
   ocp = variant_pin_map[pin].pwm;
   bit = variant_pin_map[pin].bit_pos;
+  port = digitalPinToPort(pin);
   
-  if(bit == 13)
+  if(bit == 5 && port == (volatile uint32_t *) IO_LED) // arduino LED at pin 13
   {
     uint8_t init_required = 0;
     irq = 7;
@@ -193,7 +195,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     }
     asm("ei");
   }
-  if (digitalPinToPort(pin) == (volatile uint32_t *) IO_GPIO_DATA)
+  if (port == (volatile uint32_t *) IO_GPIO_DATA)
   {
     volatile uint32_t *ie_rising  = (volatile uint32_t *)IO_GPIO_RISE_IE;
     volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALL_IE;
@@ -221,12 +223,14 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 void detachInterrupt(uint32_t pin)
 {
   int8_t icp, ocp, bit;
+  volatile uint32_t *port;
   if(pin >= variant_pin_map_size)
     return;
   icp = variant_pin_map[pin].icp;
   ocp = variant_pin_map[pin].pwm;
   bit = variant_pin_map[pin].bit_pos;
-  if(bit == 13)
+  port = digitalPinToPort(pin);
+  if(bit == 5 && port == (volatile uint32_t *) IO_LED) // arduino LED at pin 13
   {
     int irq = 7;
     asm("di");
@@ -268,7 +272,7 @@ void detachInterrupt(uint32_t pin)
       #endif
     }
   }
-  if (digitalPinToPort(pin) == (volatile uint32_t *)IO_GPIO_DATA)
+  if (port == (volatile uint32_t *)IO_GPIO_DATA)
   {
     volatile uint32_t *ie_rising =  (volatile uint32_t *)IO_GPIO_RISE_IE;
     volatile uint32_t *ie_falling = (volatile uint32_t *)IO_GPIO_FALL_IE;

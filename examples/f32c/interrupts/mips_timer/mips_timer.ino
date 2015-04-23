@@ -7,7 +7,7 @@
  This example code is in the public domain.
 */
 
-static int led = 13;
+static int led = 13; // timer interrupt hardwired to arduino LED
 static int timer_ticks;
 static int incrementInterval = 10000000;
 
@@ -26,7 +26,7 @@ void timer_handler()
 void setup() {
   Serial.begin(115200);
   // timerInterval = VARIANT_MCK;
-  attachInterrupt(13, timer_handler, VARIANT_MCK>>3);
+  attachInterrupt(led, timer_handler, VARIANT_MCK>>3);
 }
 
 // the loop routine runs over and over again forever:
@@ -34,4 +34,3 @@ void loop() {
   Serial.println(timer_ticks);
   delay(100);
 }
-
