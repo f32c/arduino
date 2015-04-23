@@ -13,7 +13,7 @@ ulx2s_sram.upload.flags=-re
 ulx2s_sram.upload.maximum_size=1015808
 ulx2s_sram.upload.wait_for_upload_port=false
 ulx2s_sram.upload.native_usb=false
-ulx2s_sram.bootloader.file=ulx2s/bitstream_sram.jed
+ulx2s_sram.bootloader.file=ulx2s/ulx2s_8e_riscv_sram_81mhz.jed
 
 #
 # FER ULX2S Board, f32c/mips SoC, pyhsical pin mapping
@@ -29,7 +29,7 @@ ulx2s_sram_phys.upload.flags=-re
 ulx2s_sram_phys.upload.maximum_size=1015808
 ulx2s_sram_phys.upload.wait_for_upload_port=false
 ulx2s_sram_phys.upload.native_usb=false
-ulx2s_sram_phys.bootloader.file=ulx2s/bitstream_sram.jed
+ulx2s_sram_phys.bootloader.file=ulx2s/ulx2s_8e_riscv_sram_81mhz.jed
 
 #
 # FER ULX2S Board, f32c/mips SoC, logical pin mapping
@@ -78,7 +78,7 @@ ulx2s_bram.upload.flags=-P{serial.port} -ra
 ulx2s_bram.upload.maximum_size=15360
 ulx2s_bram.upload.wait_for_upload_port=false
 ulx2s_bram.upload.native_usb=false
-ulx2s_bram.bootloader.file=ulx2s/bitstream_bram.jed
+ulx2s_bram.bootloader.file=ulx2s/ulx2s_8e_riscv_bram_100mhz.jed
 
 #
 # FER ULX2S Board, f32c/mips SoC, physical pin mapping
@@ -94,7 +94,7 @@ ulx2s_bram_phys.upload.flags=-P{serial.port} -ra
 ulx2s_bram_phys.upload.maximum_size=15360
 ulx2s_bram_phys.upload.wait_for_upload_port=false
 ulx2s_bram_phys.upload.native_usb=false
-ulx2s_bram_phys.bootloader.file=ulx2s/bitstream_bram.jed
+ulx2s_bram_phys.bootloader.file=ulx2s/ulx2s_8e_riscv_bram_100mhz.jed
 
 #
 # Lattice Brevia Board, f32c/mips SoC
@@ -159,7 +159,7 @@ nexys3_bram.upload.native_usb=false
 #
 # Digilent / Xilinx ZYBO Zinq-7000, f32c/mips SoC
 #
-zybo_bram.name=Xilinx Digilent ZYBO (125 MHz, ZINQ XC7Z010, 128 KB BRAM)
+zybo_bram.name=Xilinx ZYBO (125 MHz, ZINQ XC7Z010, 128 KB BRAM)
 zybo_bram.build.mcu=f32c
 zybo_bram.build.core=f32c
 zybo_bram.build.variant=ulx2s_logical
@@ -170,7 +170,7 @@ zybo_bram.upload.flags=-P{serial.port} -ra
 zybo_bram.upload.maximum_size=130048
 zybo_bram.upload.wait_for_upload_port=false
 zybo_bram.upload.native_usb=false
-zybo_bram.bootloader.file_svf=zybo/bitstream.svf
+zybo_bram.bootloader.file_svf=zybo/zybo_riscv_bram_125mhz.svf
 zybo_bram.bootloader.interface={runtime.platform.path}/bootloaders/zybo/ftdi-zybo.ocd
 zybo_bram.bootloader.expected_id=0x13722093
 zybo_bram.bootloader.irlen=6
@@ -189,7 +189,7 @@ xc6slx9_bram.upload.flags=-P{serial.port} -ra
 xc6slx9_bram.upload.maximum_size=31744
 xc6slx9_bram.upload.wait_for_upload_port=false
 xc6slx9_bram.upload.native_usb=false
-xc6slx9_bram.bootloader.file_svf=xc6slx9/bitstream.svf
+xc6slx9_bram.bootloader.file_svf=xc6slx9/xc6slx9_riscv_112mhz.svf
 xc6slx9_bram.bootloader.interface=interface/altera-usb-blaster.cfg
 xc6slx9_bram.bootloader.expected_id=0x24001093
 xc6slx9_bram.bootloader.irlen=6
@@ -224,8 +224,8 @@ tb276_bram.upload.flags=-P{serial.port} -ra
 tb276_bram.upload.maximum_size=15360
 tb276_bram.upload.wait_for_upload_port=false
 tb276_bram.upload.native_usb=false
-tb276_bram.bootloader.file_jic=tb276/bitstream.jic
-tb276_bram.bootloader.file_svf=tb276/bitstream.svf
+tb276_bram.bootloader.file_jic=tb276/tb276_riscv_112mhz.jic
+tb276_bram.bootloader.file_svf=tb276/tb276_riscv_112mhz.svf
 tb276_bram.bootloader.interface=interface/altera-usb-blaster.cfg
 tb276_bram.bootloader.expected_id=0x020f10dd
 tb276_bram.bootloader.irlen=10
