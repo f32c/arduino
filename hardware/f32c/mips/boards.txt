@@ -170,10 +170,8 @@ zybo_bram.upload.flags=-P{serial.port} -ra
 zybo_bram.upload.maximum_size=130048
 zybo_bram.upload.wait_for_upload_port=false
 zybo_bram.upload.native_usb=false
+zybo_bram.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/zybo/ftdi-zybo.ocd
 zybo_bram.bootloader.file_svf=zybo/zybo_mips_bram_125mhz.svf
-zybo_bram.bootloader.interface={runtime.platform.path}/bootloaders/zybo/ftdi-zybo.ocd
-zybo_bram.bootloader.expected_id=0x13722093
-zybo_bram.bootloader.irlen=6
 
 #
 # Xilinx XC6SLX9 (ebay) Spartan-6 Board, f32c/mips SoC
@@ -190,9 +188,7 @@ xc6slx9_bram.upload.maximum_size=31744
 xc6slx9_bram.upload.wait_for_upload_port=false
 xc6slx9_bram.upload.native_usb=false
 xc6slx9_bram.bootloader.file_svf=xc6slx9/xc6slx9_mips_112mhz.svf
-xc6slx9_bram.bootloader.interface=interface/altera-usb-blaster.cfg
-xc6slx9_bram.bootloader.expected_id=0x24001093
-xc6slx9_bram.bootloader.irlen=6
+xc6slx9_bram.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/xc6slx9/xc6slx9.ocd
 
 #
 # Altera DE0-Nano Board, f32c/mips SoC
@@ -226,6 +222,4 @@ tb276_bram.upload.wait_for_upload_port=false
 tb276_bram.upload.native_usb=false
 tb276_bram.bootloader.file_jic=tb276/tb276_mips_112mhz.jic
 tb276_bram.bootloader.file_svf=tb276/tb276_mips_112mhz.svf
-tb276_bram.bootloader.interface=interface/altera-usb-blaster.cfg
-tb276_bram.bootloader.expected_id=0x020f10dd
-tb276_bram.bootloader.irlen=10
+tb276_bram.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/tb276/tb276.ocd

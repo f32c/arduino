@@ -157,4 +157,4 @@ tools.ujprog_openocd.erase.pattern=true
 
 tools.ujprog_openocd.bootloader.params.verbose=
 tools.ujprog_openocd.bootloader.params.quiet=
-tools.ujprog_openocd.bootloader.pattern="openocd" "--file={bootloader.interface}" "--command=jtag newtap chip tap -expected-id {bootloader.expected_id} -irlen {bootloader.irlen}" "--command=init" "--command=scan_chain" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
+tools.ujprog_openocd.bootloader.pattern="openocd" "--file={bootloader.openocd_cfg}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
