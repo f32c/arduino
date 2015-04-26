@@ -84,11 +84,11 @@ void print_timer()
   Serial.write("inc= "); Serial.print(i, DEC);
   Serial.write(" ("); Serial.print(i, HEX);
   Serial.write(") f="); Serial.print((uint32_t) f, DEC);
-  Serial.write(" cnt="); Serial.print(EMARD_TIMER[TC_COUNTER], DEC);
+  Serial.write(" Hz cnt="); Serial.print(EMARD_TIMER[TC_COUNTER], DEC);
   Serial.write(" icp1="); Serial.print(EMARD_TIMER[TC_ICP1], DEC);
   Serial.write(" icp2="); Serial.print(EMARD_TIMER[TC_ICP2], DEC);
-  Serial.write(" pulse_read="); Serial.print(timerTicks2us(pulse_read), DEC);
-  Serial.write("\n"); 
+  Serial.write(" pulse_width="); Serial.print(timerTicks2us(pulse_read), DEC);
+  Serial.write(" us\n"); 
 }
 
 // the loop routine runs over and over again forever:
