@@ -18,12 +18,25 @@
 #include <Adafruit_SSD1306.h>
 
 //Define Pins
+#if 1
+/* variant logical mapping */
+#define OLED_CLK   44
+#define OLED_MOSI  45
+#define OLED_CS    46
+#define OLED_DC    47
+#define OLED_RESET 13
+#define BEEPER     33
+#endif
+
+#if 0
+/* variant physical mapping */
 #define OLED_CLK   20
 #define OLED_MOSI  21
 #define OLED_CS    22
 #define OLED_DC    23
 #define OLED_RESET 12
 #define BEEPER 3
+#endif
 
 #define HAVE_ANALOG 0
 #if HAVE_ANALOG
