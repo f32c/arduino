@@ -13,7 +13,7 @@ tools->programmers->...ujprog openocd etc...
 
 file->examples->f32c->...
 
-file->examples->...RCswitch...Adafruid GFX..
+file->examples->...RCswitch...Adafruit GFX/SSD1306..
 
 We had to do small modifications of original examples
 for AVR-specific or hardware-dependent stuff in order 
