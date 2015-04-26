@@ -37,8 +37,9 @@ Interrupts (attachInterrupt() gpio rising/falling edge, timer)
 
 PWM (analogWrite(), analogWriteResolution(), analogWriteFrequency())
 
+Fade should almost always work (may fade bug be with you :-)
+
 # What doesn't yet work
 
 Analog inputs (cheap FPGA used to not to have ADC, 
 please contribute some code for new hardware...)
-
