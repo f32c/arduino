@@ -51,18 +51,28 @@ void setup() {
   pinMode(led_ocp1, OUTPUT);
   pinMode(led_ocp2, OUTPUT);
   analogWriteResolution(12);  // 12 bits -> max value is 4095
-  analogWriteFrequency(2000);   // 20 Hz switching frequency
+  analogWriteFrequency(10000);   // 10 kHz switching frequency
   analogWrite(led_ocp1, 20);  // intensity = 20/4095
-  analogWritePhase(led_ocp1,   10);
+  analogWritePhase(led_ocp1,    0);
   analogWrite(led_ocp2, 100); // intensity = 100/4095
   analogWritePhase(led_ocp2, 2000);
   // currently timer supports interrupts only on OCP rising edge (hardwired)
   attachInterrupt(led_ocp1, pwm1_isr, RISING); // rising edge of OCP1 will trigger interrupt
   attachInterrupt(led_ocp2, pwm2_isr, RISING); // rising edge of OCP2 will trigger interrupt
-  icpFilter(led_icp1,    0,  100);
+  icpFilter(led_icp1,    0, 1000);
   attachInterrupt(led_icp1, icp1_isr, RISING); // rising edge of ICP1 will trigger interrupt
-  icpFilter(led_icp2, 2000, 2100);
+  icpFilter(led_icp2, 2000, 4000);
   attachInterrupt(led_icp2, icp2_isr, RISING); // rising edge of ICP1 will trigger interrupt
+  EMARD_TIMER[TC_ICP1] = 200;
+  EMARD_TIMER[TC_CONTROL] |= (1<<TCTRL_AFCEN_ICP1) | (0<<TCTRL_AFCINV_ICP1) ;
+  EMARD_TIMER[TC_INC_MIN]    = 300;
+  EMARD_TIMER[TC_INC_MAX]    = 500;
+  EMARD_TIMER[TC_APPLY] = 
+      (1<<TC_CONTROL)
+    | (1<<TC_INC_MIN)
+    | (1<<TC_INC_MAX)
+    | (1<<TC_ICP1)
+    ;
   print_event = millis();
   Serial.begin(115200);
 }
