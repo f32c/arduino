@@ -62,7 +62,8 @@ void setup() {
   attachInterrupt(led_ocp1, pwm1_isr, RISING); // rising edge of OCP1 will trigger interrupt
   attachInterrupt(led_ocp2, pwm2_isr, RISING); // rising edge of OCP2 will trigger interrupt
   //attachInterrupt(led_icp1, icp1_isr, RISING); // rising edge of ICP1 will trigger interrupt
-  attachInterrupt(led_icp2, icp2_isr, RISING); // rising edge of ICP1 will trigger interrupt
+  attachInterrupt(led_icp2, icp2_isr, RISING); // rising edge actually means leading edge of ICP2 will trigger interrupt
+  // pulseListen HIGH will set leading edge of icp1 as rising, and trailing edge of icp2 as falling
   pulseListen(led_icp1, led_icp2, HIGH);
   print_event = millis();
   Serial.begin(115200);
@@ -94,8 +95,6 @@ void print_timer()
 // the loop routine runs over and over again forever:
 void loop() {
   delay(100);
-  digitalWrite(led_icp1, LOW);
-  digitalWrite(led_icp2, LOW);
   if( ((int32_t)millis()-print_event) > 0)
   {
     print_timer();
