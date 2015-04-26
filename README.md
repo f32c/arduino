@@ -8,9 +8,8 @@ it again and new based boards, progammers
 and examples should appear under pull down menus
 tools->boards->...new mips and riscv boards..
 tools->programmers->...ujprog openocd etc...
-file->examples->f32c->..RCswitch..Adafruid GFX..
+file->examples->f32c->...RCswitch..Adafruid GFX..
 
-We had to to small modifications of original examples
-for places when they use AVR-specific or 
-hardware-dependent stuff in order to get 
-them running out of the box on f32c.
+We had to do small modifications of original examples
+for AVR-specific or hardware-dependent stuff in order 
+to get them running out of the box on f32c.
