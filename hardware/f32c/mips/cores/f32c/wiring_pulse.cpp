@@ -19,7 +19,6 @@
 #include "Arduino.h"
 //#include "wiring_private.h"
 
-static uint32_t stored_ICP1, stored_ICP2; 
 
 /* Measures the length (in microseconds) of a pulse on the pin; state is HIGH
  * or LOW, the type of pulse to measure.  Works on pulses from 2-3 microseconds
