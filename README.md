@@ -39,8 +39,7 @@ Interrupts (MIPS only, attachInterrupt() gpio rising/falling edge, timer)
 
 PWM (analogWrite(), analogWriteResolution(), analogWriteFrequency())
 
-Fade works on all MIPS platforms we tried. Fade doesn't work on RISC-V bitstreams
-for boards Altera Cyclone-4 TB276 and Xilinx XC6SLX9.
+Fade works on all MIPS platforms we tried.
 
 Software SPI (bitbang)
 
@@ -48,6 +47,9 @@ Software SPI (bitbang)
 
 Analog inputs (cheap FPGA used to not to have ADC, 
 please contribute some code for new hardware...)
+
+Fade doesn't work on RISC-V bitstreams
+for boards Altera Cyclone-4 TB276 and Xilinx XC6SLX9.
 
 Hardware SPI and I2C. Included are SPI and Wire (i2c)
 libraries but they are empty, just a placeholders
