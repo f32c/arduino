@@ -1,3 +1,6 @@
+menu.speed=CPU Speed
+menu.ram=RAM Size
+
 #
 # FER ULX2S Board, f32c/mips SoC, logical pin mapping
 #
@@ -143,3 +146,38 @@ tb276_bram.upload.native_usb=false
 tb276_bram.bootloader.file_jic=tb276/tb276_mips_112mhz.jic
 tb276_bram.bootloader.file_svf=tb276/tb276_mips_112mhz.svf
 tb276_bram.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/tb276/tb276.ocd
+
+#
+# f32c/mips SoC, logical pin mapping
+#
+f32c_mips.name=F32C MIPS
+f32c_mips.build.usb_product="FER ULX2S board JTAG / UART"
+f32c_mips.build.mcu=f32c
+f32c_mips.build.core=f32c
+f32c_mips.build.variant=ulx2s_logical
+f32c_mips.build.extra_flags=--section-start=.init=0x80000000
+f32c_mips.upload.tool=ujprog
+f32c_mips.upload.protocol=bin
+f32c_mips.upload.flags=-re
+f32c_mips.upload.maximum_size=1015808
+f32c_mips.upload.wait_for_upload_port=false
+f32c_mips.upload.native_usb=false
+f32c_mips.bootloader.file=ulx2s/ulx2s_8e_mips_sram_81mhz.jed
+f32c_mips.menu.speed.81=81.25 MHz
+f32c_mips.menu.speed.81.build.fcpu=81250000
+f32c_mips.menu.speed.100=100 MHz
+f32c_mips.menu.speed.100.build.fcpu=100000000
+f32c_mips.menu.speed.112=112.5 MHz
+f32c_mips.menu.speed.112.build.fcpu=112500000
+f32c_mips.menu.speed.125=125 MHz
+f32c_mips.menu.speed.125.build.fcpu=125000000
+f32c_mips.menu.ram.8=8 KB
+f32c_mips.menu.ram.8.upload.maximum_size=7168
+f32c_mips.menu.ram.16=16 KB
+f32c_mips.menu.ram.16.upload.maximum_size=15360
+f32c_mips.menu.ram.32=32 KB
+f32c_mips.menu.ram.32.upload.maximum_size=31744
+f32c_mips.menu.ram.128=128 KB
+f32c_mips.menu.ram.128.upload.maximum_size=130048
+f32c_mips.menu.ram.1024=1 MB
+f32c_mips.menu.ram.1024.upload.maximum_size=1015808
