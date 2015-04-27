@@ -35,11 +35,12 @@ Timer (millis(); 32-bit CPU core clock counter, glitch-free, good for realtime)
 
 GPIO (digitalWrite(), digitalRead())
 
-Interrupts (attachInterrupt() gpio rising/falling edge, timer)
+Interrupts (MIPS only, attachInterrupt() gpio rising/falling edge, timer)
 
 PWM (analogWrite(), analogWriteResolution(), analogWriteFrequency())
 
-Fade should almost always work (may fade bug be with you :-)
+Fade works on all MIPS platforms we tried. 
+(fade currently doesn't work for RISC-V on boards Altera Cyclone-4 TB276 and Xilinx XC6SLX9)
 
 Software SPI (bitbang)
 
