@@ -151,7 +151,7 @@ tb276_bram.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/tb276/tb27
 # f32c/mips SoC, logical pin mapping
 #
 f32c_mips.name=F32C MIPS
-f32c_mips.build.usb_product="FER ULX2S board JTAG / UART"
+f32c_mips.build.usb_product="Generic F32C MIPS"
 f32c_mips.build.mcu=f32c
 f32c_mips.build.core=f32c
 f32c_mips.build.variant=ulx2s_logical
