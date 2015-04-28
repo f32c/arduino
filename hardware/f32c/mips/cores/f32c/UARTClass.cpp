@@ -23,9 +23,6 @@
 
 #include <io.h>
 
-#include <mips/asm.h>
-#include <mips/cpuregs.h>
-
 
 #define	SIO_RXBUFSIZE	(1 << 3)
 #define	SIO_RXBUFMASK	(SIO_RXBUFSIZE - 1)
@@ -105,6 +102,7 @@ static __attribute__((optimize("-Os"))) void
 sio_setbaud(int bauds)
 {
 	uint32_t val;
+
 
 	val = bauds;
 	if (bauds > 1000000)
