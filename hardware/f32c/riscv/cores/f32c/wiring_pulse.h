@@ -28,6 +28,9 @@ __BEGIN_DECLS
  * before the start of the pulse.
  */
 extern uint32_t pulseIn(uint32_t ulPin, bool ulState, uint32_t ulTimeout = 1000000L);
+extern uint32_t pulseRead(void);
+extern void pulseListen(uint32_t pin1, uint32_t pin2, bool state);
+extern uint32_t timerTicks2us(uint32_t t);
 
 __END_DECLS
 
