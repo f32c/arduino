@@ -30,12 +30,9 @@ compiler.define=-DARDUINO=
 build.extra_flags=
 
 # These can be overridden in platform.local.txt
-# XXX cemu tocno ovo sluzi?
-# YYY ovo sluzi da arduino library zna koji architecture
-# specific feature moze upotrijebiti
-compiler.c.extra_flags=-D__F32C__
+compiler.c.extra_flags=-D__F32C__ "-DVARIANT_MCK={build.fcpu}"
 compiler.c.elf.extra_flags=
-compiler.cpp.extra_flags=-D__F32C__
+compiler.cpp.extra_flags=-D__F32C__ "-DVARIANT_MCK={build.fcpu}"
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
 

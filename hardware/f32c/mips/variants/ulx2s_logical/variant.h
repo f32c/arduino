@@ -4,9 +4,6 @@
 
 #include <stdint.h>
 
-/* CPU clock frequency */
-#define VARIANT_MCK	81250000
-
 /* LEDs */
 #define PIN_LED_13           13
 #define PIN_LED              13
