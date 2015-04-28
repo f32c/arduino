@@ -102,9 +102,9 @@ zybo_bram.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/zybo/ftdi-z
 zybo_bram.bootloader.file_svf=zybo/zybo_mips_bram_125mhz.svf
 
 #
-# Xilinx XC6SLX9 (ebay) Spartan-6 Board, f32c/mips SoC
+# Xilinx TB299 Board (ebay) Spartan-6 XC6SLX9, f32c/mips SoC
 #
-xc6slx9_bram.name=Xilinx XC6SLX9 (Spartan-6, 32 KB BRAM, MI32 @ 112.5 MHz)
+xc6slx9_bram.name=Xilinx TB299 (Spartan-6 XC6SLX9, 32 KB BRAM, MI32 @ 112.5 MHz)
 xc6slx9_bram.build.fcpu=112500000
 xc6slx9_bram.build.mcu=f32c
 xc6slx9_bram.build.core=f32c
@@ -137,7 +137,7 @@ de0_nano_bram.upload.native_usb=false
 de0_nano_bram.bootloader.file_jic=de0_nano/bitstream.jic
 
 #
-# Altera tb276 Board, f32c/mips SoC
+# Altera TB276 Board (ebay), f32c/mips SoC
 #
 tb276_bram.name=Altera TB276 (Cyclone IV E EP4CE6, 16 KB BRAM, MI32 @ 112.5 MHz)
 tb276_bram.build.fcpu=112500000
