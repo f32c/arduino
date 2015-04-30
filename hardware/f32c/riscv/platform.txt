@@ -138,7 +138,7 @@ tools.ujprog_altera.bootloader.pattern="quartus_pgm" "--no_banner" "--mode=jtag"
 #
 # ujprog (any ftdi) + openocd, alera or xilinx sram
 #
-tools.ujprog_openocd.cmd=ujprog_anyftdi
+tools.ujprog_openocd.cmd=ujprog
 tools.ujprog_openocd.cmd.windows=ujprog.exe
 tools.ujprog_openocd.path={runtime.ide.path}/hardware/tools
 tools.ujprog_openocd.path=/usr/local/bin
