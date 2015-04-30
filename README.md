@@ -39,7 +39,7 @@ Interrupts (MIPS only, attachInterrupt() gpio rising/falling edge, timer)
 
 PWM (analogWrite(), analogWriteResolution(), analogWriteFrequency())
 
-Fade works on all MIPS platforms we tried.
+Fade (PWM) works on 2 output pins (LEDs).
 
 Software SPI (bitbang)
 
