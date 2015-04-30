@@ -43,7 +43,7 @@ Fade (PWM) works on 2 output pins (LEDs).
 
 Software SPI (bitbang)
 
-# What doesn't yet work
+# What doesn't work yet
 
 Analog inputs (cheap FPGA used to not to have ADC, 
 please contribute some code for new hardware...)
