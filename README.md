@@ -48,9 +48,6 @@ Software SPI (bitbang)
 Analog inputs (cheap FPGA used to not to have ADC, 
 please contribute some code for new hardware...)
 
-Fade doesn't work on RISC-V bitstreams
-for boards Altera Cyclone-4 TB276 and Xilinx XC6SLX9.
-
 Hardware SPI and I2C. Included are SPI and Wire (i2c)
 libraries but they are empty, just a placeholders
 for the compiler to not fail for sketches that use them.
@@ -65,3 +62,8 @@ and this saves FPGA LUTs.
 Our FPGA f32c soft core contains already SPI in VHDL source so
 adding support for additional SPI ports for those who need
 them hardware accelerated should be fairly simple.
+
+CRC-based uploading or upload verify. 
+Currently a blind upload of compiled MIPS or RISC-V binary is 
+sent to the device so strange bugs may appear due to serial
+transmission errors.
