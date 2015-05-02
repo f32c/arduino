@@ -67,7 +67,40 @@ fpgarduino_ulx2s_bram.menu.pinmap.physical=ULX2S Physical
 fpgarduino_ulx2s_bram.menu.pinmap.physical.build.variant=ulx2s_physical
 
 #
-# Altera TB276 Board (ebay), f32c/mips SoC
+# Xilinx TB299 Board (ebay), f32c SoC
+#
+fpga_tb299.name=TB299 (Xilinx Spartan-6 XC6SLX9)
+fpga_tb299.build.mcu=f32c
+fpga_tb299.build.core=f32c
+fpga_tb299.upload.tool=ujprog
+fpga_tb299.upload.wait_for_upload_port=false
+fpga_tb299.upload.native_usb=false
+fpga_tb299.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/xc6slx9/xc6slx9.ocd
+fpga_tb299.menu.cpu.mips=MIPS
+fpga_tb299.menu.cpu.mips.cpu.arch=mips
+fpga_tb299.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_tb299.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_tb299.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_tb299.menu.cpu.mips.bootloader.file_svf=xc6slx9/xc6slx9_mips_112mhz.svf
+fpga_tb299.menu.cpu.riscv=RISC-V
+fpga_tb299.menu.cpu.riscv.cpu.arch=riscv
+fpga_tb299.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_tb299.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_tb299.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_tb299.menu.cpu.riscv.bootloader.file_svf=xc6slx9/xc6slx9_riscv_112mhz.svf
+fpga_tb299.menu.ramsize.32=32 KB BRAM Internal
+fpga_tb299.menu.ramsize.32.upload.maximum_size=31744
+fpga_tb299.menu.ramsize.32.build.extra_flags=--section-start=.init=0x200
+fpga_tb299.menu.speed.112=112.5 MHz
+fpga_tb299.menu.speed.112.build.fcpu=112500000
+fpga_tb299.menu.protocol.bin=Hex 115.2 kbit/s no verify RS232
+fpga_tb299.menu.protocol.bin.upload.protocol=hex
+fpga_tb299.menu.protocol.bin.upload.flags=-P{serial.port} -ra
+fpga_tb299.menu.pinmap.generic=Generic
+fpga_tb299.menu.pinmap.generic.build.variant=generic
+
+#
+# Altera TB276 Board (ebay), f32c SoC
 #
 fpga_tb276.name=TB276 (Altera Cyclone IV E EP4CE6)
 fpga_tb276.build.mcu=f32c
@@ -88,7 +121,6 @@ fpga_tb276.menu.cpu.riscv.cpu.arch=riscv
 fpga_tb276.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_tb276.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_tb276.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_tb276.menu.cpu.riscv.bootloader.file=ulx2s/ulx2s_8e_riscv_bram_100mhz.jed
 fpga_tb276.menu.cpu.riscv.bootloader.file_jic=tb276/tb276_riscv_112mhz.jic
 fpga_tb276.menu.cpu.riscv.bootloader.file_svf=tb276/tb276_riscv_112mhz.svf
 fpga_tb276.menu.ramsize.16=16 KB BRAM Internal
