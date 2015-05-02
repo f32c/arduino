@@ -210,8 +210,9 @@ fpga_tb299.build.core=f32c
 fpga_tb299.upload.tool=ujprog
 fpga_tb299.upload.wait_for_upload_port=false
 fpga_tb299.upload.native_usb=false
-fpga_tb299.upload.bitstream.command="openocd" "--file={bootloader.openocd_cfg}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
-fpga_tb299.bootloader.openocd_cfg={runtime.platform.path}/tools/openocd/xc6slx9_fpu1.ocd
+fpga_tb299.upload.bitstream.command="openocd" "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
+fpga_tb299.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
+fpga_tb299.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/tb299.cfg
 fpga_tb299.menu.cpu.mips=MIPS
 fpga_tb299.menu.cpu.mips.cpu.arch=mips
 fpga_tb299.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
