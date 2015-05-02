@@ -1,4 +1,4 @@
-menu.cpu=CPU Type
+menu.cpu=CPU Architecture
 menu.speed=CPU Speed
 menu.ramsize=RAM Size
 menu.protocol=Protocol
