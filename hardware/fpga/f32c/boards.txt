@@ -63,8 +63,8 @@ fpga_ulx2s_bram.menu.cpu.riscv.bootloader.file=ulx2s/ulx2s_8e_riscv_bram_100mhz.
 fpga_ulx2s_bram.menu.ramsize.16=16 KB BRAM Internal
 fpga_ulx2s_bram.menu.ramsize.16.upload.maximum_size=15360
 fpga_ulx2s_bram.menu.ramsize.16.build.extra_flags=--section-start=.init=0x200
-fpga_ulx2s_bram.menu.speed.100=100 MHz
-fpga_ulx2s_bram.menu.speed.100.build.fcpu=100000000
+fpga_ulx2s_bram.menu.speed.81=81.25 MHz
+fpga_ulx2s_bram.menu.speed.81.build.fcpu=8125000
 fpga_ulx2s_bram.menu.protocol.bin=Hex 115.2 kbit/s no verify RS232
 fpga_ulx2s_bram.menu.protocol.bin.upload.protocol=hex
 fpga_ulx2s_bram.menu.protocol.bin.upload.flags=-P{serial.port} -ra
