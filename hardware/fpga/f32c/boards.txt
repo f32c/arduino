@@ -3,68 +3,79 @@ menu.speed=CPU Speed
 menu.ramsize=RAM Size
 menu.protocol=Protocol
 menu.pinmap=PIN Map
+menu.bitstream=Upload Bitstream to
 
 #
 # FPGArduino ULX2S f32c SoC SRAM
 #
-fpgarduino_ulx2s_sram.name=FER ULX2S (Lattice XP2) SRAM
-fpgarduino_ulx2s_sram.build.mcu=f32c
-fpgarduino_ulx2s_sram.build.core=f32c
-fpgarduino_ulx2s_sram.upload.tool=ujprog
-fpgarduino_ulx2s_sram.upload.wait_for_upload_port=false
-fpgarduino_ulx2s_sram.upload.native_usb=false
-fpgarduino_ulx2s_sram.bootloader.file=ulx2s/ulx2s_8e_mips_sram_81mhz.jed
-fpgarduino_ulx2s_sram.menu.cpu.mips=MIPS
-fpgarduino_ulx2s_sram.menu.cpu.mips.cpu.arch=mips
-fpgarduino_ulx2s_sram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
-fpgarduino_ulx2s_sram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
-fpgarduino_ulx2s_sram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpgarduino_ulx2s_sram.menu.ramsize.1024=1 MB SRAM Onboard
-fpgarduino_ulx2s_sram.menu.ramsize.1024.upload.maximum_size=1015808
-fpgarduino_ulx2s_sram.menu.ramsize.1024.build.extra_flags=--section-start=.init=0x80000000
-fpgarduino_ulx2s_sram.menu.speed.81=81.25 MHz
-fpgarduino_ulx2s_sram.menu.speed.81.build.fcpu=81250000
-fpgarduino_ulx2s_sram.menu.protocol.bin=Binary 3 Mbit/s
-fpgarduino_ulx2s_sram.menu.protocol.bin.upload.protocol=bin
-fpgarduino_ulx2s_sram.menu.protocol.bin.upload.flags=-re
-fpgarduino_ulx2s_sram.menu.pinmap.generic=Generic
-fpgarduino_ulx2s_sram.menu.pinmap.generic.build.variant=generic
-fpgarduino_ulx2s_sram.menu.pinmap.physical=ULX2S Physical
-fpgarduino_ulx2s_sram.menu.pinmap.physical.build.variant=ulx2s_physical
+fpga_ulx2s_sram.name=FER ULX2S (Lattice XP2) SRAM
+fpga_ulx2s_sram.build.mcu=f32c
+fpga_ulx2s_sram.build.core=f32c
+fpga_ulx2s_sram.upload.tool=ujprog
+fpga_ulx2s_sram.upload.wait_for_upload_port=false
+fpga_ulx2s_sram.upload.native_usb=false
+fpga_ulx2s_sram.upload.bitstream.command="{path}/{cmd}" -j {upload.bitstream.target} "{runtime.platform.path}/bootloaders/{bootloader.file}"
+fpga_ulx2s_sram.bootloader.file=ulx2s/ulx2s_8e_mips_sram_81mhz.jed
+fpga_ulx2s_sram.menu.cpu.mips=MIPS
+fpga_ulx2s_sram.menu.cpu.mips.cpu.arch=mips
+fpga_ulx2s_sram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_ulx2s_sram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_ulx2s_sram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_ulx2s_sram.menu.ramsize.1024=1 MB SRAM Onboard
+fpga_ulx2s_sram.menu.ramsize.1024.upload.maximum_size=1015808
+fpga_ulx2s_sram.menu.ramsize.1024.build.extra_flags=--section-start=.init=0x80000000
+fpga_ulx2s_sram.menu.speed.81=81.25 MHz
+fpga_ulx2s_sram.menu.speed.81.build.fcpu=81250000
+fpga_ulx2s_sram.menu.protocol.bin=Binary 3 Mbit/s
+fpga_ulx2s_sram.menu.protocol.bin.upload.protocol=bin
+fpga_ulx2s_sram.menu.protocol.bin.upload.flags=-re
+fpga_ulx2s_sram.menu.pinmap.generic=Generic
+fpga_ulx2s_sram.menu.pinmap.generic.build.variant=generic
+fpga_ulx2s_sram.menu.pinmap.physical=ULX2S Physical
+fpga_ulx2s_sram.menu.pinmap.physical.build.variant=ulx2s_physical
+fpga_ulx2s_sram.menu.bitstream.sram=SRAM (temporary)
+fpga_ulx2s_sram.menu.bitstream.sram.upload.bitstream.target=SRAM
+fpga_ulx2s_sram.menu.bitstream.flash=FLASH (permanent)
+fpga_ulx2s_sram.menu.bitstream.flash.upload.bitstream.target=FLASH
 
 #
 # FPGArduino ULX2S f32c SoC BRAM
 #
-fpgarduino_ulx2s_bram.name=FER ULX2S (Lattice XP2) BRAM
-fpgarduino_ulx2s_bram.build.mcu=f32c
-fpgarduino_ulx2s_bram.build.core=f32c
-fpgarduino_ulx2s_bram.upload.tool=ujprog
-fpgarduino_ulx2s_bram.upload.wait_for_upload_port=false
-fpgarduino_ulx2s_bram.upload.native_usb=false
-fpgarduino_ulx2s_bram.menu.cpu.mips=MIPS
-fpgarduino_ulx2s_bram.menu.cpu.mips.cpu.arch=mips
-fpgarduino_ulx2s_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
-fpgarduino_ulx2s_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
-fpgarduino_ulx2s_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpgarduino_ulx2s_bram.menu.cpu.mips.bootloader.file=ulx2s/ulx2s_8e_mips_bram_100mhz.jed
-fpgarduino_ulx2s_bram.menu.cpu.riscv=RISC-V
-fpgarduino_ulx2s_bram.menu.cpu.riscv.cpu.arch=riscv
-fpgarduino_ulx2s_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
-fpgarduino_ulx2s_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
-fpgarduino_ulx2s_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpgarduino_ulx2s_bram.menu.cpu.riscv.bootloader.file=ulx2s/ulx2s_8e_riscv_bram_100mhz.jed
-fpgarduino_ulx2s_bram.menu.ramsize.16=16 KB BRAM Internal
-fpgarduino_ulx2s_bram.menu.ramsize.16.upload.maximum_size=15360
-fpgarduino_ulx2s_bram.menu.ramsize.16.build.extra_flags=--section-start=.init=0x200
-fpgarduino_ulx2s_bram.menu.speed.100=100 MHz
-fpgarduino_ulx2s_bram.menu.speed.100.build.fcpu=100000000
-fpgarduino_ulx2s_bram.menu.protocol.bin=Hex 115.2 kbit/s no verify RS232
-fpgarduino_ulx2s_bram.menu.protocol.bin.upload.protocol=hex
-fpgarduino_ulx2s_bram.menu.protocol.bin.upload.flags=-P{serial.port} -ra
-fpgarduino_ulx2s_bram.menu.pinmap.generic=Generic
-fpgarduino_ulx2s_bram.menu.pinmap.generic.build.variant=generic
-fpgarduino_ulx2s_bram.menu.pinmap.physical=ULX2S Physical
-fpgarduino_ulx2s_bram.menu.pinmap.physical.build.variant=ulx2s_physical
+fpga_ulx2s_bram.name=FER ULX2S (Lattice XP2) BRAM
+fpga_ulx2s_bram.build.mcu=f32c
+fpga_ulx2s_bram.build.core=f32c
+fpga_ulx2s_bram.upload.tool=ujprog
+fpga_ulx2s_bram.upload.wait_for_upload_port=false
+fpga_ulx2s_bram.upload.native_usb=false
+fpga_ulx2s_bram.upload.bitstream.command="{path}/{cmd}" -j {upload.bitstream.target} "{runtime.platform.path}/bootloaders/{bootloader.file}"
+fpga_ulx2s_bram.menu.cpu.mips=MIPS
+fpga_ulx2s_bram.menu.cpu.mips.cpu.arch=mips
+fpga_ulx2s_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_ulx2s_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_ulx2s_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_ulx2s_bram.menu.cpu.mips.bootloader.file=ulx2s/ulx2s_8e_mips_bram_100mhz.jed
+fpga_ulx2s_bram.menu.cpu.riscv=RISC-V
+fpga_ulx2s_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_ulx2s_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_ulx2s_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_ulx2s_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_ulx2s_bram.menu.cpu.riscv.bootloader.file=ulx2s/ulx2s_8e_riscv_bram_100mhz.jed
+fpga_ulx2s_bram.menu.ramsize.16=16 KB BRAM Internal
+fpga_ulx2s_bram.menu.ramsize.16.upload.maximum_size=15360
+fpga_ulx2s_bram.menu.ramsize.16.build.extra_flags=--section-start=.init=0x200
+fpga_ulx2s_bram.menu.speed.100=100 MHz
+fpga_ulx2s_bram.menu.speed.100.build.fcpu=100000000
+fpga_ulx2s_bram.menu.protocol.bin=Hex 115.2 kbit/s no verify RS232
+fpga_ulx2s_bram.menu.protocol.bin.upload.protocol=hex
+fpga_ulx2s_bram.menu.protocol.bin.upload.flags=-P{serial.port} -ra
+fpga_ulx2s_bram.menu.pinmap.generic=Generic
+fpga_ulx2s_bram.menu.pinmap.generic.build.variant=generic
+fpga_ulx2s_bram.menu.pinmap.physical=ULX2S Physical
+fpga_ulx2s_bram.menu.pinmap.physical.build.variant=ulx2s_physical
+fpga_ulx2s_bram.menu.bitstream.sram=SRAM (temporary)
+fpga_ulx2s_bram.menu.bitstream.sram.upload.bitstream.target=SRAM
+fpga_ulx2s_bram.menu.bitstream.flash=FLASH (permanent)
+fpga_ulx2s_bram.menu.bitstream.flash.upload.bitstream.target=FLASH
 
 #
 # Xilinx TB299 Board (ebay), f32c SoC
@@ -75,6 +86,7 @@ fpga_tb299.build.core=f32c
 fpga_tb299.upload.tool=ujprog
 fpga_tb299.upload.wait_for_upload_port=false
 fpga_tb299.upload.native_usb=false
+fpga_tb299.upload.bitstream.command="openocd" "--file={bootloader.openocd_cfg}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
 fpga_tb299.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/xc6slx9/xc6slx9.ocd
 fpga_tb299.menu.cpu.mips=MIPS
 fpga_tb299.menu.cpu.mips.cpu.arch=mips
@@ -133,90 +145,94 @@ fpga_tb276.menu.protocol.bin.upload.protocol=hex
 fpga_tb276.menu.protocol.bin.upload.flags=-P{serial.port} -ra
 fpga_tb276.menu.pinmap.generic=Generic
 fpga_tb276.menu.pinmap.generic.build.variant=generic
+fpga_tb276.menu.bitstream.sram=SRAM (temporary)
+fpga_tb276.menu.bitstream.sram.upload.bitstream.command="openocd" "--file={bootloader.openocd_cfg}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
+fpga_tb276.menu.bitstream.flash=FLASH (permanent)
+fpga_tb276.menu.bitstream.flash.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IPV;{runtime.platform.path}/bootloaders/{bootloader.file_jic}"
 
 #
 # FPGArduino Generic f32c SoC
 #
-fpgarduino_generic.name=Generic f32c
-fpgarduino_generic.build.mcu=f32c
-fpgarduino_generic.build.core=f32c
-fpgarduino_generic.build.extra_flags=--section-start=.init=0x200
-fpgarduino_generic.upload.tool=ujprog
-fpgarduino_generic.upload.wait_for_upload_port=false
-fpgarduino_generic.upload.native_usb=false
-fpgarduino_generic.menu.cpu.mips=MIPS
-fpgarduino_generic.menu.cpu.mips.cpu.arch=mips
-fpgarduino_generic.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
-fpgarduino_generic.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
-fpgarduino_generic.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpgarduino_generic.menu.cpu.riscv=RISC-V
-fpgarduino_generic.menu.cpu.riscv.cpu.arch=riscv
-fpgarduino_generic.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
-fpgarduino_generic.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
-fpgarduino_generic.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpgarduino_generic.menu.ramsize.8=8 KB BRAM Internal
-fpgarduino_generic.menu.ramsize.8.upload.maximum_size=7168
-fpgarduino_generic.menu.ramsize.8.build.extra_flags=--section-start=.init=0x200
-fpgarduino_generic.menu.ramsize.16=16 KB BRAM Internal
-fpgarduino_generic.menu.ramsize.16.upload.maximum_size=15360
-fpgarduino_generic.menu.ramsize.16.build.extra_flags=--section-start=.init=0x200
-fpgarduino_generic.menu.ramsize.32=32 KB BRAM Internal
-fpgarduino_generic.menu.ramsize.32.upload.maximum_size=31744
-fpgarduino_generic.menu.ramsize.32.build.extra_flags=--section-start=.init=0x200
-fpgarduino_generic.menu.ramsize.64=64 KB BRAM Internal
-fpgarduino_generic.menu.ramsize.64.upload.maximum_size=64152
-fpgarduino_generic.menu.ramsize.64.build.extra_flags=--section-start=.init=0x200
-fpgarduino_generic.menu.ramsize.128=128 KB BRAM Internal
-fpgarduino_generic.menu.ramsize.128.upload.maximum_size=130048
-fpgarduino_generic.menu.ramsize.128.build.extra_flags=--section-start=.init=0x200
-fpgarduino_generic.menu.ramsize.1024=1 MB SRAM Onboard
-fpgarduino_generic.menu.ramsize.1024.upload.maximum_size=1015808
-fpgarduino_generic.menu.ramsize.1024.build.extra_flags=--section-start=.init=0x80000000
-fpgarduino_generic.menu.speed.10=10 MHz
-fpgarduino_generic.menu.speed.10.build.fcpu=10000000
-fpgarduino_generic.menu.speed.20=20 MHz
-fpgarduino_generic.menu.speed.20.build.fcpu=20000000
-fpgarduino_generic.menu.speed.25=25 MHz
-fpgarduino_generic.menu.speed.25.build.fcpu=25000000
-fpgarduino_generic.menu.speed.30=30 MHz
-fpgarduino_generic.menu.speed.30.build.fcpu=30000000
-fpgarduino_generic.menu.speed.33=33.3 MHz
-fpgarduino_generic.menu.speed.33.build.fcpu=33333333
-fpgarduino_generic.menu.speed.40=40 MHz
-fpgarduino_generic.menu.speed.40.build.fcpu=40000000
-fpgarduino_generic.menu.speed.50=50 MHz
-fpgarduino_generic.menu.speed.50.build.fcpu=50000000
-fpgarduino_generic.menu.speed.60=60 MHz
-fpgarduino_generic.menu.speed.60.build.fcpu=60000000
-fpgarduino_generic.menu.speed.66=66.6 MHz
-fpgarduino_generic.menu.speed.66.build.fcpu=66666666
-fpgarduino_generic.menu.speed.70=70 MHz
-fpgarduino_generic.menu.speed.70.build.fcpu=70000000
-fpgarduino_generic.menu.speed.75=75 MHz
-fpgarduino_generic.menu.speed.75.build.fcpu=75000000
-fpgarduino_generic.menu.speed.80=80 MHz
-fpgarduino_generic.menu.speed.80.build.fcpu=80000000
-fpgarduino_generic.menu.speed.90=90 MHz
-fpgarduino_generic.menu.speed.90.build.fcpu=90000000
-fpgarduino_generic.menu.speed.100=100 MHz
-fpgarduino_generic.menu.speed.100.build.fcpu=100000000
-fpgarduino_generic.menu.speed.112=112.5 MHz
-fpgarduino_generic.menu.speed.112.build.fcpu=112500000
-fpgarduino_generic.menu.speed.125=125 MHz
-fpgarduino_generic.menu.speed.125.build.fcpu=125000000
-fpgarduino_generic.menu.speed.133=133.3 MHz
-fpgarduino_generic.menu.speed.133.build.fcpu=133333333
-fpgarduino_generic.menu.speed.150=150 MHz
-fpgarduino_generic.menu.speed.150.build.fcpu=150000000
-fpgarduino_generic.menu.speed.166=166.6 MHz
-fpgarduino_generic.menu.speed.166.build.fcpu=166666666
-fpgarduino_generic.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
-fpgarduino_generic.menu.protocol.hex.upload.protocol=hex
-fpgarduino_generic.menu.protocol.hex.upload.flags=-P{serial.port} -ra
-fpgarduino_generic.menu.protocol.bin=Binary 3 Mbit/s checksum FTDI
-fpgarduino_generic.menu.protocol.bin.upload.protocol=bin
-fpgarduino_generic.menu.protocol.bin.upload.flags=-re
-fpgarduino_generic.menu.pinmap.generic=Generic
-fpgarduino_generic.menu.pinmap.generic.build.variant=generic
-fpgarduino_generic.menu.pinmap.ulx2s_physical=ULX2S Physical
-fpgarduino_generic.menu.pinmap.ulx2s_physical.build.variant=ulx2s_physical
+fpga_generic.name=Generic f32c
+fpga_generic.build.mcu=f32c
+fpga_generic.build.core=f32c
+fpga_generic.build.extra_flags=--section-start=.init=0x200
+fpga_generic.upload.tool=ujprog
+fpga_generic.upload.wait_for_upload_port=false
+fpga_generic.upload.native_usb=false
+fpga_generic.menu.cpu.mips=MIPS
+fpga_generic.menu.cpu.mips.cpu.arch=mips
+fpga_generic.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_generic.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_generic.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_generic.menu.cpu.riscv=RISC-V
+fpga_generic.menu.cpu.riscv.cpu.arch=riscv
+fpga_generic.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_generic.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_generic.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_generic.menu.ramsize.8=8 KB BRAM Internal
+fpga_generic.menu.ramsize.8.upload.maximum_size=7168
+fpga_generic.menu.ramsize.8.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.16=16 KB BRAM Internal
+fpga_generic.menu.ramsize.16.upload.maximum_size=15360
+fpga_generic.menu.ramsize.16.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.32=32 KB BRAM Internal
+fpga_generic.menu.ramsize.32.upload.maximum_size=31744
+fpga_generic.menu.ramsize.32.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.64=64 KB BRAM Internal
+fpga_generic.menu.ramsize.64.upload.maximum_size=64152
+fpga_generic.menu.ramsize.64.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.128=128 KB BRAM Internal
+fpga_generic.menu.ramsize.128.upload.maximum_size=130048
+fpga_generic.menu.ramsize.128.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.1024=1 MB SRAM Onboard
+fpga_generic.menu.ramsize.1024.upload.maximum_size=1015808
+fpga_generic.menu.ramsize.1024.build.extra_flags=--section-start=.init=0x80000000
+fpga_generic.menu.speed.10=10 MHz
+fpga_generic.menu.speed.10.build.fcpu=10000000
+fpga_generic.menu.speed.20=20 MHz
+fpga_generic.menu.speed.20.build.fcpu=20000000
+fpga_generic.menu.speed.25=25 MHz
+fpga_generic.menu.speed.25.build.fcpu=25000000
+fpga_generic.menu.speed.30=30 MHz
+fpga_generic.menu.speed.30.build.fcpu=30000000
+fpga_generic.menu.speed.33=33.3 MHz
+fpga_generic.menu.speed.33.build.fcpu=33333333
+fpga_generic.menu.speed.40=40 MHz
+fpga_generic.menu.speed.40.build.fcpu=40000000
+fpga_generic.menu.speed.50=50 MHz
+fpga_generic.menu.speed.50.build.fcpu=50000000
+fpga_generic.menu.speed.60=60 MHz
+fpga_generic.menu.speed.60.build.fcpu=60000000
+fpga_generic.menu.speed.66=66.6 MHz
+fpga_generic.menu.speed.66.build.fcpu=66666666
+fpga_generic.menu.speed.70=70 MHz
+fpga_generic.menu.speed.70.build.fcpu=70000000
+fpga_generic.menu.speed.75=75 MHz
+fpga_generic.menu.speed.75.build.fcpu=75000000
+fpga_generic.menu.speed.80=80 MHz
+fpga_generic.menu.speed.80.build.fcpu=80000000
+fpga_generic.menu.speed.90=90 MHz
+fpga_generic.menu.speed.90.build.fcpu=90000000
+fpga_generic.menu.speed.100=100 MHz
+fpga_generic.menu.speed.100.build.fcpu=100000000
+fpga_generic.menu.speed.112=112.5 MHz
+fpga_generic.menu.speed.112.build.fcpu=112500000
+fpga_generic.menu.speed.125=125 MHz
+fpga_generic.menu.speed.125.build.fcpu=125000000
+fpga_generic.menu.speed.133=133.3 MHz
+fpga_generic.menu.speed.133.build.fcpu=133333333
+fpga_generic.menu.speed.150=150 MHz
+fpga_generic.menu.speed.150.build.fcpu=150000000
+fpga_generic.menu.speed.166=166.6 MHz
+fpga_generic.menu.speed.166.build.fcpu=166666666
+fpga_generic.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_generic.menu.protocol.hex.upload.protocol=hex
+fpga_generic.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_generic.menu.protocol.bin=Binary 3 Mbit/s checksum FTDI
+fpga_generic.menu.protocol.bin.upload.protocol=bin
+fpga_generic.menu.protocol.bin.upload.flags=-re
+fpga_generic.menu.pinmap.generic=Generic
+fpga_generic.menu.pinmap.generic.build.variant=generic
+fpga_generic.menu.pinmap.ulx2s_physical=ULX2S Physical
+fpga_generic.menu.pinmap.ulx2s_physical.build.variant=ulx2s_physical
