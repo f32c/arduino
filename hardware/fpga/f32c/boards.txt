@@ -212,7 +212,7 @@ fpga_tb299.upload.tool=ujprog
 fpga_tb299.upload.wait_for_upload_port=false
 fpga_tb299.upload.native_usb=false
 fpga_tb299.upload.bitstream.command="openocd" "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
-fpga_tb299.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
+# fpga_tb299.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
 fpga_tb299.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/tb299.cfg
 fpga_tb299.menu.cpu.mips=MIPS
 fpga_tb299.menu.cpu.mips.cpu.arch=mips
@@ -236,6 +236,10 @@ fpga_tb299.menu.protocol.bin.upload.protocol=hex
 fpga_tb299.menu.protocol.bin.upload.flags=-P{serial.port} -ra
 fpga_tb299.menu.pinmap.generic=Generic
 fpga_tb299.menu.pinmap.generic.build.variant=generic
+fpga_tb299.menu.jtag.alterablaster=Altera Blaster
+fpga_tb299.menu.jtag.alterablaster.bootloader.openocd.interface=interface/altera-usb-blaster.cfg
+fpga_tb299.menu.jtag.fpu1=PLDkit FPU1 JTAG
+fpga_tb299.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
 
 #
 # Altera TB276 Board (ebay), f32c SoC
