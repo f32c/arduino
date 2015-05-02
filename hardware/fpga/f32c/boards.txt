@@ -52,6 +52,156 @@ fpga_ulx2s_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags
 fpga_ulx2s_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 
 #
+# Terasic DE0-Nano
+#
+fpga_de0_nano_bram.name=Terasic DE0-Nano (Altera Cyclone-IV, 32K BRAM, 100 MHz)
+fpga_de0_nano_bram.build.fcpu=100000000
+fpga_de0_nano_bram.build.variant=generic
+fpga_de0_nano_bram.build.mcu=f32c
+fpga_de0_nano_bram.build.core=f32c
+fpga_de0_nano_bram.upload.tool=ujprog
+fpga_de0_nano_bram.upload.wait_for_upload_port=false
+fpga_de0_nano_bram.upload.native_usb=false
+fpga_de0_nano_bram.upload.maximum_size=31744
+fpga_de0_nano_bram.upload.protocol=hex
+fpga_de0_nano_bram.upload.flags=-P{serial.port} -ra
+fpga_de0_nano_bram.menu.cpu.mips=MIPS
+fpga_de0_nano_bram.menu.cpu.mips.cpu.arch=mips
+fpga_de0_nano_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_de0_nano_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_de0_nano_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_de0_nano_bram.menu.cpu.riscv=RISC-V
+fpga_de0_nano_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_de0_nano_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_de0_nano_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_de0_nano_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+
+#
+# Spartan-3 (3E, 3A, 3AN) Starter Kits
+#
+fpga_s3starter_bram.name=Xilinx Spartan Starter Kits (S3E/S3A, 32K BRAM, 70 MHz)
+fpga_s3starter_bram.build.fcpu=70000000
+fpga_s3starter_bram.build.variant=generic
+fpga_s3starter_bram.build.mcu=f32c
+fpga_s3starter_bram.build.core=f32c
+fpga_s3starter_bram.upload.tool=ujprog
+fpga_s3starter_bram.upload.wait_for_upload_port=false
+fpga_s3starter_bram.upload.native_usb=false
+fpga_s3starter_bram.upload.maximum_size=31744
+fpga_s3starter_bram.upload.protocol=hex
+fpga_s3starter_bram.upload.flags=-P{serial.port} -ra
+fpga_s3starter_bram.menu.cpu.mips=MIPS
+fpga_s3starter_bram.menu.cpu.mips.cpu.arch=mips
+fpga_s3starter_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_s3starter_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_s3starter_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_s3starter_bram.menu.cpu.riscv=RISC-V
+fpga_s3starter_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_s3starter_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_s3starter_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_s3starter_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+
+#
+# Nexys-3
+#
+fpga_nexys3_bram.name=Digilent Nexyx-3 (Xilinx Spartan-6, 64K BRAM, 80 MHz)
+fpga_nexys3_bram.build.fcpu=80000000
+fpga_nexys3_bram.build.variant=generic
+fpga_nexys3_bram.build.mcu=f32c
+fpga_nexys3_bram.build.core=f32c
+fpga_nexys3_bram.upload.tool=ujprog
+fpga_nexys3_bram.upload.wait_for_upload_port=false
+fpga_nexys3_bram.upload.native_usb=false
+fpga_nexys3_bram.upload.maximum_size=64152
+fpga_nexys3_bram.upload.protocol=hex
+fpga_nexys3_bram.upload.flags=-P{serial.port} -ra
+fpga_nexys3_bram.menu.cpu.mips=MIPS
+fpga_nexys3_bram.menu.cpu.mips.cpu.arch=mips
+fpga_nexys3_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_nexys3_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_nexys3_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_nexys3_bram.menu.cpu.riscv=RISC-V
+fpga_nexys3_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_nexys3_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_nexys3_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_nexys3_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+
+#
+# Basys-3
+#
+fpga_basys3_bram.name=Digilent Basys-3 (Xilinx Artix-7, 128K BRAM, 100 MHz)
+fpga_basys3_bram.build.fcpu=100000000
+fpga_basys3_bram.build.variant=generic
+fpga_basys3_bram.build.mcu=f32c
+fpga_basys3_bram.build.core=f32c
+fpga_basys3_bram.upload.tool=ujprog
+fpga_basys3_bram.upload.wait_for_upload_port=false
+fpga_basys3_bram.upload.native_usb=false
+fpga_basys3_bram.upload.maximum_size=130048
+fpga_basys3_bram.upload.protocol=hex
+fpga_basys3_bram.upload.flags=-P{serial.port} -ra
+fpga_basys3_bram.menu.cpu.mips=MIPS
+fpga_basys3_bram.menu.cpu.mips.cpu.arch=mips
+fpga_basys3_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_basys3_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_basys3_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_basys3_bram.menu.cpu.riscv=RISC-V
+fpga_basys3_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_basys3_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_basys3_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_basys3_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+
+#
+# ZYBO
+#
+fpga_zybo_bram.name=Digilent ZYBO (Xilinx Zynq 7010, 128K BRAM, 125 MHz)
+fpga_zybo_bram.build.fcpu=125000000
+fpga_zybo_bram.build.variant=generic
+fpga_zybo_bram.build.mcu=f32c
+fpga_zybo_bram.build.core=f32c
+fpga_zybo_bram.upload.tool=ujprog
+fpga_zybo_bram.upload.wait_for_upload_port=false
+fpga_zybo_bram.upload.native_usb=false
+fpga_zybo_bram.upload.maximum_size=130048
+fpga_zybo_bram.upload.protocol=hex
+fpga_zybo_bram.upload.flags=-P{serial.port} -ra
+fpga_zybo_bram.menu.cpu.mips=MIPS
+fpga_zybo_bram.menu.cpu.mips.cpu.arch=mips
+fpga_zybo_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_zybo_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_zybo_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_zybo_bram.menu.cpu.riscv=RISC-V
+fpga_zybo_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_zybo_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_zybo_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_zybo_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+
+#
+# Lattice Brevia / Brevia2
+#
+fpga_brevia_bram.name=Lattice Brevia boards (Lattice XP2, 16K BRAM, 81.25 MHz)
+fpga_brevia_bram.build.fcpu=81250000
+fpga_brevia_bram.build.variant=generic
+fpga_brevia_bram.build.mcu=f32c
+fpga_brevia_bram.build.core=f32c
+fpga_brevia_bram.upload.tool=ujprog
+fpga_brevia_bram.upload.wait_for_upload_port=false
+fpga_brevia_bram.upload.native_usb=false
+fpga_brevia_bram.upload.maximum_size=15360
+fpga_brevia_bram.upload.protocol=hex
+fpga_brevia_bram.upload.flags=-P{serial.port} -ra
+fpga_brevia_bram.menu.cpu.mips=MIPS
+fpga_brevia_bram.menu.cpu.mips.cpu.arch=mips
+fpga_brevia_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_brevia_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_brevia_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_brevia_bram.menu.cpu.riscv=RISC-V
+fpga_brevia_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_brevia_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_brevia_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_brevia_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+
+#
 # Xilinx TB299 Board (ebay), f32c SoC
 #
 fpga_tb299.name=TB299 (Xilinx Spartan-6 XC6SLX9)
@@ -127,7 +277,7 @@ fpga_tb276.menu.bitstream.flash.upload.bitstream.command="quartus_pgm" "--no_ban
 #
 # FPGArduino Generic f32c SoC
 #
-fpga_generic.name=Generic f32c
+fpga_generic.name=Generic FPGA board
 fpga_generic.build.mcu=f32c
 fpga_generic.build.core=f32c
 fpga_generic.upload.tool=ujprog
