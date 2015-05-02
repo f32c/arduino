@@ -87,7 +87,7 @@ fpga_tb299.upload.tool=ujprog
 fpga_tb299.upload.wait_for_upload_port=false
 fpga_tb299.upload.native_usb=false
 fpga_tb299.upload.bitstream.command="openocd" "--file={bootloader.openocd_cfg}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
-fpga_tb299.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/xc6slx9/xc6slx9.ocd
+fpga_tb299.bootloader.openocd_cfg={runtime.platform.path}/tools/openocd/xc6slx9_fpu1.ocd
 fpga_tb299.menu.cpu.mips=MIPS
 fpga_tb299.menu.cpu.mips.cpu.arch=mips
 fpga_tb299.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
@@ -120,7 +120,7 @@ fpga_tb276.build.core=f32c
 fpga_tb276.upload.tool=ujprog
 fpga_tb276.upload.wait_for_upload_port=false
 fpga_tb276.upload.native_usb=false
-fpga_tb276.bootloader.openocd_cfg={runtime.platform.path}/bootloaders/tb276/tb276.ocd
+fpga_tb276.bootloader.openocd_cfg={runtime.platform.path}/tools/openocd/tb276_alterablaster.ocd
 fpga_tb276.menu.cpu.mips=MIPS
 fpga_tb276.menu.cpu.mips.cpu.arch=mips
 fpga_tb276.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}

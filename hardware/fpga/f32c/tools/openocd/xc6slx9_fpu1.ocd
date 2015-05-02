@@ -1,0 +1,18 @@
+# xc6slx9.ocd
+# OpenOCD commands
+
+# impact->boundary scan->right click in right window->add xilinx device glue.bit->one step svf
+
+interface ftdi
+ftdi_device_desc "FPU1 JTAG Programmer"
+ftdi_vid_pid 0x0403 0x6010
+ftdi_layout_init 0x3088 0x1f8b
+telnet_port 4444
+gdb_port 3333
+
+jtag_rclk 1200
+# JTAG TAPs
+jtag newtap chip tap -expected-id 0x24001093 -irlen 6
+
+init
+scan_chain
