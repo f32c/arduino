@@ -9,7 +9,7 @@ menu.bitstream=Upload Bitstream to
 # FPGArduino ULX2S f32c SoC SRAM
 #
 fpga_ulx2s_sram.name=FER ULX2S (Lattice XP2, 1M SRAM, 81.25 MHz)
-fpga_ulx2s_sram.build.extra_flags=--section-start=.init=0x200
+fpga_ulx2s_sram.build.extra_flags=--section-start=.init=0x80000000
 fpga_ulx2s_sram.build.fcpu=81250000
 fpga_ulx2s_sram.build.variant=generic
 fpga_ulx2s_sram.build.mcu=f32c
@@ -30,7 +30,6 @@ fpga_ulx2s_sram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
 # FPGArduino ULX2S f32c SoC BRAM
 #
 fpga_ulx2s_bram.name=FER ULX2S (Lattice XP2, 16K BRAM, 81.25 MHz)
-fpga_ulx2s_bram.build.extra_flags=--section-start=.init=0x200
 fpga_ulx2s_bram.build.fcpu=81250000
 fpga_ulx2s_bram.build.variant=generic
 fpga_ulx2s_bram.build.mcu=f32c
@@ -131,7 +130,6 @@ fpga_tb276.menu.bitstream.flash.upload.bitstream.command="quartus_pgm" "--no_ban
 fpga_generic.name=Generic f32c
 fpga_generic.build.mcu=f32c
 fpga_generic.build.core=f32c
-fpga_generic.build.extra_flags=--section-start=.init=0x200
 fpga_generic.upload.tool=ujprog
 fpga_generic.upload.wait_for_upload_port=false
 fpga_generic.upload.native_usb=false

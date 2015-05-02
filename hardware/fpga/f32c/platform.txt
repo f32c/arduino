@@ -38,7 +38,7 @@ compiler.size.cmd={cpu.arch}-elf-size
 compiler.define=-DARDUINO=
 
 # this can be overriden in boards.txt
-build.extra_flags=
+build.extra_flags=--section-start=.init=0x200
 
 # These can be overridden in platform.local.txt
 compiler.c.extra_flags=-D__F32C__ "-DVARIANT_MCK={build.fcpu}"
