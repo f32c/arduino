@@ -64,7 +64,7 @@ fpga_ulx2s_bram.menu.ramsize.16=16 KB BRAM Internal
 fpga_ulx2s_bram.menu.ramsize.16.upload.maximum_size=15360
 fpga_ulx2s_bram.menu.ramsize.16.build.extra_flags=--section-start=.init=0x200
 fpga_ulx2s_bram.menu.speed.81=81.25 MHz
-fpga_ulx2s_bram.menu.speed.81.build.fcpu=8125000
+fpga_ulx2s_bram.menu.speed.81.build.fcpu=81250000
 fpga_ulx2s_bram.menu.protocol.bin=Hex 115.2 kbit/s no verify RS232
 fpga_ulx2s_bram.menu.protocol.bin.upload.protocol=hex
 fpga_ulx2s_bram.menu.protocol.bin.upload.flags=-P{serial.port} -ra
