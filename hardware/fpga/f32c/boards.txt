@@ -8,74 +8,49 @@ menu.bitstream=Upload Bitstream to
 #
 # FPGArduino ULX2S f32c SoC SRAM
 #
-fpga_ulx2s_sram.name=FER ULX2S (Lattice XP2) SRAM
+fpga_ulx2s_sram.name=FER ULX2S (Lattice XP2, 1M SRAM, 81.25 MHz)
+fpga_ulx2s_sram.build.extra_flags=--section-start=.init=0x200
+fpga_ulx2s_sram.build.fcpu=81250000
+fpga_ulx2s_sram.build.variant=generic
 fpga_ulx2s_sram.build.mcu=f32c
 fpga_ulx2s_sram.build.core=f32c
 fpga_ulx2s_sram.upload.tool=ujprog
 fpga_ulx2s_sram.upload.wait_for_upload_port=false
 fpga_ulx2s_sram.upload.native_usb=false
-fpga_ulx2s_sram.upload.bitstream.command="{path}/{cmd}" -j {upload.bitstream.target} "{runtime.platform.path}/bootloaders/{bootloader.file}"
-fpga_ulx2s_sram.bootloader.file=ulx2s/ulx2s_8e_mips_sram_81mhz.jed
+fpga_ulx2s_sram.upload.maximum_size=1015808
+fpga_ulx2s_sram.upload.protocol=bin
+fpga_ulx2s_sram.upload.flags=-re
 fpga_ulx2s_sram.menu.cpu.mips=MIPS
 fpga_ulx2s_sram.menu.cpu.mips.cpu.arch=mips
 fpga_ulx2s_sram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
 fpga_ulx2s_sram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
 fpga_ulx2s_sram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpga_ulx2s_sram.menu.ramsize.1024=1 MB SRAM Onboard
-fpga_ulx2s_sram.menu.ramsize.1024.upload.maximum_size=1015808
-fpga_ulx2s_sram.menu.ramsize.1024.build.extra_flags=--section-start=.init=0x80000000
-fpga_ulx2s_sram.menu.speed.81=81.25 MHz
-fpga_ulx2s_sram.menu.speed.81.build.fcpu=81250000
-fpga_ulx2s_sram.menu.protocol.bin=Binary 3 Mbit/s
-fpga_ulx2s_sram.menu.protocol.bin.upload.protocol=bin
-fpga_ulx2s_sram.menu.protocol.bin.upload.flags=-re
-fpga_ulx2s_sram.menu.pinmap.generic=Generic
-fpga_ulx2s_sram.menu.pinmap.generic.build.variant=generic
-fpga_ulx2s_sram.menu.pinmap.physical=ULX2S Physical
-fpga_ulx2s_sram.menu.pinmap.physical.build.variant=ulx2s_physical
-fpga_ulx2s_sram.menu.bitstream.sram=SRAM (temporary)
-fpga_ulx2s_sram.menu.bitstream.sram.upload.bitstream.target=SRAM
-fpga_ulx2s_sram.menu.bitstream.flash=FLASH (permanent)
-fpga_ulx2s_sram.menu.bitstream.flash.upload.bitstream.target=FLASH
 
 #
 # FPGArduino ULX2S f32c SoC BRAM
 #
-fpga_ulx2s_bram.name=FER ULX2S (Lattice XP2) BRAM
+fpga_ulx2s_bram.name=FER ULX2S (Lattice XP2, 16K BRAM, 81.25 MHz)
+fpga_ulx2s_bram.build.extra_flags=--section-start=.init=0x200
+fpga_ulx2s_bram.build.fcpu=81250000
+fpga_ulx2s_bram.build.variant=generic
 fpga_ulx2s_bram.build.mcu=f32c
 fpga_ulx2s_bram.build.core=f32c
 fpga_ulx2s_bram.upload.tool=ujprog
 fpga_ulx2s_bram.upload.wait_for_upload_port=false
 fpga_ulx2s_bram.upload.native_usb=false
-fpga_ulx2s_bram.upload.bitstream.command="{path}/{cmd}" -j {upload.bitstream.target} "{runtime.platform.path}/bootloaders/{bootloader.file}"
+fpga_ulx2s_bram.upload.maximum_size=15360
+fpga_ulx2s_bram.upload.protocol=hex
+fpga_ulx2s_bram.upload.flags=-P{serial.port} -ra
 fpga_ulx2s_bram.menu.cpu.mips=MIPS
 fpga_ulx2s_bram.menu.cpu.mips.cpu.arch=mips
 fpga_ulx2s_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
 fpga_ulx2s_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
 fpga_ulx2s_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpga_ulx2s_bram.menu.cpu.mips.bootloader.file=ulx2s/ulx2s_8e_mips_bram_100mhz.jed
 fpga_ulx2s_bram.menu.cpu.riscv=RISC-V
 fpga_ulx2s_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_ulx2s_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_ulx2s_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_ulx2s_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_ulx2s_bram.menu.cpu.riscv.bootloader.file=ulx2s/ulx2s_8e_riscv_bram_100mhz.jed
-fpga_ulx2s_bram.menu.ramsize.16=16 KB BRAM Internal
-fpga_ulx2s_bram.menu.ramsize.16.upload.maximum_size=15360
-fpga_ulx2s_bram.menu.ramsize.16.build.extra_flags=--section-start=.init=0x200
-fpga_ulx2s_bram.menu.speed.81=81.25 MHz
-fpga_ulx2s_bram.menu.speed.81.build.fcpu=81250000
-fpga_ulx2s_bram.menu.protocol.bin=Hex 115.2 kbit/s no verify RS232
-fpga_ulx2s_bram.menu.protocol.bin.upload.protocol=hex
-fpga_ulx2s_bram.menu.protocol.bin.upload.flags=-P{serial.port} -ra
-fpga_ulx2s_bram.menu.pinmap.generic=Generic
-fpga_ulx2s_bram.menu.pinmap.generic.build.variant=generic
-fpga_ulx2s_bram.menu.pinmap.physical=ULX2S Physical
-fpga_ulx2s_bram.menu.pinmap.physical.build.variant=ulx2s_physical
-fpga_ulx2s_bram.menu.bitstream.sram=SRAM (temporary)
-fpga_ulx2s_bram.menu.bitstream.sram.upload.bitstream.target=SRAM
-fpga_ulx2s_bram.menu.bitstream.flash=FLASH (permanent)
-fpga_ulx2s_bram.menu.bitstream.flash.upload.bitstream.target=FLASH
 
 #
 # Xilinx TB299 Board (ebay), f32c SoC
