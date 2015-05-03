@@ -110,7 +110,7 @@ fpga_s3starter_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.fla
 #
 # Nexys-3
 #
-fpga_nexys3_bram.name=Digilent Nexyx-3 (Xilinx Spartan-6, 64K BRAM, 80 MHz)
+fpga_nexys3_bram.name=Digilent Nexys-3 (Xilinx Spartan-6, 32K BRAM, 80 MHz)
 fpga_nexys3_bram.build.fcpu=80000000
 fpga_nexys3_bram.build.variant=generic
 fpga_nexys3_bram.build.mcu=f32c
@@ -118,7 +118,7 @@ fpga_nexys3_bram.build.core=f32c
 fpga_nexys3_bram.upload.tool=ujprog
 fpga_nexys3_bram.upload.wait_for_upload_port=false
 fpga_nexys3_bram.upload.native_usb=false
-fpga_nexys3_bram.upload.maximum_size=64152
+fpga_nexys3_bram.upload.maximum_size=31744
 fpga_nexys3_bram.upload.protocol=hex
 fpga_nexys3_bram.upload.flags=-P{serial.port} -ra
 fpga_nexys3_bram.menu.cpu.mips=MIPS
