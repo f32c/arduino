@@ -171,16 +171,26 @@ fpga_zybo_bram.upload.native_usb=false
 fpga_zybo_bram.upload.maximum_size=130048
 fpga_zybo_bram.upload.protocol=hex
 fpga_zybo_bram.upload.flags=-P{serial.port} -ra
+fpga_zybo_bram.upload.bitstream.command="openocd" "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
+fpga_zybo_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/zybo.cfg
 fpga_zybo_bram.menu.cpu.mips=MIPS
 fpga_zybo_bram.menu.cpu.mips.cpu.arch=mips
 fpga_zybo_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
 fpga_zybo_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
 fpga_zybo_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_zybo_bram.menu.cpu.mips.bootloader.file_svf=zybo/zybo_mips_bram_125mhz.svf
 fpga_zybo_bram.menu.cpu.riscv=RISC-V
 fpga_zybo_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_zybo_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_zybo_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_zybo_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_zybo_bram.menu.cpu.riscv.bootloader.file_svf=zybo/zybo_riscv_bram_125mhz.svf
+fpga_zybo_bram.menu.jtag.zybo=ZYBO onboard JTAG
+fpga_zybo_bram.menu.jtag.zybo.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/digilent_adept.cfg
+fpga_zybo_bram.menu.jtag.alterablaster=Altera Blaster
+fpga_zybo_bram.menu.jtag.alterablaster.bootloader.openocd.interface=interface/altera-usb-blaster.cfg
+fpga_zybo_bram.menu.jtag.fpu1=PLDkit FPU1 JTAG
+fpga_zybo_bram.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
 
 #
 # Lattice Brevia / Brevia2
