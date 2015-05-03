@@ -3,7 +3,7 @@
 # f32c MI32/RV32 (mips/risc-v) Core and platform.
 #
 
-name=FPGA f32c Boards
+name=FPGA Boards (f32c SoC)
 version=1.6.0
 
 # Compile variables
