@@ -218,9 +218,34 @@ fpga_brevia_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flag
 fpga_brevia_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 
 #
+# E2LP
+#
+fpga_e2lp_bram.name=E2LP (Xilinx Spartan-6, 128K BRAM, 80 MHz)
+fpga_e2lp_bram.build.fcpu=80000000
+fpga_e2lp_bram.build.variant=generic
+fpga_e2lp_bram.build.mcu=f32c
+fpga_e2lp_bram.build.core=f32c
+fpga_e2lp_bram.upload.tool=ujprog
+fpga_e2lp_bram.upload.wait_for_upload_port=false
+fpga_e2lp_bram.upload.native_usb=false
+fpga_e2lp_bram.upload.maximum_size=130048
+fpga_e2lp_bram.upload.protocol=hex
+fpga_e2lp_bram.upload.flags=-P{serial.port} -ra
+fpga_e2lp_bram.menu.cpu.mips=MIPS
+fpga_e2lp_bram.menu.cpu.mips.cpu.arch=mips
+fpga_e2lp_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_e2lp_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_e2lp_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_e2lp_bram.menu.cpu.riscv=RISC-V
+fpga_e2lp_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_e2lp_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_e2lp_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_e2lp_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+
+#
 # Xilinx TB299 Board (ebay), f32c SoC
 #
-fpga_tb299.name=TB299 (Xilinx Spartan-6 XC6SLX9, 32K SRAM, 112.5 MHz)
+fpga_tb299.name=TB299 (Xilinx Spartan-6 XC6SLX9, 32K BRAM, 112.5 MHz)
 fpga_tb299.build.mcu=f32c
 fpga_tb299.build.core=f32c
 fpga_tb299.upload.tool=ujprog
@@ -258,7 +283,7 @@ fpga_tb299.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/t
 #
 # Altera TB276 Board (ebay), f32c SoC
 #
-fpga_tb276.name=TB276 (Altera Cyclone IV E EP4CE6, 16K SRAM, 112.5 MHz)
+fpga_tb276.name=TB276 (Altera Cyclone IV E EP4CE6, 16K BRAM, 112.5 MHz)
 fpga_tb276.build.mcu=f32c
 fpga_tb276.build.core=f32c
 fpga_tb276.upload.tool=ujprog
