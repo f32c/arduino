@@ -20,21 +20,22 @@ We had to do small modifications of original examples
 for AVR-specific or hardware-dependent stuff in order 
 to get them running out of the box on f32c.
 
-This repository doesn't contain required compiler toolchains
-for mips or risc-v, so they have to be fetched and installed
-separately, see http://www.nxlab.fer.hr/fpgarduino for further
-instructions.
+Source tree arduino/hardware/fpga contains complete 
+arduino core for unified MIPS and RISC-V 
+achitecture support. Only this directory is needed to be
+copied to your existing arduino-1.6.x tree. Core can work
+alone without libraries and examples.
 
-We have here both old and new core tree.
+The core comes without GCC for MIPS/RISC-V and tools to
+upload binary and FPGA bitstreams (ujprog, openocd, JTAGs).
 
-New tree arduino/hardware/fpga
-contains unified MIPS and RISC-V source trees so both
-achitectures will execute the same code. This is recommended
-for use.
+Precompiled binaries for linux and windows with 
+GCC MIPS and RISC-V can be fetched and installed
+separately, see http://www.nxlab.fer.hr/fpgarduino for 
+further instructions.
 
-Old tree arduino/hardware/f32c had separated source copies 
-for MIPS and RISC-V it is not maintained anymore and kept here
-for some time for historical reference how we started.
+There are some short scripts and patches to
+build GCC from source in fpgarduino/f32c/src/compiler.
 
 # What should work
 
