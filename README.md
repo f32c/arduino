@@ -35,7 +35,8 @@ separately, see http://www.nxlab.fer.hr/fpgarduino for
 further instructions.
 
 There are some short scripts and patches to
-build GCC from source in fpgarduino/f32c/src/compiler.
+build GCC from source in 
+https://github.com/f32c/f32c/tree/master/src/compiler
 
 # What should work
 
