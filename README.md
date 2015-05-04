@@ -25,13 +25,16 @@ for mips or risc-v, so they have to be fetched and installed
 separately, see http://www.nxlab.fer.hr/fpgarduino for further
 instructions.
 
-We have here both old and new core tree. New tree
-unified MIPS and RISC-V source trees so both
-achitectures will execute the same code.
+We have here both old and new core tree.
 
-Old tree had separated source copies for MIPS and RISC-V
-it is now not anymore maintained and kept here for some
-time for historical reference how we started.
+New tree arduino/hardware/fpga
+contains unified MIPS and RISC-V source trees so both
+achitectures will execute the same code. This is recommended
+for use.
+
+Old tree arduino/hardware/f32c had separated source copies 
+for MIPS and RISC-V it is not maintained anymore and kept here
+for some time for historical reference how we started.
 
 # What should work
 
