@@ -1,4 +1,4 @@
-# Digilent Xilinx platform cable
+# Xilinx platform cable
 # cypress FX2 -> CPLD XC2 -> jtag XC3
 
 # when inserted empty device 0x03fd:0x000d then load firmware
