@@ -5,6 +5,7 @@ menu.protocol=Protocol
 menu.pinmap=PIN Map
 menu.bitstream=Upload Bitstream to
 menu.jtag=JTAG
+menu.model=Model
 
 #
 # FPGArduino ULX2S f32c SoC SRAM
@@ -97,7 +98,7 @@ fpga_s3starter_bram.upload.maximum_size=31744
 fpga_s3starter_bram.upload.protocol=hex
 fpga_s3starter_bram.upload.flags=-P{serial.port} -ra
 fpga_s3starter_bram.upload.bitstream.command="xc3sprog" -c xpc "{runtime.platform.path}/bootloaders/{bootloader.file}"
-fpga_s3starter_bram.bootloader.file=xilinx_s3_starter/s3an_700_{cpu.arch}_70mhz.bit
+fpga_s3starter_bram.bootloader.file=xilinx_s3_starter/{bitstream.model}_{cpu.arch}_70mhz.bit
 fpga_s3starter_bram.menu.cpu.mips=MIPS
 fpga_s3starter_bram.menu.cpu.mips.cpu.arch=mips
 fpga_s3starter_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
@@ -108,6 +109,14 @@ fpga_s3starter_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_s3starter_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_s3starter_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_s3starter_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_s3starter_bram.menu.model.s3a_700=S3A-700
+fpga_s3starter_bram.menu.model.s3a_700.bitstream.model=s3a_700
+fpga_s3starter_bram.menu.model.s3an_700=S3AN-700
+fpga_s3starter_bram.menu.model.s3an_700.bitstream.model=s3an_700
+fpga_s3starter_bram.menu.model.s3e_500=S3E-500
+fpga_s3starter_bram.menu.model.s3e_500.bitstream.model=s3e_500
+fpga_s3starter_bram.menu.model.s3e_1600=S3E-1600
+fpga_s3starter_bram.menu.model.s3e_1600.bitstream.model=s3e_1600
 
 #
 # Nexys-3
