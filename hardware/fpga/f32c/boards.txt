@@ -4,7 +4,7 @@ menu.ramsize=RAM Size
 menu.protocol=Protocol
 menu.pinmap=PIN Map
 menu.bitstream=Upload Bitstream to
-menu.jtag=JTAG
+menu.jtag=OpenOCD JTAG
 menu.model=Model
 
 #
@@ -304,8 +304,9 @@ fpga_tb276.upload.tool=ujprog
 fpga_tb276.upload.wait_for_upload_port=false
 fpga_tb276.upload.native_usb=false
 fpga_tb276.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/tb276.cfg
-fpga_tb276.bootloader.file_jic=tb276/tb276_{cpu.arch}_{bitstream.fcpu.mhz}mhz.jic
 fpga_tb276.bootloader.file_svf=tb276/tb276_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
+fpga_tb276.bootloader.file_jic=tb276/tb276_{cpu.arch}_{bitstream.fcpu.mhz}mhz.jic
+fpga_tb276.bootloader.file_sof=tb276/tb276_{cpu.arch}_{bitstream.fcpu.mhz}mhz.sof
 fpga_tb276.menu.cpu.mips=MIPS
 fpga_tb276.menu.cpu.mips.cpu.arch=mips
 fpga_tb276.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
@@ -332,12 +333,14 @@ fpga_tb276.menu.pinmap.generic=Generic
 fpga_tb276.menu.pinmap.generic.build.variant=generic
 fpga_tb276.menu.jtag.alterablaster=Altera Blaster
 fpga_tb276.menu.jtag.alterablaster.bootloader.openocd.interface=interface/altera-usb-blaster.cfg
-fpga_tb276.menu.jtag.fpu1=PLDkit FPU1 JTAG
+fpga_tb276.menu.jtag.fpu1=FT2232 PLDkit FPU1
 fpga_tb276.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
-fpga_tb276.menu.bitstream.sram=SRAM (temporary)
+fpga_tb276.menu.bitstream.sram=SRAM openocd (temporary)
 fpga_tb276.menu.bitstream.sram.upload.bitstream.command="openocd" "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
-fpga_tb276.menu.bitstream.flash=FLASH (permanent)
-fpga_tb276.menu.bitstream.flash.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IPV;{runtime.platform.path}/bootloaders/{bootloader.file_jic}"
+fpga_tb276.menu.bitstream.sramquartus=SRAM quartus (temporary)
+fpga_tb276.menu.bitstream.sramquartus.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "P;{runtime.platform.path}/bootloaders/{bootloader.file_sof}"
+fpga_tb276.menu.bitstream.flashquartus=FLASH quartus (permanent)
+fpga_tb276.menu.bitstream.flashquartus.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IPV;{runtime.platform.path}/bootloaders/{bootloader.file_jic}"
 
 #
 # FPGArduino Generic f32c SoC
