@@ -277,7 +277,7 @@ fpga_tb299.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_tb299.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 fpga_tb299.menu.ramsize.32=32 KB BRAM Internal
 fpga_tb299.menu.ramsize.32.upload.maximum_size=31744
-fpga_tb299.menu.ramsize.32.build.extra_flags=--section-start=.init=0x200
+fpga_tb299.menu.ramsize.32.build.extra_flags=--section-start=.init=0x400
 fpga_tb299.menu.speed.81=81.25 MHz
 fpga_tb299.menu.speed.81.build.fcpu=81250000
 fpga_tb299.menu.speed.81.bitstream.fcpu.mhz=81
@@ -319,7 +319,7 @@ fpga_tb276.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_tb276.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 fpga_tb276.menu.ramsize.16=16 KB BRAM Internal
 fpga_tb276.menu.ramsize.16.upload.maximum_size=15360
-fpga_tb276.menu.ramsize.16.build.extra_flags=--section-start=.init=0x200
+fpga_tb276.menu.ramsize.16.build.extra_flags=--section-start=.init=0x400
 fpga_tb276.menu.speed.81=81.25 MHz
 fpga_tb276.menu.speed.81.build.fcpu=81250000
 fpga_tb276.menu.speed.81.bitstream.fcpu.mhz=81
@@ -363,19 +363,19 @@ fpga_generic.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_generic.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 fpga_generic.menu.ramsize.8=8 KB BRAM Internal
 fpga_generic.menu.ramsize.8.upload.maximum_size=7168
-fpga_generic.menu.ramsize.8.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.8.build.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.16=16 KB BRAM Internal
 fpga_generic.menu.ramsize.16.upload.maximum_size=15360
-fpga_generic.menu.ramsize.16.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.16.build.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.32=32 KB BRAM Internal
 fpga_generic.menu.ramsize.32.upload.maximum_size=31744
-fpga_generic.menu.ramsize.32.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.32.build.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.64=64 KB BRAM Internal
 fpga_generic.menu.ramsize.64.upload.maximum_size=64152
-fpga_generic.menu.ramsize.64.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.64.build.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.128=128 KB BRAM Internal
 fpga_generic.menu.ramsize.128.upload.maximum_size=130048
-fpga_generic.menu.ramsize.128.build.extra_flags=--section-start=.init=0x200
+fpga_generic.menu.ramsize.128.build.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.1024=1 MB SRAM Onboard
 fpga_generic.menu.ramsize.1024.upload.maximum_size=1015808
 fpga_generic.menu.ramsize.1024.build.extra_flags=--section-start=.init=0x80000000
