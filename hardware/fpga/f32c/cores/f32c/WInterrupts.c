@@ -302,6 +302,7 @@ void detachInterrupt(uint32_t pin)
 ** can be used for code than needs to be specifically compiled
 ** for riscv architecture
 */
+#warning "RISC-V doesn't have interrupts yet. Choose Tools->CPU Architecture->MIPS"
 #endif // __riscv__
 
 __END_DECLS
