@@ -3,7 +3,15 @@
 Arduino core extensions for FPGA-based 32-bit MIPS and RISC-V 
 soft CPU cores (f32c).
 
-Copy or symlink this to existing arduino directory 
+We have preliminary Boards Manager support.
+In File->Default Settings->Additional Boards Manager URLs enter:
+
+    http://www.nxlab.fer.hr/fpgarduino/bm/package_fpga_index.json
+
+Select pull down menu Tools->Board->Board Manager
+and instal FPGArduino (cca 100MB).
+
+Manual install: Copy or symlink this to existing arduino directory 
 (versions 1.6.0 and newer), close the Arduino IDE, open
 it again and new FPGA boards, progammers
 and examples should appear under pull down menus:
