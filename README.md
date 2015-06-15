@@ -4,7 +4,7 @@ Arduino core extensions for FPGA-based 32-bit MIPS and RISC-V
 soft CPU cores (f32c).
 
 We have preliminary Boards Manager support.
-In File->Default Settings->Additional Boards Manager URLs enter:
+In File->Preferences->Additional Boards Manager URLs enter:
 
     http://www.nxlab.fer.hr/fpgarduino/bm/package_fpga_index.json
 
