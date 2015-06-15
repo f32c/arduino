@@ -254,6 +254,48 @@ fpga_e2lp_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_e2lp_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 
 #
+# Xilinx Scarab Hardware miniSpartan6+ Board (ebay), f32c SoC
+#
+fpga_scarab.name=Scarab miniSpartan6+ (Xilinx Spartan-6 XC6SLX25, 32K BRAM, 81.25/112.5 MHz)
+fpga_scarab.build.mcu=f32c
+fpga_scarab.build.core=f32c
+fpga_scarab.upload.tool=ujprog
+fpga_scarab.upload.wait_for_upload_port=false
+fpga_scarab.upload.native_usb=false
+fpga_scarab.upload.bitstream.command="openocd" "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
+fpga_scarab.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/scarab.cfg
+fpga_scarab.bootloader.file_svf=scarab/xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
+fpga_scarab.menu.cpu.mips=MIPS
+fpga_scarab.menu.cpu.mips.cpu.arch=mips
+fpga_scarab.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_scarab.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_scarab.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_scarab.menu.cpu.riscv=RISC-V
+fpga_scarab.menu.cpu.riscv.cpu.arch=riscv
+fpga_scarab.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_scarab.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_scarab.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_scarab.menu.ramsize.32=32 KB BRAM Internal
+fpga_scarab.menu.ramsize.32.upload.maximum_size=31232
+fpga_scarab.menu.ramsize.32.build.extra_flags=--section-start=.init=0x400
+fpga_scarab.menu.speed.81=81.25 MHz
+fpga_scarab.menu.speed.81.build.fcpu=81250000
+fpga_scarab.menu.speed.81.bitstream.fcpu.mhz=81
+fpga_scarab.menu.speed.112=112.5 MHz
+fpga_scarab.menu.speed.112.build.fcpu=112500000
+fpga_scarab.menu.speed.112.bitstream.fcpu.mhz=112
+fpga_scarab.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_scarab.menu.protocol.hex.upload.protocol=hex
+fpga_scarab.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_scarab.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_scarab.menu.protocol.bin.upload.protocol=bin
+fpga_scarab.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_scarab.menu.pinmap.generic=Generic
+fpga_scarab.menu.pinmap.generic.build.variant=generic
+fpga_scarab.menu.jtag.ft2232=Onboard FT2232 JTAG
+fpga_scarab.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft2232-generic.ocd
+
+#
 # Xilinx TB299 Board (ebay), f32c SoC
 #
 fpga_tb299.name=TB299 (Xilinx Spartan-6 XC6SLX9, 32K BRAM, 81.25/112.5 MHz)
