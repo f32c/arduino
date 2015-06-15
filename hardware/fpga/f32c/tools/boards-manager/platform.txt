@@ -17,12 +17,12 @@ f32c.riscv.compiler.c.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -f
 f32c.riscv.compiler.cpp.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
 f32c.riscv.compiler.ld.flags=-N -EL -melf32lriscv -gc-sections "--library-path={build.system.path}/riscv/lib"
 
-# f32c from JSON automatic installation:
-# compiler.path={runtime.tools.f32c.path}/bin/
+# f32c from Board Manager JSON automatic installation:
+compiler.path={runtime.tools.f32c-compiler.path}/bin/
 # f32c toolchain extracted in ~/Arduino/hardware/fpga/f32c/tools/
 # compiler.path={runtime.platform.path}/tools/f32c/bin/
 # f32c toolchain extracted in arduino-1.6.x/hardware/tools/
-compiler.path={runtime.ide.path}/hardware/tools/f32c/bin/
+# compiler.path={runtime.ide.path}/hardware/tools/f32c/bin/
 compiler.c.cmd={cpu.arch}-elf-gcc
 # taken from boards.txt
 #compiler.c.flags={f32c.mips.compiler.c.flags}
@@ -94,8 +94,8 @@ recipe.size.regex=\s*[0-9]+\s+[0-9]+\s+[0-9]+\s+([0-9]+).*
 #
 tools.ujprog.cmd=ujprog
 tools.ujprog.cmd.windows=ujprog.exe
-tools.ujprog.path=/usr/local/bin
-tools.ujprog.path.windows=C:/Windows
+tools.ujprog.path={runtime.tools.ujprog.path}/
+tools.ujprog.path.windows={runtime.tools.ujprog.path}/
 
 tools.ujprog.upload.params.verbose=
 tools.ujprog.upload.params.quiet=-q
