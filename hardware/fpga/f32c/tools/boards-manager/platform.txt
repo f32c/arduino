@@ -1,0 +1,110 @@
+
+#
+# f32c MI32/RV32 (mips/risc-v) Core and platform.
+#
+
+name=FPGA Boards (f32c SoC)
+version=1.6.0
+
+# Compile variables
+# ----------------------
+
+f32c.mips.compiler.c.flags=-march=f32c -c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h
+f32c.mips.compiler.cpp.flags=-march=f32c -c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions
+f32c.mips.compiler.ld.flags=-N -EL -gc-sections "--library-path={build.system.path}/mips/lib"
+
+f32c.riscv.compiler.c.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h
+f32c.riscv.compiler.cpp.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
+f32c.riscv.compiler.ld.flags=-N -EL -melf32lriscv -gc-sections "--library-path={build.system.path}/riscv/lib"
+
+# f32c from JSON automatic installation:
+# compiler.path={runtime.tools.f32c.path}/bin/
+# f32c toolchain extracted in ~/Arduino/hardware/fpga/f32c/tools/
+# compiler.path={runtime.platform.path}/tools/f32c/bin/
+# f32c toolchain extracted in arduino-1.6.x/hardware/tools/
+compiler.path={runtime.ide.path}/hardware/tools/f32c/bin/
+compiler.c.cmd={cpu.arch}-elf-gcc
+# taken from boards.txt
+#compiler.c.flags={f32c.mips.compiler.c.flags}
+compiler.S.flags=-c -g -x assembler-with-cpp
+compiler.cpp.cmd={cpu.arch}-elf-g++
+# taken from boards.txt
+#compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+compiler.ld.cmd={cpu.arch}-elf-ld
+# taken from boards.txt
+#compiler.ld.flags={f32c.mips.compiler.ld.flags}
+compiler.ar.cmd={cpu.arch}-elf-ar
+compiler.ar.flags=rcs
+compiler.objcopy.cmd={cpu.arch}-elf-objcopy
+compiler.objcopy.eep.flags=-O srec
+compiler.elf2hex.flags=
+compiler.elf2hex.cmd={cpu.arch}-elf-objcopy
+compiler.size.cmd={cpu.arch}-elf-size
+compiler.define=-DARDUINO=
+
+# this can be overriden in boards.txt
+build.extra_flags=--section-start=.init=0x400
+
+# These can be overridden in platform.local.txt
+compiler.c.extra_flags=-D__F32C__ "-DVARIANT_MCK={build.fcpu}"
+compiler.c.elf.extra_flags=
+compiler.cpp.extra_flags=-D__F32C__ "-DVARIANT_MCK={build.fcpu}"
+compiler.ar.extra_flags=
+compiler.elf2hex.extra_flags=
+
+
+# USB Flags
+# ---------
+build.usb_flags=
+
+# Compile patterns
+# ---------------------
+
+## Compile S files
+recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c files
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DARDUINO={runtime.ide.version} {compiler.c.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c++ files
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -DARDUINO={runtime.ide.version} {compiler.cpp.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Create archives
+recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{build.path}/{archive_file}" "{object_file}"
+
+## Link gc-sections, archives, and objects
+recipe.c.combine.pattern="{compiler.path}{compiler.ld.cmd}" {compiler.ld.flags} -nostdlib {build.extra_flags} -lcrt0 {object_files} "{build.path}/{archive_file}" -lulx2s -lm -lc -o "{build.path}/{build.project_name}.elf"
+
+## Create binary
+recipe.objcopy.eep.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} -O binary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+
+## Create hex
+recipe.objcopy.hex.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} -O srec "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.hex"
+
+## Compute size
+recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -B "{build.path}/{build.project_name}.elf"
+recipe.size.regex=\s*[0-9]+\s+[0-9]+\s+[0-9]+\s+([0-9]+).*
+
+
+# Uploader tools
+# -------------------
+
+#
+# lattice (bootloader FLASH)
+#
+tools.ujprog.cmd=ujprog
+tools.ujprog.cmd.windows=ujprog.exe
+tools.ujprog.path=/usr/local/bin
+tools.ujprog.path.windows=C:/Windows
+
+tools.ujprog.upload.params.verbose=
+tools.ujprog.upload.params.quiet=-q
+tools.ujprog.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+
+tools.ujprog.erase.params.verbose=
+tools.ujprog.erase.params.quiet=
+tools.ujprog.erase.pattern=true
+
+tools.ujprog.bootloader.params.verbose=
+tools.ujprog.bootloader.params.quiet=
+tools.ujprog.bootloader.pattern={upload.bitstream.command}
