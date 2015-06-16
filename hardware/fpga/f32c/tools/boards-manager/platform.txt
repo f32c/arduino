@@ -92,19 +92,17 @@ recipe.size.regex=\s*[0-9]+\s+[0-9]+\s+[0-9]+\s+([0-9]+).*
 #
 # lattice (bootloader FLASH)
 #
-tools.ujprog.cmd=ujprog
-tools.ujprog.cmd.windows=ujprog.exe
-tools.ujprog.path={runtime.tools.ujprog.path}/
-tools.ujprog.path.windows={runtime.tools.ujprog.path}/
+tools.ujprog.path={runtime.tools.ujprog.path}
+tools.ujprog.cmd.path={path}/ujprog
 
-tools.ujprog.upload.params.verbose=
+tools.ujprog.upload.params.verbose=-v
 tools.ujprog.upload.params.quiet=-q
-tools.ujprog.upload.pattern="{path}/{cmd}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+tools.ujprog.upload.pattern="{cmd.path}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
 
-tools.ujprog.erase.params.verbose=
-tools.ujprog.erase.params.quiet=
-tools.ujprog.erase.pattern=true
+tools.ujprog.erase.params.verbose=-v
+tools.ujprog.erase.params.quiet=-q
+tools.ujprog.erase.pattern="{cmd.path}" -r
 
-tools.ujprog.bootloader.params.verbose=
-tools.ujprog.bootloader.params.quiet=
+tools.ujprog.bootloader.params.verbose=-v
+tools.ujprog.bootloader.params.quiet=-q
 tools.ujprog.bootloader.pattern={upload.bitstream.command}
