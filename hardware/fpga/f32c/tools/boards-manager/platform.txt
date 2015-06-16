@@ -101,8 +101,9 @@ tools.ujprog.upload.pattern="{cmd.path}" {upload.params.quiet} {upload.flags} "{
 
 tools.ujprog.erase.params.verbose=-v
 tools.ujprog.erase.params.quiet=-q
-tools.ujprog.erase.pattern="{cmd.path}" -r
+tools.ujprog.erase.pattern={runtime.tools.openocd.path}/bin/openocd --version
 
 tools.ujprog.bootloader.params.verbose=-v
 tools.ujprog.bootloader.params.quiet=-q
 tools.ujprog.bootloader.pattern={upload.bitstream.command}
+
