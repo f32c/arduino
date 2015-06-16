@@ -19,8 +19,8 @@
           "category":"FPGA",
           "url":"http://www.nxlab.fer.hr/fpgarduino/bm/fpgarduino.zip",
           "archiveFileName":"fpgarduino.zip",
-          "checksum":"SHA-256:ab594944f389b24fc36ed6ef8ad8eecab88d7eb9988af4e55e948c4d30dc3d45",
-          "size":"791304",
+          "checksum":"SHA-256:1767d7facb71dc82732a575e3ecee42f7b3cba10ab24acf4838f7d18a3f131ce",
+          "size":"788460",
           "help":
           {
             "online":"http://www.nxlab.fer.hr/fpgarduino"
@@ -104,7 +104,7 @@
             },
             {
               "host":"x86_64-pc-linux-gnu",
-              "url":"http://www.nxlab.fer.hr/fpgarduino/f32c-lin32-toolchain.tgz",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/f32c-lin64-toolchain.tgz",
               "archiveFileName":"f32c-lin64-toolchain.tar.gz",
               "checksum":"SHA-256:59bc912f7b3a7e61efa455e41791d468cd657c1fe7a50b5ec2cee25450114051",
               "size":"55662226"
