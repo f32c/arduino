@@ -6,7 +6,7 @@ soft CPU cores (f32c).
 We have preliminary Boards Manager support.
 In File->Preferences->Additional Boards Manager URLs enter:
 
-    http://www.nxlab.fer.hr/fpgarduino/bm/package_fpga_index.json
+    https://github.com/f32c/arduino/raw/master/hardware/fpga/f32c/tools/boards-manager/package_fpga_index.json
 
 Select pull down menu Tools->Board->Board Manager
 and instal FPGArduino (cca 100MB).
