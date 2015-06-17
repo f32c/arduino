@@ -183,20 +183,22 @@ fpga_zybo_bram.upload.native_usb=false
 fpga_zybo_bram.upload.maximum_size=129536
 fpga_zybo_bram.upload.protocol=hex
 fpga_zybo_bram.upload.flags=-P{serial.port} -ra
-fpga_zybo_bram.upload.bitstream.command="openocd" "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command=svf -tap chip.tap {runtime.platform.path}/bootloaders/{bootloader.file_svf}" "--command=shutdown"
+fpga_zybo_bram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 fpga_zybo_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/zybo.cfg
+fpga_zybo_bram.bootloader.openocd.command=svf -tap chip.tap "{runtime.tools.bootloaders.path}/zybo/zybo_{cpu.arch}_bram_{bitstream.fcpu.mhz}mhz.svf"
+fpga_zybo_bram.bitstream.fcpu.mhz=125
 fpga_zybo_bram.menu.cpu.mips=MIPS
 fpga_zybo_bram.menu.cpu.mips.cpu.arch=mips
 fpga_zybo_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
 fpga_zybo_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
 fpga_zybo_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpga_zybo_bram.menu.cpu.mips.bootloader.file_svf=zybo/zybo_mips_bram_125mhz.svf
+#fpga_zybo_bram.menu.cpu.mips.bootloader.file_svf=zybo/zybo_mips_bram_125mhz.svf
 fpga_zybo_bram.menu.cpu.riscv=RISC-V
 fpga_zybo_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_zybo_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_zybo_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_zybo_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_zybo_bram.menu.cpu.riscv.bootloader.file_svf=zybo/zybo_riscv_bram_125mhz.svf
+#fpga_zybo_bram.menu.cpu.riscv.bootloader.file_svf=zybo/zybo_riscv_bram_125mhz.svf
 fpga_zybo_bram.menu.jtag.zybo=ZYBO onboard JTAG
 fpga_zybo_bram.menu.jtag.zybo.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/digilent_adept.cfg
 fpga_zybo_bram.menu.jtag.alterablaster=Altera Blaster
@@ -263,9 +265,12 @@ fpga_scarab.build.core=f32c
 fpga_scarab.upload.tool=ujprog
 fpga_scarab.upload.wait_for_upload_port=false
 fpga_scarab.upload.native_usb=false
-fpga_scarab.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command=svf -tap chip.tap {bootloader.file_svf}" "--command=shutdown"
+fpga_scarab.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 fpga_scarab.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/scarab_ms6p.cfg
-fpga_scarab.bootloader.file_svf={runtime.tools.bootloaders.path}/scarab/scarab_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
+fpga_scarab.bootloader.openocd.command=svf -tap chip.tap "{runtime.tools.bootloaders.path}/scarab/scarab_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf"
+# WARNING Windows OpenOCD 0.9.0 will not accept backslah as path delimiter
+# it works only with slash or double backslash for svf path delimiter, e.g.
+#fpga_scarab.bootloader.openocd.command=svf -tap chip.tap "C:\\scarab/scarab_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf"
 fpga_scarab.menu.cpu.mips=MIPS
 fpga_scarab.menu.cpu.mips.cpu.arch=mips
 fpga_scarab.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}

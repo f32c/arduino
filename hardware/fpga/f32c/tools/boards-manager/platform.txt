@@ -106,4 +106,3 @@ tools.ujprog.erase.pattern={runtime.tools.openocd.path}/bin/openocd --version
 tools.ujprog.bootloader.params.verbose=-v
 tools.ujprog.bootloader.params.quiet=-q
 tools.ujprog.bootloader.pattern={upload.bitstream.command}
-
