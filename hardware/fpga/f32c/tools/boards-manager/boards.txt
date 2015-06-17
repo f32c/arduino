@@ -263,9 +263,9 @@ fpga_scarab.build.core=f32c
 fpga_scarab.upload.tool=ujprog
 fpga_scarab.upload.wait_for_upload_port=false
 fpga_scarab.upload.native_usb=false
-fpga_scarab.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command=svf -tap chip.tap {runtime.tools.bootloaders.path}/{bootloader.file_svf}" "--command=shutdown"
+fpga_scarab.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command=svf -tap chip.tap {bootloader.file_svf}" "--command=shutdown"
 fpga_scarab.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/scarab_ms6p.cfg
-fpga_scarab.bootloader.file_svf=scarab/scarab_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
+fpga_scarab.bootloader.file_svf={runtime.tools.bootloaders.path}/scarab/scarab_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
 fpga_scarab.menu.cpu.mips=MIPS
 fpga_scarab.menu.cpu.mips.cpu.arch=mips
 fpga_scarab.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}

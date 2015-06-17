@@ -19,8 +19,8 @@
           "category":"FPGA",
           "url":"http://www.nxlab.fer.hr/fpgarduino/bm/fpgarduino.zip",
           "archiveFileName":"fpgarduino.zip",
-          "checksum":"SHA-256:1767d7facb71dc82732a575e3ecee42f7b3cba10ab24acf4838f7d18a3f131ce",
-          "size":"788460",
+          "checksum":"SHA-256:318f3a19e0d0f4226beb2bb9f3e2152c4c28802a0b66a285dfbb1a406cd55837",
+          "size":"806415",
           "help":
           {
             "online":"http://www.nxlab.fer.hr/fpgarduino"
@@ -33,6 +33,16 @@
           ],
           "toolsDependencies":
           [
+            {
+              "packager":"FPGArduino",
+              "name":"openocd",
+              "version":"0.9.0"
+            },
+            {
+              "packager":"FPGArduino",
+              "name":"bootloaders",
+              "version":"1.0.0"
+            },
             {
               "packager":"FPGArduino",
               "name":"ujprog",
@@ -48,6 +58,76 @@
       ],
       "tools": 
       [
+        {
+          "name":"openocd",
+          "version":"0.9.0",
+          "systems": 
+          [
+            {
+              "host":"i686-mingw32",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/openocd-win-0.9.0.zip",
+              "archiveFileName":"openocd-win-0.9.0.zip",
+              "checksum":"SHA-256:32b007419a227f1c376b186a6614dd92b99df84236e20748c155c883146110e2",
+              "size":"3482619"
+            },
+            {
+              "host":"x86_64-apple-darwin",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/ujprog-x86_64-apple-darwin.tar.bz2",
+              "archiveFileName":"ujprog-x86_64-apple-darwin.tar.bz2",
+              "checksum":"SHA-256:2eab520b6317c4689a013a23cb86123ef5c445ef1b0c7f34d68c19bfe5f21438",
+              "size":"30657"
+            },
+            {
+              "host":"i686-pc-linux-gnu",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/ujprog-x86_64-pc-linux-gnu.tar.bz2",
+              "archiveFileName":"ujprog-x86_64-pc-linux-gnu.tar.bz2",
+              "checksum":"SHA-256:cd376c5d47faa657fd1fc71e3a0a86648a12baf527d68a177239a4a29663eae2",
+              "size":"16600"
+            },
+            {
+              "host":"x86_64-pc-linux-gnu",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/openocd-lin64-0.9.0.tar.bz2",
+              "archiveFileName":"openocd-lin64-0.9.0.tar.bz2",
+              "checksum":"SHA-256:522683579e7d5da8276861b72fd5f8688919a7704af145a7c54965c77ea814a4",
+              "size":"3662373"
+            }
+          ]
+        },
+        {
+          "name":"bootloaders",
+          "version":"1.0.0",
+          "systems": 
+          [
+            {
+              "host":"i686-mingw32",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
+              "archiveFileName":"bootloaders.zip",
+              "checksum":"SHA-256:a66b3a4b6951f5f16faf7b4bc5a083126d51a999a33e2cef716a514945e59b39",
+              "size":"4695111"
+            },
+            {
+              "host":"x86_64-apple-darwin",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
+              "archiveFileName":"bootloaders.zip",
+              "checksum":"SHA-256:a66b3a4b6951f5f16faf7b4bc5a083126d51a999a33e2cef716a514945e59b39",
+              "size":"4695111"
+            },
+            {
+              "host":"i686-pc-linux-gnu",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
+              "archiveFileName":"bootloaders.zip",
+              "checksum":"SHA-256:a66b3a4b6951f5f16faf7b4bc5a083126d51a999a33e2cef716a514945e59b39",
+              "size":"4695111"
+            },
+            {
+              "host":"x86_64-pc-linux-gnu",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
+              "archiveFileName":"bootloaders.zip",
+              "checksum":"SHA-256:a66b3a4b6951f5f16faf7b4bc5a083126d51a999a33e2cef716a514945e59b39",
+              "size":"4695111"
+            }
+          ]
+        },
         {
           "name":"ujprog",
           "version":"1.0.0",
