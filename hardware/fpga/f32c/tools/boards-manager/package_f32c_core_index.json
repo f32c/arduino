@@ -19,8 +19,8 @@
           "category":"FPGA",
           "url":"http://www.nxlab.fer.hr/fpgarduino/bm/fpgarduino.zip",
           "archiveFileName":"fpgarduino.zip",
-          "checksum":"SHA-256:bbe4ec5e5c2be279ea45aa2ec16d3475c1c8519500f5ef60cf7a4ca8fd086a13",
-          "size":"808047",
+          "checksum":"SHA-256:b92378ae652af31b4b5a556d19f0ff81e293ce0d156e421ee8191d9d1c604740",
+          "size":"808148",
           "help":
           {
             "online":"http://www.nxlab.fer.hr/fpgarduino"
@@ -102,29 +102,29 @@
               "host":"i686-mingw32",
               "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
               "archiveFileName":"bootloaders.zip",
-              "checksum":"SHA-256:e48d0c3897c4975bea12110cefe27b07ebb785dde8b51cddb4946f040352b023",
-              "size":"5909971"
+              "checksum":"SHA-256:fce4b65d0b85b477414dbb47a3592eeb9aa6c24914a538828dd64b771a0eb288",
+              "size":"5906117"
             },
             {
               "host":"x86_64-apple-darwin",
               "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
               "archiveFileName":"bootloaders.zip",
-              "checksum":"SHA-256:e48d0c3897c4975bea12110cefe27b07ebb785dde8b51cddb4946f040352b023",
-              "size":"5909971"
+              "checksum":"SHA-256:fce4b65d0b85b477414dbb47a3592eeb9aa6c24914a538828dd64b771a0eb288",
+              "size":"5906117"
             },
             {
               "host":"i686-pc-linux-gnu",
               "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
               "archiveFileName":"bootloaders.zip",
-              "checksum":"SHA-256:e48d0c3897c4975bea12110cefe27b07ebb785dde8b51cddb4946f040352b023",
-              "size":"5909971"
+              "checksum":"SHA-256:fce4b65d0b85b477414dbb47a3592eeb9aa6c24914a538828dd64b771a0eb288",
+              "size":"5906117"
             },
             {
               "host":"x86_64-pc-linux-gnu",
               "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
               "archiveFileName":"bootloaders.zip",
-              "checksum":"SHA-256:e48d0c3897c4975bea12110cefe27b07ebb785dde8b51cddb4946f040352b023",
-              "size":"5909971"
+              "checksum":"SHA-256:fce4b65d0b85b477414dbb47a3592eeb9aa6c24914a538828dd64b771a0eb288",
+              "size":"5906117"
             }
           ]
         },
