@@ -12,6 +12,11 @@ In File->Preferences->Additional Boards Manager URLs enter:
 
 Select pull down menu Tools->Board->Board Manager
 and instal FPGArduino (cca 100MB).
+To upload some bitstreams OpenOCD may complain about
+libusb drivers. libusb is common on linux. 
+To install libusb on windows, easiest way is with
+Zadig http://zadig.akeo.ie Options->List All Devices
+Select usb serial device, select driver WinUSB and click install.
 
 Manual install: Copy or symlink this to existing arduino directory 
 (versions 1.6.0 and newer), close the Arduino IDE, open
