@@ -19,8 +19,8 @@
           "category":"FPGA",
           "url":"http://www.nxlab.fer.hr/fpgarduino/bm/fpgarduino.zip",
           "archiveFileName":"fpgarduino.zip",
-          "checksum":"SHA-256:318f3a19e0d0f4226beb2bb9f3e2152c4c28802a0b66a285dfbb1a406cd55837",
-          "size":"806415",
+          "checksum":"SHA-256:bbe4ec5e5c2be279ea45aa2ec16d3475c1c8519500f5ef60cf7a4ca8fd086a13",
+          "size":"808047",
           "help":
           {
             "online":"http://www.nxlab.fer.hr/fpgarduino"
@@ -65,8 +65,8 @@
           [
             {
               "host":"i686-mingw32",
-              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/openocd-win-0.9.0.zip",
-              "archiveFileName":"openocd-win-0.9.0.zip",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/openocd-0.9.0-windows.zip",
+              "archiveFileName":"openocd-0.9.0-windows.zip",
               "checksum":"SHA-256:32b007419a227f1c376b186a6614dd92b99df84236e20748c155c883146110e2",
               "size":"3482619"
             },
@@ -86,10 +86,10 @@
             },
             {
               "host":"x86_64-pc-linux-gnu",
-              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/openocd-lin64-0.9.0.tar.bz2",
-              "archiveFileName":"openocd-lin64-0.9.0.tar.bz2",
-              "checksum":"SHA-256:522683579e7d5da8276861b72fd5f8688919a7704af145a7c54965c77ea814a4",
-              "size":"3662373"
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/openocd-0.9.0-linux64.tar.bz2",
+              "archiveFileName":"openocd-0.9.0-lin64.tar.bz2",
+              "checksum":"SHA-256:0f13f456f10f707496b45e3ecf1772f5dd639d2d7f7c6ca315d551765ec774e2",
+              "size":"3353084"
             }
           ]
         },
@@ -102,29 +102,29 @@
               "host":"i686-mingw32",
               "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
               "archiveFileName":"bootloaders.zip",
-              "checksum":"SHA-256:a66b3a4b6951f5f16faf7b4bc5a083126d51a999a33e2cef716a514945e59b39",
-              "size":"4695111"
+              "checksum":"SHA-256:e48d0c3897c4975bea12110cefe27b07ebb785dde8b51cddb4946f040352b023",
+              "size":"5909971"
             },
             {
               "host":"x86_64-apple-darwin",
               "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
               "archiveFileName":"bootloaders.zip",
-              "checksum":"SHA-256:a66b3a4b6951f5f16faf7b4bc5a083126d51a999a33e2cef716a514945e59b39",
-              "size":"4695111"
+              "checksum":"SHA-256:e48d0c3897c4975bea12110cefe27b07ebb785dde8b51cddb4946f040352b023",
+              "size":"5909971"
             },
             {
               "host":"i686-pc-linux-gnu",
               "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
               "archiveFileName":"bootloaders.zip",
-              "checksum":"SHA-256:a66b3a4b6951f5f16faf7b4bc5a083126d51a999a33e2cef716a514945e59b39",
-              "size":"4695111"
+              "checksum":"SHA-256:e48d0c3897c4975bea12110cefe27b07ebb785dde8b51cddb4946f040352b023",
+              "size":"5909971"
             },
             {
               "host":"x86_64-pc-linux-gnu",
               "url":"http://www.nxlab.fer.hr/fpgarduino/bm/bootloaders.zip",
               "archiveFileName":"bootloaders.zip",
-              "checksum":"SHA-256:a66b3a4b6951f5f16faf7b4bc5a083126d51a999a33e2cef716a514945e59b39",
-              "size":"4695111"
+              "checksum":"SHA-256:e48d0c3897c4975bea12110cefe27b07ebb785dde8b51cddb4946f040352b023",
+              "size":"5909971"
             }
           ]
         },
