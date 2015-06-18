@@ -311,11 +311,11 @@ fpga_scarab_bram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform
 fpga_scarab_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
 fpga_scarab_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 fpga_scarab_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
-fpga_scarab_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command=xc3sprog -c ftdi "{bootloader.file.bit}"
+fpga_scarab_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi "{bootloader.file.bit}"
 fpga_scarab_bram.menu.bitstream.bridge_xc3sprog=SRAM xc3sprog JTAG-SPI-BRIDGE (temporary)
-fpga_scarab_bram.menu.bitstream.bridge_xc3sprog.upload.bitstream.command=xc3sprog -c ftdi "{bootloader.jtag_spi_bridge.bit}"
+fpga_scarab_bram.menu.bitstream.bridge_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi "{bootloader.jtag_spi_bridge.bit}"
 fpga_scarab_bram.menu.bitstream.flash_xc3sprog=FLASH xc3sprog over JTAG-SPI-BRIDGE (permanent)
-fpga_scarab_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command=xc3sprog -c ftdi -I "{bootloader.file.bit}"
+fpga_scarab_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi -I "{bootloader.file.bit}"
 
 #
 # Xilinx TB299 Board (ebay), f32c SoC

@@ -19,8 +19,8 @@
           "category":"FPGA",
           "url":"http://www.nxlab.fer.hr/fpgarduino/bm/fpgarduino.zip",
           "archiveFileName":"fpgarduino.zip",
-          "checksum":"SHA-256:cd4a8eeb72e8c835cdecb76283570d27bfd3872c743fa188f480a9d7df24801d",
-          "size":"807926",
+          "checksum":"SHA-256:bfc9425e3554e555c1e8981761e0e9d4ded01987907e7a2a4b514d74aecb3811",
+          "size":"807834",
           "help":
           {
             "online":"http://www.nxlab.fer.hr/fpgarduino"
@@ -33,6 +33,11 @@
           ],
           "toolsDependencies":
           [
+            {
+              "packager":"FPGArduino",
+              "name":"xc3sprog",
+              "version":"771"
+            },
             {
               "packager":"FPGArduino",
               "name":"openocd",
@@ -58,6 +63,41 @@
       ],
       "tools": 
       [
+        {
+          "name":"xc3sprog",
+          "version":"771",
+          "systems": 
+          [
+            {
+              "host":"i686-mingw32",
+              "url":"http://192.168.9.2/~davor/fpgarduino/bm/xc3sprog-r771-win32.zip",
+              "archiveFileName":"xc3sprog-r771-win32.zip",
+              "checksum":"SHA-256:a17636f56fb20c0a0d8bca13c7b0fde4afb7ae1ac9428679087efed8ad554ac0",
+              "size":"1687331"
+            },
+            {
+              "host":"x86_64-apple-darwin",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/ujprog-x86_64-apple-darwin.tar.bz2",
+              "archiveFileName":"ujprog-x86_64-apple-darwin.tar.bz2",
+              "checksum":"SHA-256:2eab520b6317c4689a013a23cb86123ef5c445ef1b0c7f34d68c19bfe5f21438",
+              "size":"30657"
+            },
+            {
+              "host":"i686-pc-linux-gnu",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/ujprog-x86_64-pc-linux-gnu.tar.bz2",
+              "archiveFileName":"ujprog-x86_64-pc-linux-gnu.tar.bz2",
+              "checksum":"SHA-256:cd376c5d47faa657fd1fc71e3a0a86648a12baf527d68a177239a4a29663eae2",
+              "size":"16600"
+            },
+            {
+              "host":"x86_64-pc-linux-gnu",
+              "url":"http://192.168.9.2/~davor/fpgarduino/bm/xc3sprog-r774-linux64.tar.bz2",
+              "archiveFileName":"xc3sprog-r774-linux64.tar.bz2",
+              "checksum":"SHA-256:9e1d7623438dc8e66ac42aeacafefc2f3f3f5942f88e8540b3a4b3b03cb025b4",
+              "size":"370984"
+            }
+          ]
+        },
         {
           "name":"openocd",
           "version":"0.9.0",
