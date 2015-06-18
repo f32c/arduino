@@ -19,8 +19,8 @@
           "category":"FPGA",
           "url":"http://www.nxlab.fer.hr/fpgarduino/bm/fpgarduino.zip",
           "archiveFileName":"fpgarduino.zip",
-          "checksum":"SHA-256:b92378ae652af31b4b5a556d19f0ff81e293ce0d156e421ee8191d9d1c604740",
-          "size":"808148",
+          "checksum":"SHA-256:cd4a8eeb72e8c835cdecb76283570d27bfd3872c743fa188f480a9d7df24801d",
+          "size":"807926",
           "help":
           {
             "online":"http://www.nxlab.fer.hr/fpgarduino"
