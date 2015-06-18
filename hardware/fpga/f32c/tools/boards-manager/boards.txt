@@ -180,8 +180,6 @@ fpga_zybo_bram.upload.tool=ujprog
 fpga_zybo_bram.upload.wait_for_upload_port=false
 fpga_zybo_bram.upload.native_usb=false
 fpga_zybo_bram.upload.maximum_size=129536
-fpga_zybo_bram.upload.protocol=hex
-fpga_zybo_bram.upload.flags=-P{serial.port} -ra
 fpga_zybo_bram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 fpga_zybo_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/zybo.cfg
 fpga_zybo_bram.bootloader.openocd.command=svf -tap chip.tap "{runtime.tools.bootloaders.path}/zybo/zybo_{cpu.arch}_bram_{bitstream.fcpu.mhz}mhz.svf"
@@ -202,6 +200,12 @@ fpga_zybo_bram.menu.jtag.alterablaster=Altera Blaster
 fpga_zybo_bram.menu.jtag.alterablaster.bootloader.openocd.interface=interface/altera-usb-blaster.cfg
 fpga_zybo_bram.menu.jtag.fpu1=PLDkit FPU1 JTAG
 fpga_zybo_bram.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
+fpga_zybo_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_zybo_bram.menu.protocol.hex.upload.protocol=hex
+fpga_zybo_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_zybo_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_zybo_bram.menu.protocol.bin.upload.protocol=bin
+fpga_zybo_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
 
 #
 # Lattice Brevia / Brevia2
@@ -256,57 +260,62 @@ fpga_e2lp_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 #
 # Xilinx Scarab Hardware miniSpartan6+ Board (ebay), f32c SoC
 #
-fpga_scarab.name=Scarab miniSpartan6+ (Xilinx Spartan-6 XC6SLX25, 32K BRAM, 81.25/112.5 MHz)
-fpga_scarab.build.mcu=f32c
-fpga_scarab.build.core=f32c
-fpga_scarab.upload.tool=ujprog
-fpga_scarab.upload.wait_for_upload_port=false
-fpga_scarab.upload.native_usb=false
-fpga_scarab.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/scarab_ms6p.cfg
-fpga_scarab.bootloader.file.svf={runtime.tools.bootloaders.path}/scarab/scarab_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
-fpga_scarab.bootloader.file.bit={runtime.tools.bootloaders.path}/scarab/scarab_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.bit
-fpga_scarab.bootloader.jtag_spi_bridge.bit={runtime.tools.bootloaders.path}/scarab/bscan_xc6s_ftg256_blink.bit
-fpga_scarab.bootloader.openocd.command=svf -tap chip.tap "{bootloader.file.svf}"
+fpga_scarab_bram.name=Scarab miniSpartan6+ (Xilinx Spartan-6 XC6SLX25, 32K BRAM, 81.25/112.5 MHz)
+fpga_scarab_bram.build.mcu=f32c
+fpga_scarab_bram.build.core=f32c
+fpga_scarab_bram.upload.tool=ujprog
+fpga_scarab_bram.upload.wait_for_upload_port=false
+fpga_scarab_bram.upload.native_usb=false
+fpga_scarab_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/scarab_ms6p.cfg
+fpga_scarab_bram.bootloader.file.svf={runtime.tools.bootloaders.path}/scarab/scarab_{memsupport}_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
+fpga_scarab_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/scarab/scarab_{memsupport}_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.bit
+fpga_scarab_bram.bootloader.jtag_spi_bridge.bit={runtime.tools.bootloaders.path}/scarab/bscan_xc6s_ftg256_blink.bit
+fpga_scarab_bram.bootloader.openocd.command=svf -tap chip.tap "{bootloader.file.svf}"
 # WARNING Windows OpenOCD 0.9.0 will not accept backslah as path delimiter
 # it works only with slash or double backslash for svf path delimiter, e.g.
-#fpga_scarab.bootloader.openocd.command=svf -tap chip.tap "C:\\scarab/scarab_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf"
-fpga_scarab.menu.cpu.mips=MIPS
-fpga_scarab.menu.cpu.mips.cpu.arch=mips
-fpga_scarab.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
-fpga_scarab.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
-fpga_scarab.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpga_scarab.menu.cpu.riscv=RISC-V
-fpga_scarab.menu.cpu.riscv.cpu.arch=riscv
-fpga_scarab.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
-fpga_scarab.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
-fpga_scarab.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_scarab.menu.ramsize.32=32 KB BRAM Internal
-fpga_scarab.menu.ramsize.32.upload.maximum_size=31232
-fpga_scarab.menu.ramsize.32.build.extra_flags=--section-start=.init=0x400
-fpga_scarab.menu.speed.81=81.25 MHz
-fpga_scarab.menu.speed.81.build.fcpu=81250000
-fpga_scarab.menu.speed.81.bitstream.fcpu.mhz=81
-fpga_scarab.menu.speed.112=112.5 MHz
-fpga_scarab.menu.speed.112.build.fcpu=112500000
-fpga_scarab.menu.speed.112.bitstream.fcpu.mhz=112
-fpga_scarab.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
-fpga_scarab.menu.protocol.hex.upload.protocol=hex
-fpga_scarab.menu.protocol.hex.upload.flags=-P{serial.port} -ra
-fpga_scarab.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
-fpga_scarab.menu.protocol.bin.upload.protocol=bin
-fpga_scarab.menu.protocol.bin.upload.flags=-P{serial.port} -re
-fpga_scarab.menu.pinmap.generic=Generic
-fpga_scarab.menu.pinmap.generic.build.variant=generic
-fpga_scarab.menu.jtag.ft2232=Onboard FT2232 JTAG
-fpga_scarab.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft2232-generic.ocd
-fpga_scarab.menu.bitstream.sram_openocd=SRAM openocd (temporary)
-fpga_scarab.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
-fpga_scarab.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
-fpga_scarab.menu.bitstream.sram_xc3sprog.upload.bitstream.command=xc3sprog -c ftdi "{bootloader.file.bit}"
-fpga_scarab.menu.bitstream.bridge_xc3sprog=SRAM xc3sprog JTAG-SPI-BRIDGE (temporary)
-fpga_scarab.menu.bitstream.bridge_xc3sprog.upload.bitstream.command=xc3sprog -c ftdi "{bootloader.jtag_spi_bridge.bit}"
-fpga_scarab.menu.bitstream.flash_xc3sprog=FLASH xc3sprog over JTAG-SPI-BRIDGE (permanent)
-fpga_scarab.menu.bitstream.flash_xc3sprog.upload.bitstream.command=xc3sprog -c ftdi -I "{bootloader.file.bit}"
+#fpga_scarab_bram.bootloader.openocd.command=svf -tap chip.tap "C:\\scarab/scarab_xc6slx25_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf"
+fpga_scarab_bram.menu.cpu.mips=MIPS
+fpga_scarab_bram.menu.cpu.mips.cpu.arch=mips
+fpga_scarab_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_scarab_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_scarab_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_scarab_bram.menu.cpu.riscv=RISC-V
+fpga_scarab_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_scarab_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_scarab_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_scarab_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_scarab_bram.menu.ramsize.32=32 KB BRAM Internal
+fpga_scarab_bram.menu.ramsize.32.upload.maximum_size=31232
+fpga_scarab_bram.menu.ramsize.32.build.extra_flags=--section-start=.init=0x400
+fpga_scarab_bram.menu.ramsize.32.memsupport=bram
+fpga_scarab_bram.menu.ramsize.32sd=32 KB BRAM Internal + 32 MB SDRAM Onboard
+fpga_scarab_bram.menu.ramsize.32sd.upload.maximum_size=31232
+fpga_scarab_bram.menu.ramsize.32sd.build.extra_flags=--section-start=.init=0x400
+fpga_scarab_bram.menu.ramsize.32sd.memsupport=sdram
+fpga_scarab_bram.menu.speed.81=81.25 MHz
+fpga_scarab_bram.menu.speed.81.build.fcpu=81250000
+fpga_scarab_bram.menu.speed.81.bitstream.fcpu.mhz=81
+fpga_scarab_bram.menu.speed.112=112.5 MHz
+fpga_scarab_bram.menu.speed.112.build.fcpu=112500000
+fpga_scarab_bram.menu.speed.112.bitstream.fcpu.mhz=112
+fpga_scarab_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_scarab_bram.menu.protocol.hex.upload.protocol=hex
+fpga_scarab_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_scarab_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_scarab_bram.menu.protocol.bin.upload.protocol=bin
+fpga_scarab_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_scarab_bram.menu.pinmap.generic=Generic
+fpga_scarab_bram.menu.pinmap.generic.build.variant=generic
+fpga_scarab_bram.menu.jtag.ft2232=Onboard FT2232 JTAG
+fpga_scarab_bram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft2232-generic.ocd
+fpga_scarab_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
+fpga_scarab_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+fpga_scarab_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
+fpga_scarab_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command=xc3sprog -c ftdi "{bootloader.file.bit}"
+fpga_scarab_bram.menu.bitstream.bridge_xc3sprog=SRAM xc3sprog JTAG-SPI-BRIDGE (temporary)
+fpga_scarab_bram.menu.bitstream.bridge_xc3sprog.upload.bitstream.command=xc3sprog -c ftdi "{bootloader.jtag_spi_bridge.bit}"
+fpga_scarab_bram.menu.bitstream.flash_xc3sprog=FLASH xc3sprog over JTAG-SPI-BRIDGE (permanent)
+fpga_scarab_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command=xc3sprog -c ftdi -I "{bootloader.file.bit}"
 
 #
 # Xilinx TB299 Board (ebay), f32c SoC
