@@ -19,8 +19,8 @@
           "category":"FPGA",
           "url":"http://www.nxlab.fer.hr/fpgarduino/bm/fpgarduino.zip",
           "archiveFileName":"fpgarduino.zip",
-          "checksum":"SHA-256:bfc9425e3554e555c1e8981761e0e9d4ded01987907e7a2a4b514d74aecb3811",
-          "size":"807834",
+          "checksum":"SHA-256:cfb4321ca9713151bd26da6204de0742005b03c416c6fc0416f7d1495016c040",
+          "size":"807927",
           "help":
           {
             "online":"http://www.nxlab.fer.hr/fpgarduino"
@@ -70,10 +70,10 @@
           [
             {
               "host":"i686-mingw32",
-              "url":"http://192.168.9.2/~davor/fpgarduino/bm/xc3sprog-r771-win32.zip",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/xc3sprog-r771-win32.zip",
               "archiveFileName":"xc3sprog-r771-win32.zip",
-              "checksum":"SHA-256:a17636f56fb20c0a0d8bca13c7b0fde4afb7ae1ac9428679087efed8ad554ac0",
-              "size":"1687331"
+              "checksum":"SHA-256:5dea1421fe861216a1d13de5a8dc0c99e632b250392dfb1d98f3225814c2992b",
+              "size":"239266"
             },
             {
               "host":"x86_64-apple-darwin",
@@ -91,7 +91,7 @@
             },
             {
               "host":"x86_64-pc-linux-gnu",
-              "url":"http://192.168.9.2/~davor/fpgarduino/bm/xc3sprog-r774-linux64.tar.bz2",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/xc3sprog-r774-linux64.tar.bz2",
               "archiveFileName":"xc3sprog-r774-linux64.tar.bz2",
               "checksum":"SHA-256:9e1d7623438dc8e66ac42aeacafefc2f3f3f5942f88e8540b3a4b3b03cb025b4",
               "size":"370984"
