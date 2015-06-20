@@ -70,8 +70,8 @@
           [
             {
               "host":"i686-mingw32",
-              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/xc3sprog-r771-win32.zip",
-              "archiveFileName":"xc3sprog-r771-win32.zip",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/xc3sprog-771-win32.zip",
+              "archiveFileName":"xc3sprog-771-win32.zip",
               "checksum":"SHA-256:5dea1421fe861216a1d13de5a8dc0c99e632b250392dfb1d98f3225814c2992b",
               "size":"239266"
             },
@@ -84,15 +84,15 @@
             },
             {
               "host":"i686-pc-linux-gnu",
-              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/ujprog-x86_64-pc-linux-gnu.tar.bz2",
-              "archiveFileName":"ujprog-x86_64-pc-linux-gnu.tar.bz2",
-              "checksum":"SHA-256:cd376c5d47faa657fd1fc71e3a0a86648a12baf527d68a177239a4a29663eae2",
-              "size":"16600"
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/xc3sprog-774-linux32.tar.bz2",
+              "archiveFileName":"xc3sprog-774-linux32.tar.bz2",
+              "checksum":"SHA-256:756f9748837b1d87872b2ac77c04367c1bb0e579796af9692be5b2ee76080208",
+              "size":"358942"
             },
             {
               "host":"x86_64-pc-linux-gnu",
-              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/xc3sprog-r774-linux64.tar.bz2",
-              "archiveFileName":"xc3sprog-r774-linux64.tar.bz2",
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/xc3sprog-774-linux64.tar.bz2",
+              "archiveFileName":"xc3sprog-774-linux64.tar.bz2",
               "checksum":"SHA-256:9e1d7623438dc8e66ac42aeacafefc2f3f3f5942f88e8540b3a4b3b03cb025b4",
               "size":"370984"
             }
@@ -119,10 +119,10 @@
             },
             {
               "host":"i686-pc-linux-gnu",
-              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/ujprog-x86_64-pc-linux-gnu.tar.bz2",
-              "archiveFileName":"ujprog-x86_64-pc-linux-gnu.tar.bz2",
-              "checksum":"SHA-256:cd376c5d47faa657fd1fc71e3a0a86648a12baf527d68a177239a4a29663eae2",
-              "size":"16600"
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/openocd-0.9.0-linux32.tar.bz2",
+              "archiveFileName":"openocd-0.9.0-linux32.tar.bz2",
+              "checksum":"SHA-256:2f3552554c098fe86e81fe71ac93a641b85877b2cd67a16ba0ed7a3043bd2498",
+              "size":"3144478"
             },
             {
               "host":"x86_64-pc-linux-gnu",
@@ -189,10 +189,10 @@
             },
             {
               "host":"i686-pc-linux-gnu",
-              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/ujprog-x86_64-pc-linux-gnu.tar.bz2",
-              "archiveFileName":"ujprog-x86_64-pc-linux-gnu.tar.bz2",
-              "checksum":"SHA-256:cd376c5d47faa657fd1fc71e3a0a86648a12baf527d68a177239a4a29663eae2",
-              "size":"16600"
+              "url":"http://www.nxlab.fer.hr/fpgarduino/bm/ujprog-linux32.tar.bz2",
+              "archiveFileName":"ujprog-linux32.tar.bz2",
+              "checksum":"SHA-256:02355931207ef2d7f31c4f9bf2949a0e615fc09a89b411b48099e75ef7b5a244",
+              "size":"18823"
             },
             {
               "host":"x86_64-pc-linux-gnu",
