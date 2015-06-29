@@ -1,11 +1,7 @@
 #include <PID.h>
 
-<<<<<<< HEAD
-// number of PID units (2 or 4)
 #define N 4
 
-=======
->>>>>>> bbaddca15cb0e63f4c9f7bb8d88aed78ed559ee3
 void PID_print(int i)
 {
   char line[255];
@@ -33,11 +29,7 @@ void PID_hex(void)
 void setup() {
   int i;
 
-<<<<<<< HEAD
   for(i = 0; i < N; i++)
-=======
-  for(i = 0; i < 2; i++)
->>>>>>> bbaddca15cb0e63f4c9f7bb8d88aed78ed559ee3
   {
     PID[i].sp = 0;
     PID[i].p = 8;
@@ -52,15 +44,9 @@ void loop() {
   static int sp, state;
   int phase;
   int interval = 6;
-<<<<<<< HEAD
   int jump[4] = {100000, -100000, 110000, -110000};
 
   for(ip = 0; ip < N; ip++)
-=======
-  int jump[2] = {100000, -100000};
-
-  for(ip = 0; ip < 2; ip++)
->>>>>>> bbaddca15cb0e63f4c9f7bb8d88aed78ed559ee3
   {
     phase = state & ((1<<interval)-1);
     /*
