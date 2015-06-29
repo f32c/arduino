@@ -9,4 +9,8 @@ struct PID_s
   int pv:24;    unsigned int dummy7:8;
 };
 
+<<<<<<< HEAD
+volatile PID_s *PID = (volatile struct PID_s *) 0xFFFFFD80;
+=======
 volatile PID_s *PID = (volatile struct PID_s *) 0xFFFFFD40;
+>>>>>>> bbaddca15cb0e63f4c9f7bb8d88aed78ed559ee3
