@@ -23,12 +23,16 @@ fpga_ulx2s_sram.upload.maximum_size=1015808
 fpga_ulx2s_sram.upload.protocol=bin
 fpga_ulx2s_sram.upload.flags=-re
 fpga_ulx2s_sram.upload.bitstream.command="{path}/{cmd}" -j FLASH "{runtime.platform.path}/bootloaders/{bootloader.file}"
-fpga_ulx2s_sram.bootloader.file=ulx2s/ulx2s_8e_mips_sram_81mhz.jed
+#fpga_ulx2s_sram.bootloader.file=ulx2s/ulx2s_8e_mips_sram_81mhz.jed
 fpga_ulx2s_sram.menu.cpu.mips=MIPS
 fpga_ulx2s_sram.menu.cpu.mips.cpu.arch=mips
 fpga_ulx2s_sram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
 fpga_ulx2s_sram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
 fpga_ulx2s_sram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_ulx2s_sram.menu.bitstream.normal=FLASH FB (normal)
+fpga_ulx2s_sram.menu.bitstream.normal.bootloader.file=ulx2s/ulx2s_8e_mips_sram_81mhz.jed
+fpga_ulx2s_sram.menu.bitstream.pid=FLASH NOFB, PID, 433
+fpga_ulx2s_sram.menu.bitstream.pid.bootloader.file=ulx2s/ulx2s_8e_nofb_pid_433_mips_sram_81mhz.jed
 
 #
 # FPGArduino ULX2S f32c SoC BRAM
