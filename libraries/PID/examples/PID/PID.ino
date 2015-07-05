@@ -32,9 +32,9 @@ void setup() {
   for(i = 0; i < N; i++)
   {
     PID[i].sp = 0;
-    PID[i].p = 8;
-    PID[i].i = 13;
-    PID[i].d = -1;
+    PID[i].p = 10;
+    PID[i].i = 11;
+    PID[i].d =  1;
   }
   Serial.begin(115200);
 }
