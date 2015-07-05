@@ -33,8 +33,8 @@ void setup() {
   {
     PID[i].sp = 0;
     PID[i].p = 6;
-    PID[i].i = 9;
-    PID[i].d = -5;
+    PID[i].i = 13;
+    PID[i].d = -3;
   }
   Serial.begin(115200);
 }
@@ -44,7 +44,7 @@ void loop() {
   static int sp, state;
   int phase;
   int interval = 6;
-  int jump[4] = {100000, -100000, 110000, -110000};
+  int jump[4] = {10000, -10000, 11000, -11000};
 
   for(ip = 0; ip < N; ip++)
   {
