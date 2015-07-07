@@ -102,4 +102,4 @@ endif
 include ${POST_MK}
 
 ${LIB}: ${OBJS} Makefile
-	${AR} ../../../../${ARCH}/system/lib/lib${LIB}.a ${OBJS}
+	${AR} ../${ARCH_DIR}/lib/lib${LIB}.a ${OBJS}
