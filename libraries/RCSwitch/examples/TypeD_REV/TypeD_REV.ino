@@ -8,7 +8,7 @@
 
 #include <RCSwitch.h>
 
-int tx433 = 40; // transmitter is connected to Arduino physical pin 40
+int tx433 = 60; // ULX2S 433MHz transmitter is at physical pin 40 = arduino pin 60
 int led = 12;   // indicator led is at physical pin 12
 
 RCSwitch mySwitch = RCSwitch();
