@@ -9,12 +9,12 @@ version=1.6.0
 # Compile variables
 # ----------------------
 
-f32c.mips.compiler.c.flags=-march=f32c -c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -DF_CPU={build.f_cpu}
-f32c.mips.compiler.cpp.flags=-march=f32c -c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -DF_CPU={build.f_cpu}
+f32c.mips.compiler.c.flags=-march=f32c -c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h
+f32c.mips.compiler.cpp.flags=-march=f32c -c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions
 f32c.mips.compiler.ld.flags=-N -EL -gc-sections "--library-path={build.system.path}/mips/lib"
 
-f32c.riscv.compiler.c.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h -DF_CPU={build.f_cpu}
-f32c.riscv.compiler.cpp.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h -DF_CPU={build.f_cpu}
+f32c.riscv.compiler.c.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h
+f32c.riscv.compiler.cpp.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
 f32c.riscv.compiler.ld.flags=-N -EL -melf32lriscv -gc-sections "--library-path={build.system.path}/riscv/lib"
 
 # f32c from Board Manager JSON automatic installation:
@@ -46,9 +46,9 @@ compiler.define=-DARDUINO=
 build.extra_flags=--section-start=.init=0x400
 
 # These can be overridden in platform.local.txt
-compiler.c.extra_flags=-D__F32C__ "-DVARIANT_MCK={build.fcpu}"
+compiler.c.extra_flags=-D__F32C__ "-DF_CPU={build.f_cpu}L"
 compiler.c.elf.extra_flags=
-compiler.cpp.extra_flags=-D__F32C__ "-DVARIANT_MCK={build.fcpu}"
+compiler.cpp.extra_flags=-D__F32C__ "-DF_CPU={build.f_cpu}L"
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
 

@@ -45,7 +45,7 @@ static volatile voidFuncPtr gpio_falling_Func[32] = {
 const struct variant_icp_control_s variant_icp_control[2] = VARIANT_ICP_CONTROL;
 
 static int tsc_next;
-int timerInterval = VARIANT_MCK; // default timer interval is 1 second
+int timerInterval = F_CPU; // default timer interval is 1 second
 
 /* MIPS timer (inside of the core) */
 static int tsc_isr(void)

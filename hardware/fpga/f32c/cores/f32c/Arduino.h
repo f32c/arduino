@@ -44,7 +44,7 @@ extern "C"{
 #include "wiring.h"
 #include "wiring_constants.h"
 
-#define	SystemCoreClock VARIANT_MCK
+#define	SystemCoreClock F_CPU
 
 #define clockCyclesPerMicrosecond() ( SystemCoreClock / 1000000L )
 #define clockCyclesToMicroseconds(a) ( ((a) * 1000L) / (SystemCoreClock / 1000L) )

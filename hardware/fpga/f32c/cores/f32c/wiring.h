@@ -94,7 +94,7 @@ static inline void delayMicroseconds(uint32_t usec){
     if (usec == 0) return;
 #if 0
     // XXX MARKO FIXME!
-    uint32_t n = usec * (VARIANT_MCK / 3000000);
+    uint32_t n = usec * (F_CPU / 3000000);
     asm volatile(
         "L_%=_delayMicroseconds:"       "\n\t"
         "subs   %0, #1"                 "\n\t"

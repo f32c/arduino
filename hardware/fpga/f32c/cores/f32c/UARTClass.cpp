@@ -107,7 +107,7 @@ sio_setbaud(int bauds)
 	val = bauds;
 	if (bauds > 1000000)
 		val /= 10;
-	val = val * 1024 / 1000 * 1024 / (VARIANT_MCK / 1000) + 1;
+	val = val * 1024 / 1000 * 1024 / (F_CPU / 1000) + 1;
 	if (bauds > 1000000)
 		val *= 10;
 	OUTH(IO_SIO_BAUD, val);

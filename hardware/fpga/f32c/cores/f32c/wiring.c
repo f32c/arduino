@@ -67,7 +67,7 @@ millis(void)
 	tsc64 <<= 32;
 	tsc64 += tsc_lo;
 	
-	return((tsc64 * 1000) / VARIANT_MCK);
+	return((tsc64 * 1000) / F_CPU);
 }
 
 
@@ -81,7 +81,7 @@ micros(void)
 	tsc64 <<= 32;
 	tsc64 += tsc_lo;
 	
-	return((tsc64 * 1000000) / VARIANT_MCK);
+	return((tsc64 * 1000000) / F_CPU);
 }
 
 
@@ -100,5 +100,5 @@ delay(uint32_t ms)
 	 * If any of the above conditions are not met, delay loop
 	 * will execute longer than expected.
 	 */
-	DELAY(ms * (VARIANT_MCK / 1000));
+	DELAY(ms * (F_CPU / 1000));
 }

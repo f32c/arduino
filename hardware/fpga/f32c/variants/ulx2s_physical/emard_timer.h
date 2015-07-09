@@ -6,7 +6,7 @@
 
 /* CPU clock in Hz */
 // #define CLOCK 81207000L
-#define TIMER_CLOCK  VARIANT_MCK
+#define TIMER_CLOCK  F_CPU
 /* bits of the timer counter C_bits */
 #define TIMER_BITS 12
 /* register of size more or equal max(C_bits, C_bits+C_pres), max 32 bits */
