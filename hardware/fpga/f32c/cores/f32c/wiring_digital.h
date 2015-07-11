@@ -27,6 +27,9 @@ __BEGIN_DECLS
 #define digitalPinToBitMask(pin) (1<<variant_pin_map[pin].bit_pos)
 #define portOutputRegister(port) port
 #define portInputRegister(port) port
+#define portModeRegister(port) (port+(IO_GPIO_CTL-IO_GPIO_DATA)/sizeof(uint32_t)) 
+// portModeRegister(port) (port+1) // actually this is it
+// pointer to IO_GPIO_CTL (port is pointer to IO_GPIO_DATA)
 
 /**
  * \brief Configures the specified pin to behave either as an input or an output. See the description of digital pins for details.
