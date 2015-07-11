@@ -155,7 +155,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
   icp = variant_pin_map[pin].icp;
   ocp = variant_pin_map[pin].pwm;
   bit = variant_pin_map[pin].bit_pos;
-  port = digitalPinToPort(pin);
+  port = (PortRegister_t)digitalPinToPort(pin);
   
   if(bit == 5 && port == (volatile uint32_t *) IO_LED) // arduino LED at pin 13
   {
@@ -232,7 +232,7 @@ void detachInterrupt(uint32_t pin)
   icp = variant_pin_map[pin].icp;
   ocp = variant_pin_map[pin].pwm;
   bit = variant_pin_map[pin].bit_pos;
-  port = digitalPinToPort(pin);
+  port = (PortRegister_t)digitalPinToPort(pin);
   if(bit == 5 && port == (volatile uint32_t *) IO_LED) // arduino LED at pin 13
   {
     int irq = 7;

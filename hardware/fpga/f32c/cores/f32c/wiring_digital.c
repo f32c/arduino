@@ -14,7 +14,7 @@ pinMode(uint32_t pin, uint32_t mode)
 	volatile uint32_t *port = (volatile uint32_t *) IO_GPIO_CTL;
 
 	if (pin >= variant_pin_map_size ||
-	    digitalPinToPort(pin) != (volatile uint32_t *)IO_GPIO_DATA)
+	    digitalPinToPort(pin) != IO_GPIO_DATA)
 		return;
 
 	switch (mode) {
@@ -45,7 +45,7 @@ digitalWrite(uint32_t pin, uint32_t val)
           EMARD_TIMER[TC_APPLY] = pwm_enable_bitmask[pwm_channel].apply;
 	}
 
-	port = digitalPinToPort(pin);
+	port = (PortRegister_t)digitalPinToPort(pin);
 
 	if (val)
 		*port |=  (1<<variant_pin_map[pin].bit_pos);
@@ -62,7 +62,7 @@ digitalRead(uint32_t pin)
 	if (pin >= variant_pin_map_size)
 		return 0;
 
-	port = digitalPinToPort(pin);
+	port = (PortRegister_t)digitalPinToPort(pin);
 	return ((*port & (1<<variant_pin_map[pin].bit_pos)) != 0);
 }
 

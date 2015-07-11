@@ -23,11 +23,15 @@
 
 __BEGIN_DECLS
 
-#define digitalPinToPort(pin) ((volatile uint32_t *) pintype2ioaddr[variant_pin_map[pin].io_port])
-#define digitalPinToBitMask(pin) (1<<variant_pin_map[pin].bit_pos)
-#define portOutputRegister(port) port
-#define portInputRegister(port) port
-#define portModeRegister(port) (port+(IO_GPIO_CTL-IO_GPIO_DATA)/sizeof(uint32_t)) 
+#define PortValue_t uint32_t
+#define PortAddr_t uint32_t
+#define PortRegister_t volatile uint32_t *
+
+#define digitalPinToPort(pin) ((PortAddr_t) pintype2ioaddr[variant_pin_map[pin].io_port])
+#define digitalPinToBitMask(pin) ((PortValue_t)(1<<variant_pin_map[pin].bit_pos))
+#define portOutputRegister(port) ((PortRegister_t)port)
+#define portInputRegister(port) ((PortRegister_t)port)
+#define portModeRegister(port) ((PortRegister_t)(port+IO_GPIO_CTL-IO_GPIO_DATA))
 // portModeRegister(port) (port+1) // actually this is it
 // pointer to IO_GPIO_CTL (port is pointer to IO_GPIO_DATA)
 
