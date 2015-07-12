@@ -17,13 +17,13 @@ All text above, and the splash screen must be included in any redistribution
 *********************************************************************/
 
 #include <SPI.h>
-#include <Wire.h>
 #include <SoftwareWire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define OLED_RESET 4
-Adafruit_SSD1306 display(OLED_RESET);
+#define OLED_SDA   32
+#define OLED_SCLK  33
+Adafruit_SSD1306 display(OLED_SDA, OLED_SCLK);
 
 #define NUMFLAKES 10
 #define XPOS 0

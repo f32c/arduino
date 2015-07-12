@@ -22,11 +22,12 @@ All text above, and the splash screen below must be included in any redistributi
 #endif
 #include <stdlib.h>
 
-#include <Wire.h>
 #include <SoftwareWire.h>
 
 #include "Adafruit_GFX.h"
 #include "Adafruit_SSD1306.h"
+
+SoftwareWire Wire(32, 33); // dummy default pins. will be changed by config()
 
 // the memory buffer for the LCD
 
@@ -208,7 +209,7 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr) {
     }
     if(!hwI2C)
     {
-      SoftwareWire Wire(sda, sclk);
+      Wire.config(sda, sclk);
       Wire.begin();
     }
   }
@@ -724,4 +725,3 @@ void Adafruit_SSD1306::drawFastVLineInternal(int16_t x, int16_t __y, int16_t __h
     }
   }
 }
-
