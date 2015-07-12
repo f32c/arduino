@@ -54,6 +54,7 @@ public:
   void begin();
   void begin(uint8_t address);
   void begin(int address);
+  void config(PortValue_t sdaPin, PortValue_t sclPin, boolean pullups = true, boolean detectClockStretch = true);
   void setClock(uint32_t clock);
   void beginTransmission(uint8_t address);
   void beginTransmission(int address);

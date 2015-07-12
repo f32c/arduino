@@ -128,7 +128,7 @@ __END_DECLS;
 //
 // The pins are not activated until begin() is called.
 //
-SoftwareWire::SoftwareWire(PortValue_t sdaPin, PortValue_t sclPin, boolean pullups, boolean detectClockStretch)
+void SoftwareWire::config(PortValue_t sdaPin, PortValue_t sclPin, boolean pullups, boolean detectClockStretch)
 {
   _sdaPin = sdaPin;
   _sclPin = sclPin;
@@ -158,6 +158,10 @@ SoftwareWire::SoftwareWire(PortValue_t sdaPin, PortValue_t sclPin, boolean pullu
   _sclPinReg   = portInputRegister(port);
 }
 
+SoftwareWire::SoftwareWire(PortValue_t sdaPin, PortValue_t sclPin, boolean pullups, boolean detectClockStretch)
+{
+  config(sdaPin, sclPin, pullups, detectClockStretch);
+}
 
 // 
 // The destructor releases the pins Software I2C bus for other use.
