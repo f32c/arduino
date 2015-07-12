@@ -215,6 +215,7 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr) {
     if(!hwI2C)
     {
       Wire.config(sda, sclk);
+      Wire.setClock(i2c_hz);
       Wire.begin();
     }
   }
