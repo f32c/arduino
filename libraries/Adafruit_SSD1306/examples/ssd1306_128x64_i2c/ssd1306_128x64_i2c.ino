@@ -21,9 +21,10 @@ All text above, and the splash screen must be included in any redistribution
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define OLED_SDA   32
+#define OLED_SDA   35
 #define OLED_SCLK  33
-Adafruit_SSD1306 display(OLED_SDA, OLED_SCLK);
+#define OLED_I2C_HZ 400000L
+Adafruit_SSD1306 display(OLED_SDA, OLED_SCLK, OLED_I2C_HZ);
 
 #define NUMFLAKES 10
 #define XPOS 0

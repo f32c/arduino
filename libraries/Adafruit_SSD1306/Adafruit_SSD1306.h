@@ -44,7 +44,7 @@ All text above, and the splash screen must be included in any redistribution
 #define BLACK 0
 #define WHITE 1
 
-#define SSD1306_I2C_ADDRESS   0x3C	// 011110+SA0+RW - 0x3C or 0x3D
+#define SSD1306_I2C_ADDRESS   0x3D	// 011110+SA0+RW - 0x3C or 0x3D
 // Address for 128x32 is 0x3C
 // Address for 128x64 is 0x3D (default) or 0x3C (if SA0 is grounded)
 
@@ -129,9 +129,9 @@ All text above, and the splash screen must be included in any redistribution
 class Adafruit_SSD1306 : public Adafruit_GFX {
  public:
   Adafruit_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t CS);
-  Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS);
-  Adafruit_SSD1306(int8_t RST);
-  Adafruit_SSD1306(int8_t SDA, int8_t SCLK);
+  //Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS);
+  //Adafruit_SSD1306(int8_t RST);
+  Adafruit_SSD1306(int8_t SDA, int8_t SCLK, uint32_t I2C_HZ = 400000L);
 
   void begin(uint8_t switchvcc = SSD1306_SWITCHCAPVCC, uint8_t i2caddr = SSD1306_I2C_ADDRESS);
   void ssd1306_command(uint8_t c);
@@ -157,6 +157,7 @@ class Adafruit_SSD1306 : public Adafruit_GFX {
 
  private:
   int8_t _i2caddr, _vccstate, sid, sclk, dc, rst, cs, sda;
+  uint32_t i2c_hz;
 #ifdef _SPI_H_INCLUDED
   void fastSPIwrite(uint8_t c);
 #endif

@@ -139,6 +139,7 @@ Adafruit_SSD1306::Adafruit_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RS
   hwSPI = false;
 }
 
+#if 0
 // constructor for hardware SPI - we indicate DataCommand, ChipSelect, Reset 
 Adafruit_SSD1306::Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
   dc = DC;
@@ -146,7 +147,9 @@ Adafruit_SSD1306::Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS) : Adafruit_
   cs = CS;
   hwSPI = true;
 }
+#endif
 
+#if 0
 // initializer for hardware I2C - we only indicate the reset pin!
 Adafruit_SSD1306::Adafruit_SSD1306(int8_t reset) :
 Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
@@ -154,13 +157,15 @@ Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
   rst = reset;
   hwI2C = true;
 }
+#endif
 
 // initializer for software I2C - we indicate SDA and SCLK pins!
-Adafruit_SSD1306::Adafruit_SSD1306(int8_t SDA, int8_t SCLK) :
+Adafruit_SSD1306::Adafruit_SSD1306(int8_t SDA, int8_t SCLK, uint32_t I2C_HZ) :
 Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
   dc = cs = sid = rst = -1;
   sda = SDA;
   sclk = SCLK;
+  i2c_hz = I2C_HZ;
   hwI2C = false;
 }
   
