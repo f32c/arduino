@@ -18,11 +18,13 @@ All text above, and the splash screen must be included in any redistribution
 
 #include <SPI.h>
 #include <Wire.h>
+#include <SoftwareWire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define OLED_RESET 4
-Adafruit_SSD1306 display(OLED_RESET);
+#define OLED_SDA   32
+#define OLED_SCLK  33
+Adafruit_SSD1306 display(OLED_SDA, OLED_SCLK);
 
 #define NUMFLAKES 10
 #define XPOS 0
@@ -55,7 +57,7 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
 #endif
 
 void setup()   {                
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
   display.begin(SSD1306_SWITCHCAPVCC, 0x3D);  // initialize with the I2C addr 0x3D (for the 128x64)

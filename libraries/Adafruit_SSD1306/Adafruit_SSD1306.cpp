@@ -23,6 +23,7 @@ All text above, and the splash screen below must be included in any redistributi
 #include <stdlib.h>
 
 #include <Wire.h>
+#include <SoftwareWire.h>
 
 #include "Adafruit_GFX.h"
 #include "Adafruit_SSD1306.h"
@@ -145,11 +146,21 @@ Adafruit_SSD1306::Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS) : Adafruit_
   hwSPI = true;
 }
 
-// initializer for I2C - we only indicate the reset pin!
+// initializer for hardware I2C - we only indicate the reset pin!
 Adafruit_SSD1306::Adafruit_SSD1306(int8_t reset) :
 Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
   sclk = dc = cs = sid = -1;
   rst = reset;
+  hwI2C = true;
+}
+
+// initializer for software I2C - we indicate SDA and SCLK pins!
+Adafruit_SSD1306::Adafruit_SSD1306(int8_t SDA, int8_t SCLK) :
+Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
+  dc = cs = sid = rst = -1;
+  sda = SDA;
+  sclk = SCLK;
+  hwI2C = false;
 }
   
 
@@ -186,12 +197,20 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr) {
   else
   {
     // I2C Init
-    Wire.begin();
+    if(hwI2C)
+    {
+      Wire.begin();
 #ifdef __SAM3X8E__
-    // Force 400 KHz I2C, rawr! (Uses pins 20, 21 for SDA, SCL)
-    TWI1->TWI_CWGR = 0;
-    TWI1->TWI_CWGR = ((VARIANT_MCK / (2 * 400000)) - 4) * 0x101;
+      // Force 400 KHz I2C, rawr! (Uses pins 20, 21 for SDA, SCL)
+      TWI1->TWI_CWGR = 0;
+      TWI1->TWI_CWGR = ((VARIANT_MCK / (2 * 400000)) - 4) * 0x101;
 #endif
+    }
+    if(!hwI2C)
+    {
+      SoftwareWire Wire(sda, sclk);
+      Wire.begin();
+    }
   }
 
   // Setup reset pin direction (used by both SPI and I2C)  

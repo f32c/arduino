@@ -131,6 +131,7 @@ class Adafruit_SSD1306 : public Adafruit_GFX {
   Adafruit_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t CS);
   Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS);
   Adafruit_SSD1306(int8_t RST);
+  Adafruit_SSD1306(int8_t SDA, int8_t SCLK);
 
   void begin(uint8_t switchvcc = SSD1306_SWITCHCAPVCC, uint8_t i2caddr = SSD1306_I2C_ADDRESS);
   void ssd1306_command(uint8_t c);
@@ -155,11 +156,11 @@ class Adafruit_SSD1306 : public Adafruit_GFX {
   virtual void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
 
  private:
-  int8_t _i2caddr, _vccstate, sid, sclk, dc, rst, cs;
+  int8_t _i2caddr, _vccstate, sid, sclk, dc, rst, cs, sda;
 #ifdef _SPI_H_INCLUDED
   void fastSPIwrite(uint8_t c);
 #endif
-  boolean hwSPI;
+  boolean hwSPI, hwI2C;
   PortReg *mosiport, *clkport, *csport, *dcport;
   PortMask mosipinmask, clkpinmask, cspinmask, dcpinmask;
 
