@@ -29,6 +29,7 @@ SoftwareWire myWire( 32, 33);
 
 void setup()
 {
+  myWire.setClock(100000L); // Hz set I2C clock speed
   myWire.begin(); // join i2c bus (address optional for master)
 }
 
