@@ -43,6 +43,15 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode);
 void detachInterrupt(uint32_t pin);
 void icpFilter(uint32_t pin, uint32_t icp_start, uint32_t icp_stop);
 
+#ifdef __mips__
+#define __enable_irq() asm("ei")
+#define __disable_irq() asm("di")
+#endif // __mips__
+#ifdef __riscv__
+#define __enable_irq()
+#define __disable_irq()
+#endif // __riscv__
+
 __END_DECLS
 
 #endif /* _WIRING_INTERRUPTS_ */
