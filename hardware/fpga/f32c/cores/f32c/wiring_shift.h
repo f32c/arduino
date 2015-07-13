@@ -23,7 +23,7 @@ __BEGIN_DECLS
 /*
  * \brief
  */
-extern uint32_t shiftIn( uint8_t ulDataPin, uint8_t ulClockPin, uint8_t ulBitOrder ) ;
+extern uint8_t shiftIn( uint8_t ulDataPin, uint8_t ulClockPin, uint8_t ulBitOrder ) ;
 
 
 /*
