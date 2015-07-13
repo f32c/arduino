@@ -24,7 +24,7 @@
 
 #include "wiring_private.h"
 
-uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) {
+uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) {
 	uint32_t value = 0;
 	uint8_t i;
 
