@@ -521,6 +521,15 @@ SPIClass SPI(SPI_INTERFACE, SPI_INTERFACE_ID, SPI_0_Init);
 
 #elif defined(__F32C__)
 
+#if (_BYTE_ORDER == _LITTLE_ENDIAN)
+#define	SPI_READY_MASK (1 << 8)
+#else
+#define	SPI_READY_MASK (1 << 16)
+#endif
+
+#define	SPI_DATA	0
+#define	SPI_CONTROL	1
+
 SPIClass::SPIClass(Spi *_spi, uint32_t _id, void(*_initCb)(void)) :
 	spi(_spi), id(_id), initCb(_initCb), initialized(false)
 {
@@ -576,7 +585,18 @@ void SPIClass::setClockDivider(uint8_t _pin, uint8_t _divider) {
 }
 
 byte SPIClass::transfer(byte _pin, uint8_t _data, SPITransferMode _mode) {
-    return 0;
+	uint32_t in;
+	int port = IO_SPI_SDCARD; // todo: depending on _pin select port
+
+	SB(_data, SPI_DATA, port);
+	do {
+		LW(in, SPI_DATA, port);
+	} while ((in & SPI_READY_MASK) == 0);
+#if (_BYTE_ORDER == _LITTLE_ENDIAN)
+	return (in & 0xff);
+#else
+	return (in >> 24);
+#endif
 }
 
 void SPIClass::attachInterrupt(void) {
