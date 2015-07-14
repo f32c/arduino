@@ -26,7 +26,7 @@
  */
 
 #include "Arduino.h"
-#include "io.h"
+#include "dev/io.h"
 
 
 static uint32_t tsc_hi, tsc_lo;

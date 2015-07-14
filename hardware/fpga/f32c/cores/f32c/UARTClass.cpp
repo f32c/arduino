@@ -21,7 +21,7 @@
 #include <string.h>
 #include "UARTClass.h"
 
-#include <io.h>
+#include <dev/io.h>
 
 
 #define	SIO_RXBUFSIZE	(1 << 3)

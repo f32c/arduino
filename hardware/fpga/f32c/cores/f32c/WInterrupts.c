@@ -1,8 +1,8 @@
 #include <Arduino.h>
-#include <io.h>
 #include <mips/asm.h>
 #include <mips/cpuregs.h>
 #include <sys/isr.h>
+#include <dev/io.h>
 #include "wiring_private.h"
 #include "emard_timer.h"
 

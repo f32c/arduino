@@ -4,7 +4,7 @@
 
 #include "Arduino.h"
 #include "wiring_analog.h" // this is needed to turn off pwm
-#include <io.h>
+#include <dev/io.h>
 
 __BEGIN_DECLS
 

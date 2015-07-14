@@ -30,8 +30,8 @@
 #include <stdlib.h>
 
 #if defined(__mips__) || defined(__riscv__)
-#include <io.h>
-#include <fb.h>
+#include <dev/io.h>
+#include <dev/fb.h>
 #else
 #ifndef __FreeBSD__
 #define	__predict_true(x) (x)
@@ -39,7 +39,7 @@
 #else
 #include "../include/sys/cdefs.h"
 #endif
-#include "../include/fb.h"
+#include "../include/dev/fb.h"
 #endif
 
 typedef void plotfn_t(int x, int y, int mode_color, uint8_t *dp);

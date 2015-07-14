@@ -19,7 +19,7 @@
 #ifndef _WIRING_DIGITAL_
 #define _WIRING_DIGITAL_
 
-#include <io.h>
+#include <dev/io.h>
 
 __BEGIN_DECLS
 
