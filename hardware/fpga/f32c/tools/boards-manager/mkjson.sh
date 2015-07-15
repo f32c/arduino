@@ -1,8 +1,6 @@
 #!/bin/sh
 
-JSON_URL_BASE="http://www.nxlab.fer.hr/fpgarduino"
-COMPILER_URL_BASE="${JSON_URL_BASE}"
-BM_URL_BASE="${JSON_URL_BASE}/bm"
+BM_URL_BASE="http://www.nxlab.fer.hr/fpgarduino/bm"
 LOCALDIR="bm"
 
 FPGARDUINO_NAME="FPGArduino"
@@ -37,13 +35,9 @@ OPENOCD_LINUX64="openocd-0.9.0-linux64.tar.bz2"
 COMPILER_NAME="f32c-compiler"
 COMPILER_VERSION="1.0.0"
 COMPILER_WIN32="f32c-win-toolchain.zip"
-COMPILER_WIN32_LOCAL="f32c-win-toolchain.zip"
-COMPILER_APPLE64="f32c-osx-toolchain.tgz"
-COMPILER_APPLE64_LOCAL="f32c-osx-toolchain.tar.gz"
-COMPILER_LINUX32="f32c-lin32-toolchain.tgz"
-COMPILER_LINUX32_LOCAL="f32c-lin32-toolchain.tar.gz"
-COMPILER_LINUX64="f32c-lin64-toolchain.tgz"
-COMPILER_LINUX64_LOCAL="f32c-lin64-toolchain.tar.gz"
+COMPILER_APPLE64="f32c-osx-toolchain.tar.gz"
+COMPILER_LINUX32="f32c-lin32-toolchain.tar.gz"
+COMPILER_LINUX64="f32c-lin64-toolchain.tar.gz"
 
 SHA256()
 {
@@ -269,29 +263,29 @@ cat << EOF
           [
             {
               "host":"i686-mingw32",
-              "url":"${COMPILER_URL_BASE}/${COMPILER_WIN32}",
-              "archiveFileName":"${COMPILER_WIN32_LOCAL}",
+              "url":"${BM_URL_BASE}/${COMPILER_WIN32}",
+              "archiveFileName":"${COMPILER_WIN32}",
               "checksum":"SHA-256:$(SHA256 ${COMPILER_WIN32})",
               "size":"$(SIZE ${COMPILER_WIN32})"
             },
             {
               "host":"x86_64-apple-darwin",
-              "url":"${COMPILER_URL_BASE}/${COMPILER_APPLE64}",
-              "archiveFileName":"${COMPILER_APPLE64_LOCAL}",
+              "url":"${BM_URL_BASE}/${COMPILER_APPLE64}",
+              "archiveFileName":"${COMPILER_APPLE64}",
               "checksum":"SHA-256:$(SHA256 ${COMPILER_APPLE64})",
               "size":"$(SIZE ${COMPILER_APPLE64})"
             },
             {
               "host":"i686-pc-linux-gnu",
-              "url":"${COMPILER_URL_BASE}/${COMPILER_LINUX32}",
-              "archiveFileName":"${COMPILER_LINUX32_LOCAL}",
+              "url":"${BM_URL_BASE}/${COMPILER_LINUX32}",
+              "archiveFileName":"${COMPILER_LINUX32}",
               "checksum":"SHA-256:$(SHA256 ${COMPILER_LINUX32})",
               "size":"$(SIZE ${COMPILER_LINUX32})"
             },
             {
               "host":"x86_64-pc-linux-gnu",
-              "url":"${COMPILER_URL_BASE}/${COMPILER_LINUX64}",
-              "archiveFileName":"${COMPILER_LINUX64_LOCAL}",
+              "url":"${BM_URL_BASE}/${COMPILER_LINUX64}",
+              "archiveFileName":"${COMPILER_LINUX64}",
               "checksum":"SHA-256:$(SHA256 ${COMPILER_LINUX64})",
               "size":"$(SIZE ${COMPILER_LINUX64})"
             }
