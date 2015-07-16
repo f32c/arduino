@@ -973,6 +973,18 @@ class SPIClass {
 
 #elif defined(__F32C__)
 
+#ifndef SPI_INTERFACES_COUNT
+#define SPI_INTERFACES_COUNT 1
+#endif
+
+#ifndef SPI_INTERFACE
+#define SPI_INTERFACE 0
+#endif
+
+#ifndef SPI_INTERFACE_ID
+#define SPI_INTERFACE_ID 0
+#endif
+
 #define Spi uint32_t
 
 enum SPITransferMode {
