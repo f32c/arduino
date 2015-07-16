@@ -26,8 +26,6 @@
 #include <stdint.h>
 #include <sys/stdint.h>
 
-#include <SD_workaround.h>
-
 // some libraries and sketches depend on this
 // AVR stuff, assuming Arduino.h or WProgram.h
 // automatically includes it...
