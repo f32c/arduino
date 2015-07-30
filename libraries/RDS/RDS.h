@@ -31,7 +31,7 @@
 
 // hardware address of 260-byte RDS buffer
 // 260 32-bit words contain each a 8-bit byte (LSB)
-#define RDS_ADDRESS 0xA0000000
+#define RDS_ADDRESS 0xFFFFF000
 
 #define GROUP_LENGTH 4
 #define BITS_PER_GROUP (GROUP_LENGTH * (BLOCK_SIZE+POLY_DEG))
