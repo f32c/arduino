@@ -36,13 +36,21 @@ const int chipSelect = 4;
 
 void setup()
 {
+  int btnstate = digitalRead(0);
   // Open serial communications and wait for port to open:
   Serial.begin(115200);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
 
-  while(digitalRead(0) == 0);
+  while(digitalRead(0) == btnstate)
+  {
+    static int8_t i = 0;
+    i++;
+    if(i == 0)
+      Serial.print("\nPress button at pin 0");
+    delay(10);
+  }
   Serial.print("\nInitializing SD card...");
 
   // we'll use the initialization code from the utility libraries
