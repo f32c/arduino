@@ -663,9 +663,19 @@ void delay2(byte d){
 void pause(byte delays)
 {
   static uint8_t rarify;
+  // if we are too fast writing data to pcm buffer,
+  // we must wait here until DMA plays them
+  // if currently we are at different half and
+  // want to step into the same half, we must wait
+#if 0
+  while( 0 != (halfdma & // isolate the halfdma bit only
+       ( ((uint32_t)  pcmptr    )^pcm.current() )  // halfdma bit 1 when we are at different half
+    & ~( ((uint32_t) (pcmptr+1) )^pcm.current() )  // halfdma bit 1 when next step is into the same half
+       ) );
+#endif
   for(; delays-- != 0; )
   {
-    if(((rarify++)&15) == 0)
+    if(((rarify++)&15) == 0) // every 16th sample will be written, 8kHz PCM
       *(pcmptr++) = pcmvalue | (pcmvalue << 16); // update both channels with current PCM sample
   }
 }
@@ -675,6 +685,14 @@ void delay2(byte d){
     pause(255);	// 256
     pause(255);	// 256
     d--;
+  }
+  if( (uint8_t *)pcmptr > (uint8_t *)pcmbuf + 1000 + (pcm.current() & 0x7FFFF ))
+  {
+    // enough data in the buffer, start DMA
+    // or extend its pointer
+    pcm.volume(20000,20000);
+    pcm.dma(pcmbuf, pcmptr-pcmbuf);
+    // pcm.dma(pcmbuf, dmasize);
   }
 }
 #endif
@@ -745,33 +763,30 @@ void soundOff(void){
   // this means that writing to pcm buffer is done
   // and sound can be played using DMA PCM
   pcmsize = pcmptr - pcmbuf;
-  pcm.volume(20000,20000);
-  pcm.rate(8000);
-  pcm.dma((uint32_t*) pcmbuf, 0); // stop DMA
-  while( ( (pcm.current() - (uint32_t)pcmbuf) & 0x7FFFF) != 0 ); // wait for pointer to stop
-  pcm.dma((uint32_t *)pcmbuf, pcmsize); // start DMA
   while( ( (pcm.current() - (uint32_t)pcmbuf) & 0x7FFFF) < pcmsize*4 - 1500); // wait for DMA to finish
   pcm.volume(0,0); // done, turn off sound
+  pcm.dma((uint32_t*) pcmbuf, 0); // stop DMA
+  // while( ( (pcm.current() - (uint32_t)pcmbuf) & 0x7FFFF) != 0 ); // wait for pointer to stop
 }
 
 void soundOn(void){
   pcmptr = pcmbuf; // initialize data destination
   pcmvalue = 0; // reset PCM value (same as PWM value)
-  pcm.volume(0, 0); // volume 0 when updating buffer
   // initialise random number seed
   seed0=0xecu;
   seed1=7;
   seed2=0xcfu;
-}
 
-// Linear scale
-static const int16_t PROGMEM Volume[8] = {0,PWM_TOP * 0.07,PWM_TOP * 0.14,PWM_TOP * 0.21,PWM_TOP * 0.29,PWM_TOP * 0.36,PWM_TOP * 0.43,PWM_TOP * 0.5};
-//#endif
+  pcm.rate(8000);
+  // pcm.volume(20000,20000);
+  pcm.dma((uint32_t*) pcmbuf, 0); // stop DMA, enable it as data arrive
+  // while( ( (pcm.current() - (uint32_t)pcmbuf) & 0x7FFFF) != 0 ); // wait for pointer to stop
+}
 
 void sound(byte b){
-  b = (b & 15);
-  pcmvalue = Volume[b>>1];
+  pcmvalue = ( ((8^b)&15) << 12); // unsigned 4-bit 0..15 to 16-bit signed -32767..+32767
 }
+
 #endif
 
 byte playTone(byte soundNum,byte soundPos,char pitch1, char pitch2, byte count, byte volume){
