@@ -20,14 +20,54 @@ class PCM {
   public:
     PCM();
 
-    void dma(uint32_t *addr, uint32_t size);
-    void rate(uint32_t rate);
-    void volume(int16_t left, int16_t right);
-    
-    uint32_t current(); // return current DMA pointer
+    inline void dma(uint32_t *addr, uint32_t size)
+    {
+      OUTW(IO_PCM_FIRST, addr);
+      OUTW(IO_PCM_LAST, addr + (size&(-1 ^ 3))-1 );
+    }
+
+    inline void dmafirst(uint32_t *addr)
+    {
+      OUTW(IO_PCM_FIRST, addr);
+    }
+
+    inline void dmalast(uint32_t *addr)
+    {
+      OUTW(IO_PCM_LAST, addr);
+    }
+
+    inline void Hz(uint32_t sample_rate_Hz)
+    {
+      OUTW(IO_PCM_FREQ, (uint32_t) (1.678061224489795E+7*sample_rate_Hz/F_CPU));
+    }
+
+    inline void rate(uint32_t sample_rate_Hz)
+    {
+      OUTW(IO_PCM_FREQ, (uint32_t) (1.678061224489795E+7*sample_rate_Hz/F_CPU));
+    }
+
+    inline void rateraw(uint32_t rate)
+    {
+      OUTW(IO_PCM_FREQ, rate); /* value 9108 at 81.25 MHz CPU makes 44.1 kHz sample rate */
+    }
+
+    inline void volume(int16_t left, int16_t right)
+    {
+      OUTW(IO_PCM_VOLUME, left | (left << 16));
+    }
+
+    inline uint32_t current()
+    {
+      uint32_t current_dma_pointer;
+      INW(current_dma_pointer, IO_PCM_CUR);
+      return current_dma_pointer;
+    }
+
+#if 0
   private:
     volatile uint32_t *buf = (volatile uint32_t *) 0x80080000;
     uint32_t size = 8192; // bytes (bytes/4 = samples)
+#endif
 };
 
 #endif
