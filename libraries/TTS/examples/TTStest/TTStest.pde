@@ -35,7 +35,6 @@ void loop(){
     state = !state;
     digitalWrite(ledPin, state);
     Test_Speech();
-    delay(1000);          // delay a second
 }  
 //================================================================
 
@@ -50,4 +49,5 @@ void Test_Speech() {
  strcpy(text, "I am fine, thankyou.");
  Serial.println(text);
  text2speech.say(text);
+ delay(1000);          // delay a second
 }
