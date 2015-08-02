@@ -18,8 +18,8 @@ void setup() {
     rt[i] = '@'+i; // ascii map
   /* Setup initial RDS text */
   rds.set_pi(pi); // station numeric ID
-  rds.set_ps(ps); // 8-char text, displayed as station name
-  rds.set_rt(rt); // 64-char text, not every radio displays it
+  rds.ps(ps); // 8-char text, displayed as station name
+  rds.rt(rt); // 64-char text, not every radio displays it
   Serial.begin(115200);
 }
 
@@ -30,12 +30,9 @@ void loop()
   snprintf(ps, sizeof(ps), "TEST%04d", number % 10000);
   snprintf(rt, sizeof(rt), "%05d Zzz...", number % 100000);
 
-  // apply local strings to rds class
-  rds.set_ps(ps);
-  rds.set_rt(rt);
-
-  // strings changed but not yet transmitting
-  rds.send(); // send (update transmitter buffer)
+  // send strings for transmission
+  rds.ps(ps);
+  rds.rt(rt);
 
   // print actual status on serial
   Serial.print("0x");
