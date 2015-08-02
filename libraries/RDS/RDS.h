@@ -33,58 +33,71 @@
 // 260 32-bit words contain each a 8-bit byte (LSB)
 #define RDS_ADDRESS 0xFFFFF000
 
-#define GROUP_LENGTH 4
-#define BITS_PER_GROUP (GROUP_LENGTH * (BLOCK_SIZE+POLY_DEG))
+#define RDS_GROUP_LENGTH 4
+#define RDS_BITS_PER_GROUP (RDS_GROUP_LENGTH * (RDS_BLOCK_SIZE+RDS_POLY_DEG))
 
 /* The RDS error-detection code generator polynomial is
    x^10 + x^8 + x^7 + x^5 + x^4 + x^3 + x^0
 */
-#define POLY 0x1B9
-#define POLY_DEG 10
-#define MSB_BIT 0x8000
-#define BLOCK_SIZE 16
+#define RDS_POLY 0x1B9
+#define RDS_POLY_DEG 10
+#define RDS_MSB_BIT 0x8000
+#define RDS_BLOCK_SIZE 16
 
-#define RT_LENGTH 64
-#define PS_LENGTH 8
+#define RDS_RT_LENGTH 64
+#define RDS_PS_LENGTH 8
 
 class RDS {
   public:
     RDS();
 
-    void set_pi(uint16_t pi_code);
-    void set_rt(char *rt);
-    void rt(char *rt);
-    void set_ps(char *ps);
+    // those function have immediate effect
+    // pass them value and transmitter starts
+    // sending it
     void ps(char *ps);
-    void set_ta(int ta);
-
-    void write_buf_crc(uint8_t *buffer, uint16_t *blocks);
-    void write_ps_group(uint8_t *buffer, uint8_t group_number);
-    void write_rt_group(uint8_t *buffer, uint8_t group_number);
-
-    // get_group() converts text message to binary
-    // format suitable for sending
-    void get_group(uint8_t *buffer); // convert message to binary
-
-    // send() copies binary to hardware transmission buffer
-    // void send();
-    void send_ps();
-    void send_rt();
-
-    volatile uint32_t debugmem[512];
+    void rt(char *rt);
+    void ct(int16_t year, uint8_t mon, uint8_t mday, uint8_t hour, uint8_t min, int16_t gmtoff);
+    void pi(uint16_t pi_code);
+    void ta(uint8_t ta);
+    void stereo(uint8_t stereo);
 
   private:
+
+    // those functions take value to class but
+    // doesn't change transmitted data
+    void new_pi(uint16_t pi_code);
+    void new_rt(char *rt);
+    void new_ps(char *ps);
+    void new_ta(uint8_t ta);
+
+    // those functions convert values of this class to output binary
+    void binary_buf_crc(uint8_t *buffer, uint16_t *blocks);
+    void binary_ps_group(uint8_t *buffer, uint8_t group_number);
+    void binary_rt_group(uint8_t *buffer, uint8_t group_number);
+    void binary_ct_group(uint8_t *buffer);
+
+    // copies output binary to hardware transmission buffer
+    void send_ps();
+    void send_rt();
+    void send_ct();
+
     // calculates checksums for binary format  
     uint16_t crc(uint16_t block);
 
     // internal RDS message in cleartext
-    uint16_t pi = 0x1234; // program ID
-    uint8_t ta = 0; // traffic announcement
-    uint8_t stereo = 0;
+    uint16_t value_pi = 0x1234; // program ID
+    uint8_t signal_ta = 0; // traffic announcement
+    uint8_t signal_stereo = 0;
     uint8_t afs = 1;
     uint16_t af[7] = {1079, 0, 0, 0, 0, 0, 0}; // x0.1 MHz
-    char string_ps[PS_LENGTH]; // short 8-char text shown as station name
-    char string_rt[RT_LENGTH]; // long 64-char text
+    char string_ps[RDS_PS_LENGTH]; // short 8-char text shown as station name
+    char string_rt[RDS_RT_LENGTH]; // long 64-char text
+
+    /* time stuff */
+    uint8_t tm_hour, tm_min;
+    uint8_t tm_mon, tm_mday;
+    int16_t tm_year; // year-1900
+    int16_t tm_gmtoff; // local time to gmt offset in seconds
 
     volatile uint32_t *rdsmem = (volatile uint32_t *)RDS_ADDRESS;
     // some constants required to compose binary format
