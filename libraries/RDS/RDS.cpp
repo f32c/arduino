@@ -93,55 +93,15 @@ int RDS::get_ct_group(uint16_t *blocks) {
 }
 #endif
 
-/* By successively calling this it will each time create another RDS group. 
-   This generates sequences of the form 4x 0A, 16x 2A, etc.
-   The pattern is of length 20, the variable 'state' keeps track of where we are in the
-   pattern. 'ps_state' and 'rt_state' keep track of where we are in the PS (0A) sequence
-   or RT (2A) sequence, respectively.
-*/
-void RDS::get_group(uint8_t *buffer) {
-    static int state = 0;
-    static int ps_state = 0;
-    static int rt_state = 0;
+// write block to the buffer and append the CRC
+void RDS::write_buf_crc(uint8_t buffer[], uint16_t blocks[])
+{
     int bitptr = 0; // pointer to a bit in the buffer
 
     /* erase buffer */
     for(int i = 0; i < BITS_PER_GROUP/8; i++)
       buffer[i] = 0;
 
-    uint16_t blocks[GROUP_LENGTH] = {this->pi, 0, 0, 0};
-    #ifdef DEBUG
-    printf("state=%d ps_state=%d rt_state=%d\n", state, ps_state, rt_state);
-    #endif
-    int clock_enabled = 0;
-    int clock_generated = 0;
-    // Generate block content
-    #if 0
-    if(clock_enabled)
-      clock_generated = get_ct_group(blocks);
-    #endif        
-    if( clock_generated == 0 )
-    // CT (clock time) if enabled has priority on other group types
-    {
-        if(state < 4) {
-            blocks[1] = 0x0400 | ps_state;
-            if(this->ta) blocks[1] |= 0x0010;
-            blocks[2] = 0xCDCD;     // no AF
-            blocks[3] = this->ps[ps_state*2]<<8 | this->ps[ps_state*2+1];
-            ps_state++;
-            if(ps_state >= 4) ps_state = 0;
-        } else { // state 4 .. 19
-            blocks[1] = 0x2400 | rt_state;
-            blocks[2] = this->rt[rt_state*4+0]<<8 | this->rt[rt_state*4+1];
-            blocks[3] = this->rt[rt_state*4+2]<<8 | this->rt[rt_state*4+3];
-            rt_state++;
-            if(rt_state >= 16) rt_state = 0;
-        }
-    
-        state++;
-        if(state >= 20) state = 0;
-    }
-    
     // Calculate the checkword for each block and emit the bits
     for(int i=0; i<GROUP_LENGTH; i++) {
         uint16_t block = blocks[i];
@@ -159,19 +119,81 @@ void RDS::get_group(uint8_t *buffer) {
     }
 }
 
-void RDS::send(void)
+// write buffer with n-th group of PS
+// PS consists of 4 groups of 13 bytes each numbered 0..3 
+// lower 2 bits of n define the group number
+void RDS::write_ps_group(uint8_t *buffer, uint8_t group_number)
 {
-    volatile uint32_t *rdsmem = (volatile uint32_t *)RDS_ADDRESS;
-    uint8_t bit_buffer[BITS_PER_GROUP/8];
-    int i, j, k = 0;
-    int ngroups = 20;
+  uint16_t blocks[GROUP_LENGTH] = {this->pi, 0, 0, 0};
+  uint8_t gn = group_number & 3; // group number
 
-    for(i = 0; i < ngroups; i++)
+  blocks[1] = 0x0400 | gn;
+  if(this->stereo != 0 && gn == 3)
+    blocks[1] |= 0x0004;
+  if(this->ta)
+    blocks[1] |= 0x0010;
+  blocks[2] = 0xCDCD;     // no AF
+  if(gn == 0)
+    // 224..249 -> 0..25 AFs but we support max 7
+    blocks[2] = (blocks[2] & 0x00FF) | ((this->afs+224)<<8);
+  else
+  {
+    if(this->af[2*gn-1] > 875)
+     blocks[2] = (blocks[2] & 0x00FF) | ((this->af[2*gn-1]-875)<<8);    
+  }
+  if(this->af[2*gn] > 875)
+    blocks[2] = (blocks[2] & 0xFF00) | (this->af[2*gn]-875);
+  blocks[3] = this->string_ps[gn*2]<<8 | this->string_ps[gn*2+1];
+  write_buf_crc(buffer, blocks);
+}
+
+// write buffer with n-th group of RT
+// RT consists of 16 groups of 13 bytes each numbered 0..15 
+// lower 4 bits of n define the group number
+void RDS::write_rt_group(uint8_t *buffer, uint8_t group_number)
+{
+  uint16_t blocks[GROUP_LENGTH] = {this->pi, 0, 0, 0};
+  uint8_t gn = group_number & 15; // group number
+
+  blocks[1] = 0x2400 | gn;
+  blocks[2] = this->string_rt[gn*4+0]<<8 | this->string_rt[gn*4+1];
+  blocks[3] = this->string_rt[gn*4+2]<<8 | this->string_rt[gn*4+3];
+
+  write_buf_crc(buffer, blocks);
+}
+
+void RDS::send_ps(void)
+{
+  int rds_mem_offset = 0;
+  uint8_t bit_buffer[BITS_PER_GROUP/8];
+  for(int i = 0; i < 4; i++)
+  {
+    rds_mem_offset = (BITS_PER_GROUP/8) * (i*5);
+    write_ps_group(bit_buffer, i);
+    for(int j = 0; j < BITS_PER_GROUP/8; j++)
     {
-      get_group(bit_buffer);
-      for(j = 0; j < BITS_PER_GROUP/8; j++)
-        rdsmem[k++] = bit_buffer[j];
+      // this->debugmem[rds_mem_offset] = bit_buffer[j];
+      this->rdsmem[rds_mem_offset++] = bit_buffer[j];
     }
+  }
+}
+
+void RDS::send_rt(void)
+{
+  int rds_mem_offset = 0;
+  uint8_t bit_buffer[BITS_PER_GROUP/8];
+ 
+  for(int i = 0; i < 16; i++)
+  {
+    if( (i & 3) == 0) // skip locations of PS packets
+      rds_mem_offset += (BITS_PER_GROUP/8);
+    write_rt_group(bit_buffer, i);
+    for(int j = 0; j < BITS_PER_GROUP/8; j++)
+    {
+      // this->debugmem[rds_mem_offset] = bit_buffer[j];
+      this->rdsmem[rds_mem_offset++] = bit_buffer[j];
+    }
+  }
 }
 
 void RDS::set_pi(uint16_t pi_code) {
@@ -179,17 +201,29 @@ void RDS::set_pi(uint16_t pi_code) {
 }
 
 void RDS::set_rt(char *rt) {
-    strncpy(this->rt, rt, 64);
+    strncpy(this->string_rt, rt, 64);
     for(int i=0; i<64; i++) {
-        if(this->rt[i] == 0) this->rt[i] = 32;
+        if(this->string_rt[i] == 0) this->string_rt[i] = 32;
     }
 }
 
+void RDS::rt(char *rt)
+{
+  set_rt(rt);
+  send_rt();
+}
+
 void RDS::set_ps(char *ps) {
-    strncpy(this->ps, ps, 8);
+    strncpy(this->string_ps, ps, 8);
     for(int i=0; i<8; i++) {
-        if(this->ps[i] == 0) this->ps[i] = 32;
+        if(this->string_ps[i] == 0) this->string_ps[i] = 32;
     }
+}
+
+void RDS::ps(char *ps)
+{
+  set_ps(ps);
+  send_ps();
 }
 
 void RDS::set_ta(int ta) {

@@ -53,26 +53,40 @@ class RDS {
 
     void set_pi(uint16_t pi_code);
     void set_rt(char *rt);
+    void rt(char *rt);
     void set_ps(char *ps);
+    void ps(char *ps);
     void set_ta(int ta);
+
+    void write_buf_crc(uint8_t *buffer, uint16_t *blocks);
+    void write_ps_group(uint8_t *buffer, uint8_t group_number);
+    void write_rt_group(uint8_t *buffer, uint8_t group_number);
 
     // get_group() converts text message to binary
     // format suitable for sending
     void get_group(uint8_t *buffer); // convert message to binary
 
     // send() copies binary to hardware transmission buffer
-    void send();
+    // void send();
+    void send_ps();
+    void send_rt();
+
+    volatile uint32_t debugmem[512];
 
   private:
     // calculates checksums for binary format  
     uint16_t crc(uint16_t block);
 
     // internal RDS message in cleartext
-    uint16_t pi; // program ID
-    int ta; // traffic announcement
-    char ps[PS_LENGTH]; // short 8-char text shown as station name
-    char rt[RT_LENGTH]; // long 64-char text
+    uint16_t pi = 0x1234; // program ID
+    uint8_t ta = 0; // traffic announcement
+    uint8_t stereo = 0;
+    uint8_t afs = 1;
+    uint16_t af[7] = {1000, 0, 0, 0, 0, 0, 0}; // x0.1 MHz
+    char string_ps[PS_LENGTH]; // short 8-char text shown as station name
+    char string_rt[RT_LENGTH]; // long 64-char text
 
+    volatile uint32_t *rdsmem = (volatile uint32_t *)RDS_ADDRESS;
     // some constants required to compose binary format
     const uint16_t offset_words[4] = {0x0FC, 0x198, 0x168, 0x1B4};
     // We don't handle offset word C' here for the sake of simplicity
