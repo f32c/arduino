@@ -82,7 +82,7 @@ class RDS {
     uint8_t ta = 0; // traffic announcement
     uint8_t stereo = 0;
     uint8_t afs = 1;
-    uint16_t af[7] = {1000, 0, 0, 0, 0, 0, 0}; // x0.1 MHz
+    uint16_t af[7] = {1079, 0, 0, 0, 0, 0, 0}; // x0.1 MHz
     char string_ps[PS_LENGTH]; // short 8-char text shown as station name
     char string_rt[RT_LENGTH]; // long 64-char text
 
