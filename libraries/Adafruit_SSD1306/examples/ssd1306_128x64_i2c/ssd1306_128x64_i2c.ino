@@ -21,8 +21,8 @@ All text above, and the splash screen must be included in any redistribution
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define OLED_SDA   35
-#define OLED_SCLK  33
+#define OLED_SCLK  44
+#define OLED_SDA   45
 #define OLED_I2C_HZ 400000L
 Adafruit_SSD1306 display(OLED_SDA, OLED_SCLK, OLED_I2C_HZ);
 
@@ -60,7 +60,7 @@ void setup()   {
   Serial.begin(115200);
 
   // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3D);  // initialize with the I2C addr 0x3D (for the 128x64)
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x64)
   // init done
   
   display.display(); // show splashscreen
