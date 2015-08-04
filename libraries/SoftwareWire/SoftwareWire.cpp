@@ -119,8 +119,8 @@ __END_DECLS;
 
 // Read the bit value of the pin
 // Note that is the pin can also be read when it is an output.
-#define i2c_sda_read()   ((uint8_t) (*_sdaPinReg & _sdaBitMask) ? 1 : 0)
-#define i2c_scl_read()   ((uint8_t) (*_sclPinReg & _sclBitMask) ? 1 : 0)
+#define i2c_sda_read()   ((uint8_t) (*_sdaPinReg & _sdaBitMask ? 1 : 0))
+#define i2c_scl_read()   ((uint8_t) (*_sclPinReg & _sclBitMask ? 1 : 0))
 
 
 //
