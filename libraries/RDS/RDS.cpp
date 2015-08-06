@@ -155,7 +155,8 @@ void RDS::send_ps(void)
     binary_ps_group(bit_buffer, i);
     for(int j = 0; j < RDS_BITS_PER_GROUP/8; j++)
     {
-      this->rdsmem[rds_mem_offset++] = bit_buffer[j];
+      // this->rdsmem[rds_mem_offset++] = bit_buffer[j];
+      msgbyte(bit_buffer[j]);
     }
   }
 }
@@ -172,7 +173,8 @@ void RDS::send_rt(void)
     binary_rt_group(bit_buffer, i);
     for(int j = 0; j < RDS_BITS_PER_GROUP/8; j++)
     {
-      this->rdsmem[rds_mem_offset++] = bit_buffer[j];
+      // this->rdsmem[rds_mem_offset++] = bit_buffer[j];
+      msgbyte(bit_buffer[j]);
     }
   }
 }
@@ -238,7 +240,8 @@ void RDS::send_ct(void)
   binary_ct_group(bit_buffer);
   for(int j = 0; j < RDS_BITS_PER_GROUP/8; j++)
   {
-    this->rdsmem[rds_mem_offset++] = bit_buffer[j];
+    // this->rdsmem[rds_mem_offset++] = bit_buffer[j];
+    msgbyte(bit_buffer[j]);
   }
 }
 

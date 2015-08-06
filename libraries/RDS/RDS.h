@@ -61,6 +61,18 @@ class RDS {
     void ta(uint8_t ta);
     void stereo(uint8_t stereo);
 
+    inline void Hz(uint32_t f)
+    {
+      volatile uint32_t *fmrds_hz = (volatile uint32_t *) 0xFFFFFC00;
+      *fmrds_hz = f;
+    }
+
+    inline void msgbyte(uint8_t b)
+    {
+      volatile uint8_t *fmrds_msgbyte = (volatile uint8_t *) 0xFFFFFC04;
+      *fmrds_msgbyte = b;
+    }
+
   private:
 
     // those functions take value to class but
