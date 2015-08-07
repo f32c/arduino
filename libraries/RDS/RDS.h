@@ -69,9 +69,12 @@ class RDS {
 
     inline void msgbyte(uint16_t a, uint8_t b)
     {
-      volatile uint32_t *fmrds_msg_data = (volatile uint32_t *) 0xFFFFFC04;
-      uint32_t value = (b | (a << 16));
-      *fmrds_msg_data = value;
+      //volatile uint8_t *fmrds_msg_data = (volatile uint8_t *) 0xFFFFFC04;
+      //volatile uint16_t *fmrds_msg_addr = (volatile uint16_t *) 0xFFFFFC06;
+      volatile uint32_t *fmrds_msg_data_addr = (volatile uint32_t *) 0xFFFFFC04;
+      *fmrds_msg_data_addr = (a << 16) | b;
+      //*fmrds_msg_addr = a;
+      //*fmrds_msg_data = b;
     }
 
     inline void length(uint16_t len)
@@ -104,7 +107,7 @@ class RDS {
     uint16_t crc(uint16_t block);
 
     // internal RDS message in cleartext
-    uint16_t value_pi = 0x1234; // program ID
+    uint16_t value_pi = 0xCAFE; // program ID
     uint8_t signal_ta = 0; // traffic announcement
     uint8_t signal_stereo = 0;
     uint8_t afs = 1;
