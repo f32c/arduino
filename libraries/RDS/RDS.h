@@ -67,7 +67,7 @@ class RDS {
       *fmrds_hz = f;
     }
 
-    inline void msgbyte(uint16_b a, uint8_t b)
+    inline void msgbyte(uint16_t a, uint8_t b)
     {
       volatile uint32_t *fmrds_msg_data = (volatile uint32_t *) 0xFFFFFC04;
       uint32_t value = (b | (a << 16));

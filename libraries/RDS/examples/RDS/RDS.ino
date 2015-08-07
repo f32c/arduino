@@ -23,7 +23,7 @@ void setup() {
   rds.ps(ps); // 8-char text, displayed as station name
   rds.rt(rt); // 64-char text, not every radio displays it
   rds.Hz(107900000); // Hz carrier wave frequency
-  rds.langth(260); // bytes message length (260 default)
+  rds.length(260); // bytes message length (260 default)
   Serial.begin(115200);
 }
 
