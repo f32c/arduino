@@ -67,10 +67,17 @@ class RDS {
       *fmrds_hz = f;
     }
 
-    inline void msgbyte(uint8_t b)
+    inline void msgbyte(uint16_b a, uint8_t b)
     {
-      volatile uint8_t *fmrds_msgbyte = (volatile uint8_t *) 0xFFFFFC04;
-      *fmrds_msgbyte = b;
+      volatile uint32_t *fmrds_msg_data = (volatile uint32_t *) 0xFFFFFC04;
+      uint32_t value = (b | (a << 16));
+      *fmrds_msg_data = value;
+    }
+
+    inline void length(uint16_t len)
+    {
+      volatile uint32_t *fmrds_msg_len = (volatile uint32_t *) 0xFFFFFC08;
+      *fmrds_msg_len = len-1;
     }
 
   private:
