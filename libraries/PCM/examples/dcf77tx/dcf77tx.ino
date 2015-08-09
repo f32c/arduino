@@ -18,12 +18,12 @@ struct sample
 };
 
 const int       fC = 77500;  /* 77.5kHz carrier-frequency */
-//const int       fC = 1600;  /* audible 7750 carrier-frequency */ 
+//const int       fC = 1600;  /* audible 1.6 kHz frequency for debugging */ 
 const int nperiod = 1; // number of sinewave periods in the buffer
 
-// crude malloc()
+// crude malloc() for PCM DMA
 volatile struct sample *buf = (volatile struct sample *) 0x80080000;
-int buflen = 64; // number of samples in the buffer
+int buflen = 64; // number of sinewave samples in the buffer
 
 #ifndef uint
 #  define uint unsigned int
@@ -32,14 +32,15 @@ int buflen = 64; // number of samples in the buffer
 #  define ulong unsigned long
 #endif
 
+// blink led when sending bits
 #define LED 13
 
 // PCM amplitude
-#define VOLUME 32000
+#define VOLUME 32767
 
 void sinewave() {
   // set audio parameters
-  int i, vol = VOLUME, rate = fC*buflen; // buflen*fC;
+  int i, vol = VOLUME, rate = fC*buflen;
   pcm.dma((uint32_t *)buf, buflen);
   pcm.rate(rate);
   pcm.volume(0,0);
@@ -54,7 +55,7 @@ void sinewave() {
     buf[i].ch[1] = right;
   }
   // pcm.volume(vol, vol);
-  // rds.Hz(107900000); // play tone on FM radio (use vol 20000)
+  // rds.Hz(107900000); // play tone on FM radio (use lower vol)
 }
 
 void wave(uint8_t percent)
@@ -215,7 +216,7 @@ void setTimestring(char t[], uint min, uint hour, uint day, uint weekday, uint m
 
   *pt += parity_day_thru_year(daylow, dayhi, weekday, monthlow, monthhi, yearlow, yearhi); pt++; // P3
   
-  *pt = '\0'; pt++; // sync-bit
+  *pt = '\0'; // end of string, sync-bit
 }
 
 int32_t next_micros; // absolute microseconds of the next second
@@ -254,9 +255,10 @@ void setup()
 {
   Serial.begin(115200);
   sinewave();
-  timestring[59]='\0';
+#if 0
   Serial.println("          1         2         3         4         5");
   Serial.println("012345678901234567890123456789012345678901234567890123456789");
+#endif
   next_micros = micros();
 }
 
@@ -268,10 +270,9 @@ void loop()
   
     /* sync bit, last second of previous minute */
     pulse(0); // wait full second, no pulse
-    // after sync bit we have almost 1 full second to 
-    // calculate next time string
+    /* after sync bit we have almost 1 full second to 
+       calculate next time string */
     setTimestring(timestring, currmin, hour, day, weekday, month, year);
-    // Serial.print(timestring);
     sprintf(infostring, "\n20%02d-%02d-%02d %02d:%02d ", year, month, day, hour, currmin);
     Serial.print(infostring);
 
