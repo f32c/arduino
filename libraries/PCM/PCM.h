@@ -38,12 +38,12 @@ class PCM {
 
     inline void Hz(uint32_t sample_rate_Hz)
     {
-      OUTW(IO_PCM_FREQ, (uint32_t) (1.678061224489795E+7*sample_rate_Hz/F_CPU));
+      OUTW(IO_PCM_FREQ, (uint32_t) (((float)(1<<24))/F_CPU*sample_rate_Hz));
     }
 
     inline void rate(uint32_t sample_rate_Hz)
     {
-      OUTW(IO_PCM_FREQ, (uint32_t) (1.678061224489795E+7*sample_rate_Hz/F_CPU));
+      OUTW(IO_PCM_FREQ, (uint32_t) (((float)(1<<24))/F_CPU*sample_rate_Hz));
     }
 
     inline void rateraw(uint32_t rate)
