@@ -3,14 +3,27 @@
  * License: GPLv2, see http://www.gnu.org/licenses/gpl.txt
  * transmits DCF77 time information via arduino pin
  * Modified for Arduino by EMARD
- * Currently noone reported success with
- * setting DCF77 clock with this
  */
 #include <math.h>
 #include <PCM.h>
 #include <RDS.h>
 PCM pcm = PCM();
 // RDS rds = RDS();
+
+#ifndef uint
+#  define uint unsigned int
+#endif
+#ifndef ulong
+#  define ulong unsigned long
+#endif
+
+uint currmin = 23;           /* adjust the default time here */
+uint hour    = 23;
+uint day     = 9;
+uint weekday = 7;            /* 1-monday 7-sunday */
+uint month   = 8;
+uint year    = 15;           /* 0-99 */
+uint dst     = 1;            /* 1-daylight saving time, 0-winter */
 
 struct sample
 {
@@ -25,12 +38,7 @@ const int nperiod = 1; // number of sinewave periods in the buffer
 volatile struct sample *buf = (volatile struct sample *) 0x80080000;
 int buflen = 64; // number of sinewave samples in the buffer
 
-#ifndef uint
-#  define uint unsigned int
-#endif
-#ifndef ulong
-#  define ulong unsigned long
-#endif
+char timestring[60];         /* time information for one minute */
 
 // blink led when sending bits
 #define LED 13
@@ -48,7 +56,7 @@ void sinewave() {
   {
     int16_t left  = 32767 * sin(2*M_PI/buflen * i * nperiod);
     int16_t right = 32767 * sin(2*M_PI/buflen * i * nperiod);
-    uint16_t mono;
+    // uint16_t mono;
     // left = right = 0;
     // mono = left+right;
     buf[i].ch[0] = left;
@@ -118,9 +126,9 @@ inline int parity_day_thru_year(uint daylo,   uint dayhi, uint weekday,
   return ret;
 }
 
-void setTimestring(char t[], uint min, uint hour, uint day, uint weekday, uint month, uint year){
-  
-  char * pt;
+void setTimestring(char t[], uint min, uint hour, uint day, uint weekday, uint month, uint year, uint dst)
+{
+  char *pt;
   uint minlow;
   uint minhi;
   uint hourlow;
@@ -134,8 +142,9 @@ void setTimestring(char t[], uint min, uint hour, uint day, uint weekday, uint m
 
   memset( t, '0', 60*sizeof(char));
 
-  t[18] = '1'; // CET
-  t[20] = '1';
+  t[17] = dst ? '1' : '0'; // CEST (summer) daylight saving time
+  t[18] = dst ? '0' : '1'; // CET (winter)
+  t[20] = '1'; // always 1
 
   pt = t+21;
   
@@ -209,7 +218,7 @@ void setTimestring(char t[], uint min, uint hour, uint day, uint weekday, uint m
   yearhi = year - yearlow;
   yearhi /= 10;
   
-  *pt += (yearhi & 1)>>0; pt++; // Jahr Einer
+  *pt += (yearhi & 1)>>0; pt++; // Jahr Zehner
   *pt += (yearhi & 2)>>1; pt++;
   *pt += (yearhi & 4)>>2; pt++;
   *pt += (yearhi & 8)>>3; pt++;
@@ -238,19 +247,6 @@ static inline void pulse(uint8_t width)
   next_micros += 1000000L; // next second
 }
 
-  char timestring[60];         /* time information for one minute */
-  char *p;
-
-  uint currmin = 23;           /* adjust the default time here */
-  uint hour    = 23;
-  uint day     = 1;
-  uint weekday = 1;
-  uint month   = 12;
-  uint year    = 4;            /* 0-99 */
-
-  uint8_t tv_last;
-  uint8_t tv_dbg;
-
 void setup()
 {
   Serial.begin(115200);
@@ -272,7 +268,8 @@ void loop()
     pulse(0); // wait full second, no pulse
     /* after sync bit we have almost 1 full second to 
        calculate next time string */
-    setTimestring(timestring, currmin, hour, day, weekday, month, year);
+    setTimestring(timestring, currmin, hour, day, weekday, month, year, dst);
+    Serial.print("\n                 000000000000000EsSCL1mmmmMMMPhhhhHHPmmmmMMWWWmmmmMyyyyYYYYP");
     sprintf(infostring, "\n20%02d-%02d-%02d %02d:%02d ", year, month, day, hour, currmin);
     Serial.print(infostring);
 
