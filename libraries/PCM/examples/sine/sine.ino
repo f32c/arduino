@@ -21,11 +21,8 @@ void setup() {
   pcm.volume(0,0);
   for(i = 0; i < buflen; i++)
   {
-    uint16_t left  = 32767 * sin(2*M_PI/buflen * i * 200);
-    uint16_t right = 32767 * sin(2*M_PI/buflen * i * 201);
-    uint16_t mono;
-    // left = right = 0;
-    // mono = left+right;
+    int16_t left  = 32767 * sin(2*M_PI/buflen * i * 200);
+    int16_t right = 32767 * sin(2*M_PI/buflen * i * 201);
     buf[i].ch[0] = left;
     buf[i].ch[1] = right;
   }
