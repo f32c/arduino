@@ -55,7 +55,7 @@ void sinewave() {
   for(i = 0; i < buflen; i++)
   {
     int16_t left  = 32767 * sin(2*M_PI/buflen * i * nperiod);
-    int16_t right = 32767 * sin(2*M_PI/buflen * i * nperiod);
+    int16_t right = -32767 * sin(2*M_PI/buflen * i * nperiod);
     // uint16_t mono;
     // left = right = 0;
     // mono = left+right;
