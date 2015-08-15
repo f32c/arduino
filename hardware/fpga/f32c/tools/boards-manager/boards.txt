@@ -438,6 +438,134 @@ fpga_tb276.menu.bitstream.flashquartus=FLASH quartus (permanent)
 fpga_tb276.menu.bitstream.flashquartus.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IPV;{bootloader.file.jic}"
 
 #
+# Xilinx Numato Mimas V2 Spartan-6
+#
+fpga_numato_mimasv2_bram.name=MimasV2 (Xilinx Spartan-6 XC6SLX9, 32K BRAM, 100 MHz)
+fpga_numato_mimasv2_bram.build.mcu=f32c
+fpga_numato_mimasv2_bram.build.core=f32c
+fpga_numato_mimasv2_bram.build.board=F32C_FPGA_MIMASV2_BRAM
+fpga_numato_mimasv2_bram.upload.tool=ujprog
+fpga_numato_mimasv2_bram.upload.wait_for_upload_port=false
+fpga_numato_mimasv2_bram.upload.native_usb=false
+fpga_numato_mimasv2_bram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+fpga_numato_mimasv2_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/numato_mimasv2_bram.cfg
+fpga_numato_mimasv2_bram.bootloader.openocd.command=svf -tap chip.tap {{runtime.tools.bootloaders.path}/numato_mimasv2/xc6slx9_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf}
+fpga_numato_mimasv2_bram.menu.cpu.mips=MIPS
+fpga_numato_mimasv2_bram.menu.cpu.mips.cpu.arch=mips
+fpga_numato_mimasv2_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_numato_mimasv2_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_numato_mimasv2_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_numato_mimasv2_bram.menu.cpu.riscv=RISC-V
+fpga_numato_mimasv2_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_numato_mimasv2_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_numato_mimasv2_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_numato_mimasv2_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_numato_mimasv2_bram.menu.ramsize.32=32 KB BRAM Internal
+fpga_numato_mimasv2_bram.menu.ramsize.32.upload.maximum_size=31232
+fpga_numato_mimasv2_bram.menu.ramsize.32.build.extra_flags=--section-start=.init=0x400
+fpga_numato_mimasv2_bram.menu.speed.100=100 MHz
+fpga_numato_mimasv2_bram.menu.speed.100.build.f_cpu=100000000
+fpga_numato_mimasv2_bram.menu.speed.100.bitstream.fcpu.mhz=100
+fpga_numato_mimasv2_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_numato_mimasv2_bram.menu.protocol.hex.upload.protocol=hex
+fpga_numato_mimasv2_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_numato_mimasv2_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_numato_mimasv2_bram.menu.protocol.bin.upload.protocol=bin
+fpga_numato_mimasv2_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_numato_mimasv2_bram.menu.pinmap.generic=Generic
+fpga_numato_mimasv2_bram.menu.pinmap.generic.build.variant=generic
+fpga_numato_mimasv2_bram.menu.jtag.alterablaster=Altera Blaster
+fpga_numato_mimasv2_bram.menu.jtag.alterablaster.bootloader.openocd.interface={runtime.tools.openocd.path}/scripts/interface/altera-usb-blaster.cfg
+fpga_numato_mimasv2_bram.menu.jtag.remotebitbang=Remote bitbang (TCP jtag:3335)
+fpga_numato_mimasv2_bram.menu.jtag.remotebitbang.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/remote_bitbang.cfg
+fpga_numato_mimasv2_bram.menu.jtag.fpu1=PLDkit FPU1 JTAG
+fpga_numato_mimasv2_bram.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
+
+#
+# Xilinx ESA11 Artix-7 board (Emanuel Stiebler)
+#
+fpga_esa11_7a35i_bram.name=ESA11 (Xilinx Artix-7 XC7A35I, 64K BRAM, 100 MHz)
+fpga_esa11_7a35i_bram.build.mcu=f32c
+fpga_esa11_7a35i_bram.build.core=f32c
+fpga_esa11_7a35i_bram.build.board=F32C_FPGA_ESA11_7A35I_BRAM
+fpga_esa11_7a35i_bram.upload.tool=ujprog
+fpga_esa11_7a35i_bram.upload.wait_for_upload_port=false
+fpga_esa11_7a35i_bram.upload.native_usb=false
+fpga_esa11_7a35i_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/esa11_7a35i_ms6p.cfg
+fpga_esa11_7a35i_bram.bootloader.file.svf={runtime.tools.bootloaders.path}/esa11_7a35i/esa11_7a35i_{memsupport}_xc7a35i_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
+fpga_esa11_7a35i_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/esa11_7a35i/esa11_7a35i_{memsupport}_xc7a35i_{cpu.arch}_{bitstream.fcpu.mhz}mhz.bit
+fpga_esa11_7a35i_bram.bootloader.jtag_spi_bridge.bit={runtime.tools.bootloaders.path}/esa11_7a35i/bscan_xc7a_fgg484_blink.bit
+fpga_esa11_7a35i_bram.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
+fpga_esa11_7a35i_bram.menu.cpu.mips=MIPS
+fpga_esa11_7a35i_bram.menu.cpu.mips.cpu.arch=mips
+fpga_esa11_7a35i_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_esa11_7a35i_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_esa11_7a35i_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_esa11_7a35i_bram.menu.cpu.riscv=RISC-V
+fpga_esa11_7a35i_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_esa11_7a35i_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_esa11_7a35i_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_esa11_7a35i_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_esa11_7a35i_bram.menu.ramsize.64=64 KB BRAM Internal
+fpga_esa11_7a35i_bram.menu.ramsize.64.upload.maximum_size=64000
+fpga_esa11_7a35i_bram.menu.ramsize.64.build.extra_flags=--section-start=.init=0x400
+fpga_esa11_7a35i_bram.menu.ramsize.64.memsupport=bram
+fpga_esa11_7a35i_bram.menu.speed.100=100 MHz
+fpga_esa11_7a35i_bram.menu.speed.100.build.f_cpu=100000000
+fpga_esa11_7a35i_bram.menu.speed.100.bitstream.fcpu.mhz=100
+fpga_esa11_7a35i_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_esa11_7a35i_bram.menu.protocol.hex.upload.protocol=hex
+fpga_esa11_7a35i_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_esa11_7a35i_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_esa11_7a35i_bram.menu.protocol.bin.upload.protocol=bin
+fpga_esa11_7a35i_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_esa11_7a35i_bram.menu.pinmap.generic=Generic
+fpga_esa11_7a35i_bram.menu.pinmap.generic.build.variant=generic
+fpga_esa11_7a35i_bram.menu.jtag.ft2232=External FT2232 JTAG
+fpga_esa11_7a35i_bram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft2232-generic.ocd
+fpga_esa11_7a35i_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
+fpga_esa11_7a35i_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+fpga_esa11_7a35i_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
+fpga_esa11_7a35i_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi "{bootloader.file.bit}"
+fpga_esa11_7a35i_bram.menu.bitstream.flash_xc3sprog=FLASH xc3sprog (permanent)
+fpga_esa11_7a35i_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi "-I{bootloader.jtag_spi_bridge.bit}" "{bootloader.file.bit}"
+
+#
+# Lattice FleaFPGA (FLEAsystems Lattice MachXO2-7000HE)
+# http://www.fleasystems.com
+#
+fpga_fleafpga_bram.name=FleaFPGA (Lattice MachXO2-7000HE, 16K BRAM, 75 MHz)
+fpga_fleafpga_bram.build.f_cpu=75000000
+fpga_fleafpga_bram.build.variant=generic
+fpga_fleafpga_bram.build.mcu=f32c
+fpga_fleafpga_bram.build.core=f32c
+fpga_fleafpga_bram.build.board=F32C_FPGA_FLEAFPGA_BRAM
+fpga_fleafpga_bram.upload.tool=ujprog
+fpga_fleafpga_bram.upload.wait_for_upload_port=false
+fpga_fleafpga_bram.upload.native_usb=false
+fpga_fleafpga_bram.upload.maximum_size=14848
+fpga_fleafpga_bram.menu.cpu.mips=MIPS
+fpga_fleafpga_bram.menu.cpu.mips.cpu.arch=mips
+fpga_fleafpga_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_fleafpga_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_fleafpga_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_fleafpga_bram.menu.cpu.riscv=RISC-V
+fpga_fleafpga_bram.menu.cpu.riscv.cpu.arch=riscv
+fpga_fleafpga_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_fleafpga_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_fleafpga_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_fleafpga_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_fleafpga_bram.menu.protocol.hex.upload.protocol=hex
+fpga_fleafpga_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_fleafpga_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_fleafpga_bram.menu.protocol.bin.upload.protocol=bin
+fpga_fleafpga_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_fleafpga_bram.menu.pinmap.generic=Generic
+fpga_fleafpga_bram.menu.pinmap.generic.build.variant=generic
+fpga_fleafpga_bram.menu.pinmap.flearduino_shield=FLEArduino Shield
+fpga_fleafpga_bram.menu.pinmap.flearduino_shield.build.variant=flearduino_shield
+
+#
 # FPGArduino Generic f32c SoC
 #
 fpga_generic.name=Generic FPGA board
