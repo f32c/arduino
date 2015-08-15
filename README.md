@@ -17,9 +17,8 @@ Before upgrading to new version, boards manager cache has to be
 manually removed by deleting hidden directory 'staging'.
 If install is attempted with old cache, it will fail with CRC error.
 
-windows cache: .../Arduin15/staging (use Find files)
-
-linux cache: ~/.arduino15/staging
+    windows cache: .../Arduino15/staging (use Find files)
+    linux cache: ~/.arduino15/staging
 
 Remove staging directory, then remove/install from boards manager.
 
