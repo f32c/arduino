@@ -279,7 +279,7 @@ fpga_e2lp_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 #
 # Xilinx Scarab Hardware miniSpartan6+ Board (ebay), f32c SoC
 #
-fpga_scarab_bram.name=Scarab miniSpartan6+ (Xilinx Spartan-6 XC6SLX25, 32K BRAM, 81.25/112.5 MHz)
+fpga_scarab_bram.name=Scarab miniSpartan6+ (Xilinx Spartan-6 XC6SLX25, 64K BRAM, 81.25/112.5 MHz)
 fpga_scarab_bram.build.mcu=f32c
 fpga_scarab_bram.build.core=f32c
 fpga_scarab_bram.build.board=F32C_FPGA_SCARAB_BRAM
@@ -301,14 +301,14 @@ fpga_scarab_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_scarab_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_scarab_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_scarab_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_scarab_bram.menu.ramsize.32=32 KB BRAM Internal
-fpga_scarab_bram.menu.ramsize.32.upload.maximum_size=31232
-fpga_scarab_bram.menu.ramsize.32.build.extra_flags=--section-start=.init=0x400
-fpga_scarab_bram.menu.ramsize.32.memsupport=bram
-fpga_scarab_bram.menu.ramsize.32sd=32 KB BRAM Internal + 32 MB SDRAM Onboard
-fpga_scarab_bram.menu.ramsize.32sd.upload.maximum_size=31232
-fpga_scarab_bram.menu.ramsize.32sd.build.extra_flags=--section-start=.init=0x400
-fpga_scarab_bram.menu.ramsize.32sd.memsupport=sdram
+fpga_scarab_bram.menu.ramsize.64=64 KB BRAM Internal
+fpga_scarab_bram.menu.ramsize.64.upload.maximum_size=64000
+fpga_scarab_bram.menu.ramsize.64.build.extra_flags=--section-start=.init=0x400
+fpga_scarab_bram.menu.ramsize.64.memsupport=bram
+fpga_scarab_bram.menu.ramsize.64sd=64 KB BRAM Internal + 32 MB SDRAM Onboard
+fpga_scarab_bram.menu.ramsize.64sd.upload.maximum_size=64000
+fpga_scarab_bram.menu.ramsize.64sd.build.extra_flags=--section-start=.init=0x400
+fpga_scarab_bram.menu.ramsize.64sd.memsupport=sdram
 fpga_scarab_bram.menu.speed.81=81.25 MHz
 fpga_scarab_bram.menu.speed.81.build.f_cpu=81250000
 fpga_scarab_bram.menu.speed.81.bitstream.fcpu.mhz=81
