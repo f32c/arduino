@@ -10,6 +10,17 @@ In File->Preferences->Additional Boards Manager URLs enter:
 
 Select pull down menu Tools->Board->Board Manager
 and instal FPGArduino (cca 100MB).
+
+Upgrading
+
+Before upgrading to new version, boards manager cache has to be
+manually removed by deleting hidden directory 'staging'.
+If install is attempted with old cache, it will fail with CRC error.
+
+On windows cache is is .../Arduin15/staging (use Find files)
+On linux cache is is ~/.arduino15/staging
+Remove staging directory, then remove/install from boards manager.
+
 To upload some bitstreams OpenOCD may complain about
 libusb drivers. libusb is common on linux. 
 To install libusb on windows, easiest way is with
