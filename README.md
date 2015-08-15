@@ -17,8 +17,10 @@ Before upgrading to new version, boards manager cache has to be
 manually removed by deleting hidden directory 'staging'.
 If install is attempted with old cache, it will fail with CRC error.
 
-On windows cache is is .../Arduin15/staging (use Find files)
-On linux cache is is ~/.arduino15/staging
+windows cache: .../Arduin15/staging (use Find files)
+
+linux cache: ~/.arduino15/staging
+
 Remove staging directory, then remove/install from boards manager.
 
 To upload some bitstreams OpenOCD may complain about
