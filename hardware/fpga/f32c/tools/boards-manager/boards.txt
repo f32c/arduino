@@ -51,8 +51,6 @@ fpga_ulx2s_bram.upload.tool=ujprog
 fpga_ulx2s_bram.upload.wait_for_upload_port=false
 fpga_ulx2s_bram.upload.native_usb=false
 fpga_ulx2s_bram.upload.maximum_size=14848
-fpga_ulx2s_bram.upload.protocol=hex
-fpga_ulx2s_bram.upload.flags=-P{serial.port} -ra
 fpga_ulx2s_bram.upload.bitstream.command="{cmd.path}" -j SRAM "{runtime.tools.bootloaders.path}/{bootloader.file}"
 fpga_ulx2s_bram.bootloader.file=ulx2s/ulx2s_8e_{cpu.arch}_bram{socopt}81mhz.jed
 fpga_ulx2s_bram.menu.cpu.mips=MIPS
@@ -69,6 +67,12 @@ fpga_ulx2s_bram.menu.soc.normal=Normal (29 GPIO)
 fpga_ulx2s_bram.menu.soc.normal.socopt=_
 fpga_ulx2s_bram.menu.soc.pid=Special (PID, 16 GPIO)
 fpga_ulx2s_bram.menu.soc.pid.socopt=_pid_
+fpga_ulx2s_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_ulx2s_bram.menu.protocol.hex.upload.protocol=hex
+fpga_ulx2s_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_ulx2s_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_ulx2s_bram.menu.protocol.bin.upload.protocol=bin
+fpga_ulx2s_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
 
 #
 # Terasic DE0-Nano
@@ -309,6 +313,9 @@ fpga_scarab_bram.menu.ramsize.64sd=64 KB BRAM Internal + 32 MB SDRAM Onboard
 fpga_scarab_bram.menu.ramsize.64sd.upload.maximum_size=64000
 fpga_scarab_bram.menu.ramsize.64sd.build.extra_flags=--section-start=.init=0x400
 fpga_scarab_bram.menu.ramsize.64sd.memsupport=sdram
+fpga_scarab_bram.menu.ramsize.32MB=32 MB SDRAM Onboard (1MB useable)
+fpga_scarab_bram.menu.ramsize.32MB.upload.maximum_size=1015808
+fpga_scarab_bram.menu.ramsize.32MB.build.extra_flags=--section-start=.init=0x80000000
 fpga_scarab_bram.menu.speed.81=81.25 MHz
 fpga_scarab_bram.menu.speed.81.build.f_cpu=81250000
 fpga_scarab_bram.menu.speed.81.bitstream.fcpu.mhz=81
