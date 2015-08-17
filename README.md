@@ -14,13 +14,13 @@ and instal FPGArduino (cca 100MB).
 Upgrading
 
 Before upgrading to new version, boards manager cache has to be
-manually removed by deleting hidden directory 'staging'.
+manually removed by deleting hidden directory 'packages'.
 If install is attempted with old cache, it will fail with CRC error.
 
-    windows cache: .../Arduino15/staging (use Find files)
-    linux cache: ~/.arduino15/staging
+    windows cache: .../Arduino15/staging/packages (use Find files)
+    linux cache: ~/.arduino15/staging/packages
 
-Remove staging directory, then remove/install from boards manager.
+Delete packages directory, then remove/install from boards manager.
 
 To upload some bitstreams OpenOCD may complain about
 libusb drivers. libusb is common on linux. 
