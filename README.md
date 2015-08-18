@@ -114,7 +114,7 @@ few KB typical. When multiport synchronous RAM bus access
 from VGA/HDMI to SDRAM is ready then some better HDMI 
 picture might be seen.
 
-# What works only on ULX2S (with 1MB SRAM)
+# What works only on ULX2S (SRAM)
 
 1MB SRAM using both 8-bit ports works at 81.25 MHz
 CPU clock, widely tested.
