@@ -69,7 +69,7 @@ Blink led :)
 
 Serial (over usb-ttl adapter, some boards need it external)
 
-Timer (millis(); 32-bit CPU core clock counter, glitch-free, good for realtime)
+Timer (millis(), micros() - 32-bit CPU core clock counter, glitch-free, good for realtime)
 
 GPIO (digitalWrite(), digitalRead())
 
@@ -83,17 +83,9 @@ Software SPI (bitbang, Adafruit OLED library)
 
 Hardware SPI (SD card library)
 
-Software I2C in master mode (SoftWire library)
+Software I2C in master mode (SoftwareWire library)
 
-SDRAM works but only for data. 
-(F32C can read and write to 32 MB SDRAM but cannot execute 
-instructions from SDRAM yet - program must run from BRAM).
-Work is currently in progress to make full functional bus 
-arbiter for SDRAM.
-
-VGA and HDMI outputs work but only as proof of concept
-because BRAM content is displayed which is very small,
-few KB typical. 
+Adafruit SSD1306 displays (both SPI and I2C)
 
 PID (Proportional-Integral-Derivative controller,
 fast response, hardware math accellerated,
@@ -101,10 +93,25 @@ tested on high speed DC motors with encoders)
 
 433.92 MHz transmitter (RCswitch library, 
 Home automation, Remote relays, 
-Garage doors)
+Garage doors).
 
 FM RDS transmitter 87-108 MHz (RDS message displayed on
 radio, but PCM sound supported only on ULX2S)
+
+RHT11 Temperature/Humitidy sensors have been reported
+to work.
+
+# What partially works (WIP)
+
+SDRAM works for data with d-cache. SDRAM works also for 
+instructions without i-cache (slow).
+Work is currently in progress to fix i-cache and 
+make full functional bus arbiter for SDRAM.
+
+VGA and HDMI outputs work but only as proof of concept
+because BRAM content is displayed which is very small,
+few KB typical. It is still mission multiport
+RAM bus access to show proper picture.
 
 # What works only on ULX2S (with 1MB SRAM)
 
@@ -112,7 +119,16 @@ SRAM support functional, widely tested.
 
 Framebuffer with composite video output displaying SRAM content
 
-PCM sound with Text-to-Speech library TTS
+PCM sound (depends on DMA).
+PCM outputs PWM for headphones and FM for
+reception on 87-108 MHz radio.
+
+Text-to-Speech library TTS. (depends on PCM)
+TTS library could be converted to use a simple 
+tongenerator then it will not depend on PCM)
+
+DCF77 transmitter (depends on PCM)
+A proof of concept to adjust longwave RF clocks.
 
 # What doesn't work yet
 
@@ -122,11 +138,6 @@ please contribute some code for new hardware...)
 Hardware I2C is not yet implemented but it would be
 of benefit only when FPGA needs to be I2C slave. 
 
-FPGA as I2C master works OK using software I2C library
-"SoftWire", because F32C is fast enough and has high
+There's SoftwareWire I2C master whick works
+because F32C is fast enough and has high
 resolution 32-bit timer.
-
-Arduino SSD1306 OLED library uses its own bitbang SPI
-so it works for SPI OLEDs out of the box. Also some
-I2C OLEDs and RHT11 Temperature/Humitidy sensors have
-been reported to work using SoftWire I2C.
