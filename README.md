@@ -116,8 +116,8 @@ picture might be seen.
 
 # What works only on ULX2S (with 1MB SRAM)
 
-SRAM using both 8-bit ports works with 81.25 MHz
-CPU clock and widely tested.
+1MB SRAM using both 8-bit ports works at 81.25 MHz
+CPU clock, widely tested.
 
 TV Framebuffer with composite video output displaying SRAM content
 
@@ -137,8 +137,8 @@ A proof of concept to adjust longwave RF clocks.
 Analog inputs (cheap FPGA used to not to have ADC, 
 please contribute some code for new hardware...)
 
-Hardware I2C slave is not yet implemented, as
-f32c is rarely expected to be an I2C slave.
+Hardware I2C slave is not planned soon, as f32c is 
+expected to be an I2C master in most cases.
 
 There's SoftwareWire I2C master which works
 because F32C is fast enough and has high
