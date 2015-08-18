@@ -85,7 +85,7 @@ Hardware SPI (SD card library)
 
 Software I2C in master mode (SoftwareWire library)
 
-Adafruit SSD1306 displays (both SPI and I2C)
+OLED displays SSD1306 compatible (Adafruit SSD1306 library, SPI and I2C)
 
 PID (Proportional-Integral-Derivative controller,
 fast response, hardware math accellerated,
