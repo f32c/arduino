@@ -110,14 +110,15 @@ make full functional bus arbiter for SDRAM.
 
 VGA and HDMI outputs work but only as proof of concept
 because BRAM content is displayed which is very small,
-few KB typical. It is still mission multiport
-RAM bus access to show proper picture.
+few KB typical. When multiport synchronous RAM bus access
+from VGA/HDMI to SDRAM is ready then some better HDMI 
+picture might be seen.
 
 # What works only on ULX2S (with 1MB SRAM)
 
 SRAM support functional, widely tested.
 
-Framebuffer with composite video output displaying SRAM content
+TV Framebuffer with composite video output displaying SRAM content
 
 PCM sound (depends on DMA).
 PCM outputs PWM for headphones and FM for
@@ -135,9 +136,9 @@ A proof of concept to adjust longwave RF clocks.
 Analog inputs (cheap FPGA used to not to have ADC, 
 please contribute some code for new hardware...)
 
-Hardware I2C is not yet implemented but it would be
-of benefit only when FPGA needs to be I2C slave. 
+Hardware I2C slave is not yet implemented, as
+f32c is rarely expected to be an I2C slave.
 
-There's SoftwareWire I2C master whick works
+There's SoftwareWire I2C master which works
 because F32C is fast enough and has high
 resolution 32-bit timer.
