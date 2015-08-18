@@ -116,7 +116,8 @@ picture might be seen.
 
 # What works only on ULX2S (with 1MB SRAM)
 
-SRAM support functional, widely tested.
+SRAM using both 8-bit ports works with 81.25 MHz
+CPU clock and widely tested.
 
 TV Framebuffer with composite video output displaying SRAM content
 
