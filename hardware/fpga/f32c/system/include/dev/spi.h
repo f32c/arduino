@@ -28,7 +28,7 @@
 #ifndef _SPI_H_
 #define	_SPI_H_
 
-#include <io.h>
+#include <dev/io.h>
 
 #define	SPI_PORT_FLASH		0
 #define	SPI_PORT_SDCARD		4
