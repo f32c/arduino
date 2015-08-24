@@ -511,6 +511,9 @@ void RCSwitch::send0() {
     else if (this->nProtocol == 3) {
         this->transmit(4,11);
     }
+    else if (this->nProtocol == 4) {
+        this->transmit(14,12);
+    }
 }
 
 /**
@@ -529,6 +532,9 @@ void RCSwitch::send1() {
     }
     else if (this->nProtocol == 3) {
         this->transmit(9,6);
+    }
+    else if (this->nProtocol == 4) {
+        this->transmit(14,21);
     }
 }
 
@@ -580,6 +586,9 @@ void RCSwitch::sendSync() {
     }
     else if (this->nProtocol == 3) {
         this->transmit(1,71);
+    }
+    else if (this->nProtocol == 4) {
+        this->transmit(14,342);
     }
 }
 
