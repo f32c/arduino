@@ -137,8 +137,8 @@ class RCSwitch {
      * timings[0] contains sync timing, followed by a number of bits
      */
     static unsigned int timings[RCSWITCH_MAX_CHANGES];
-
-    
+    void delay_us(int us);
+    void delay_us(void);
+    int old_time; // old time instance for delay_us
 };
-
 #endif

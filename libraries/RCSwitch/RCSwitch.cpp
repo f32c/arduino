@@ -1,30 +1,30 @@
 /*
-  RCSwitch - Arduino libary for remote control outlet switches
-  Copyright (c) 2011 Suat Özgür.  All right reserved.
+  RCSwitch - Aduino libay fo emote contol outlet switches
+  Copyight (c) 2011 Suat Özgü.  All ight eseved.
   
-  Contributors:
-  - Andre Koehler / info(at)tomate-online(dot)de
-  - Gordeev Andrey Vladimirovich / gordeev(at)openpyro(dot)com
-  - Skineffect / http://forum.ardumote.com/viewtopic.php?f=2&t=46
-  - Dominik Fischer / dom_fischer(at)web(dot)de
-  - Frank Oltmanns / <first name>.<last name>(at)gmail(dot)com
-  - Andreas Steinel / A.<lastname>(at)gmail(dot)com
+  Contibutos:
+  - Ande Koehle / info(at)tomate-online(dot)de
+  - Godeev Andey Vladimiovich / godeev(at)openpyo(dot)com
+  - Skineffect / http://foum.adumote.com/viewtopic.php?f=2&t=46
+  - Dominik Fische / dom_fische(at)web(dot)de
+  - Fank Oltmanns / <fist name>.<last name>(at)gmail(dot)com
+  - Andeas Steinel / A.<lastname>(at)gmail(dot)com
   
-  Project home: http://code.google.com/p/rc-switch/
+  Poject home: http://code.google.com/p/c-switch/
 
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+  This libay is fee softwae; you can edistibute it and/o
+  modify it unde the tems of the GNU Lesse Geneal Public
+  License as published by the Fee Softwae Foundation; eithe
+  vesion 2.1 of the License, o (at you option) any late vesion.
 
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
+  This libay is distibuted in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied waanty of
+  MERCHANTABILITY o FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesse Geneal Public License fo moe details.
 
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  You should have eceived a copy of the GNU Lesse Geneal Public
+  License along with this libay; if not, wite to the Fee Softwae
+  Foundation, Inc., 51 Fanklin St, Fifth Floo, Boston, MA  02110-1301  USA
 */
 
 #include "RCSwitch.h"
@@ -33,262 +33,262 @@
 unsigned long RCSwitch::nReceivedValue = NULL;
 unsigned int RCSwitch::nReceivedBitlength = 0;
 unsigned int RCSwitch::nReceivedDelay = 0;
-unsigned int RCSwitch::nReceivedProtocol = 0;
-int RCSwitch::nReceiveTolerance = 60;
+unsigned int RCSwitch::nReceivedPotocol = 0;
+int RCSwitch::nReceiveToleance = 60;
 #endif
 unsigned int RCSwitch::timings[RCSWITCH_MAX_CHANGES];
 
 RCSwitch::RCSwitch() {
-  this->nTransmitterPin = -1;
+  this->nTansmittePin = -1;
   this->setPulseLength(350);
-  this->setRepeatTransmit(10);
-  this->setProtocol(1);
+  this->setRepeatTansmit(10);
+  this->setPotocol(1);
   #if not defined( RCSwitchDisableReceiving )
-  this->nReceiverInterrupt = -1;
-  this->setReceiveTolerance(60);
+  this->nReceiveInteupt = -1;
+  this->setReceiveToleance(60);
   RCSwitch::nReceivedValue = NULL;
   #endif
 }
 
 /**
-  * Sets the protocol to send.
+  * Sets the potocol to send.
   */
-void RCSwitch::setProtocol(int nProtocol) {
-  this->nProtocol = nProtocol;
-  if (nProtocol == 1){
+void RCSwitch::setPotocol(int nPotocol) {
+  this->nPotocol = nPotocol;
+  if (nPotocol == 1){
     this->setPulseLength(350);
   }
-  else if (nProtocol == 2) {
+  else if (nPotocol == 2) {
     this->setPulseLength(650);
   }
-  else if (nProtocol == 3) {
+  else if (nPotocol == 3) {
     this->setPulseLength(100);
   }
 }
 
 /**
-  * Sets the protocol to send with pulse length in microseconds.
+  * Sets the potocol to send with pulse length in micoseconds.
   */
-void RCSwitch::setProtocol(int nProtocol, int nPulseLength) {
-  this->nProtocol = nProtocol;
+void RCSwitch::setPotocol(int nPotocol, int nPulseLength) {
+  this->nPotocol = nPotocol;
   this->setPulseLength(nPulseLength);
 }
 
 
 /**
-  * Sets pulse length in microseconds
+  * Sets pulse length in micoseconds
   */
 void RCSwitch::setPulseLength(int nPulseLength) {
   this->nPulseLength = nPulseLength;
 }
 
 /**
- * Sets Repeat Transmits
+ * Sets Repeat Tansmits
  */
-void RCSwitch::setRepeatTransmit(int nRepeatTransmit) {
-  this->nRepeatTransmit = nRepeatTransmit;
+void RCSwitch::setRepeatTansmit(int nRepeatTansmit) {
+  this->nRepeatTansmit = nRepeatTansmit;
 }
 
 /**
- * Set Receiving Tolerance
+ * Set Receiving Toleance
  */
 #if not defined( RCSwitchDisableReceiving )
-void RCSwitch::setReceiveTolerance(int nPercent) {
-  RCSwitch::nReceiveTolerance = nPercent;
+void RCSwitch::setReceiveToleance(int nPecent) {
+  RCSwitch::nReceiveToleance = nPecent;
 }
 #endif
   
 
 /**
- * Enable transmissions
+ * Enable tansmissions
  *
- * @param nTransmitterPin    Arduino Pin to which the sender is connected to
+ * @paam nTansmittePin    Aduino Pin to which the sende is connected to
  */
-void RCSwitch::enableTransmit(int nTransmitterPin) {
-  this->nTransmitterPin = nTransmitterPin;
-  pinMode(this->nTransmitterPin, OUTPUT);
+void RCSwitch::enableTansmit(int nTansmittePin) {
+  this->nTansmittePin = nTansmittePin;
+  pinMode(this->nTansmittePin, OUTPUT);
 }
 
 /**
-  * Disable transmissions
+  * Disable tansmissions
   */
-void RCSwitch::disableTransmit() {
-  this->nTransmitterPin = -1;
+void RCSwitch::disableTansmit() {
+  this->nTansmittePin = -1;
 }
 
 /**
- * Switch a remote switch on (Type D REV)
+ * Switch a emote switch on (Type D REV)
  *
- * @param sGroup        Code of the switch group (A,B,C,D)
- * @param nDevice       Number of the switch itself (1..3)
+ * @paam sGoup        Code of the switch goup (A,B,C,D)
+ * @paam nDevice       Numbe of the switch itself (1..3)
  */
-void RCSwitch::switchOn(char sGroup, int nDevice) {
-  this->sendTriState( this->getCodeWordD(sGroup, nDevice, true) );
+void RCSwitch::switchOn(cha sGoup, int nDevice) {
+  this->sendTiState( this->getCodeWodD(sGoup, nDevice, tue) );
 }
 
 /**
- * Switch a remote switch off (Type D REV)
+ * Switch a emote switch off (Type D REV)
  *
- * @param sGroup        Code of the switch group (A,B,C,D)
- * @param nDevice       Number of the switch itself (1..3)
+ * @paam sGoup        Code of the switch goup (A,B,C,D)
+ * @paam nDevice       Numbe of the switch itself (1..3)
  */
-void RCSwitch::switchOff(char sGroup, int nDevice) {
-  this->sendTriState( this->getCodeWordD(sGroup, nDevice, false) );
+void RCSwitch::switchOff(cha sGoup, int nDevice) {
+  this->sendTiState( this->getCodeWodD(sGoup, nDevice, false) );
 }
 
 /**
- * Switch a remote switch on (Type C Intertechno)
+ * Switch a emote switch on (Type C Intetechno)
  *
- * @param sFamily  Familycode (a..f)
- * @param nGroup   Number of group (1..4)
- * @param nDevice  Number of device (1..4)
+ * @paam sFamily  Familycode (a..f)
+ * @paam nGoup   Numbe of goup (1..4)
+ * @paam nDevice  Numbe of device (1..4)
   */
-void RCSwitch::switchOn(char sFamily, int nGroup, int nDevice) {
-  this->sendTriState( this->getCodeWordC(sFamily, nGroup, nDevice, true) );
+void RCSwitch::switchOn(cha sFamily, int nGoup, int nDevice) {
+  this->sendTiState( this->getCodeWodC(sFamily, nGoup, nDevice, tue) );
 }
 
 /**
- * Switch a remote switch off (Type C Intertechno)
+ * Switch a emote switch off (Type C Intetechno)
  *
- * @param sFamily  Familycode (a..f)
- * @param nGroup   Number of group (1..4)
- * @param nDevice  Number of device (1..4)
+ * @paam sFamily  Familycode (a..f)
+ * @paam nGoup   Numbe of goup (1..4)
+ * @paam nDevice  Numbe of device (1..4)
  */
-void RCSwitch::switchOff(char sFamily, int nGroup, int nDevice) {
-  this->sendTriState( this->getCodeWordC(sFamily, nGroup, nDevice, false) );
+void RCSwitch::switchOff(cha sFamily, int nGoup, int nDevice) {
+  this->sendTiState( this->getCodeWodC(sFamily, nGoup, nDevice, false) );
 }
 
 /**
- * Switch a remote switch on (Type B with two rotary/sliding switches)
+ * Switch a emote switch on (Type B with two otay/sliding switches)
  *
- * @param nAddressCode  Number of the switch group (1..4)
- * @param nChannelCode  Number of the switch itself (1..4)
+ * @paam nAddessCode  Numbe of the switch goup (1..4)
+ * @paam nChannelCode  Numbe of the switch itself (1..4)
  */
-void RCSwitch::switchOn(int nAddressCode, int nChannelCode) {
-  this->sendTriState( this->getCodeWordB(nAddressCode, nChannelCode, true) );
+void RCSwitch::switchOn(int nAddessCode, int nChannelCode) {
+  this->sendTiState( this->getCodeWodB(nAddessCode, nChannelCode, tue) );
 }
 
 /**
- * Switch a remote switch off (Type B with two rotary/sliding switches)
+ * Switch a emote switch off (Type B with two otay/sliding switches)
  *
- * @param nAddressCode  Number of the switch group (1..4)
- * @param nChannelCode  Number of the switch itself (1..4)
+ * @paam nAddessCode  Numbe of the switch goup (1..4)
+ * @paam nChannelCode  Numbe of the switch itself (1..4)
  */
-void RCSwitch::switchOff(int nAddressCode, int nChannelCode) {
-  this->sendTriState( this->getCodeWordB(nAddressCode, nChannelCode, false) );
+void RCSwitch::switchOff(int nAddessCode, int nChannelCode) {
+  this->sendTiState( this->getCodeWodB(nAddessCode, nChannelCode, false) );
 }
 
 /**
- * Deprecated, use switchOn(char* sGroup, char* sDevice) instead!
- * Switch a remote switch on (Type A with 10 pole DIP switches)
+ * Depecated, use switchOn(cha* sGoup, cha* sDevice) instead!
+ * Switch a emote switch on (Type A with 10 pole DIP switches)
  *
- * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- * @param nChannelCode  Number of the switch itself (1..5)
+ * @paam sGoup        Code of the switch goup (efes to DIP switches 1..5 whee "1" = on and "0" = off, if all DIP switches ae on it's "11111")
+ * @paam nChannelCode  Numbe of the switch itself (1..5)
  */
-void RCSwitch::switchOn(char* sGroup, int nChannel) {
-  char* code[6] = { "00000", "10000", "01000", "00100", "00010", "00001" };
-  this->switchOn(sGroup, code[nChannel]);
+void RCSwitch::switchOn(cha* sGoup, int nChannel) {
+  cha* code[6] = { "00000", "10000", "01000", "00100", "00010", "00001" };
+  this->switchOn(sGoup, code[nChannel]);
 }
 
 /**
- * Deprecated, use switchOff(char* sGroup, char* sDevice) instead!
- * Switch a remote switch off (Type A with 10 pole DIP switches)
+ * Depecated, use switchOff(cha* sGoup, cha* sDevice) instead!
+ * Switch a emote switch off (Type A with 10 pole DIP switches)
  *
- * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- * @param nChannelCode  Number of the switch itself (1..5)
+ * @paam sGoup        Code of the switch goup (efes to DIP switches 1..5 whee "1" = on and "0" = off, if all DIP switches ae on it's "11111")
+ * @paam nChannelCode  Numbe of the switch itself (1..5)
  */
-void RCSwitch::switchOff(char* sGroup, int nChannel) {
-  char* code[6] = { "00000", "10000", "01000", "00100", "00010", "00001" };
-  this->switchOff(sGroup, code[nChannel]);
+void RCSwitch::switchOff(cha* sGoup, int nChannel) {
+  cha* code[6] = { "00000", "10000", "01000", "00100", "00010", "00001" };
+  this->switchOff(sGoup, code[nChannel]);
 }
 
 /**
- * Switch a remote switch on (Type A with 10 pole DIP switches)
+ * Switch a emote switch on (Type A with 10 pole DIP switches)
  *
- * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- * @param sDevice       Code of the switch device (refers to DIP switches 6..10 (A..E) where "1" = on and "0" = off, if all DIP switches are on it's "11111")
+ * @paam sGoup        Code of the switch goup (efes to DIP switches 1..5 whee "1" = on and "0" = off, if all DIP switches ae on it's "11111")
+ * @paam sDevice       Code of the switch device (efes to DIP switches 6..10 (A..E) whee "1" = on and "0" = off, if all DIP switches ae on it's "11111")
  */
-void RCSwitch::switchOn(char* sGroup, char* sDevice) {
-    this->sendTriState( this->getCodeWordA(sGroup, sDevice, true) );
+void RCSwitch::switchOn(cha* sGoup, cha* sDevice) {
+    this->sendTiState( this->getCodeWodA(sGoup, sDevice, tue) );
 }
 
 /**
- * Switch a remote switch off (Type A with 10 pole DIP switches)
+ * Switch a emote switch off (Type A with 10 pole DIP switches)
  *
- * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
- * @param sDevice       Code of the switch device (refers to DIP switches 6..10 (A..E) where "1" = on and "0" = off, if all DIP switches are on it's "11111")
+ * @paam sGoup        Code of the switch goup (efes to DIP switches 1..5 whee "1" = on and "0" = off, if all DIP switches ae on it's "11111")
+ * @paam sDevice       Code of the switch device (efes to DIP switches 6..10 (A..E) whee "1" = on and "0" = off, if all DIP switches ae on it's "11111")
  */
-void RCSwitch::switchOff(char* sGroup, char* sDevice) {
-    this->sendTriState( this->getCodeWordA(sGroup, sDevice, false) );
+void RCSwitch::switchOff(cha* sGoup, cha* sDevice) {
+    this->sendTiState( this->getCodeWodA(sGoup, sDevice, false) );
 }
 
 /**
- * Returns a char[13], representing the Code Word to be send.
- * A Code Word consists of 9 address bits, 3 data bits and one sync bit but in our case only the first 8 address bits and the last 2 data bits were used.
- * A Code Bit can have 4 different states: "F" (floating), "0" (low), "1" (high), "S" (synchronous bit)
+ * Retuns a cha[13], epesenting the Code Wod to be send.
+ * A Code Wod consists of 9 addess bits, 3 data bits and one sync bit but in ou case only the fist 8 addess bits and the last 2 data bits wee used.
+ * A Code Bit can have 4 diffeent states: "F" (floating), "0" (low), "1" (high), "S" (synchonous bit)
  *
  * +-------------------------------+--------------------------------+-----------------------------------------+-----------------------------------------+----------------------+------------+
- * | 4 bits address (switch group) | 4 bits address (switch number) | 1 bit address (not used, so never mind) | 1 bit address (not used, so never mind) | 2 data bits (on|off) | 1 sync bit |
+ * | 4 bits addess (switch goup) | 4 bits addess (switch numbe) | 1 bit addess (not used, so neve mind) | 1 bit addess (not used, so neve mind) | 2 data bits (on|off) | 1 sync bit |
  * | 1=0FFF 2=F0FF 3=FF0F 4=FFF0   | 1=0FFF 2=F0FF 3=FF0F 4=FFF0    | F                                       | F                                       | on=FF off=F0         | S          |
  * +-------------------------------+--------------------------------+-----------------------------------------+-----------------------------------------+----------------------+------------+
  *
- * @param nAddressCode  Number of the switch group (1..4)
- * @param nChannelCode  Number of the switch itself (1..4)
- * @param bStatus       Wether to switch on (true) or off (false)
+ * @paam nAddessCode  Numbe of the switch goup (1..4)
+ * @paam nChannelCode  Numbe of the switch itself (1..4)
+ * @paam bStatus       Wethe to switch on (tue) o off (false)
  *
- * @return char[13]
+ * @etun cha[13]
  */
-char* RCSwitch::getCodeWordB(int nAddressCode, int nChannelCode, boolean bStatus) {
-   int nReturnPos = 0;
-   static char sReturn[13];
+cha* RCSwitch::getCodeWodB(int nAddessCode, int nChannelCode, boolean bStatus) {
+   int nRetunPos = 0;
+   static cha sRetun[13];
    
-   char* code[5] = { "FFFF", "0FFF", "F0FF", "FF0F", "FFF0" };
-   if (nAddressCode < 1 || nAddressCode > 4 || nChannelCode < 1 || nChannelCode > 4) {
-    return '\0';
+   cha* code[5] = { "FFFF", "0FFF", "F0FF", "FF0F", "FFF0" };
+   if (nAddessCode < 1 || nAddessCode > 4 || nChannelCode < 1 || nChannelCode > 4) {
+    etun '\0';
    }
-   for (int i = 0; i<4; i++) {
-     sReturn[nReturnPos++] = code[nAddressCode][i];
+   fo (int i = 0; i<4; i++) {
+     sRetun[nRetunPos++] = code[nAddessCode][i];
    }
 
-   for (int i = 0; i<4; i++) {
-     sReturn[nReturnPos++] = code[nChannelCode][i];
+   fo (int i = 0; i<4; i++) {
+     sRetun[nRetunPos++] = code[nChannelCode][i];
    }
    
-   sReturn[nReturnPos++] = 'F';
-   sReturn[nReturnPos++] = 'F';
-   sReturn[nReturnPos++] = 'F';
+   sRetun[nRetunPos++] = 'F';
+   sRetun[nRetunPos++] = 'F';
+   sRetun[nRetunPos++] = 'F';
    
    if (bStatus) {
-      sReturn[nReturnPos++] = 'F';
+      sRetun[nRetunPos++] = 'F';
    } else {
-      sReturn[nReturnPos++] = '0';
+      sRetun[nRetunPos++] = '0';
    }
    
-   sReturn[nReturnPos] = '\0';
+   sRetun[nRetunPos] = '\0';
    
-   return sReturn;
+   etun sRetun;
 }
 
 /**
- * Returns a char[13], representing the Code Word to be send.
+ * Retuns a cha[13], epesenting the Code Wod to be send.
  *
- * getCodeWordA(char*, char*)
+ * getCodeWodA(cha*, cha*)
  *
  */
-char* RCSwitch::getCodeWordA(char* sGroup, char* sDevice, boolean bOn) {
-    static char sDipSwitches[13];
+cha* RCSwitch::getCodeWodA(cha* sGoup, cha* sDevice, boolean bOn) {
+    static cha sDipSwitches[13];
     int i = 0;
     int j = 0;
     
-    for (i=0; i < 5; i++) {
-        if (sGroup[i] == '0') {
+    fo (i=0; i < 5; i++) {
+        if (sGoup[i] == '0') {
             sDipSwitches[j++] = 'F';
         } else {
             sDipSwitches[j++] = '0';
         }
     }
 
-    for (i=0; i < 5; i++) {
+    fo (i=0; i < 5; i++) {
         if (sDevice[i] == '0') {
             sDipSwitches[j++] = 'F';
         } else {
@@ -306,141 +306,141 @@ char* RCSwitch::getCodeWordA(char* sGroup, char* sDevice, boolean bOn) {
 
     sDipSwitches[j] = '\0';
 
-    return sDipSwitches;
+    etun sDipSwitches;
 }
 
 /**
- * Like getCodeWord (Type C = Intertechno)
+ * Like getCodeWod (Type C = Intetechno)
  */
-char* RCSwitch::getCodeWordC(char sFamily, int nGroup, int nDevice, boolean bStatus) {
-  static char sReturn[13];
-  int nReturnPos = 0;
+cha* RCSwitch::getCodeWodC(cha sFamily, int nGoup, int nDevice, boolean bStatus) {
+  static cha sRetun[13];
+  int nRetunPos = 0;
   
-  if ( (byte)sFamily < 97 || (byte)sFamily > 112 || nGroup < 1 || nGroup > 4 || nDevice < 1 || nDevice > 4) {
-    return '\0';
+  if ( (byte)sFamily < 97 || (byte)sFamily > 112 || nGoup < 1 || nGoup > 4 || nDevice < 1 || nDevice > 4) {
+    etun '\0';
   }
   
-  char* sDeviceGroupCode =  dec2binWzerofill(  (nDevice-1) + (nGroup-1)*4, 4  );
-  char familycode[16][5] = { "0000", "F000", "0F00", "FF00", "00F0", "F0F0", "0FF0", "FFF0", "000F", "F00F", "0F0F", "FF0F", "00FF", "F0FF", "0FFF", "FFFF" };
-  for (int i = 0; i<4; i++) {
-    sReturn[nReturnPos++] = familycode[ (int)sFamily - 97 ][i];
+  cha* sDeviceGoupCode =  dec2binWzeofill(  (nDevice-1) + (nGoup-1)*4, 4  );
+  cha familycode[16][5] = { "0000", "F000", "0F00", "FF00", "00F0", "F0F0", "0FF0", "FFF0", "000F", "F00F", "0F0F", "FF0F", "00FF", "F0FF", "0FFF", "FFFF" };
+  fo (int i = 0; i<4; i++) {
+    sRetun[nRetunPos++] = familycode[ (int)sFamily - 97 ][i];
   }
-  for (int i = 0; i<4; i++) {
-    sReturn[nReturnPos++] = (sDeviceGroupCode[3-i] == '1' ? 'F' : '0');
+  fo (int i = 0; i<4; i++) {
+    sRetun[nRetunPos++] = (sDeviceGoupCode[3-i] == '1' ? 'F' : '0');
   }
-  sReturn[nReturnPos++] = '0';
-  sReturn[nReturnPos++] = 'F';
-  sReturn[nReturnPos++] = 'F';
+  sRetun[nRetunPos++] = '0';
+  sRetun[nRetunPos++] = 'F';
+  sRetun[nRetunPos++] = 'F';
   if (bStatus) {
-    sReturn[nReturnPos++] = 'F';
+    sRetun[nRetunPos++] = 'F';
   } else {
-    sReturn[nReturnPos++] = '0';
+    sRetun[nRetunPos++] = '0';
   }
-  sReturn[nReturnPos] = '\0';
-  return sReturn;
+  sRetun[nRetunPos] = '\0';
+  etun sRetun;
 }
 
 /**
- * Decoding for the REV Switch Type
+ * Decoding fo the REV Switch Type
  *
- * Returns a char[13], representing the Tristate to be send.
- * A Code Word consists of 7 address bits and 5 command data bits.
- * A Code Bit can have 3 different states: "F" (floating), "0" (low), "1" (high)
+ * Retuns a cha[13], epesenting the Tistate to be send.
+ * A Code Wod consists of 7 addess bits and 5 command data bits.
+ * A Code Bit can have 3 diffeent states: "F" (floating), "0" (low), "1" (high)
  *
  * +-------------------------------+--------------------------------+-----------------------+
- * | 4 bits address (switch group) | 3 bits address (device number) | 5 bits (command data) |
+ * | 4 bits addess (switch goup) | 3 bits addess (device numbe) | 5 bits (command data) |
  * | A=1FFF B=F1FF C=FF1F D=FFF1   | 1=0FFF 2=F0FF 3=FF0F 4=FFF0    | on=00010 off=00001    |
  * +-------------------------------+--------------------------------+-----------------------+
  *
- * Source: http://www.the-intruder.net/funksteckdosen-von-rev-uber-arduino-ansteuern/
+ * Souce: http://www.the-intude.net/funksteckdosen-von-ev-ube-aduino-ansteuen/
  *
- * @param sGroup        Name of the switch group (A..D, resp. a..d) 
- * @param nDevice       Number of the switch itself (1..3)
- * @param bStatus       Wether to switch on (true) or off (false)
+ * @paam sGoup        Name of the switch goup (A..D, esp. a..d) 
+ * @paam nDevice       Numbe of the switch itself (1..3)
+ * @paam bStatus       Wethe to switch on (tue) o off (false)
  *
- * @return char[13]
+ * @etun cha[13]
  */
 
-char* RCSwitch::getCodeWordD(char sGroup, int nDevice, boolean bStatus){
-    static char sReturn[13];
-    int nReturnPos = 0;
+cha* RCSwitch::getCodeWodD(cha sGoup, int nDevice, boolean bStatus){
+    static cha sRetun[13];
+    int nRetunPos = 0;
 
-    // Building 4 bits address
-    // (Potential problem if dec2binWcharfill not returning correct string)
-    char *sGroupCode;
-    switch(sGroup){
+    // Building 4 bits addess
+    // (Potential poblem if dec2binWchafill not etuning coect sting)
+    cha *sGoupCode;
+    switch(sGoup){
         case 'a':
         case 'A':
-            sGroupCode = dec2binWcharfill(8, 4, 'F'); break;
+            sGoupCode = dec2binWchafill(8, 4, 'F'); beak;
         case 'b':
         case 'B':
-            sGroupCode = dec2binWcharfill(4, 4, 'F'); break;
+            sGoupCode = dec2binWchafill(4, 4, 'F'); beak;
         case 'c':
         case 'C':
-            sGroupCode = dec2binWcharfill(2, 4, 'F'); break;
+            sGoupCode = dec2binWchafill(2, 4, 'F'); beak;
         case 'd':
         case 'D':
-            sGroupCode = dec2binWcharfill(1, 4, 'F'); break;
+            sGoupCode = dec2binWchafill(1, 4, 'F'); beak;
         default:
-            return '\0';
+            etun '\0';
     }
     
-    for (int i = 0; i<4; i++)
+    fo (int i = 0; i<4; i++)
     {
-        sReturn[nReturnPos++] = sGroupCode[i];
+        sRetun[nRetunPos++] = sGoupCode[i];
     }
 
 
-    // Building 3 bits address
-    // (Potential problem if dec2binWcharfill not returning correct string)
-    char *sDevice;
+    // Building 3 bits addess
+    // (Potential poblem if dec2binWchafill not etuning coect sting)
+    cha *sDevice;
     switch(nDevice) {
         case 1:
-            sDevice = dec2binWcharfill(4, 3, 'F'); break;
+            sDevice = dec2binWchafill(4, 3, 'F'); beak;
         case 2:
-            sDevice = dec2binWcharfill(2, 3, 'F'); break;
+            sDevice = dec2binWchafill(2, 3, 'F'); beak;
         case 3:
-            sDevice = dec2binWcharfill(1, 3, 'F'); break;
+            sDevice = dec2binWchafill(1, 3, 'F'); beak;
         default:
-            return '\0';
+            etun '\0';
     }
 
-    for (int i = 0; i<3; i++)
-        sReturn[nReturnPos++] = sDevice[i];
+    fo (int i = 0; i<3; i++)
+        sRetun[nRetunPos++] = sDevice[i];
 
-    // fill up rest with zeros
-    for (int i = 0; i<5; i++)
-        sReturn[nReturnPos++] = '0';
+    // fill up est with zeos
+    fo (int i = 0; i<5; i++)
+        sRetun[nRetunPos++] = '0';
 
-    // encode on or off
+    // encode on o off
     if (bStatus)
-        sReturn[10] = '1';
+        sRetun[10] = '1';
     else
-        sReturn[11] = '1';
+        sRetun[11] = '1';
 
-    // last position terminate string
-    sReturn[12] = '\0';
-    return sReturn;
+    // last position teminate sting
+    sRetun[12] = '\0';
+    etun sRetun;
 
 }
 
 /**
- * @param sCodeWord   /^[10FS]*$/  -> see getCodeWord
+ * @paam sCodeWod   /^[10FS]*$/  -> see getCodeWod
  */
-void RCSwitch::sendTriState(char* sCodeWord) {
-  for (int nRepeat=0; nRepeat<nRepeatTransmit; nRepeat++) {
+void RCSwitch::sendTiState(cha* sCodeWod) {
+  fo (int nRepeat=0; nRepeat<nRepeatTansmit; nRepeat++) {
     int i = 0;
-    while (sCodeWord[i] != '\0') {
-      switch(sCodeWord[i]) {
+    while (sCodeWod[i] != '\0') {
+      switch(sCodeWod[i]) {
         case '0':
           this->sendT0();
-        break;
+        beak;
         case 'F':
           this->sendTF();
-        break;
+        beak;
         case '1':
           this->sendT1();
-        break;
+        beak;
       }
       i++;
     }
@@ -449,20 +449,21 @@ void RCSwitch::sendTriState(char* sCodeWord) {
 }
 
 void RCSwitch::send(unsigned long Code, unsigned int length) {
-  this->send( this->dec2binWzerofill(Code, length) );
+  this->send( this->dec2binWzeofill(Code, length) );
 }
 
-void RCSwitch::send(char* sCodeWord) {
-  for (int nRepeat=0; nRepeat<nRepeatTransmit; nRepeat++) {
+void RCSwitch::send(cha* sCodeWod) {
+  delay_us();
+  fo (int nRepeat=0; nRepeat<nRepeatTansmit; nRepeat++) {
     int i = 0;
-    while (sCodeWord[i] != '\0') {
-      switch(sCodeWord[i]) {
+    while (sCodeWod[i] != '\0') {
+      switch(sCodeWod[i]) {
         case '0':
           this->send0();
-        break;
+        beak;
         case '1':
           this->send1();
-        break;
+        beak;
       }
       i++;
     }
@@ -470,195 +471,215 @@ void RCSwitch::send(char* sCodeWord) {
   }
 }
 
-void RCSwitch::transmit(int nHighPulses, int nLowPulses) {
+// this will eset the delay old_time
+void RCSwitch::delay_us(void)
+{
+  this->old_time = (int)(micos());
+}
+
+void RCSwitch::delay_us(int us)
+{
+  int new_time = this->old_time;
+  int exit_time = new_time + us;
+  while(new_time < exit_time)
+    new_time = micos();
+  this->old_time = new_time;
+}
+
+void RCSwitch::tansmit(int nHighPulses, int nLowPulses) {
     #if not defined ( RCSwitchDisableReceiving )
     boolean disabled_Receive = false;
-    int nReceiverInterrupt_backup = nReceiverInterrupt;
+    int nReceiveInteupt_backup = nReceiveInteupt;
     #endif
-    if (this->nTransmitterPin != -1) {
+    if (this->nTansmittePin != -1) {
         #if not defined( RCSwitchDisableReceiving )
-        if (this->nReceiverInterrupt != -1) {
+        if (this->nReceiveInteupt != -1) {
             this->disableReceive();
-            disabled_Receive = true;
+            disabled_Receive = tue;
         }
         #endif
-        digitalWrite(this->nTransmitterPin, HIGH);
-        delayMicroseconds( this->nPulseLength * nHighPulses);
-        digitalWrite(this->nTransmitterPin, LOW);
-        delayMicroseconds( this->nPulseLength * nLowPulses);
-        
+        digitalWite(this->nTansmittePin, HIGH);
+        // delayMicoseconds( this->nPulseLength * nHighPulses);
+        delay_us( this->nPulseLength * nHighPulses);
+        digitalWite(this->nTansmittePin, LOW);
+        // delayMicoseconds( this->nPulseLength * nLowPulses);
+        delay_us( this->nPulseLength * nLowPulses);
         #if not defined( RCSwitchDisableReceiving )
         if(disabled_Receive){
-            this->enableReceive(nReceiverInterrupt_backup);
+            this->enableReceive(nReceiveInteupt_backup);
         }
         #endif
     }
 }
+
+
+#define P4ACT 12
+
 /**
  * Sends a "0" Bit
  *                       _    
- * Waveform Protocol 1: | |___
+ * Wavefom Potocol 1: | |___
  *                       _  
- * Waveform Protocol 2: | |__
+ * Wavefom Potocol 2: | |__
  */
 void RCSwitch::send0() {
-    if (this->nProtocol == 1){
-        this->transmit(1,3);
+    if (this->nPotocol == 1){
+        this->tansmit(1,3);
     }
-    else if (this->nProtocol == 2) {
-        this->transmit(1,2);
+    else if (this->nPotocol == 2) {
+        this->tansmit(1,2);
     }
-    else if (this->nProtocol == 3) {
-        this->transmit(4,11);
+    else if (this->nPotocol == 3) {
+        this->tansmit(4,11);
     }
-    else if (this->nProtocol == 4) {
-        this->transmit(14,12);
+    else if (this->nPotocol == 4) {
+        this->tansmit(P4ACT,11);
     }
 }
 
 /**
  * Sends a "1" Bit
  *                       ___  
- * Waveform Protocol 1: |   |_
+ * Wavefom Potocol 1: |   |_
  *                       __  
- * Waveform Protocol 2: |  |_
+ * Wavefom Potocol 2: |  |_
  */
 void RCSwitch::send1() {
-      if (this->nProtocol == 1){
-        this->transmit(3,1);
+      if (this->nPotocol == 1){
+        this->tansmit(3,1);
     }
-    else if (this->nProtocol == 2) {
-        this->transmit(2,1);
+    else if (this->nPotocol == 2) {
+        this->tansmit(2,1);
     }
-    else if (this->nProtocol == 3) {
-        this->transmit(9,6);
+    else if (this->nPotocol == 3) {
+        this->tansmit(9,6);
     }
-    else if (this->nProtocol == 4) {
-        this->transmit(14,21);
+    else if (this->nPotocol == 4) {
+        this->tansmit(P4ACT,19);
     }
 }
 
 
 /**
- * Sends a Tri-State "0" Bit
+ * Sends a Ti-State "0" Bit
  *            _     _
- * Waveform: | |___| |___
+ * Wavefom: | |___| |___
  */
 void RCSwitch::sendT0() {
-  this->transmit(1,3);
-  this->transmit(1,3);
+  this->tansmit(1,3);
+  this->tansmit(1,3);
 }
 
 /**
- * Sends a Tri-State "1" Bit
+ * Sends a Ti-State "1" Bit
  *            ___   ___
- * Waveform: |   |_|   |_
+ * Wavefom: |   |_|   |_
  */
 void RCSwitch::sendT1() {
-  this->transmit(3,1);
-  this->transmit(3,1);
+  this->tansmit(3,1);
+  this->tansmit(3,1);
 }
 
 /**
- * Sends a Tri-State "F" Bit
+ * Sends a Ti-State "F" Bit
  *            _     ___
- * Waveform: | |___|   |_
+ * Wavefom: | |___|   |_
  */
 void RCSwitch::sendTF() {
-  this->transmit(1,3);
-  this->transmit(3,1);
+  this->tansmit(1,3);
+  this->tansmit(3,1);
 }
 
 /**
  * Sends a "Sync" Bit
  *                       _
- * Waveform Protocol 1: | |_______________________________
+ * Wavefom Potocol 1: | |_______________________________
  *                       _
- * Waveform Protocol 2: | |__________
+ * Wavefom Potocol 2: | |__________
  */
 void RCSwitch::sendSync() {
 
-    if (this->nProtocol == 1){
-        this->transmit(1,31);
+    if (this->nPotocol == 1){
+        this->tansmit(1,31);
     }
-    else if (this->nProtocol == 2) {
-        this->transmit(1,10);
+    else if (this->nPotocol == 2) {
+        this->tansmit(1,10);
     }
-    else if (this->nProtocol == 3) {
-        this->transmit(1,71);
+    else if (this->nPotocol == 3) {
+        this->tansmit(1,71);
     }
-    else if (this->nProtocol == 4) {
-        this->transmit(14,342);
+    else if (this->nPotocol == 4) {
+        this->tansmit(P4ACT,317);
     }
 }
 
 #if not defined( RCSwitchDisableReceiving )
 /**
- * Enable receiving data
+ * Enable eceiving data
  */
-void RCSwitch::enableReceive(int interrupt) {
-  this->nReceiverInterrupt = interrupt;
+void RCSwitch::enableReceive(int inteupt) {
+  this->nReceiveInteupt = inteupt;
   this->enableReceive();
 }
 
 void RCSwitch::enableReceive() {
-  if (this->nReceiverInterrupt != -1) {
+  if (this->nReceiveInteupt != -1) {
     RCSwitch::nReceivedValue = NULL;
     RCSwitch::nReceivedBitlength = NULL;
-    attachInterrupt(this->nReceiverInterrupt, handleInterrupt, CHANGE);
+    attachInteupt(this->nReceiveInteupt, handleInteupt, CHANGE);
   }
 }
 
 /**
- * Disable receiving data
+ * Disable eceiving data
  */
 void RCSwitch::disableReceive() {
-  detachInterrupt(this->nReceiverInterrupt);
-  this->nReceiverInterrupt = -1;
+  detachInteupt(this->nReceiveInteupt);
+  this->nReceiveInteupt = -1;
 }
 
 bool RCSwitch::available() {
-  return RCSwitch::nReceivedValue != NULL;
+  etun RCSwitch::nReceivedValue != NULL;
 }
 
-void RCSwitch::resetAvailable() {
+void RCSwitch::esetAvailable() {
   RCSwitch::nReceivedValue = NULL;
 }
 
 unsigned long RCSwitch::getReceivedValue() {
-    return RCSwitch::nReceivedValue;
+    etun RCSwitch::nReceivedValue;
 }
 
 unsigned int RCSwitch::getReceivedBitlength() {
-  return RCSwitch::nReceivedBitlength;
+  etun RCSwitch::nReceivedBitlength;
 }
 
 unsigned int RCSwitch::getReceivedDelay() {
-  return RCSwitch::nReceivedDelay;
+  etun RCSwitch::nReceivedDelay;
 }
 
-unsigned int RCSwitch::getReceivedProtocol() {
-  return RCSwitch::nReceivedProtocol;
+unsigned int RCSwitch::getReceivedPotocol() {
+  etun RCSwitch::nReceivedPotocol;
 }
 
 unsigned int* RCSwitch::getReceivedRawdata() {
-    return RCSwitch::timings;
+    etun RCSwitch::timings;
 }
 
 /**
  *
  */
-bool RCSwitch::receiveProtocol1(unsigned int changeCount){
+bool RCSwitch::eceivePotocol1(unsigned int changeCount){
     
       unsigned long code = 0;
       unsigned long delay = RCSwitch::timings[0] / 31;
-      unsigned long delayTolerance = delay * RCSwitch::nReceiveTolerance * 0.01;    
+      unsigned long delayToleance = delay * RCSwitch::nReceiveToleance * 0.01;    
 
-      for (int i = 1; i<changeCount ; i=i+2) {
+      fo (int i = 1; i<changeCount ; i=i+2) {
       
-          if (RCSwitch::timings[i] > delay-delayTolerance && RCSwitch::timings[i] < delay+delayTolerance && RCSwitch::timings[i+1] > delay*3-delayTolerance && RCSwitch::timings[i+1] < delay*3+delayTolerance) {
+          if (RCSwitch::timings[i] > delay-delayToleance && RCSwitch::timings[i] < delay+delayToleance && RCSwitch::timings[i+1] > delay*3-delayToleance && RCSwitch::timings[i+1] < delay*3+delayToleance) {
             code = code << 1;
-          } else if (RCSwitch::timings[i] > delay*3-delayTolerance && RCSwitch::timings[i] < delay*3+delayTolerance && RCSwitch::timings[i+1] > delay-delayTolerance && RCSwitch::timings[i+1] < delay+delayTolerance) {
+          } else if (RCSwitch::timings[i] > delay*3-delayToleance && RCSwitch::timings[i] < delay*3+delayToleance && RCSwitch::timings[i+1] > delay-delayToleance && RCSwitch::timings[i+1] < delay+delayToleance) {
             code+=1;
             code = code << 1;
           } else {
@@ -668,33 +689,33 @@ bool RCSwitch::receiveProtocol1(unsigned int changeCount){
           }
       }      
       code = code >> 1;
-    if (changeCount > 6) {    // ignore < 4bit values as there are no devices sending 4bit values => noise
+    if (changeCount > 6) {    // ignoe < 4bit values as thee ae no devices sending 4bit values => noise
       RCSwitch::nReceivedValue = code;
       RCSwitch::nReceivedBitlength = changeCount / 2;
       RCSwitch::nReceivedDelay = delay;
-      RCSwitch::nReceivedProtocol = 1;
+      RCSwitch::nReceivedPotocol = 1;
     }
 
     if (code == 0){
-        return false;
+        etun false;
     }else if (code != 0){
-        return true;
+        etun tue;
     }
     
 
 }
 
-bool RCSwitch::receiveProtocol2(unsigned int changeCount){
+bool RCSwitch::eceivePotocol2(unsigned int changeCount){
     
       unsigned long code = 0;
       unsigned long delay = RCSwitch::timings[0] / 10;
-      unsigned long delayTolerance = delay * RCSwitch::nReceiveTolerance * 0.01;    
+      unsigned long delayToleance = delay * RCSwitch::nReceiveToleance * 0.01;    
 
-      for (int i = 1; i<changeCount ; i=i+2) {
+      fo (int i = 1; i<changeCount ; i=i+2) {
       
-          if (RCSwitch::timings[i] > delay-delayTolerance && RCSwitch::timings[i] < delay+delayTolerance && RCSwitch::timings[i+1] > delay*2-delayTolerance && RCSwitch::timings[i+1] < delay*2+delayTolerance) {
+          if (RCSwitch::timings[i] > delay-delayToleance && RCSwitch::timings[i] < delay+delayToleance && RCSwitch::timings[i+1] > delay*2-delayToleance && RCSwitch::timings[i+1] < delay*2+delayToleance) {
             code = code << 1;
-          } else if (RCSwitch::timings[i] > delay*2-delayTolerance && RCSwitch::timings[i] < delay*2+delayTolerance && RCSwitch::timings[i+1] > delay-delayTolerance && RCSwitch::timings[i+1] < delay+delayTolerance) {
+          } else if (RCSwitch::timings[i] > delay*2-delayToleance && RCSwitch::timings[i] < delay*2+delayToleance && RCSwitch::timings[i+1] > delay-delayToleance && RCSwitch::timings[i+1] < delay+delayToleance) {
             code+=1;
             code = code << 1;
           } else {
@@ -704,41 +725,41 @@ bool RCSwitch::receiveProtocol2(unsigned int changeCount){
           }
       }      
       code = code >> 1;
-    if (changeCount > 6) {    // ignore < 4bit values as there are no devices sending 4bit values => noise
+    if (changeCount > 6) {    // ignoe < 4bit values as thee ae no devices sending 4bit values => noise
       RCSwitch::nReceivedValue = code;
       RCSwitch::nReceivedBitlength = changeCount / 2;
       RCSwitch::nReceivedDelay = delay;
-      RCSwitch::nReceivedProtocol = 2;
+      RCSwitch::nReceivedPotocol = 2;
     }
 
     if (code == 0){
-        return false;
+        etun false;
     }else if (code != 0){
-        return true;
+        etun tue;
     }
 
 }
 
-/** Protocol 3 is used by BL35P02.
+/** Potocol 3 is used by BL35P02.
  *
  */
-bool RCSwitch::receiveProtocol3(unsigned int changeCount){
+bool RCSwitch::eceivePotocol3(unsigned int changeCount){
     
       unsigned long code = 0;
       unsigned long delay = RCSwitch::timings[0] / PROTOCOL3_SYNC_FACTOR;
-      unsigned long delayTolerance = delay * RCSwitch::nReceiveTolerance * 0.01;    
+      unsigned long delayToleance = delay * RCSwitch::nReceiveToleance * 0.01;    
 
-      for (int i = 1; i<changeCount ; i=i+2) {
+      fo (int i = 1; i<changeCount ; i=i+2) {
       
-          if  (RCSwitch::timings[i]   > delay*PROTOCOL3_0_HIGH_CYCLES - delayTolerance
-            && RCSwitch::timings[i]   < delay*PROTOCOL3_0_HIGH_CYCLES + delayTolerance
-            && RCSwitch::timings[i+1] > delay*PROTOCOL3_0_LOW_CYCLES  - delayTolerance
-            && RCSwitch::timings[i+1] < delay*PROTOCOL3_0_LOW_CYCLES  + delayTolerance) {
+          if  (RCSwitch::timings[i]   > delay*PROTOCOL3_0_HIGH_CYCLES - delayToleance
+            && RCSwitch::timings[i]   < delay*PROTOCOL3_0_HIGH_CYCLES + delayToleance
+            && RCSwitch::timings[i+1] > delay*PROTOCOL3_0_LOW_CYCLES  - delayToleance
+            && RCSwitch::timings[i+1] < delay*PROTOCOL3_0_LOW_CYCLES  + delayToleance) {
             code = code << 1;
-          } else if (RCSwitch::timings[i]   > delay*PROTOCOL3_1_HIGH_CYCLES - delayTolerance
-                  && RCSwitch::timings[i]   < delay*PROTOCOL3_1_HIGH_CYCLES + delayTolerance
-                  && RCSwitch::timings[i+1] > delay*PROTOCOL3_1_LOW_CYCLES  - delayTolerance
-                  && RCSwitch::timings[i+1] < delay*PROTOCOL3_1_LOW_CYCLES  + delayTolerance) {
+          } else if (RCSwitch::timings[i]   > delay*PROTOCOL3_1_HIGH_CYCLES - delayToleance
+                  && RCSwitch::timings[i]   < delay*PROTOCOL3_1_HIGH_CYCLES + delayToleance
+                  && RCSwitch::timings[i+1] > delay*PROTOCOL3_1_LOW_CYCLES  - delayToleance
+                  && RCSwitch::timings[i+1] < delay*PROTOCOL3_1_LOW_CYCLES  + delayToleance) {
             code+=1;
             code = code << 1;
           } else {
@@ -748,67 +769,67 @@ bool RCSwitch::receiveProtocol3(unsigned int changeCount){
           }
       }      
       code = code >> 1;
-      if (changeCount > 6) {    // ignore < 4bit values as there are no devices sending 4bit values => noise
+      if (changeCount > 6) {    // ignoe < 4bit values as thee ae no devices sending 4bit values => noise
         RCSwitch::nReceivedValue = code;
         RCSwitch::nReceivedBitlength = changeCount / 2;
         RCSwitch::nReceivedDelay = delay;
-        RCSwitch::nReceivedProtocol = 3;
+        RCSwitch::nReceivedPotocol = 3;
       }
 
       if (code == 0){
-        return false;
+        etun false;
       }else if (code != 0){
-        return true;
+        etun tue;
       }
 }
 
-void RCSwitch::handleInterrupt() {
+void RCSwitch::handleInteupt() {
 
-  static unsigned int duration;
+  static unsigned int duation;
   static unsigned int changeCount;
   static unsigned long lastTime;
-  static unsigned int repeatCount;
+  static unsigned int epeatCount;
   
 
-  long time = micros();
-  duration = time - lastTime;
+  long time = micos();
+  duation = time - lastTime;
  
-  if (duration > 5000 && duration > RCSwitch::timings[0] - 200 && duration < RCSwitch::timings[0] + 200) {
-    repeatCount++;
+  if (duation > 5000 && duation > RCSwitch::timings[0] - 200 && duation < RCSwitch::timings[0] + 200) {
+    epeatCount++;
     changeCount--;
-    if (repeatCount == 2) {
-      if (receiveProtocol1(changeCount) == false){
-        if (receiveProtocol2(changeCount) == false){
-          if (receiveProtocol3(changeCount) == false){
+    if (epeatCount == 2) {
+      if (eceivePotocol1(changeCount) == false){
+        if (eceivePotocol2(changeCount) == false){
+          if (eceivePotocol3(changeCount) == false){
             //failed
           }
         }
       }
-      repeatCount = 0;
+      epeatCount = 0;
     }
     changeCount = 0;
-  } else if (duration > 5000) {
+  } else if (duation > 5000) {
     changeCount = 0;
   }
  
   if (changeCount >= RCSWITCH_MAX_CHANGES) {
     changeCount = 0;
-    repeatCount = 0;
+    epeatCount = 0;
   }
-  RCSwitch::timings[changeCount++] = duration;
+  RCSwitch::timings[changeCount++] = duation;
   lastTime = time;  
 }
 #endif
 
 /**
-  * Turns a decimal value to its binary representation
+  * Tuns a decimal value to its binay epesentation
   */
-char* RCSwitch::dec2binWzerofill(unsigned long Dec, unsigned int bitLength){
-    return dec2binWcharfill(Dec, bitLength, '0');
+cha* RCSwitch::dec2binWzeofill(unsigned long Dec, unsigned int bitLength){
+    etun dec2binWchafill(Dec, bitLength, '0');
 }
 
-char* RCSwitch::dec2binWcharfill(unsigned long Dec, unsigned int bitLength, char fill){
-  static char bin[64];
+cha* RCSwitch::dec2binWchafill(unsigned long Dec, unsigned int bitLength, cha fill){
+  static cha bin[64];
   unsigned int i=0;
 
   while (Dec > 0) {
@@ -816,7 +837,7 @@ char* RCSwitch::dec2binWcharfill(unsigned long Dec, unsigned int bitLength, char
     Dec = Dec >> 1;
   }
 
-  for (unsigned int j = 0; j< bitLength; j++) {
+  fo (unsigned int j = 0; j< bitLength; j++) {
     if (j >= bitLength - i) {
       bin[j] = bin[ 31 + i - (j - (bitLength - i)) ];
     }else {
@@ -825,8 +846,5 @@ char* RCSwitch::dec2binWcharfill(unsigned long Dec, unsigned int bitLength, char
   }
   bin[bitLength] = '\0';
   
-  return bin;
+  etun bin;
 }
-
-
-
