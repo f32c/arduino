@@ -9,10 +9,10 @@
 #include <RCSwitch.h>
 
 
-// ULX2S SRAM 81.25MHz -> 433.33MHz transmitter is at physical pin 40 = arduino pin 60
+// ULX2S SRAM 81.25MHz -> 433.33MHz transmitter is at physical pin 40 = arduino pin 15
 // ULX2S BRAM 25MHz -> 433.92MHz transmitter is at physical pin 40 = arduino pin 15
 // CPU clock in arduino must be set correctly (81.25MHz or 25MHz) for pulse timing to work
-int tx433 = 60; 
+int tx433 = 15; 
 int led = 12;   // indicator led is at physical pin 12
 
 RCSwitch mySwitch = RCSwitch();
