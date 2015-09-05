@@ -12,8 +12,8 @@ This is a library for F32C framebuffer
 #include "Adafruit_F32C_video.h"
 
 extern "C" {
-#include <fb.h>
-#include <io.h>
+#include <dev/fb.h>
+#include <dev/io.h>
 }
 
 // currently displayed buffer
