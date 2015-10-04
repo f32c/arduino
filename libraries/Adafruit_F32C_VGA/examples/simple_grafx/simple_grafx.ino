@@ -10,13 +10,13 @@ void setup() {
   display.setCursor(100,100);
   display.print("VGA DISPLAY TEST");
   display.drawRect(  0,0,   640,480, WHITE);
-  display.drawLine(100,180, 480,150, 0xFF0);
+  display.drawLine(100,180, 480,150, 0xFFE0);
 }
 
 void loop() {
   static uint32_t counter = 0;
   display.fillRect(100,200,400,28,BLACK);
-  display.setTextColor(0x00FF);
+  display.setTextColor(0xF800);
   display.setCursor(100,200);
   display.print(counter++);
   delay(1000);

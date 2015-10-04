@@ -43,12 +43,12 @@ void Adafruit_F32C_VGA::drawPixel(int16_t x, int16_t y, uint16_t color) {
   ptr = &(videomem[x/8+y*80]);
   mem = *ptr & ~(0x01010101<<(x&7)); // clear old bits
   // color space highcolor RGB 565 -> RGBI
-  // replace new bits
+  // replace new bits (simple 16-color)
   *ptr = mem
-       |  ( (1<<24) // intensity bit always 1
-          | ((color&(1<<15)) << 1)
-          | ((color&(1<<10)) >> 2)
-          | ((color&(1<<4)) >> 4)
+       |  ( ((color&((1<<3)|(1<<9)|(1<<14))) ? 1<<24 : 0) // intensity bit
+          | ((color&(1<<4))  << 12) // red
+          | ((color&(1<<10)) >> 2)  // green
+          | ((color&(1<<15)) >> 15) // blue
           ) << (x&7);
 }
 
