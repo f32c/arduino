@@ -28,8 +28,8 @@
 
 //Define Visuals
 #define FONT_SIZE 2
-#define SCREEN_WIDTH 511  //real size minus 1, because coordinate system starts with 0
-#define SCREEN_HEIGHT 287  //real size minus 1, because coordinate system starts with 0
+#define SCREEN_WIDTH 639  //real size minus 1, because coordinate system starts with 0
+#define SCREEN_HEIGHT 479  //real size minus 1, because coordinate system starts with 0
 #define PADDLE_WIDTH 5
 #define PADDLE_HEIGHT 19
 #define PADDLE_PADDING 50
@@ -97,11 +97,12 @@ void splash()
   centerPrint("Ported by",33,1);
   centerPrint("MichaelTeeuw.nl",42,1);
 
-  display.fillRect(0,SCREEN_HEIGHT-10,SCREEN_WIDTH,10,WHITE);
-  display.setTextColor(BLACK);
+  display.fillRect(0,SCREEN_HEIGHT-10,SCREEN_WIDTH,10,BLACK);
+  display.setTextColor(WHITE);
   centerPrint("Move paddle to start!",SCREEN_HEIGHT-9,1);
 
   display.display();
+  delay(1000);
 
 #if HAVE_ANALOG
   int controlA = analogRead(CONTROL_A);
@@ -120,6 +121,7 @@ void loop()
 {
   calculateMovement();
   draw();
+  delay(5);
 }
 
 
