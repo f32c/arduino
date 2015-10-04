@@ -9,14 +9,16 @@
   Written by Michael Teeuw | Xonay Labs.  
   Apache 2 license, all text above must be included 
   in any redistribution.
+  Self-play mode by RADIONA
  ****************************************************/
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_F32C_VGA.h>
 
 //Define Pins
-#define OLED_RESET 12
-#define BEEPER 3
+#define BEEPER     33
+
+Adafruit_F32C_VGA display(1);
 
 #define HAVE_ANALOG 0
 #if HAVE_ANALOG
@@ -27,12 +29,12 @@
 #define HAVE_TONE 0
 
 //Define Visuals
-#define FONT_SIZE 2
-#define SCREEN_WIDTH 639  //real size minus 1, because coordinate system starts with 0
-#define SCREEN_HEIGHT 479  //real size minus 1, because coordinate system starts with 0
-#define PADDLE_WIDTH 5
-#define PADDLE_HEIGHT 19
-#define PADDLE_PADDING 50
+#define FONT_SIZE 4
+#define SCREEN_WIDTH (640-1)  //real size minus 1, because coordinate system starts with 0
+#define SCREEN_HEIGHT (480-1)  //real size minus 1, because coordinate system starts with 0
+#define PADDLE_WIDTH 4
+#define PADDLE_HEIGHT 30
+#define PADDLE_PADDING 10
 #define BALL_SIZE 5
 #define SCORE_PADDING 10
 
@@ -40,13 +42,14 @@
 #define MIN_Y_SPEED 1
 #define MAX_Y_SPEED 3
 
+#define X_BOUNCE_DISTANCE (SCREEN_WIDTH-1*PADDLE_PADDING-1*BALL_SIZE)
+#define Y_BOUNCE_DISTANCE (SCREEN_HEIGHT-1*BALL_SIZE)
+
 #if 0
 #define abs(x) (x >= 0 ? x : -x)
 #endif
 
 //Define Variables
-Adafruit_F32C_VGA display(1);
-
 
 int paddleLocationA = 0;
 int paddleLocationB = 0;
@@ -59,24 +62,62 @@ int ballSpeedY = 1;
 int lastPaddleLocationA = 0;
 int lastPaddleLocationB = 0;
 
+/* self-play mode ball Y position prediction
+** there we should place the paddle
+*/
+int expectAY = 0;
+int expectBY = 0;
+
 int scoreA = 0;
 int scoreB = 0;
+
+int expect_y(int x_distance)
+{
+  int normalY; // normalized Y position
+  // as if ball is always traveling positive
+  int absSpeedX, absSpeedY;
+  int expectY;
+  int expect2Y;
+
+  absSpeedX = ballSpeedX > 0 ? ballSpeedX : -ballSpeedX;
+  absSpeedY = ballSpeedY > 0 ? ballSpeedY : -ballSpeedY;
+  normalY = ballSpeedY > 0 ? ballY : Y_BOUNCE_DISTANCE - ballY;
+
+  /* reflection from "double" y */
+  if(absSpeedX != 0)
+    expect2Y = (normalY + x_distance*absSpeedY/absSpeedX) % (2*Y_BOUNCE_DISTANCE);
+  else
+    expect2Y = normalY;
+  /* convert double Y to reflect up or down */
+  expectY = expect2Y < Y_BOUNCE_DISTANCE ? expect2Y : 2*Y_BOUNCE_DISTANCE - expect2Y;
+  if(ballSpeedY < 0)
+    expectY = (SCREEN_HEIGHT - BALL_SIZE) - expectY;
+  return expectY;
+}
+
+int expectA()
+{
+  return expect_y(ballX - PADDLE_PADDING-BALL_SIZE);
+}
+
+int expectB()
+{
+  return expect_y(SCREEN_WIDTH-PADDLE_PADDING-BALL_SIZE - ballX);
+}
 
 //Setup 
 void setup() 
 {
-  delay(200);
-  display.begin(); // inicijalizacija možda ne ne treba
+  display.begin(); // inicijalizacija za SPI
   display.clearDisplay();   // clears the screen and buffer
   display.display();   
   display.setTextWrap(false);
-
-    splash();
-  
+  splash();
+  delay(2000);
   display.setTextColor(WHITE);
   display.setTextSize(FONT_SIZE);
   display.clearDisplay(); 
-  digitalWrite(OLED_RESET, HIGH);
+  expectBY = expectB();
 }
 
 #if 0
@@ -92,17 +133,16 @@ void splash()
   display.clearDisplay(); 
 
   display.setTextColor(WHITE);
-  centerPrint("PONG",0,3);
-  centerPrint("By Allan Alcorn",24,1);
-  centerPrint("Ported by",33,1);
-  centerPrint("MichaelTeeuw.nl",42,1);
+  centerPrint("PONG",0,10);
+  centerPrint("By Allan Alcorn",24*5,4);
+  centerPrint("Ported by",33*5,4);
+  centerPrint("MichaelTeeuw.nl",42*5,4);
 
-  display.fillRect(0,SCREEN_HEIGHT-10,SCREEN_WIDTH,10,BLACK);
-  display.setTextColor(WHITE);
-  centerPrint("Move paddle to start!",SCREEN_HEIGHT-9,1);
+  display.fillRect(0,SCREEN_HEIGHT-20,SCREEN_WIDTH,20,WHITE);
+  display.setTextColor(BLACK);
+  centerPrint("Move paddle to start!",SCREEN_HEIGHT-18,2);
 
   display.display();
-  delay(1000);
 
 #if HAVE_ANALOG
   int controlA = analogRead(CONTROL_A);
@@ -124,7 +164,6 @@ void loop()
   delay(5);
 }
 
-
 void calculateMovement() 
 {
 #if HAVE_ANALOG
@@ -134,9 +173,9 @@ void calculateMovement()
   static int controlA = 0;
   static int controlB = 0;
   if(ballSpeedX < 0)
-    controlA += 2*(ballY-paddleLocationA-PADDLE_HEIGHT/2+BALL_SIZE/2);
+    controlA += 2*(expectAY-paddleLocationA-PADDLE_HEIGHT/2+BALL_SIZE/2);
   if(ballSpeedX > 0)
-    controlB += 2*(ballY-paddleLocationB-PADDLE_HEIGHT/2+BALL_SIZE/2);
+    controlB += 2*(expectBY-paddleLocationB-PADDLE_HEIGHT/2+BALL_SIZE/2);
 #endif
   paddleLocationA = map(controlA, 0, 1023, 0, SCREEN_HEIGHT - PADDLE_HEIGHT);
   paddleLocationB = map(controlB, 0, 1023, 0, SCREEN_HEIGHT - PADDLE_HEIGHT);
@@ -160,6 +199,7 @@ void calculateMovement()
       ballSpeedX = -ballSpeedX;
     
       addEffect(paddleSpeedA);
+      expectBY = expectB();
     }
 
   }
@@ -171,6 +211,7 @@ void calculateMovement()
       ballSpeedX = -ballSpeedX;
     
       addEffect(paddleSpeedB);
+      expectAY = expectA();
     }
 
   }
@@ -180,10 +221,12 @@ void calculateMovement()
     if (ballSpeedX > 0) {
       scoreA++;
       ballX = SCREEN_WIDTH / 4;
+      expectBY = expectB();
     }
     if (ballSpeedX < 0) {
       scoreB++;
       ballX = SCREEN_WIDTH / 4 * 3;
+      expectAY = expectA();
     }
 
     soundPoint();   
@@ -205,8 +248,8 @@ void draw()
   display.fillRect(SCREEN_WIDTH-PADDLE_WIDTH-PADDLE_PADDING,paddleLocationB,PADDLE_WIDTH,PADDLE_HEIGHT,WHITE);
 
   //draw center line
-  for (int i=0; i<SCREEN_HEIGHT; i+=16) {
-    display.drawFastVLine(SCREEN_WIDTH/2, i, 8, WHITE);
+  for (int i=0; i<SCREEN_HEIGHT; i+=26) {
+    display.drawFastVLine(SCREEN_WIDTH/2, i, 10, WHITE);
   }
   
   // draw horizontal top line
