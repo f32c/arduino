@@ -20,6 +20,8 @@ extern "C" {
 
 // the most basic function, set a single pixel
 void Adafruit_F32C_VGA::drawPixel(int16_t x, int16_t y, uint16_t color) {
+  uint32_t mem;
+  volatile uint32_t *ptr;
   if ((x < 0) || (x >= width()) || (y < 0) || (y >= height()))
     return;
 
@@ -37,8 +39,17 @@ void Adafruit_F32C_VGA::drawPixel(int16_t x, int16_t y, uint16_t color) {
     swap(x, y);
     y = HEIGHT - y - 1;
     break;
-  }  
-  videomem[x/8+y*80] |= (color != 0 ? 0x01010101 : 0)<<(x&7);
+  }
+  ptr = &(videomem[x/8+y*80]);
+  mem = *ptr & ~(0x01010101<<(x&7)); // clear old bits
+  // color space highcolor RGB 565 -> RGBI
+  // replace new bits
+  *ptr = mem
+       |  ( (1<<24) // intensity bit always 1
+          | ((color&(1<<15)) << 1)
+          | ((color&(1<<10)) >> 2)
+          | ((color&(1<<4)) >> 4)
+          ) << (x&7);
 }
 
 Adafruit_F32C_VGA::Adafruit_F32C_VGA(int8_t mode) :
