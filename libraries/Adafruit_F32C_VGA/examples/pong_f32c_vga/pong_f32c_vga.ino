@@ -173,9 +173,9 @@ void calculateMovement()
   static int controlA = 0;
   static int controlB = 0;
   if(ballSpeedX < 0)
-    controlA += 2*(expectAY-paddleLocationA-PADDLE_HEIGHT/2+BALL_SIZE/2);
+    controlA += 1*(expectAY-paddleLocationA-PADDLE_HEIGHT/2+BALL_SIZE/2);
   if(ballSpeedX > 0)
-    controlB += 2*(expectBY-paddleLocationB-PADDLE_HEIGHT/2+BALL_SIZE/2);
+    controlB += 1*(expectBY-paddleLocationB-PADDLE_HEIGHT/2+BALL_SIZE/2);
 #endif
   paddleLocationA = map(controlA, 0, 1023, 0, SCREEN_HEIGHT - PADDLE_HEIGHT);
   paddleLocationB = map(controlB, 0, 1023, 0, SCREEN_HEIGHT - PADDLE_HEIGHT);
