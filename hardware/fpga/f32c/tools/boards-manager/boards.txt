@@ -107,6 +107,12 @@ fpga_de0_nano_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_de0_nano_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_de0_nano_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_de0_nano_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_de0_nano_bram.menu.ramsize.32=32 KB BRAM Internal
+fpga_de0_nano_bram.menu.ramsize.32.upload.maximum_size=31232
+fpga_de0_nano_bram.menu.ramsize.32.build.extra_flags=--section-start=.init=0x400
+fpga_de0_nano_bram.menu.ramsize.32MB=32 MB SDRAM Onboard
+fpga_de0_nano_bram.menu.ramsize.32MB.upload.maximum_size=33521664
+fpga_de0_nano_bram.menu.ramsize.32MB.build.extra_flags=--section-start=.init=0x80000000
 
 #
 # Spartan-3 (3E, 3A, 3AN) Starter Kits
@@ -289,7 +295,7 @@ fpga_e2lp_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_e2lp_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 
 #
-# Xilinx Scarab Hardware miniSpartan6+ Board (ebay), f32c SoC
+# Xilinx Scarab Hardware miniSpartan6+ Board, f32c SoC
 #
 fpga_scarab_bram.name=Scarab miniSpartan6+ (Xilinx Spartan-6 XC6SLX25, 64K BRAM, 81.25/112.5 MHz)
 fpga_scarab_bram.build.mcu=f32c
@@ -317,13 +323,10 @@ fpga_scarab_bram.menu.ramsize.64=64 KB BRAM Internal
 fpga_scarab_bram.menu.ramsize.64.upload.maximum_size=64000
 fpga_scarab_bram.menu.ramsize.64.build.extra_flags=--section-start=.init=0x400
 fpga_scarab_bram.menu.ramsize.64.memsupport=bram
-fpga_scarab_bram.menu.ramsize.64sd=64 KB BRAM Internal + 32 MB SDRAM Onboard
-fpga_scarab_bram.menu.ramsize.64sd.upload.maximum_size=64000
-fpga_scarab_bram.menu.ramsize.64sd.build.extra_flags=--section-start=.init=0x400
-fpga_scarab_bram.menu.ramsize.64sd.memsupport=sdram
-fpga_scarab_bram.menu.ramsize.32MB=32 MB SDRAM Onboard (1MB useable)
-fpga_scarab_bram.menu.ramsize.32MB.upload.maximum_size=1015808
+fpga_scarab_bram.menu.ramsize.32MB=32 MB SDRAM Onboard
+fpga_scarab_bram.menu.ramsize.32MB.upload.maximum_size=33521664
 fpga_scarab_bram.menu.ramsize.32MB.build.extra_flags=--section-start=.init=0x80000000
+fpga_scarab_bram.menu.ramsize.32MB.memsupport=sdram
 fpga_scarab_bram.menu.speed.81=81.25 MHz
 fpga_scarab_bram.menu.speed.81.build.f_cpu=81250000
 fpga_scarab_bram.menu.speed.81.bitstream.fcpu.mhz=81
