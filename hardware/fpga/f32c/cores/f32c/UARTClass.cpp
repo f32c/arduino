@@ -23,26 +23,22 @@
 
 #include <dev/io.h>
 
+#include "variant.h"
 
-#define	SIO_RXBUFSIZE	(1 << 3)
-#define	SIO_RXBUFMASK	(SIO_RXBUFSIZE - 1)
+UARTClass<IO_SIO_BYTE, IO_SIO_STATUS, IO_SIO_BAUD>  Serial;
 
-static char sio_rxbuf[SIO_RXBUFSIZE];
-static uint8_t sio_rxbuf_head;
-static uint8_t sio_rxbuf_tail;
-static uint8_t sio_tx_xoff;
+#if defined(IO_SIO_BYTE_1)
+UARTClass<IO_SIO_BYTE_1, IO_SIO_STATUS_1, IO_SIO_BAUD_1> Serial1;
+#endif
 
-UARTClass Serial;
-
-
-static __attribute__((optimize("-Os"))) int
-sio_probe_rx(void)
+template <int byte_reg, int status_reg, int baud_reg>
+int UARTClass<byte_reg, status_reg, baud_reg>::sio_probe_rx(void)
 {
 	int c, s;
 
-	INB(s, IO_SIO_STATUS);
+	INB(s, status_reg);
 	if (s & SIO_RX_FULL) {
-		INB(c, IO_SIO_BYTE);
+		INB(c, byte_reg);
 		if (c == 0x13) {
 			/* XOFF */
 			sio_tx_xoff = 1;
@@ -59,28 +55,27 @@ sio_probe_rx(void)
 	return(s);
 }
 
+template <int byte_reg, int status_reg, int baud_reg>
+int UARTClass<byte_reg, status_reg, baud_reg>::sio_getchar(int blocking)
+	{
+		int c, busy;
 
-static __attribute__((optimize("-Os"))) int
-sio_getchar(int blocking)
-{
-	int c, busy;
+		/* Any new characters received from RS-232? */
+		do {
+			sio_probe_rx();
+			busy = (sio_rxbuf_head == sio_rxbuf_tail);
+		} while (blocking && busy);
 
-	/* Any new characters received from RS-232? */
-	do {
-		sio_probe_rx();
-		busy = (sio_rxbuf_head == sio_rxbuf_tail);
-	} while (blocking && busy);
-
-	if (busy)
-		return (-1);
-	c = sio_rxbuf[sio_rxbuf_tail++];
-	sio_rxbuf_tail &= SIO_RXBUFMASK;
-	return (c);
-}
+		if (busy)
+			return (-1);
+		c = sio_rxbuf[sio_rxbuf_tail++];
+		sio_rxbuf_tail &= SIO_RXBUFMASK;
+		return (c);
+	}
 
 
-static __attribute__((optimize("-Os"))) int
-sio_putchar(int c, int blocking)
+template <int byte_reg, int status_reg, int baud_reg>
+int UARTClass<byte_reg, status_reg, baud_reg>::sio_putchar(int c, int blocking)
 {
 	int in, busy;
 
@@ -90,7 +85,7 @@ sio_putchar(int c, int blocking)
 	} while (blocking && busy);
 
 	if (busy == 0)
-		OUTB(IO_SIO_BYTE, c);
+		OUTB(byte_reg, c);
 	return (busy);
 }
 
@@ -98,8 +93,8 @@ sio_putchar(int c, int blocking)
 /*
  * Set RS-232 baudrate.  Works well with FT-232R from 300 to 3000000 bauds.
  */
-static __attribute__((optimize("-Os"))) void
-sio_setbaud(int bauds)
+template <int byte_reg, int status_reg, int baud_reg>
+void UARTClass<byte_reg, status_reg, baud_reg>::sio_setbaud(int bauds)
 {
 	uint32_t val;
 
@@ -110,45 +105,40 @@ sio_setbaud(int bauds)
 	val = val * 1024 / 1000 * 1024 / (F_CPU / 1000) + 1;
 	if (bauds > 1000000)
 		val *= 10;
-	OUTH(IO_SIO_BAUD, val);
+	OUTH(baud_reg, val);
 }
-
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-void
-UARTClass::begin(unsigned long bauds)
+template <int byte_reg, int status_reg, int baud_reg>
+void UARTClass<byte_reg, status_reg, baud_reg>::begin(unsigned long bauds)
 {
 	
 	sio_setbaud(bauds);
 }
 
-
-void
-UARTClass::end(void)
+template <int byte_reg, int status_reg, int baud_reg>
+void UARTClass<byte_reg, status_reg, baud_reg>::end(void)
 {
 }
 
-
-int
-UARTClass::available(void)
+template <int byte_reg, int status_reg, int baud_reg>
+int UARTClass<byte_reg, status_reg, baud_reg>::available(void)
 {
 
 	sio_probe_rx();
 	return (!(sio_rxbuf_head == sio_rxbuf_tail));
 }
 
-
-int
-UARTClass::availableForWrite(void)
+template <int byte_reg, int status_reg, int baud_reg>
+int UARTClass<byte_reg, status_reg, baud_reg>::availableForWrite(void)
 {
 
 	return (1);
 }
 
-
-int
-UARTClass::peek(void)
+template <int byte_reg, int status_reg, int baud_reg>
+int UARTClass<byte_reg, status_reg, baud_reg>::peek(void)
 {
 
 	sio_probe_rx();
@@ -159,22 +149,21 @@ UARTClass::peek(void)
 }
 
 
-int
-UARTClass::read(void)
+template <int byte_reg, int status_reg, int baud_reg>
+int UARTClass<byte_reg, status_reg, baud_reg>::read(void)
 {
 
 	return (sio_getchar(1));
 }
 
 
-void
-UARTClass::flush(void)
+template <int byte_reg, int status_reg, int baud_reg>
+void UARTClass<byte_reg, status_reg, baud_reg>::flush(void)
 {
 }
 
-
-size_t
-UARTClass::write(const uint8_t uc_data)
+template <int byte_reg, int status_reg, int baud_reg>
+size_t UARTClass<byte_reg, status_reg, baud_reg>::write(const uint8_t uc_data)
 {
 
 	sio_putchar(uc_data, 1);

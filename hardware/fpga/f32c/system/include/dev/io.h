@@ -46,6 +46,7 @@
 #define	IO_GPIO_RISE_IE	IO_ADDR(0x00C)	/* word, RW */
 #define	IO_GPIO_FALL_IF	IO_ADDR(0x010)	/* word, RW (clear only) */
 #define	IO_GPIO_FALL_IE	IO_ADDR(0x014)	/* word, RW */
+#define	IO_GPIO_INPUT	IO_ADDR(0x018)	/* word, RW (write toggles DATA) */
 
 #define	IO_TIMER	IO_ADDR(0x100)	/* 16-byte, WR */
 

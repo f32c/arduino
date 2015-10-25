@@ -12,14 +12,20 @@ void
 pinMode(uint32_t pin, uint32_t mode)
 {
 	volatile uint32_t *port = (volatile uint32_t *) IO_GPIO_CTL;
+	volatile uint32_t *pullup = (volatile uint32_t *) IO_GPIO_DATA;
 
 	if (pin >= variant_pin_map_size ||
 	    digitalPinToPort(pin) != IO_GPIO_DATA)
 		return;
 
 	switch (mode) {
+	case INPUT_PULLUP:
+		*port &= ~(1<<variant_pin_map[pin].bit_pos);
+		*pullup |= (1<<variant_pin_map[pin].bit_pos);
+		break;
 	case INPUT:
 		*port &= ~(1<<variant_pin_map[pin].bit_pos);
+		*pullup &= ~(1<<variant_pin_map[pin].bit_pos);
 		break;
 	case OUTPUT:
 		*port |=  (1<<variant_pin_map[pin].bit_pos);
