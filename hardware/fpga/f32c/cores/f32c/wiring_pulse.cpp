@@ -92,6 +92,7 @@ extern void pulseListen(uint32_t pin1, uint32_t pin2, bool state)
    * as there's only one timer with 2 icp units, ICP1 and ICP2
    */
   /* completely open ICP Filter - captures every incoming pulse edge */
+  (void)pin1; (void)pin2;	/* warning fix */
   EMARD_TIMER[TC_ICP1_START] = 0;
   EMARD_TIMER[TC_ICP1_STOP] = 0;
 

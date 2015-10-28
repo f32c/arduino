@@ -38,6 +38,13 @@ const volatile uint32_t *pintype2ioaddr[PIN_TYPE_SIZE] = {
   [PIN_TYPE_GPIO]   = (volatile uint32_t *)IO_GPIO_DATA
 };
 
+const volatile uint32_t *pintype2ioaddr_in[PIN_TYPE_SIZE] = {
+  [PIN_TYPE_NC]     = NULL,
+  [PIN_TYPE_INPUT]  = (volatile uint32_t *)IO_PUSHBTN,
+  [PIN_TYPE_OUTPUT] = (volatile uint32_t *)IO_LED,
+  [PIN_TYPE_GPIO]   = (volatile uint32_t *)IO_GPIO_INPUT
+};
+
 const struct variant_pin_map_s variant_pin_map[] = VARIANT_DIGITAL_PIN_MAP;
 const uint32_t variant_pin_map_size = sizeof(variant_pin_map);
 
@@ -88,17 +95,11 @@ micros(void)
 void
 delay(uint32_t ms)
 {
-
-	/*
-	 * Implemented as a delay loop, which assumes that:
-	 * 1)  CPU has a branch predictor
-	 * 2)  CPU has result forwarding bypasses
-	 * 3a) CPU has zero-wait-state instruction cache, or
-	 * 3b) instructios are fetched from zero-wait-state RAM
-	 * 4)  CPU clock speed is time-invariant
-	 *
-	 * If any of the above conditions are not met, delay loop
-	 * will execute longer than expected.
-	 */
-	DELAY(ms * (F_CPU / 1000));
+	int32_t t = micros();
+	while (ms--)
+	{
+		while ((int32_t)(micros() - t) < 1000)
+			;
+		t += 1000;
+	}
 }

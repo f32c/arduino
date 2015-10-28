@@ -121,7 +121,26 @@ uint32_t analogRead(uint32_t ulPin)
      similar as input capture, but with 3-state output and input
      on the same pin
   */
-  return 0;
+  uint32_t r = 0;
+
+#if defined(IO_ADC_A0)
+  /* TO-DONE: The above was done on FleaFPGA-Uno board and this code reads the result. :-) */
+    volatile uint32_t *adc = (volatile uint32_t *)IO_ADC_A0;
+	volatile uint32_t *port = (volatile uint32_t *) IO_GPIO_CTL;
+	
+	if (ulPin >= A0 && ulPin <= A5)
+	{
+		*port &= ~(1<<variant_pin_map[ulPin].bit_pos);	// make sure set to INPUT
+		int16_t v = adc[ulPin-A0];
+		if (v < IO_ADC_MINVAL)
+			v = IO_ADC_MINVAL;
+		if (v > IO_ADC_MAXVAL)
+			v = IO_ADC_MAXVAL;
+		r = (v - IO_ADC_MINVAL) * 1023 / (IO_ADC_MAXVAL - IO_ADC_MINVAL);	// scale 0 to 1023
+	}
+#endif
+
+  return r;
 }
 
 /* input capture setting */
