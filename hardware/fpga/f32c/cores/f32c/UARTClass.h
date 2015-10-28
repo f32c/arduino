@@ -21,7 +21,7 @@
 
 #include "HardwareSerial.h"
 
-template <int byte_reg, int status_reg, int baud_reg>
+
 class UARTClass : public HardwareSerial
 {
   public:
@@ -39,23 +39,6 @@ class UARTClass : public HardwareSerial
 
   protected:
 //    void init(const uint32_t dwBaudRate);
-
-  private:
-	enum
-	{
-		SIO_RXBUFSIZE =	(1 << 3),
-		SIO_RXBUFMASK = (SIO_RXBUFSIZE - 1)
-	};
-
-	char sio_rxbuf[SIO_RXBUFSIZE];
-	uint8_t sio_rxbuf_head;
-	uint8_t sio_rxbuf_tail;
-	uint8_t sio_tx_xoff;
-	
-	__attribute__((optimize("-Os"))) int sio_probe_rx(void);
-	__attribute__((optimize("-Os"))) int sio_getchar(int blocking);
-	__attribute__((optimize("-Os"))) int sio_putchar(int c, int blocking);
-	__attribute__((optimize("-Os"))) void sio_setbaud(int bauds);
 };
 
 #endif // _UART_CLASS_
