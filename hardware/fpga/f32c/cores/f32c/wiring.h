@@ -45,6 +45,7 @@ enum ICP_TYPE {
 };
 
 extern const volatile uint32_t *pintype2ioaddr[];
+extern const volatile uint32_t *pintype2ioaddr_in[];
 
 struct variant_pin_map_s {
 	uint8_t	io_port:3,  // max 8 pin types

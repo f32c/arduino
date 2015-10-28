@@ -68,7 +68,7 @@ digitalRead(uint32_t pin)
 	if (pin >= variant_pin_map_size)
 		return 0;
 
-	port = (PortRegister_t)digitalPinToPort(pin);
+	port = (PortRegister_t)digitalPinToPortIn(pin);
 	return ((*port & (1<<variant_pin_map[pin].bit_pos)) != 0);
 }
 
