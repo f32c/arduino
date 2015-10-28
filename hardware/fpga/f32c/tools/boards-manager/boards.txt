@@ -510,8 +510,8 @@ fpga_esa11_7a35i_bram.upload.tool=ujprog
 fpga_esa11_7a35i_bram.upload.wait_for_upload_port=false
 fpga_esa11_7a35i_bram.upload.native_usb=false
 fpga_esa11_7a35i_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/esa11_7a35i_ms6p.cfg
-fpga_esa11_7a35i_bram.bootloader.file.svf={runtime.tools.bootloaders.path}/esa11_7a35i/esa11_7a35i_{memsupport}_xc7a35i_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
-fpga_esa11_7a35i_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/esa11_7a35i/esa11_7a35i_{memsupport}_xc7a35i_{cpu.arch}_{bitstream.fcpu.mhz}mhz.bit
+fpga_esa11_7a35i_bram.bootloader.file.svf={runtime.tools.bootloaders.path}/esa11/esa11_7a35i_{memsupport}_hdmi_{cpu.arch}_{bitstream.fcpu.mhz}mhz.svf
+fpga_esa11_7a35i_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/esa11/esa11_7a35i_{memsupport}_hdmi_{cpu.arch}_{bitstream.fcpu.mhz}mhz.bit
 fpga_esa11_7a35i_bram.bootloader.jtag_spi_bridge.bit={runtime.tools.bootloaders.path}/esa11_7a35i/bscan_xc7a_fgg484_blink.bit
 fpga_esa11_7a35i_bram.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
 fpga_esa11_7a35i_bram.menu.cpu.mips=MIPS
@@ -537,18 +537,14 @@ fpga_esa11_7a35i_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_esa11_7a35i_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
 fpga_esa11_7a35i_bram.menu.protocol.bin.upload.protocol=bin
 fpga_esa11_7a35i_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
-#fpga_esa11_7a35i_bram.menu.pinmap.generic=Generic
-#fpga_esa11_7a35i_bram.menu.pinmap.generic.build.variant=generic
+fpga_esa11_7a35i_bram.menu.pinmap.generic=Generic
+fpga_esa11_7a35i_bram.menu.pinmap.generic.build.variant=generic
 fpga_esa11_7a35i_bram.menu.pinmap.esa11=ESA11
 fpga_esa11_7a35i_bram.menu.pinmap.esa11.build.variant=esa11
-fpga_esa11_7a35i_bram.menu.jtag.ft2232=External FT2232 JTAG
-fpga_esa11_7a35i_bram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft2232-generic.ocd
-fpga_esa11_7a35i_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
-fpga_esa11_7a35i_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+fpga_esa11_7a35i_bram.menu.jtag.ft2232=Onboard FT4232 JTAG
+fpga_esa11_7a35i_bram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft4232-generic.ocd
 fpga_esa11_7a35i_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
-fpga_esa11_7a35i_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi "{bootloader.file.bit}"
-fpga_esa11_7a35i_bram.menu.bitstream.flash_xc3sprog=FLASH xc3sprog (permanent)
-fpga_esa11_7a35i_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi "-I{bootloader.jtag_spi_bridge.bit}" "{bootloader.file.bit}"
+fpga_esa11_7a35i_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ft4232h_fast "{bootloader.file.bit}"
 
 #
 # Lattice FleaFPGA-Uno (Fleasystems Lattice MachXO2-7000HC)
