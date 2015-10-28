@@ -551,39 +551,52 @@ fpga_esa11_7a35i_bram.menu.bitstream.flash_xc3sprog=FLASH xc3sprog (permanent)
 fpga_esa11_7a35i_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi "-I{bootloader.jtag_spi_bridge.bit}" "{bootloader.file.bit}"
 
 #
-# Lattice FleaFPGA (FLEAsystems Lattice MachXO2-7000HE)
+# Lattice FleaFPGA-Uno (Fleasystems Lattice MachXO2-7000HC)
 # http://www.fleasystems.com
 #
-fpga_fleafpga_bram.name=FleaFPGA (Lattice MachXO2-7000HE, 16K BRAM, 75 MHz)
-fpga_fleafpga_bram.build.f_cpu=75000000
-fpga_fleafpga_bram.build.variant=generic
-fpga_fleafpga_bram.build.mcu=f32c
-fpga_fleafpga_bram.build.core=f32c
-fpga_fleafpga_bram.build.board=F32C_FPGA_FLEAFPGA_BRAM
-fpga_fleafpga_bram.upload.tool=ujprog
-fpga_fleafpga_bram.upload.wait_for_upload_port=false
-fpga_fleafpga_bram.upload.native_usb=false
-fpga_fleafpga_bram.upload.maximum_size=14848
-fpga_fleafpga_bram.menu.cpu.mips=MIPS
-fpga_fleafpga_bram.menu.cpu.mips.cpu.arch=mips
-fpga_fleafpga_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
-fpga_fleafpga_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
-fpga_fleafpga_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpga_fleafpga_bram.menu.cpu.riscv=RISC-V
-fpga_fleafpga_bram.menu.cpu.riscv.cpu.arch=riscv
-fpga_fleafpga_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
-fpga_fleafpga_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
-fpga_fleafpga_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_fleafpga_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
-fpga_fleafpga_bram.menu.protocol.hex.upload.protocol=hex
-fpga_fleafpga_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
-fpga_fleafpga_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
-fpga_fleafpga_bram.menu.protocol.bin.upload.protocol=bin
-fpga_fleafpga_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
-fpga_fleafpga_bram.menu.pinmap.generic=Generic
-fpga_fleafpga_bram.menu.pinmap.generic.build.variant=generic
-fpga_fleafpga_bram.menu.pinmap.flearduino_shield=FLEArduino Shield
-fpga_fleafpga_bram.menu.pinmap.flearduino_shield.build.variant=flearduino_shield
+fpga_fleafpga_uno.name=FleaFPGA-Uno (Lattice MachXO2-7000HC)
+fpga_fleafpga_uno.build.f_cpu=50000000
+fpga_fleafpga_uno.build.variant=generic
+fpga_fleafpga_uno.build.mcu=f32c
+fpga_fleafpga_uno.build.core=f32c
+fpga_fleafpga_uno.upload.tool=ujprog
+fpga_fleafpga_uno.upload.wait_for_upload_port=false
+fpga_fleafpga_uno.upload.native_usb=false
+fpga_fleafpga_uno.upload.maximum_size=491520
+fpga_fleafpga_uno.upload.bitstream.command="{path}/{cmd}" -j FLASH "{runtime.platform.path}/bootloaders/{bootloader.file}"
+fpga_fleafpga_uno.menu.cpu.mips=MIPS
+fpga_fleafpga_uno.menu.cpu.mips.cpu.arch=mips
+fpga_fleafpga_uno.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_fleafpga_uno.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_fleafpga_uno.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_fleafpga_uno.menu.cpu.riscv=RISC-V
+fpga_fleafpga_uno.menu.cpu.riscv.cpu.arch=riscv
+fpga_fleafpga_uno.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_fleafpga_uno.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_fleafpga_uno.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_fleafpga_uno.menu.ramsize.512K=512KB SRAM Onboard
+fpga_fleafpga_uno.menu.ramsize.512K.upload.maximum_size=491520
+fpga_fleafpga_uno.menu.ramsize.512K.build.extra_flags=--section-start=.init=0x80000000
+fpga_fleafpga_uno.menu.ramsize.16K=16KB BRAM Internal
+fpga_fleafpga_uno.menu.ramsize.16K.upload.maximum_size=14900
+fpga_fleafpga_uno.menu.ramsize.16K.build.extra_flags=--section-start=.init=0x400
+fpga_fleafpga_uno.menu.speed.50=50 MHz
+fpga_fleafpga_uno.menu.speed.50.build.f_cpu=50000000
+fpga_fleafpga_uno.menu.speed.40=40 MHz
+fpga_fleafpga_uno.menu.speed.40.build.f_cpu=40000000
+fpga_fleafpga_uno.menu.speed.25=25 MHz
+fpga_fleafpga_uno.menu.speed.25.build.f_cpu=25000000
+fpga_fleafpga_uno.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_fleafpga_uno.menu.protocol.hex.upload.protocol=hex
+fpga_fleafpga_uno.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_fleafpga_uno.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_fleafpga_uno.menu.protocol.bin.upload.protocol=bin
+fpga_fleafpga_uno.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_fleafpga_uno.menu.pinmap.FleaFPGA-Uno=FleaFPGA-Uno board
+fpga_fleafpga_uno.menu.pinmap.FleaFPGA-Uno.build.variant=FleaFPGA-Uno
+fpga_fleafpga_uno.menu.jtag.fleafpga=FleaFPGA-JTAG (onboard)
+fpga_fleafpga_uno.menu.bitstream.normal=WIP (normal)
+fpga_fleafpga_uno.menu.bitstream.normal.bootloader.file=FleaFPGA-Uno/FleaFPGA-Uno_mips_sram_50mhz.vme
 
 #
 # FPGArduino Generic f32c SoC
