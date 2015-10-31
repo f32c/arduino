@@ -205,8 +205,8 @@ fpga_basys3_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 #
 # ZYBO
 #
-fpga_zybo_bram.name=Digilent ZYBO (Xilinx Zynq 7010, 128K BRAM, 125 MHz)
-fpga_zybo_bram.build.f_cpu=125000000
+fpga_zybo_bram.name=Digilent ZYBO (Xilinx Zynq 7010, 128K BRAM, 100 MHz)
+fpga_zybo_bram.build.f_cpu=100000000
 fpga_zybo_bram.build.variant=generic
 fpga_zybo_bram.build.mcu=f32c
 fpga_zybo_bram.build.core=f32c
@@ -215,10 +215,12 @@ fpga_zybo_bram.upload.tool=ujprog
 fpga_zybo_bram.upload.wait_for_upload_port=false
 fpga_zybo_bram.upload.native_usb=false
 fpga_zybo_bram.upload.maximum_size=129536
-fpga_zybo_bram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+#fpga_zybo_bram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+fpga_zybo_bram.bootloader.file.svf={runtime.tools.bootloaders.path}/zybo/zybo_{cpu.arch}_bram_{bitstream.fcpu.mhz}mhz.svf
+fpga_zybo_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/zybo/zybo_{cpu.arch}_bram_{bitstream.fcpu.mhz}mhz.bit
 fpga_zybo_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/zybo.cfg
-fpga_zybo_bram.bootloader.openocd.command=svf -tap chip.tap {{runtime.tools.bootloaders.path}/zybo/zybo_{cpu.arch}_bram_{bitstream.fcpu.mhz}mhz.svf}
-fpga_zybo_bram.bitstream.fcpu.mhz=125
+fpga_zybo_bram.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
+fpga_zybo_bram.bitstream.fcpu.mhz=100
 fpga_zybo_bram.menu.cpu.mips=MIPS
 fpga_zybo_bram.menu.cpu.mips.cpu.arch=mips
 fpga_zybo_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
@@ -231,8 +233,6 @@ fpga_zybo_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_zybo_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 fpga_zybo_bram.menu.jtag.zybo=ZYBO onboard JTAG
 fpga_zybo_bram.menu.jtag.zybo.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/digilent_adept.cfg
-fpga_zybo_bram.menu.jtag.alterablaster=Altera Blaster
-fpga_zybo_bram.menu.jtag.alterablaster.bootloader.openocd.interface=interface/altera-usb-blaster.cfg
 fpga_zybo_bram.menu.jtag.fpu1=PLDkit FPU1 JTAG
 fpga_zybo_bram.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
 fpga_zybo_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
@@ -241,6 +241,10 @@ fpga_zybo_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_zybo_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
 fpga_zybo_bram.menu.protocol.bin.upload.protocol=bin
 fpga_zybo_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_zybo_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
+fpga_zybo_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+fpga_zybo_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
+fpga_zybo_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c jtaghs1_fast -p 1 "{bootloader.file.bit}"
 
 #
 # Lattice Brevia / Brevia2
