@@ -148,3 +148,7 @@ expected to be an I2C master in most cases.
 There's SoftwareWire I2C master which works
 because F32C is fast enough and has high
 resolution 32-bit timer.
+
+DDR memory is currently not supported. 
+FPGA vendors are providing some proprietary
+solutions for selected memory chips.
