@@ -150,5 +150,7 @@ because F32C is fast enough and has high
 resolution 32-bit timer.
 
 DDR memory is currently not supported. 
+This includes all types, DDR, DDR2, DDR3.
+Support for it should be possible because
 FPGA vendors are providing some proprietary
-solutions for selected memory chips.
+solutions for a range of selected memory chips.
