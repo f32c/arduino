@@ -117,7 +117,7 @@ under construction for other boards.
 TV Framebuffer with composite video output displaying SRAM content
 tested only on ULX2S, should work on any other capable
 of 81.25 MHz CPU and 325 MHz pixel clock. Composite video
-currently must run synchronous with CPU speed.
+currently must run synchronous with CPU clock.
 
 DMA works only on boards that support SRAM or SDRAM.
 
