@@ -129,7 +129,8 @@ fpga_s3starter_bram.upload.native_usb=false
 fpga_s3starter_bram.upload.maximum_size=31232
 fpga_s3starter_bram.upload.protocol=hex
 fpga_s3starter_bram.upload.flags=-P{serial.port} -ra
-fpga_s3starter_bram.upload.bitstream.command="xc3sprog" -c xpc "{runtime.platform.path}/bootloaders/{bootloader.file}"
+fpga_s3starter_bram.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c xpc "{runtime.platform.path}/bootloaders/{bootloader.file}"
+fpga_s3starter_bram.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c xpc "{runtime.platform.path}/bootloaders/{bootloader.file}"
 fpga_s3starter_bram.bootloader.file=xilinx_s3_starter/{bitstream.model}_{cpu.arch}_70mhz.bit
 fpga_s3starter_bram.menu.cpu.mips=MIPS
 fpga_s3starter_bram.menu.cpu.mips.cpu.arch=mips
@@ -244,7 +245,8 @@ fpga_zybo_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
 fpga_zybo_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
 fpga_zybo_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 fpga_zybo_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
-fpga_zybo_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c jtaghs1_fast -p 1 "{bootloader.file.bit}"
+fpga_zybo_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c jtaghs1_fast -p 1 "{bootloader.file.bit}"
+fpga_zybo_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c jtaghs1_fast -p 1 "{bootloader.file.bit}"
 
 #
 # Lattice Brevia / Brevia2
@@ -351,9 +353,11 @@ fpga_scarab_bram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform
 fpga_scarab_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
 fpga_scarab_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 fpga_scarab_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
-fpga_scarab_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi_fast "{bootloader.file.bit}"
+fpga_scarab_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c ftdi_fast "{bootloader.file.bit}"
+fpga_scarab_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c ftdi_fast "{bootloader.file.bit}"
 fpga_scarab_bram.menu.bitstream.flash_xc3sprog=FLASH xc3sprog (permanent)
-fpga_scarab_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ftdi_fast "-I{bootloader.jtag_spi_bridge.bit}" "{bootloader.file.bit}"
+fpga_scarab_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c ftdi_fast "-I{bootloader.jtag_spi_bridge.bit}" "{bootloader.file.bit}"
+fpga_scarab_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c ftdi_fast "-I{bootloader.jtag_spi_bridge.bit}" "{bootloader.file.bit}"
 
 #
 # Xilinx TB299 Board (ebay), f32c SoC
@@ -545,7 +549,8 @@ fpga_esa11_7a35i_bram.menu.pinmap.esa11.build.variant=esa11
 fpga_esa11_7a35i_bram.menu.jtag.ft2232=Onboard FT4232 JTAG
 fpga_esa11_7a35i_bram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft4232-generic.ocd
 fpga_esa11_7a35i_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
-fpga_esa11_7a35i_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command={runtime.tools.xc3sprog.path}/xc3sprog -c ft4232h_fast "{bootloader.file.bit}"
+fpga_esa11_7a35i_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c ft4232h_fast "{bootloader.file.bit}"
+fpga_esa11_7a35i_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c ft4232h_fast "{bootloader.file.bit}"
 
 #
 # Lattice FleaFPGA-Uno (Fleasystems Lattice MachXO2-7000HC)
