@@ -32,6 +32,13 @@ OPENOCD_APPLE64="openocd-0.9.0-windows.zip"
 OPENOCD_LINUX32="openocd-0.9.0-linux32.tar.bz2"
 OPENOCD_LINUX64="openocd-0.9.0-linux64.tar.bz2"
 
+FLEAFPGA_NAME="FleaFPGA-JTAG"
+FLEAFPGA_VERSION="12.2"
+FLEAFPGA_WIN32="fleafpga-jtag-12.2-linux32.tar.bz2"
+FLEAFPGA_APPLE64="fleafpga-jtag-12.2-linux32.tar.bz2"
+FLEAFPGA_LINUX32="fleafpga-jtag-12.2-linux32.tar.bz2"
+FLEAFPGA_LINUX64="fleafpga-jtag-12.2-linux32.tar.bz2"
+
 COMPILER_NAME="f32c-compiler"
 COMPILER_VERSION="1.0.0"
 COMPILER_WIN32="f32c-win-toolchain.zip"
@@ -95,6 +102,11 @@ cat << EOF
               "packager":"${FPGARDUINO_NAME}",
               "name":"${OPENOCD_NAME}",
               "version":"${OPENOCD_VERSION}"
+            },
+            {
+              "packager":"${FPGARDUINO_NAME}",
+              "name":"${FLEAFPGA_NAME}",
+              "version":"${FLEAFPGA_VERSION}"
             },
             {
               "packager":"${FPGARDUINO_NAME}",
@@ -183,6 +195,41 @@ cat << EOF
               "archiveFileName":"${OPENOCD_LINUX64}",
               "checksum":"SHA-256:$(SHA256 ${OPENOCD_LINUX64})",
               "size":"$(SIZE ${OPENOCD_LINUX64})"
+            }
+          ]
+        },
+        {
+          "name":"${FLEAFPGA_NAME}",
+          "version":"${FLEAFPGA_VERSION}",
+          "systems":
+          [
+            {
+              "host":"i686-mingw32",
+              "url":"${BM_URL_BASE}/${FLEAFPGA_WIN32}",
+              "archiveFileName":"${FLEAFPGA_WIN32}",
+              "checksum":"SHA-256:$(SHA256 ${FLEAFPGA_WIN32})",
+              "size":"$(SIZE ${FLEAFPGA_WIN32})"
+            },
+            {
+              "host":"x86_64-apple-darwin",
+              "url":"${BM_URL_BASE}/${FLEAFPGA_APPLE64}",
+              "archiveFileName":"${FLEAFPGA_APPLE64}",
+              "checksum":"SHA-256:$(SHA256 ${FLEAFPGA_APPLE64})",
+              "size":"$(SIZE ${FLEAFPGA_APPLE64})"
+            },
+            {
+              "host":"i686-pc-linux-gnu",
+              "url":"${BM_URL_BASE}/${FLEAFPGA_LINUX32}",
+              "archiveFileName":"${FLEAFPGA_LINUX32}",
+              "checksum":"SHA-256:$(SHA256 ${FLEAFPGA_LINUX32})",
+              "size":"$(SIZE ${FLEAFPGA_LINUX32})"
+            },
+            {
+              "host":"x86_64-pc-linux-gnu",
+              "url":"${BM_URL_BASE}/${FLEAFPGA_LINUX64}",
+              "archiveFileName":"${FLEAFPGA_LINUX64}",
+              "checksum":"SHA-256:$(SHA256 ${FLEAFPGA_LINUX64})",
+              "size":"$(SIZE ${FLEAFPGA_LINUX64})"
             }
           ]
         },

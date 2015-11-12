@@ -565,7 +565,8 @@ fpga_fleafpga_uno.upload.tool=ujprog
 fpga_fleafpga_uno.upload.wait_for_upload_port=false
 fpga_fleafpga_uno.upload.native_usb=false
 fpga_fleafpga_uno.upload.maximum_size=491520
-fpga_fleafpga_uno.upload.bitstream.command="{path}/{cmd}" -j FLASH "{runtime.platform.path}/bootloaders/{bootloader.file}"
+fpga_fleafpga_uno.upload.bitstream.command="{runtime.tools.FleaFPGA-JTAG.path}/FleaFPGA-JTAG" "{runtime.platform.path}/bootloaders/{bootloader.file.vme}"
+fpga_fleafpga_uno.bootloader.file.vme={runtime.tools.bootloaders.path}/FleaFPGA-Uno/FleaFPGA-Uno_{cpu.arch}_sram_{bitstream.fcpu.mhz}mhz.vme
 fpga_fleafpga_uno.menu.cpu.mips=MIPS
 fpga_fleafpga_uno.menu.cpu.mips.cpu.arch=mips
 fpga_fleafpga_uno.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
@@ -584,10 +585,13 @@ fpga_fleafpga_uno.menu.ramsize.16K.upload.maximum_size=14900
 fpga_fleafpga_uno.menu.ramsize.16K.build.extra_flags=--section-start=.init=0x400
 fpga_fleafpga_uno.menu.speed.50=50 MHz
 fpga_fleafpga_uno.menu.speed.50.build.f_cpu=50000000
+fpga_fleafpga_uno.menu.speed.50.bitstream.fcpu.mhz=50
 fpga_fleafpga_uno.menu.speed.40=40 MHz
 fpga_fleafpga_uno.menu.speed.40.build.f_cpu=40000000
+fpga_fleafpga_uno.menu.speed.40.bitstream.fcpu.mhz=40
 fpga_fleafpga_uno.menu.speed.25=25 MHz
 fpga_fleafpga_uno.menu.speed.25.build.f_cpu=25000000
+fpga_fleafpga_uno.menu.speed.25.bitstream.fcpu.mhz=25
 fpga_fleafpga_uno.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
 fpga_fleafpga_uno.menu.protocol.hex.upload.protocol=hex
 fpga_fleafpga_uno.menu.protocol.hex.upload.flags=-P{serial.port} -ra
@@ -596,9 +600,8 @@ fpga_fleafpga_uno.menu.protocol.bin.upload.protocol=bin
 fpga_fleafpga_uno.menu.protocol.bin.upload.flags=-P{serial.port} -re
 fpga_fleafpga_uno.menu.pinmap.FleaFPGA-Uno=FleaFPGA-Uno board
 fpga_fleafpga_uno.menu.pinmap.FleaFPGA-Uno.build.variant=FleaFPGA-Uno
-fpga_fleafpga_uno.menu.jtag.fleafpga=FleaFPGA-JTAG (onboard)
-fpga_fleafpga_uno.menu.bitstream.normal=WIP (normal)
-fpga_fleafpga_uno.menu.bitstream.normal.bootloader.file=FleaFPGA-Uno/FleaFPGA-Uno_mips_sram_50mhz.vme
+fpga_fleafpga_uno.menu.pinmap.generic=generic
+fpga_fleafpga_uno.menu.pinmap.generic.build.variant=generic
 
 #
 # FPGArduino Generic f32c SoC
