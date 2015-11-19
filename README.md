@@ -101,41 +101,46 @@ radio, but PCM sound supported only on ULX2S)
 RHT11 Temperature/Humitidy sensors have been reported
 to work.
 
-# What partially works (WIP)
+SRAM in 8-bit mode (FleaFPGA Uno) and 16-bit mode (ULX2S)
 
-SDRAM works for data with d-cache. SDRAM works also for 
-instructions without i-cache (slow).
-Work is currently in progress to fix i-cache and 
-make full functional bus arbiter for SDRAM.
+SDRAM in 16-bit mode (Altera DE0 nano and Scarab MiniSpartan6+)
 
-VGA and HDMI outputs work but only as proof of concept
-because BRAM content is displayed which is very small,
-few KB typical. When multiport synchronous RAM bus access
-from VGA/HDMI to SDRAM is ready then some better HDMI 
-picture might be seen.
+# What works only on some supported boards
 
-# What works only on ULX2S (SRAM)
-
-1MB SRAM using both 8-bit ports works at 81.25 MHz
-CPU clock, widely tested.
+VGA/HDMI/DVI bitmap needs large RAM (SRAM or SDRAM
+ULX2S, FleaFPGA Uno, Scarab Minisprtan6+, Altera DE0 nano).
+However some test picture and reduced bitmap can be produced 
+with BRAM-only boards. It can run asynchronous from CPU
+clock. A new textmode is implemented to FleaFPGA and 
+under construction for other boards. 
 
 TV Framebuffer with composite video output displaying SRAM content
+tested only on ULX2S, should work on any other capable
+of 81.25 MHz CPU and 325 MHz pixel clock. Composite video
+currently must run synchronous with CPU clock.
 
-PCM sound (depends on DMA).
+DMA works only on boards that support SRAM or SDRAM.
+
+PCM sound depends on DMA.
 PCM outputs PWM for headphones and FM for
 reception on 87-108 MHz radio.
 
-Text-to-Speech library TTS. (depends on PCM)
+Text-to-Speech library TTS depends on PCM.
 TTS library could be converted to use a simple 
 tongenerator then it will not depend on PCM)
 
-DCF77 transmitter (depends on PCM)
+DCF77 transmitter depends on PCM.
 A proof of concept to adjust longwave RF clocks.
 
-# What doesn't work yet
+Analog inputs work on FleaFPGA Uno board thanx
+for contribution.
 
-Analog inputs (cheap FPGA used to not to have ADC, 
-please contribute some code for new hardware...)
+Pullup digital input control works on FleaFPGA Uno
+board (it would work on any board but 2 hardware
+pins must be dedicated for 1 GPIO pin, one of them
+having pullup resistor)
+
+# What doesn't work yet
 
 Hardware I2C slave is not planned soon, as f32c is 
 expected to be an I2C master in most cases.
@@ -143,3 +148,9 @@ expected to be an I2C master in most cases.
 There's SoftwareWire I2C master which works
 because F32C is fast enough and has high
 resolution 32-bit timer.
+
+DDR memory is currently not supported. 
+This includes all types, DDR, DDR2, DDR3.
+Support for it should be possible because
+FPGA vendors are providing some proprietary
+solutions for a range of selected memory chips.
