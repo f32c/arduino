@@ -305,11 +305,11 @@ void Task_Game (void)
             OS_Bsem_Set(BS_MUSIC_START);            // First time music can start only
                                                     // after born
             
-            if (!pin_BUTTON_UP)     s_cKeys = 1;
-            if (!pin_BUTTON_DOWN)   s_cKeys = 2;
-            if (!pin_BUTTON_LEFT)   s_cKeys = 3;
-            if (!pin_BUTTON_RIGHT)  s_cKeys = 4;
-            if (!pin_BUTTON_FIRE)   bButton = 1;
+            if (BUTTON_UP)     s_cKeys = 1;
+            if (BUTTON_DOWN)   s_cKeys = 2;
+            if (BUTTON_LEFT)   s_cKeys = 3;
+            if (BUTTON_RIGHT)  s_cKeys = 4;
+            if (BUTTON_FIRE)   bButton = 1;
             
 
             // Select man picture: standing, running left, running right

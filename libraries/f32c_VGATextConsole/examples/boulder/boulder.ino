@@ -134,12 +134,16 @@ void joystick ()
   // button definitions in const.h
   static uint8_t button = 0;
   m_cButtons = 
-     (digitalRead(pin_BUTTON_UP)    ? 0x01 : 0)
-   | (digitalRead(pin_BUTTON_DOWN)  ? 0x02 : 0)
-   | (digitalRead(pin_BUTTON_LEFT)  ? 0x04 : 0)
-   | (digitalRead(pin_BUTTON_RIGHT) ? 0x08 : 0)
-   | (digitalRead(pin_BUTTON_FIRE)  ? 0x10 : 0);
-  digitalWrite(LED, button & 1);
+     (!digitalRead(pin_BUTTON_UP)    ? 0x01 : 0)
+   | (!digitalRead(pin_BUTTON_DOWN)  ? 0x02 : 0)
+   | (!digitalRead(pin_BUTTON_LEFT)  ? 0x04 : 0)
+   | (!digitalRead(pin_BUTTON_RIGHT) ? 0x08 : 0)
+   | (!digitalRead(pin_BUTTON_FIRE)  ? 0x10 : 0);
+  digitalWrite(8,  !digitalRead(pin_BUTTON_UP));
+  digitalWrite(9,  !digitalRead(pin_BUTTON_DOWN));
+  digitalWrite(10, !digitalRead(pin_BUTTON_LEFT));
+  digitalWrite(11, !digitalRead(pin_BUTTON_RIGHT));
+  digitalWrite(12, !digitalRead(pin_BUTTON_FIRE));
 }
 
 void setup ()
@@ -157,7 +161,12 @@ void setup ()
     for (n = 1; n; n++) sinus[n] = (isin(n)*6 + isin(n*2)*3 + isin(n*3)*1) / 10;
     #endif
 
-    pinMode(LED, OUTPUT);   
+    pinMode(LED, OUTPUT);
+    pinMode(pin_BUTTON_UP, INPUT);
+    pinMode(pin_BUTTON_DOWN, INPUT);
+    pinMode(pin_BUTTON_LEFT, INPUT);
+    pinMode(pin_BUTTON_RIGHT, INPUT);
+    pinMode(pin_BUTTON_FIRE, INPUT);
 }
 
 void loop ()
