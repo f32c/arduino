@@ -132,12 +132,14 @@ void show_map()
 void joystick ()
 {
   // button definitions in const.h
+  static uint8_t button = 0;
   m_cButtons = 
      (digitalRead(pin_BUTTON_UP)    ? 0x01 : 0)
    | (digitalRead(pin_BUTTON_DOWN)  ? 0x02 : 0)
    | (digitalRead(pin_BUTTON_LEFT)  ? 0x04 : 0)
    | (digitalRead(pin_BUTTON_RIGHT) ? 0x08 : 0)
    | (digitalRead(pin_BUTTON_FIRE)  ? 0x10 : 0);
+  digitalWrite(LED, button & 1);
 }
 
 void setup ()
@@ -160,13 +162,14 @@ void setup ()
 
 void loop ()
 {
-  digitalWrite(LED, LOW);
+  //digitalWrite(LED, LOW);
+  joystick();
   Task_Game();
   Task_Animate();
   show_map();
   //Task_Music();
   delay(100);
-  digitalWrite(LED, HIGH);
+  //digitalWrite(LED, HIGH);
   Task_Animate();
   show_map();
   //Task_Music();
