@@ -134,16 +134,16 @@ void joystick ()
   // button definitions in const.h
   static uint8_t button = 0;
   m_cButtons = 
-     (!digitalRead(pin_BUTTON_UP)    ? 0x01 : 0)
-   | (!digitalRead(pin_BUTTON_DOWN)  ? 0x02 : 0)
-   | (!digitalRead(pin_BUTTON_LEFT)  ? 0x04 : 0)
-   | (!digitalRead(pin_BUTTON_RIGHT) ? 0x08 : 0)
-   | (!digitalRead(pin_BUTTON_FIRE)  ? 0x10 : 0);
-  digitalWrite(8,  !digitalRead(pin_BUTTON_UP));
-  digitalWrite(9,  !digitalRead(pin_BUTTON_DOWN));
-  digitalWrite(10, !digitalRead(pin_BUTTON_LEFT));
-  digitalWrite(11, !digitalRead(pin_BUTTON_RIGHT));
-  digitalWrite(12, !digitalRead(pin_BUTTON_FIRE));
+     (digitalRead(pin_BUTTON_UP)    ? 0x01 : 0)
+   | (digitalRead(pin_BUTTON_DOWN)  ? 0x02 : 0)
+   | (digitalRead(pin_BUTTON_LEFT)  ? 0x04 : 0)
+   | (digitalRead(pin_BUTTON_RIGHT) ? 0x08 : 0)
+   | (digitalRead(pin_BUTTON_FIRE)  ? 0x10 : 0);
+  digitalWrite(8,  m_cButtons & 0x01);
+  digitalWrite(9,  m_cButtons & 0x02);
+  digitalWrite(10, m_cButtons & 0x04);
+  digitalWrite(11, m_cButtons & 0x08);
+  digitalWrite(12, m_cButtons & 0x10);
 }
 
 void setup ()
