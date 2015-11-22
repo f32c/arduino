@@ -62,8 +62,8 @@
 #define OBJECT_JEWEL            0x08
 #define OBJECT_BUTTERFLY        0x0C
 #define OBJECT_FIREFLY          0x10
-#define OBJECT_RIGHT_MAN        0x14
-#define OBJECT_LEFT_MAN         0x18
+#define OBJECT_LEFT_MAN         0x14
+#define OBJECT_RIGHT_MAN        0x18
 #define OBJECT_BANG             0x1C
 
 
