@@ -52,10 +52,10 @@
 //  pin constants
 //------------------------------------------------------------------------------
 
-#define pin_BUTTON_UP       0
-#define pin_BUTTON_DOWN     1
-#define pin_BUTTON_LEFT     2
-#define pin_BUTTON_RIGHT    3
+#define pin_BUTTON_UP       3
+#define pin_BUTTON_DOWN     2
+#define pin_BUTTON_LEFT     1
+#define pin_BUTTON_RIGHT    0
 #define pin_BUTTON_FIRE     16
 
 //------------------------------------------------------------------------------
