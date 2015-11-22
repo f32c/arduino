@@ -310,7 +310,6 @@ void Task_Game (void)
             if (BUTTON_LEFT)   s_cKeys = 3;
             if (BUTTON_RIGHT)  s_cKeys = 4;
             if (BUTTON_FIRE)   bButton = 1;
-            
 
             // Select man picture: standing, running left, running right
             temp = 0;
@@ -319,12 +318,13 @@ void Task_Game (void)
                 case 0:     
                     temp = OBJECT_MAN | (((i_wRandom & 7) == 7)?1:0);    
                     break;
+
                 case 1:     
-                    if (s_cLastKeys != s_cKeys) temp = OBJECT_LEFT_MAN  | MOVING | DIR_UP;
+                    if (s_cLastKeys != s_cKeys) temp = OBJECT_MAN | MOVING | DIR_UP;
                     break; 
 
                 case 2:     
-                    if (s_cLastKeys != s_cKeys) temp = OBJECT_RIGHT_MAN | MOVING | DIR_DOWN; 
+                    if (s_cLastKeys != s_cKeys) temp = OBJECT_MAN_EYES | MOVING | DIR_DOWN; 
                     break;
 
                 case 3:     
@@ -745,10 +745,11 @@ void Task_Game (void)
                         //------------------------------------------------------------------------------
                         case OBJECT_LEFT_MAN:   // Restore moving state to objects that should move
                         case OBJECT_RIGHT_MAN:  
+                        case OBJECT_MAN:
+                        case OBJECT_MAN_EYES:
                              if (!m_bAlive) break;
-                        case OBJECT_BUTTERFLY:  
-                        case OBJECT_FIREFLY:;   
-
+                        case OBJECT_BUTTERFLY:
+                        case OBJECT_FIREFLY:
                              m_Map[y][x] |= MOVING;
                              break;
 
