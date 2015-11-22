@@ -56,7 +56,7 @@
 #define pin_BUTTON_DOWN     1
 #define pin_BUTTON_LEFT     2
 #define pin_BUTTON_RIGHT    3
-#define pin_BUTTON_FIRE     4
+#define pin_BUTTON_FIRE     16
 
 //------------------------------------------------------------------------------
 //  Color constants (depend of color controlling pins)
