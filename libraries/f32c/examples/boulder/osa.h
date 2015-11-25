@@ -1,3 +1,4 @@
+// -*- coding: utf-8 -*-
 #ifndef OSA_H
 #define OSA_H
 
