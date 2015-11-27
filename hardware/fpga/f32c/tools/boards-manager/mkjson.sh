@@ -15,7 +15,7 @@ UJPROG_NAME="ujprog"
 UJPROG_VERSION="1.0.0"
 UJPROG_WIN32="ujprog-win32.zip"
 UJPROG_APPLE64="ujprog-x86_64-apple-darwin.tar.bz2"
-UJPROG_LINUX32="ujprog-linux32.tar.bz2"
+UJPROG_LINUX32="ujprog-i686-pc-linux-gnu.tar.bz2"
 UJPROG_LINUX64="ujprog-x86_64-pc-linux-gnu.tar.bz2"
 
 XC3SPROG_NAME="xc3sprog"

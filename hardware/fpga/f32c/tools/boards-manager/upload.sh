@@ -1,7 +1,7 @@
 #!/bin/sh
 scp bm/fpgarduino.zip  login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
 #scp bm/bootloaders.zip login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
-#scp bm/ujprog-linux32.tar.bz2 login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
+#scp bm/ujprog-i686-pc-linux-gnu.tar.bz2 login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
 #scp bm/ujprog-x86_64-pc-linux-gnu.tar.bz2 login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
 #scp bm/ujprog-x86_64-apple-darwin.tar.bz2 login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
 #scp bm/ujprog-win32.zip login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
