@@ -8,12 +8,6 @@ void drawRLE();
 #define FB_WIDTH  640
 #define FB_HEIGHT 480
 
-#define TEXT_WIDTH  80
-#define TEXT_HEIGHT 30
-
-#define TEXT_ATTRIB 2   // 1=2-color for screen, 2=16 color fg/bg per char (color attribute byte)
-
-uint8_t text_mem[TEXT_WIDTH*TEXT_HEIGHT*TEXT_ATTRIB] __attribute__ ((aligned (4)));
 uint8_t fb[FB_WIDTH * FB_HEIGHT] __attribute__ ((aligned (4)));
 
 static inline void plot(int x, int y, int color)
@@ -27,62 +21,122 @@ PS2Keyboard keyboard;
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
-  while (!Serial)
-    ;
-  Serial.println("Hello!");
-  vga.Setup(text_mem);
-  Serial.print("Width=");
-  Serial.println(vga.width);
-  Serial.print("Height=");
-  Serial.println(vga.height);
-  Serial.print("Color=");
-  Serial.println(vga.color_flag);
-  vga.SetColor(0x17);
+  vga.Setup();
+  vga.SetColor(0x1F);
   vga.Clear();
-  vga.EnableTextCursor(false);
+  vga.DisableTextCursor();
   vga.println("Welcome to f32c_VGAConsoleTest");
-  
-  vga.print("Current mode ");
-  vga.print(vga.width);
-  vga.print("x");
-  vga.print(vga.height);
-  vga.print(" ");
-  if (vga.color_flag)
-  {
-	vga.print("16-");
-	vga.SetColor(0x2F);
-	vga.print("c");
-	vga.SetColor(0x3F);
-	vga.print("o");
-	vga.SetColor(0x4F);
-	vga.print("l");
-	vga.SetColor(0x9F);
-	vga.print("o");
-	vga.SetColor(0xAF);
-	vga.println("r");
-	vga.SetColor(0x1F);
-  }
-  else
-  {
-	vga.println("2-color");
-  }
-  vga.println();
-  uint8_t cfg = vga.GetHWConfig();
-  vga.print((cfg & VGA::VGA_HW_MODERES) == 0 ? "640x480 mode" : "800x600 mode");
-  vga.print(" bitmap ");
-  vga.println(cfg & VGA::VGA_HW_BITMAP ? "enabled" : "disabled");
 
+  vga.println("\nVGA_textmode Features Configured:\n");
+
+  vga.print("Video Generation:                 ");
+  vga.println(vga.IsDisplayConfigured() ? "Yes" : "No");
+
+  vga.print("Screen size:                      ");
+  vga.print(vga.GetDisplayWidth());
+  vga.print("x");
+  vga.println(vga.GetDisplayHeight());
+
+  vga.print("BRAM memory:                      ");
+  vga.print(vga.GetBRAMSize());
+  vga.println(" KB");
+  
+  vga.print("BRAM read register interface:     ");
+  vga.println(vga.IsBRAMRegisterReadConfigured() ? "Yes" : "No");
+
+  vga.print("Text Generation:                  ");
+  vga.println(vga.IsTextConfigured() ? "Yes" : "No");
+
+  if (vga.IsTextConfigured())
+  {
+	vga.print("Text Color Attribute Byte:        ");
+	vga.println(!vga.IsMonochromeConfigured() ? "Yes" : "No");
+
+	vga.print("Text screen size:                 ");
+	vga.print(vga.GetTextDisplayWidth());
+	vga.print("x");
+	vga.println(vga.GetTextDisplayHeight());
+
+	vga.print("Text Address:                     0x");
+	vga.PrintHex((uint32_t)vga.GetTextAddress());
+	vga.println("");
+
+	vga.print("Font:                             ");
+	vga.print(vga.GetFontWidth());
+	vga.print("x");
+	vga.print(vga.GetFontHeight());
+	vga.print(" ");
+	vga.print(vga.GetFontCharacters());
+	vga.print(" chars (");
+	vga.print((vga.GetFontHeight() * vga.GetFontCharacters())/1024);
+	vga.println(" KB)");
+
+	vga.print("Font Address:                     0x");
+	vga.PrintHex((uint32_t)vga.GetFontAddress());
+	vga.println("");
+
+	vga.print("Font cell height                  ");
+	vga.println((uint32_t)VGAText_GetTextCellHeight());
+
+	vga.print("Cursor Generation:                ");
+	vga.println(vga.IsCursorConfigured() ? "Yes" : "No");
+
+	vga.print("Cursor Blink Generation:          ");
+	vga.println(vga.IsCursorBlinkConfigured() ? "Yes" : "No");
+  }
+  vga.print("16 Color Palette:                 ");
+  vga.println(vga.IsPaletteConfigured() ? "Yes" : "No");
+
+  vga.print("Bitmap Generation:                ");
+  vga.println(vga.IsBitmapConfigured() ? "Yes" : "No");
+
+  if (vga.IsBitmapConfigured())
+  {
+    Serial.print("Bitmap Address:                   0x");
+    Serial.println((uint32_t)vga.GetBitmapAddress(), HEX);
+    vga.print("Bitmap Address:                   0x");
+    vga.PrintHex((uint32_t)vga.GetBitmapAddress());
+    vga.println("");
+  }
+
+  
   bool kbd = keyboard.begin();
-  vga.println(kbd ? "Keyboard Test" : "No Keyboard");
-  Serial.println(kbd ? "Keyboard Test" : "No Keyboard");
-  if (cfg & VGA::VGA_HW_BITMAP)
+//  vga.println(kbd ? "Keyboard Test" : "No Keyboard");
+
+  vga.SetColor(0x17);
+  vga.print("Hi Davor!  ");
+  vga.SetColor(0x19);
+  vga.print("Xark");
+  vga.SetColor(0x17);
+  vga.println(" here.");
+  vga.SetColor(0x1F);
+  vga.print("This is VGA_textmode 640x480 HDMI running on the fabulous f32c!");
+  vga.SetColor(0x14);
+  vga.println(" :-)");
+  vga.SetColor(0x1A);
+  vga.println("Bitmap mode with FIFO achieved! :-)");
+  vga.SetColor(0x1F);
+  vga.println("2, 4 or 16-color with optional palette and 8-bit (RRRGGGBB) achieved! :-)");
+  vga.SetColor(0x1e);
+  vga.println("Text+color with FIFO achieved (with help from Davor)! :-)");
+
+  vga.SetColor(0x00);
+  vga.SetPos(7, 26);
+  vga.print("                                                                  ");
+  vga.SetPos(7, 27);
+  vga.print("                                                                  ");
+  vga.SetPos(7, 28);
+  vga.print("                                                                  ");
+  vga.SetPos(28, 29);
+  vga.SetColor(0x1f);
+  vga.print("256 direct-color RRRGGGBB");
+
+  if (vga.IsBitmapConfigured())
   {
 	  vga.SetBitmapAddress(fb);
 	  vga.SetBitmapColor(0x108010);
-	  vga.EnableBitmap(true);
+	  vga.EnableBitmap();
 	  drawRLE();
-	  vga.println("RLE rendered...");
 	  for (int x = 0; x < 256; x++)
 	  {
 		for (int y = 0; y < 8; y++)
@@ -101,41 +155,6 @@ void setup() {
 		}
     }
   }
-
-  vga.println("");
-
-  vga.SetColor(0x17);
-  vga.println("Hi Davor!");
-  vga.println("");
-  vga.SetColor(0x19);
-  vga.print("Xark");
-  vga.SetColor(0x17);
-  vga.println(" here.");
-  vga.print("This is VGA_textmode 640x480 HDMI running on f32c miniSpartan6+");
-  vga.SetColor(0x1F);
-  vga.println(" :-)");
-  vga.println("");
-  vga.SetColor(0x1A);
-  vga.println("Bitmap mode with FIFO achieved! :-)");
-  vga.println("");
-  vga.SetColor(0x1F);
-  vga.println("2, 4 or 16-color with optional palette and 8-bit (RRRGGGBB) achieved! :-)");
-  vga.println("");
-  vga.SetColor(0x1e);
-  vga.println("Text+color with FIFO achieved (with help from Davor)! :-)");
-  vga.println("");
-
-  vga.SetColor(0x00);
-  vga.SetPos(7, 26);
-  vga.print("                                                                  ");
-  vga.SetPos(7, 27);
-  vga.print("                                                                  ");
-  vga.SetPos(7, 28);
-  vga.print("                                                                  ");
-  vga.SetPos(28, 29);
-  vga.SetColor(0x1f);
-  vga.print("256 direct-color RRRGGGBB");
-
 }
 
 uint32_t cnt;

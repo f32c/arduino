@@ -3,16 +3,6 @@
 //
 #include "f32c_VGATextConsole.h"
 
-// f32c vga_texmode registers
-#define	cursor_x		(*(volatile uint8_t  *)0xfffffb80)
-#define	cursor_y		(*(volatile uint8_t  *)0xfffffb81)
-#define	mono_color		(*(volatile uint8_t  *)0xfffffb82)
-#define	cntrl_reg		(*(volatile uint8_t  *)0xfffffb83)
-#define	bitmap_addr		(*(volatile uint32_t *)0xfffffb84)
-#define	bitmap_color	(*(volatile uint32_t *)0xfffffb88)
-#define	text_palette	(*(volatile uint32_t *)0xfffffb8c)
-#define	text_addr		(*(volatile uint32_t *)0xfffffb90)
-
 VGA			vga;
 
 uint8_t		VGA::width;
@@ -26,91 +16,59 @@ uint8_t		VGA::wheight;
 uint8_t		VGA::color;
 uint8_t*	VGA::tilebuf;
 uint8_t		VGA::color_flag;
-
-uint8_t VGA::GetHWConfig()
-{
-	return cntrl_reg;
-}
-
-void VGA::SetTextPalette(int entry, uint32_t rgb)
-{
-	text_palette = ((entry & 0xf) << 24) | (rgb & 0xffffff);
-}
-
-void VGA::SetBitmapColor(uint32_t rgb)
-{
-	bitmap_color = (rgb & 0xffffff);
-}
-
-// address should be in correct memory type
-void VGA::SetBitmapAddress(volatile void *addr)
-{
-	bitmap_addr = (uint32_t)addr;
-}
-void VGA::EnableDisplay(bool onoff)
-{
-	if (onoff)
-		cntrl_reg |= VGA_HW_DISPLAY_ENA;
-	else
-		cntrl_reg &= ~VGA_HW_DISPLAY_ENA;
-}
-
-void VGA::EnableTextMode(bool onoff)
-{
-	if (onoff)
-		cntrl_reg |= VGA_HW_TEXTMODE_ENA;
-	else
-		cntrl_reg &= ~VGA_HW_TEXTMODE_ENA;
-}
-
-void VGA::EnableBitmap(bool onoff)
-{
-	if (onoff)
-		cntrl_reg |= VGA_HW_BITMAP_ENA;
-	else
-		cntrl_reg &= ~VGA_HW_BITMAP_ENA;
-}
-
-void VGA::EnableTextCursor(bool onoff)
-{
-	if (onoff)
-		cntrl_reg |= VGA_HW_CURSOR_ENA;
-	else
-		cntrl_reg &= ~VGA_HW_CURSOR_ENA;
-}
+uint8_t		VGA::reg_read_flag;
+uint8_t		VGA::smooth_scroll;
 
 // Initialize video text console
-void VGA::Setup(uint8_t *bufferptr, int columns, int rows)
+void VGA::Setup(uint8_t *bufferptr)
 {
-	cntrl_reg = 0b11010000;
-	tilebuf = bufferptr ? bufferptr : (uint8_t *)0x40000000;
-	text_addr = tilebuf;
+	if (!IsDisplayConfigured() || !IsTextConfigured())	
+		return;
 
-	cursor_x = 0xff;
-	cursor_y = 0xff;
+	if (!bufferptr)
+	{
+		bufferptr = GetTextAddress();
+		if (bufferptr == (uint8_t *)0x80000000)	// EVIL, but better than 100% chance of overwriting code...
+			bufferptr = (uint8_t *)0x801f0000;		// put at 31MB
+	}
+	tilebuf = bufferptr;
+	SetTextAddress(tilebuf);
+	if (((uint32_t)GetTextAddress()&0x40000000) && IsBRAMRegisterReadConfigured())
+		reg_read_flag = 1;
+
+	width = GetTextDisplayWidth();
+	height = GetTextDisplayHeight()+1;	// vertical scroll line
+	color = 0x1f;
+	VGAText_SetDefaultTextColor(color);
+	color_flag = IsMonochromeConfigured() ? 0 : 1;
 	
-	width = columns ? columns : cursor_x;
-	height = rows ? rows : cursor_y;
-	color = 0x07;
-	color_flag = (cntrl_reg & VGA_HW_MONOCHROME) ? 0 : 1;
+	EnableTextMode();
+	EnableDisplay();
 
 	SetWindow(0, 0, width, height);
 	Clear(CLEAR_TILE);
+	SetWindow(0, 0, width, height-1);
 }
 
 void VGA::SetColor(uint8_t c)
 {
+	if (!tilebuf)
+		return;
+
 		color = c;
 		if (!color_flag)
-			mono_color = c;
+			VGAText_SetDefaultTextColor(c);
 }
 
 // Clear text window
 void VGA::Clear(int c)
 {
+	if (!tilebuf)
+		return;
+
 	cx = wx; cy = wy;
-	cursor_x = cx;
-	cursor_y = cy;
+	VGAText_SetCursorX(cx);
+	VGAText_SetCursorY(cy);
 	uint8_t* scr = tilebuf + (((wy * width) + wx)<<color_flag);
 	for (uint8_t y = 0; y < wheight; y++)
 	{
@@ -127,25 +85,31 @@ void VGA::Clear(int c)
 
 void VGA::SetWindow(int x, int y, int w, int h)
 {
+	if (!tilebuf)
+		return;
+
 	wx = x;
 	wy = y;
 	wwidth = w; wheight = h;
 	
 	cx = x;	cy = y;
-	cursor_x = cx;
-	cursor_y = cy;
+	VGAText_SetCursorX(cx);
+	VGAText_SetCursorY(cy);
 }
 
 void VGA::SetPos(int x, int y)
 {
+	if (!tilebuf)
+		return;
+
 	cx = wx + x;
 	if (cx < wx || cx >= wx + wwidth)
 		cx = wx;
 	cy = wy + y;
 	if (cy < wy || cy >= wy + wheight)
 		cy = wy;
-	cursor_x = cx;
-	cursor_y = cy;
+	VGAText_SetCursorX(cx);
+	VGAText_SetCursorY(cy);
 }
 
 char *VGA::GetPos()
@@ -153,19 +117,52 @@ char *VGA::GetPos()
 	return (char *) (tilebuf + (((cy * width) + cx)<<color_flag));
 }
 
+static inline uint8_t read_screen(uint8_t *ptr)
+{
+	if (VGA::reg_read_flag)
+	{
+		uint32_t w = VGAText_ReadBRAMData((void *)((uint32_t)ptr & ~3U));
+		w >>= (((uint32_t)ptr & 3)<<3);
+		return (uint8_t)w;
+	}
+
+	return *ptr;
+}
+
+
 // Scroll text window
 void VGA::ScrollWindowUp()
 {
+	if (!tilebuf)
+		return;
+
+	if (smooth_scroll)
+	{
+		for (uint32_t vs = smooth_scroll; vs < 0x10; vs += smooth_scroll)
+		{
+		  while (!VGAText_GetVerticalBlank())
+			  ;
+		  VGAText_SetFineScroll(vs << 4);
+		  while (VGAText_GetVerticalBlank())
+			  ;
+		}
+		while (!VGAText_GetVerticalBlank())
+			  ;
+		VGAText_SetFineScroll(0);
+	}
+
 	uint8_t* scr = tilebuf + (((wy * width) + wx)<<color_flag);
 	for (uint8_t y = 0; y < wheight-1; y++)
 	{
 		for (uint8_t x = 0; x < wwidth; x++)
 		{
-			*scr = *(scr+(width<<color_flag));
+//			*scr = *(scr+(width<<color_flag));
+			*scr = read_screen(scr+(width<<color_flag));
 			scr++;
 			if (color_flag)
 			{
-				*scr = *(scr+(width<<color_flag));
+//				*scr = *(scr+(width<<color_flag));
+				*scr = read_screen(scr+(width<<color_flag));
 				scr++;
 			}
 		}
@@ -184,16 +181,21 @@ void VGA::ScrollWindowUp()
 // Scroll text window
 void VGA::ScrollWindowDown()
 {
+	if (!tilebuf)
+		return;
+
 	uint8_t* scr = tilebuf + ((((wy+wheight-1) * width) + wx)<<color_flag);
 	for (uint8_t y = wheight-1; y != (uint8_t)-1 ; --y)
 	{
 		for (uint8_t x = 0; x < wwidth; x++)
 		{
-			*scr = *(scr-(width<<color_flag));
+//			*scr = *(scr-(width<<color_flag));
+			*scr = read_screen(scr-(width<<color_flag));
 			scr++;
 			if (color_flag)
 			{
-				*scr = *(scr-(width<<color_flag));
+//				*scr = *(scr-(width<<color_flag));
+				*scr = read_screen(scr-(width<<color_flag));
 				scr++;
 			}
 		}
@@ -211,6 +213,9 @@ void VGA::ScrollWindowDown()
 
 void VGA::PrintRawChar(int c)
 {
+	if (!tilebuf)
+		return;
+
 	if (cy >= wy + wheight)
 	{
 		cy = wy + wheight-1;
@@ -225,13 +230,16 @@ void VGA::PrintRawChar(int c)
 		cx = wx;
 		++cy;
 	}
-	cursor_x = cx;
-	cursor_y = cy;
+	VGAText_SetCursorX(cx);
+	VGAText_SetCursorY(cy);
 }
 
 // Output a character (and handle control characters)
 void VGA::PrintChar(int ch)
 {
+	if (!tilebuf)
+		return;
+
 	uint8_t c = (uint8_t)ch;
 
 	if (c >= ' ')
@@ -287,8 +295,8 @@ void VGA::PrintChar(int ch)
 				*scr++ = color;
 		}
 	}
-	cursor_x = (cy < (wy+wheight)) ? cx : wx+wwidth-1;
-	cursor_y = (cy < (wy+wheight)) ? cy : wy+wheight-1;
+	VGAText_SetCursorX(cx);
+	VGAText_SetCursorY(cy);
 }
 
 // Output a string
