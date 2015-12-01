@@ -140,7 +140,7 @@ void show_map()
       *(cur_char++) = color | character;
       *(cur_char++) = color | character | 1;
     }
-    cur_line += 80;
+    cur_line += 82;
   }
 }
 
