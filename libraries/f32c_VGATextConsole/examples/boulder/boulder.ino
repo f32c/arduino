@@ -214,7 +214,7 @@ void loop ()
 void Init (void)
 {
   text_addr = text_ram; // video text base address
-  memset(text_ram, 0x00, 80*30*sizeof(video_char));
+  memset(text_ram, 0x00, 82*30*sizeof(video_char));
   cntrl_reg = 0b10100000; // enable video, no bitmap, text mode, no cursor
   volatile uint8_t *font_ptr = font_ram;
 
