@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <dev/io.h>
 
+#define __f32c_FleaFPGA_Uno__	1	// Use to identify FleaFPGA-Uno board features
+
 /* LEDs */
 #define PIN_LED_13           32
 #define PIN_LED              32
@@ -15,7 +17,7 @@
 #define BUTTON_BUILTIN       48
 #define BUTTON1_BUILTIN      48
 
-static const uint8_t SS   = 10;	// TODO: determine FleaFPGA-Uno pin numbers...
+static const uint8_t SS   = 10;		// TODO: determine FleaFPGA-Uno SPI pin numbers...
 static const uint8_t MOSI = 11;
 static const uint8_t MISO = 12;
 static const uint8_t SCK  = 13;
@@ -26,6 +28,10 @@ static const uint8_t SCL = 19;
 /*
  * Analog pins
  */
+#define	IO_ADC_A0	IO_ADDR(0x740)	/* half, RD */
+#define IO_ADC_MINVAL	32		/* minimum value from hardware ADC */
+#define IO_ADC_MAXVAL	1952	/* maximum value from hardware ADC */
+ 
 static const uint8_t A0  = 14;
 static const uint8_t A1  = 15;
 static const uint8_t A2  = 16;
@@ -36,19 +42,19 @@ static const uint8_t A5  = 19;
 /*
 ** PWM pins
 */
-static const uint8_t PWM0  = 14;
+static const uint8_t PWM0  = 14;	// TODO: do these make sense for FleaFPGA-Uno?
 static const uint8_t PWM1  = 15;
 
 /*
 ** 2nd UART (ESP-8266)
 */
-
 #define	IO_SIO_BYTE_1	IO_ADDR(0x310)	/* byte, RW */
 #define	IO_SIO_STATUS_1	IO_ADDR(0x311)	/* byte, RD */
 #define	IO_SIO_BAUD_1	IO_ADDR(0x312)	/* half, WR */
 
-// Arduino Uno AVR ATmega328 compatibility defines
-
+/*
+** Arduino Uno AVR ATmega328 compatibility defines
+*/
 #define PORTA	(((volatile uint8_t *)IO_GPIO_DATA)[0])
 #define PORTA0	0
 #define PORTA1	1
@@ -67,6 +73,15 @@ static const uint8_t PWM1  = 15;
 #define DDRA5	5
 #define DDRA6	6
 #define DDRA7	7
+#define PINA	(((volatile uint8_t *)IO_GPIO_INPUT)[0])
+#define PINA0	0
+#define PINA1	1
+#define PINA2	2
+#define PINA3	3
+#define PINA4	4
+#define PINA5	5
+#define PINA6	6
+#define PINA7	7
 #define PORTB	(((volatile uint8_t *)IO_GPIO_DATA)[1])
 #define PORTB0	0
 #define PORTB1	1
@@ -85,6 +100,15 @@ static const uint8_t PWM1  = 15;
 #define DDRB5	5
 #define DDRB6	6
 #define DDRB7	7
+#define PINB	(((volatile uint8_t *)IO_GPIO_INPUT)[1])
+#define PINB0	0
+#define PINB1	1
+#define PINB2	2
+#define PINB3	3
+#define PINB4	4
+#define PINB5	5
+#define PINB6	6
+#define PINB7	7
 #define PORRTC	(((volatile uint8_t *)IO_GPIO_DATA)[2])
 #define PORTC0	0
 #define PORTC1	1
@@ -103,6 +127,14 @@ static const uint8_t PWM1  = 15;
 #define DDRC5	5
 #define DDRC6	6
 #define DDRC7	7
+#define PINC	(((volatile uint8_t *)IO_GPIO_INPUT)[2])
+#define PINC0	0
+#define PINC1	1
+#define PINC2	2
+#define PINC3	3
+#define PINC4	4
+#define PINC5	5
+#define PINC6	6
 #define PORTD	(((volatile uint8_t *)IO_GPIO_DATA)[3])
 #define PORTD0	0
 #define PORTD1	1
@@ -121,6 +153,15 @@ static const uint8_t PWM1  = 15;
 #define DDRD5	5
 #define DDRD6	6
 #define DDRD7	7
+#define PIND	(((volatile uint8_t *)IO_GPIO_INPUT)[3])
+#define PIND0	0
+#define PIND1	1
+#define PIND2	2
+#define PIND3	3
+#define PIND4	4
+#define PIND5	5
+#define PIND6	6
+#define PIND7	7
 
 #include "Arduino.h"
 
@@ -129,8 +170,8 @@ static const uint8_t PWM1  = 15;
 #ifdef __cplusplus
 #include "UARTClass.h"
 
-//extern UARTClass<IO_SIO_BYTE, IO_SIO_STATUS, IO_SIO_BAUD> Serial;			// FTDI USB UART
-//extern UARTClass<IO_SIO_BYTE_1, IO_SIO_STATUS_1, IO_SIO_BAUD_1> Serial1;	// ESP-8266 UART
+extern UARTClass Serial;			// FTDI USB UART
+//TODO: Xark - 2nd UART extern UARTClass<IO_SIO_BYTE_1, IO_SIO_STATUS_1, IO_SIO_BAUD_1> Serial1;	// ESP-8266 UART
 #endif
 
 #endif /* _f32c_mips_variant_h */
