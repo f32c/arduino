@@ -220,7 +220,7 @@ void setup() {
   vga.print("(Set to garbage on purpose to see full characters)");
   
   int fs = 0;
-  while (1)
+  while (fs < 16)
   {
 	fs++;
     while (!VGAText_GetVerticalBlank())
