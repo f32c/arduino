@@ -36,18 +36,21 @@ void VGA::Setup(uint8_t *bufferptr)
 	if (((uint32_t)GetTextAddress()&0x40000000) && IsBRAMRegisterReadConfigured())
 		reg_read_flag = 1;
 
-	width = GetTextDisplayWidth();
-	height = GetTextDisplayHeight()+1;	// vertical scroll line
+	VGAText_SetFineScroll(0);
 	color = 0x1f;
 	VGAText_SetDefaultTextColor(color);
 	color_flag = IsMonochromeConfigured() ? 0 : 1;
+	int extra_x = (IsFineScrollConfigured() ? (IsMonochromeConfigured() ? 4 : 2) : 0);
+	int extra_y = (IsFineScrollConfigured() ? 1 : 0);
+	width = GetTextDisplayWidth()+extra_x;
+	height = GetTextDisplayHeight()+extra_y;
 	
 	EnableTextMode();
 	EnableDisplay();
 
 	SetWindow(0, 0, width, height);
 	Clear(CLEAR_TILE);
-	SetWindow(0, 0, width, height-1);
+	SetWindow(0, 0, width-extra_x, height-extra_y);	// ignore scroll by default
 }
 
 void VGA::SetColor(uint8_t c)

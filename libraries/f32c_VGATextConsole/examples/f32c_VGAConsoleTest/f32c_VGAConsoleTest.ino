@@ -8,7 +8,8 @@ void drawRLE();
 #define FB_WIDTH  640
 #define FB_HEIGHT 480
 
-uint8_t fb[FB_WIDTH * FB_HEIGHT] __attribute__ ((aligned (4)));
+//uint8_t fb[FB_WIDTH * FB_HEIGHT] __attribute__ ((aligned (4)));
+uint8_t *fb = (uint8_t) 0x81f00000;
 
 static inline void plot(int x, int y, int color)
 {
