@@ -38,17 +38,31 @@ extern "C"
 // 
 //******************************************************************************
 
+// 0-monochrome (BRAM saving boards)
+// 1-color (most boards)
+#define COLOR 1
+
+#if COLOR
+typedef uint16_t video_char;
+#else
+typedef uint8_t video_char;
+#endif
+
+//0-text in SRAM/SDRAM
+//1-text in BRAM (most boards)
 #define BRAM 1
 
 #if BRAM
-volatile uint16_t *text_ram = (volatile uint16_t *) 0x40000000;
+volatile video_char *text_ram = (volatile video_char *) 0x40000000;
 volatile uint8_t *font_ram = (volatile uint8_t *) 0x40001800;
 #else
-volatile uint16_t *text_ram = (volatile uint16_t *) 0x80010000;
-volatile uint8_t *font_ram = (volatile uint8_t *) 0x40001800;
+volatile video_char *text_ram = (volatile video_char *) 0x801F0000;
+volatile uint8_t *font_ram = (volatile uint8_t *) 0x40000800;
 #endif
-#define text_addr (*(volatile uint32_t *)0xfffffb90)
-#define cntrl_reg (*(volatile uint8_t *)0xfffffb83)
+
+
+#define text_addr (*(volatile uint32_t *)0xFFFFFB8C)
+#define cntrl_reg (*(volatile uint8_t *)0xFFFFFB81)
 
 #define LED 13
 
@@ -109,8 +123,8 @@ void Init (void);
 void show_map()
 {
   int x, y;
-  uint16_t *cur_line = text_ram;
-  volatile uint16_t *cur_char;
+  video_char *cur_line = text_ram;
+  volatile video_char *cur_char;
   uint8_t object;
   uint8_t character;
   uint16_t color;
@@ -200,8 +214,9 @@ void loop ()
 void Init (void)
 {
   text_addr = text_ram; // video text base address
-  cntrl_reg = 0xC0; // enable text mode, no bitmap
-  volatile uint8_t *font_ptr = font_ram; 
+  memset(text_ram, 0x00, 80*30*sizeof(video_char));
+  cntrl_reg = 0b10100000; // enable video, no bitmap, text mode, no cursor
+  volatile uint8_t *font_ptr = font_ram;
 
   // copy sprites to character ram
   for(int i = 0; i < 32; i++)
