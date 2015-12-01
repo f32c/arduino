@@ -70,7 +70,7 @@ static inline uint8_t	VGAText_GetBRAMSize()							{ return ((volatile uint8_t *)
 //	Config2:    |           0xFFFFFB87          |           0xFFFFFB86          |           0xFFFFFB85          |           0xFFFFFB84          |
 //	            |31  30  29  28  27  26  25  24 |23  22  21  20  19  18  17  16 |15  14  13  12  11  10   9   8 | 7   6   5   4   3   2   1   0 |
 //	            +---+---+---+---+-----------------------------------------------+---------------+-----------------------------------------------+
-//	(read)      |VBL| 0 |Y2 |X2 |              screen height                    |  Bitmap bpp   |                 screen width                  |
+//	(read)      |VBL|FS |Y2 |X2 |              screen height                    |  Bitmap bpp   |                 screen width                  |
 //	(write)     | 0 | 0 |Y2 |X2 | 0   0   0   0   0   0   0   0   0   0   0   0 | 0   0   0   0 | 0   0   0   0   0   0   0   0   0   0   0   0 |
 //	            +---+---+---+---+-----------------------------------------------+---------------+-----------------------------------------------+
 //	Y2:                 RW  double font data vertically (16 or 32 pixel high font)
@@ -89,6 +89,7 @@ static inline uint8_t	VGAText_GetBitmapBPP()							{ return ((volatile uint8_t *
 static inline uint8_t	VGAText_GetPixelDouble()						{ return ((volatile uint8_t *)IO_VGATEXT_CONFIG2)[3] >> 4;		} 
 static inline void		VGAText_SetPixelDouble(uint8_t dbl_yx)			{ ((volatile uint8_t *)IO_VGATEXT_CONFIG2)[3] = dbl_yx << 4;	}
 static inline bool		VGAText_GetVerticalBlank()						{ return ((volatile int32_t *)IO_VGATEXT_CONFIG2)[0] < 0;		} 
+static inline bool		VGAText_GetFineScrollConfig()					{ return (((volatile int8_t *)IO_VGATEXT_CONFIG2)[3]&0x40)!=0; } 
 
 //	
 //	            +-------------------------------+-------------------------------+-------------------------------+-------------------------------+
@@ -271,6 +272,7 @@ struct VGA	 : public Print
 	static bool IsMonochromeConfigured()				{ return (VGAText_GetFeatureConfigFlags() & VGATEXT_FEATURE_MONOCHROME);	}
 	static bool IsPaletteConfigured()					{ return (VGAText_GetFeatureConfigFlags() & VGATEXT_FEATURE_PALETTE);		}
 	static bool IsBRAMRegisterReadConfigured()			{ return (VGAText_GetFeatureConfigFlags() & VGATEXT_FEATURE_BRAM_REG_READ);	}
+	static bool IsFineScrollConfigured()				{ return VGAText_GetFineScrollConfig();										}
 	
 	static int	GetBRAMSize()							{ return VGAText_GetBRAMSize() ? 1<<(VGAText_GetBRAMSize()-1) : 0;			}	
 	static int	GetDisplayWidth()						{ return VGAText_GetScreenWidth();	}

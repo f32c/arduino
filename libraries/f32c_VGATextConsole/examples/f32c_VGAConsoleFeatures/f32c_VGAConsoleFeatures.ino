@@ -120,11 +120,29 @@ void setup() {
 	Serial.print("Text screen size                  ");
 	Serial.print(vga.GetTextDisplayWidth());
 	Serial.print("x");
-	Serial.println(vga.GetTextDisplayHeight());
+	Serial.print(vga.GetTextDisplayHeight());
+	if (vga.IsFineScrollConfigured())
+	{
+		Serial.print(" (");
+		Serial.print(vga.GetTextDisplayWidth() + (vga.IsMonochromeConfigured() ? 4 : 2));
+		Serial.print("x");
+		Serial.print(vga.GetTextDisplayHeight() + 1);
+		Serial.print(" with fine scroll)");
+	}
+	Serial.println("");
 	vga.print("Text screen size:                 ");
 	vga.print(vga.GetTextDisplayWidth());
 	vga.print("x");
-	vga.println(vga.GetTextDisplayHeight());
+	vga.print(vga.GetTextDisplayHeight());
+	if (vga.IsFineScrollConfigured())
+	{
+		vga.print(" (");
+		vga.print(vga.GetTextDisplayWidth() + (vga.IsMonochromeConfigured() ? 4 : 2));
+		vga.print("x");
+		vga.print(vga.GetTextDisplayHeight() + 1);
+		vga.print(" with fine scroll)");
+	}
+	vga.println("");
 
 	Serial.print("Text Address:                     0x");
 	Serial.println((uint32_t)vga.GetTextAddress(), HEX);
@@ -161,6 +179,11 @@ void setup() {
 	Serial.println((uint32_t)VGAText_GetTextCellHeight());
 	vga.print("Font cell height                  ");
 	vga.println((uint32_t)VGAText_GetTextCellHeight());
+	
+	Serial.print("Fine scroll:                      ");
+	Serial.println(vga.IsFineScrollConfigured() ? "Yes" : "No");
+	vga.print("Fine scroll:                      ");
+	vga.println(vga.IsFineScrollConfigured() ? "Yes" : "No");
 
 	Serial.print("Cursor Generation:                ");
 	Serial.println(vga.IsCursorConfigured() ? "Yes" : "No");
@@ -191,7 +214,25 @@ void setup() {
     vga.println("");
   }
 
-  wait(5);
+  wait(10);
+  memcpy(vga.GetTextAddress(), 0x80000000, vga.width * vga.height * (vga.IsMonochromeConfigured() ? 1 : 2));
+  vga.SetPos(15, 10);
+  vga.print("(Set to garbage on purpose to see full characters)");
+  
+  int fs = 0;
+  while (1)
+  {
+	fs++;
+    while (!VGAText_GetVerticalBlank())
+	  ;
+	VGAText_SetFineScroll(fs & 0x7);
+	vga.SetPos(vga.GetTextDisplayWidth()-9, vga.GetTextDisplayHeight()-1);
+	vga.print("scrollx=");
+	vga.print(fs & 0x7, HEX);
+    while (VGAText_GetVerticalBlank())
+	  ;
+	delay(1000);
+  }
 
   int spam = 0;
   vga.SetSmoothScrollSpeed(1);
