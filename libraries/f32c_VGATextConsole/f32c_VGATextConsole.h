@@ -285,7 +285,7 @@ struct VGA	 : public Print
 	static int	GetFontWidth()							{ return 8;	}
 	static int	GetFontHeight()							{ return VGAText_GetFontSizeType() & VGATEXT_FONTHEIGHT_8 ? 8 : VGAText_GetFontSizeType() & VGATEXT_FONTHEIGHT_16 ? 16 : 0; }
 	
-	static int	GetBitmapBitsPerPixel()					{ return 1<<VGAText_GetBitmapBPP();	}
+	static int	GetBitmapBitsPerPixel()					{ return VGAText_GetBitmapBPP() > 1 ? 1<<(VGAText_GetBitmapBPP()) : 1;	}
 	static void SetBitmapColor(uint32_t rgb)			{ VGAText_SetPalette(0x80, rgb); 	}
 
 	static void SetTextPalette(int entry, uint32_t rgb)	{ VGAText_SetPalette(entry, rgb); 	}
