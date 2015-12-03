@@ -171,7 +171,7 @@ static const uint8_t PWM1  = 15;
 #include "UARTClass.h"
 
 extern UARTClass Serial;			// FTDI USB UART
-//TODO: Xark - 2nd UART extern UARTClass<IO_SIO_BYTE_1, IO_SIO_STATUS_1, IO_SIO_BAUD_1> Serial1;	// ESP-8266 UART
+extern UARTClass Serial1;			// Optional ESP-8266 WiFi UART
 #endif
 
 #endif /* _f32c_mips_variant_h */
