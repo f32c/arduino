@@ -19,12 +19,14 @@
 #ifndef _UART_CLASS_
 #define _UART_CLASS_
 
+#include <dev/io.h>
 #include "HardwareSerial.h"
-
 
 class UARTClass : public HardwareSerial
 {
   public:
+    UARTClass(uint32_t base = IO_SIO_BYTE) : serbase(reinterpret_cast<uint8_t*>(base)), tx_xoff(0) {}
+  
     void begin(unsigned long dwBaudRate);
     void end(void);
     int available(void);
@@ -37,8 +39,25 @@ class UARTClass : public HardwareSerial
 
     operator bool() {return (true);}; // UART always active
 
+    // f32c extension (default is XON/XOFF enabled - so input is not transparent)
+    void setXoffXon(bool enable) { if (enable) tx_xoff &= ~0x80; else tx_xoff = 0x80; }
+
   protected:
-//    void init(const uint32_t dwBaudRate);
+    int sio_probe_rx();
+    int sio_getchar(int blocking);
+    int sio_putchar(int c, int blocking);
+    void sio_setbaud(int bauds);
+    
+    enum {
+      SIO_RXBUFSIZE = (1 << 3),
+      SIO_RXBUFMASK = (SIO_RXBUFSIZE - 1)
+    };
+
+    volatile uint8_t *serbase;  // base address of SIO register for port
+    volatile uint8_t  tx_xoff;  // bit 7 set = disable Xoff/Xon flow control
+    volatile uint8_t  sio_rxbuf_head;
+    volatile uint8_t  sio_rxbuf_tail;
+    char              sio_rxbuf[SIO_RXBUFSIZE];
 };
 
 #endif // _UART_CLASS_

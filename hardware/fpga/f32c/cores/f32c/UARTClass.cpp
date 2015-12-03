@@ -22,95 +22,93 @@
 #include "UARTClass.h"
 
 #include <dev/io.h>
+#include "variant.h"
 
-
-#define	SIO_RXBUFSIZE	(1 << 3)
-#define	SIO_RXBUFMASK	(SIO_RXBUFSIZE - 1)
-
-static char sio_rxbuf[SIO_RXBUFSIZE];
-static uint8_t sio_rxbuf_head;
-static uint8_t sio_rxbuf_tail;
-static uint8_t sio_tx_xoff;
 
 UARTClass Serial;
+#if defined(IO_SIO_BYTE_1)
+UARTClass Serial1(IO_SIO_BYTE_1);
+#endif
 
-
-static __attribute__((optimize("-Os"))) int
-sio_probe_rx(void)
+int
+UARTClass::sio_probe_rx()
 {
-	int c, s;
+  int c, s;
 
-	INB(s, IO_SIO_STATUS);
-	if (s & SIO_RX_FULL) {
-		INB(c, IO_SIO_BYTE);
-		if (c == 0x13) {
-			/* XOFF */
-			sio_tx_xoff = 1;
-			return(s);
-		}
-		if (c == 0x11) {
-			/* XON */
-			sio_tx_xoff = 0;
-			return(s);
-		}
-		sio_rxbuf[sio_rxbuf_head++] = c;
-		sio_rxbuf_head &= SIO_RXBUFMASK;
-	}
-	return(s);
+  s = serbase[IO_SIO_STATUS-IO_SIO_BYTE];
+  if (s & SIO_RX_FULL) {
+    c = serbase[IO_SIO_BYTE-IO_SIO_BYTE];
+    if (!(tx_xoff & 0x80)) {
+      if (c == 0x13) {
+        /* XOFF */
+        tx_xoff = 1;
+        return(s);
+      }
+      if (c == 0x11) {
+        /* XON */
+        tx_xoff = 0;
+        return(s);
+      }
+    }
+    sio_rxbuf[sio_rxbuf_head++] = c;
+    sio_rxbuf_head &= SIO_RXBUFMASK;
+  }
+  return(s);
 }
 
 
-static __attribute__((optimize("-Os"))) int
-sio_getchar(int blocking)
+int
+UARTClass::sio_getchar(int blocking)
 {
-	int c, busy;
+  int c, busy;
 
-	/* Any new characters received from RS-232? */
-	do {
-		sio_probe_rx();
-		busy = (sio_rxbuf_head == sio_rxbuf_tail);
-	} while (blocking && busy);
+  /* Any new characters received from RS-232? */
+  do {
+    sio_probe_rx();
+    busy = (sio_rxbuf_head == sio_rxbuf_tail);
+  } while (blocking && busy);
 
-	if (busy)
-		return (-1);
-	c = sio_rxbuf[sio_rxbuf_tail++];
-	sio_rxbuf_tail &= SIO_RXBUFMASK;
-	return (c);
+  if (busy)
+    return (-1);
+  c = sio_rxbuf[sio_rxbuf_tail++];
+  sio_rxbuf_tail &= SIO_RXBUFMASK;
+  return (c);
 }
 
 
-static __attribute__((optimize("-Os"))) int
-sio_putchar(int c, int blocking)
+int
+UARTClass::sio_putchar(int c, int blocking)
 {
-	int in, busy;
+  int in, busy;
 
-	do {
-		in = sio_probe_rx();
-		busy = (in & SIO_TX_BUSY) || sio_tx_xoff;
-	} while (blocking && busy);
+  do {
+    in = sio_probe_rx();
+    busy = (in & SIO_TX_BUSY) || (tx_xoff & 1);
+  } while (blocking && busy);
 
-	if (busy == 0)
-		OUTB(IO_SIO_BYTE, c);
-	return (busy);
+  if (busy == 0)
+    serbase[IO_SIO_BYTE-IO_SIO_BYTE] = c;
+  return (busy);
 }
 
 
 /*
  * Set RS-232 baudrate.  Works well with FT-232R from 300 to 3000000 bauds.
  */
-static __attribute__((optimize("-Os"))) void
-sio_setbaud(int bauds)
+void
+UARTClass::sio_setbaud(int bauds)
 {
-	uint32_t val;
+  uint32_t val;
 
+  val = bauds;
+  if (bauds > 1000000)
+    val /= 10;
+  val = val * 1024 / 1000 * 1024 / (F_CPU / 1000) + 1;
+  if (bauds > 1000000)
+    val *= 10;
 
-	val = bauds;
-	if (bauds > 1000000)
-		val /= 10;
-	val = val * 1024 / 1000 * 1024 / (F_CPU / 1000) + 1;
-	if (bauds > 1000000)
-		val *= 10;
-	OUTH(IO_SIO_BAUD, val);
+  volatile uint16_t  *hp = (volatile uint16_t *)&serbase[IO_SIO_BAUD-IO_SIO_BYTE];
+  *hp = val;
 }
 
 
@@ -119,8 +117,8 @@ sio_setbaud(int bauds)
 void
 UARTClass::begin(unsigned long bauds)
 {
-	
-	sio_setbaud(bauds);
+  
+  sio_setbaud(bauds);
 }
 
 
@@ -134,16 +132,20 @@ int
 UARTClass::available(void)
 {
 
-	sio_probe_rx();
-	return (!(sio_rxbuf_head == sio_rxbuf_tail));
+  sio_probe_rx();
+  return (!(sio_rxbuf_head == sio_rxbuf_tail));
 }
 
 
 int
 UARTClass::availableForWrite(void)
 {
+  int in, busy;
 
-	return (1);
+  in = sio_probe_rx();
+  busy = (in & SIO_TX_BUSY) || (tx_xoff & 1);
+  
+  return (!busy);
 }
 
 
@@ -151,11 +153,11 @@ int
 UARTClass::peek(void)
 {
 
-	sio_probe_rx();
-	if (sio_rxbuf_tail == sio_rxbuf_head)
-		return (-1);
-	else
-		return (sio_rxbuf[sio_rxbuf_tail]);
+  sio_probe_rx();
+  if (sio_rxbuf_tail == sio_rxbuf_head)
+    return (-1);
+  else
+    return (sio_rxbuf[sio_rxbuf_tail]);
 }
 
 
@@ -163,7 +165,7 @@ int
 UARTClass::read(void)
 {
 
-	return (sio_getchar(1));
+  return (sio_getchar(1));
 }
 
 
@@ -177,6 +179,6 @@ size_t
 UARTClass::write(const uint8_t uc_data)
 {
 
-	sio_putchar(uc_data, 1);
-	return (1);
+  sio_putchar(uc_data, 1);
+  return (1);
 }
