@@ -325,39 +325,39 @@ fpga_scarab_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_scarab_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_scarab_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_scarab_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_scarab_bram.menu.ramsize.32MB=32 MB SDRAM Onboard
+fpga_scarab_bram.menu.ramsize.32MB.upload.maximum_size=33521664
+fpga_scarab_bram.menu.ramsize.32MB.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_scarab_bram.menu.ramsize.32MB.memsupport=sdram
 fpga_scarab_bram.menu.ramsize.64=64 KB BRAM Internal
 fpga_scarab_bram.menu.ramsize.64.upload.maximum_size=64000
 fpga_scarab_bram.menu.ramsize.64.compiler.ld.extra_flags=--section-start=.init=0x400
 # unified bitstream sdram = both bram and sdram
 fpga_scarab_bram.menu.ramsize.64.memsupport=sdram
-fpga_scarab_bram.menu.ramsize.32MB=32 MB SDRAM Onboard
-fpga_scarab_bram.menu.ramsize.32MB.upload.maximum_size=33521664
-fpga_scarab_bram.menu.ramsize.32MB.compiler.ld.extra_flags=--section-start=.init=0x80000000
-fpga_scarab_bram.menu.ramsize.32MB.memsupport=sdram
-fpga_scarab_bram.menu.speed.83=83.33 MHz
-fpga_scarab_bram.menu.speed.83.build.f_cpu=83333333
-fpga_scarab_bram.menu.speed.83.bitstream.fcpu.mhz=83
 fpga_scarab_bram.menu.speed.100=100 MHz
 fpga_scarab_bram.menu.speed.100.build.f_cpu=100000000
 fpga_scarab_bram.menu.speed.100.bitstream.fcpu.mhz=100
-fpga_scarab_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
-fpga_scarab_bram.menu.protocol.hex.upload.protocol=hex
-fpga_scarab_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_scarab_bram.menu.speed.83=83.33 MHz
+fpga_scarab_bram.menu.speed.83.build.f_cpu=83333333
+fpga_scarab_bram.menu.speed.83.bitstream.fcpu.mhz=83
 fpga_scarab_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
 fpga_scarab_bram.menu.protocol.bin.upload.protocol=bin
 fpga_scarab_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_scarab_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_scarab_bram.menu.protocol.hex.upload.protocol=hex
+fpga_scarab_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_scarab_bram.menu.pinmap.generic=Generic
 fpga_scarab_bram.menu.pinmap.generic.build.variant=generic
 fpga_scarab_bram.menu.jtag.ft2232=Onboard FT2232 JTAG
 fpga_scarab_bram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft2232-generic.ocd
-fpga_scarab_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
-fpga_scarab_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 fpga_scarab_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
 fpga_scarab_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c ftdi_fast "{bootloader.file.bit}"
 fpga_scarab_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c ftdi_fast "{bootloader.file.bit}"
 fpga_scarab_bram.menu.bitstream.flash_xc3sprog=FLASH xc3sprog (permanent)
 fpga_scarab_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c ftdi_fast "-I{bootloader.jtag_spi_bridge.bit}" "{bootloader.file.bit}"
 fpga_scarab_bram.menu.bitstream.flash_xc3sprog.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c ftdi_fast "-I{bootloader.jtag_spi_bridge.bit}" "{bootloader.file.bit}"
+fpga_scarab_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
+fpga_scarab_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 
 #
 # Xilinx TB299 Board (ebay), f32c SoC
