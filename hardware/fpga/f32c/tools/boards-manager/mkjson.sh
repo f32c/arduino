@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# BM_URL_BASE="http://localhost/~guest/fpgarduino/bm"
+# LOCALDIR="."
 BM_URL_BASE="http://www.nxlab.fer.hr/fpgarduino/bm"
 LOCALDIR="bm"
 
@@ -38,6 +40,13 @@ FLEAFPGA_WIN32="fleafpga-jtag-12.2-linux32.tar.bz2"
 FLEAFPGA_APPLE64="fleafpga-jtag-12.2-linux32.tar.bz2"
 FLEAFPGA_LINUX32="fleafpga-jtag-12.2-linux32.tar.bz2"
 FLEAFPGA_LINUX64="fleafpga-jtag-12.2-linux32.tar.bz2"
+
+NUMATO_NAME="numato"
+NUMATO_VERSION="1.0.0"
+NUMATO_WIN32="numato-1.0.0-python3.zip"
+NUMATO_APPLE64="numato-1.0.0-python3.zip"
+NUMATO_LINUX32="numato-1.0.0-python3.zip"
+NUMATO_LINUX64="numato-1.0.0-python3.zip"
 
 COMPILER_NAME="f32c-compiler"
 COMPILER_VERSION="1.0.0"
@@ -107,6 +116,11 @@ cat << EOF
               "packager":"${FPGARDUINO_NAME}",
               "name":"${FLEAFPGA_NAME}",
               "version":"${FLEAFPGA_VERSION}"
+            },
+            {
+              "packager":"${FPGARDUINO_NAME}",
+              "name":"${NUMATO_NAME}",
+              "version":"${NUMATO_VERSION}"
             },
             {
               "packager":"${FPGARDUINO_NAME}",
@@ -230,6 +244,41 @@ cat << EOF
               "archiveFileName":"${FLEAFPGA_LINUX64}",
               "checksum":"SHA-256:$(SHA256 ${FLEAFPGA_LINUX64})",
               "size":"$(SIZE ${FLEAFPGA_LINUX64})"
+            }
+          ]
+        },
+        {
+          "name":"${NUMATO_NAME}",
+          "version":"${NUMATO_VERSION}",
+          "systems":
+          [
+            {
+              "host":"i686-mingw32",
+              "url":"${BM_URL_BASE}/${NUMATO_WIN32}",
+              "archiveFileName":"${NUMATO_WIN32}",
+              "checksum":"SHA-256:$(SHA256 ${NUMATO_WIN32})",
+              "size":"$(SIZE ${NUMATO_WIN32})"
+            },
+            {
+              "host":"x86_64-apple-darwin",
+              "url":"${BM_URL_BASE}/${NUMATO_APPLE64}",
+              "archiveFileName":"${NUMATO_APPLE64}",
+              "checksum":"SHA-256:$(SHA256 ${NUMATO_APPLE64})",
+              "size":"$(SIZE ${NUMATO_APPLE64})"
+            },
+            {
+              "host":"i686-pc-linux-gnu",
+              "url":"${BM_URL_BASE}/${NUMATO_LINUX32}",
+              "archiveFileName":"${NUMATO_LINUX32}",
+              "checksum":"SHA-256:$(SHA256 ${NUMATO_LINUX32})",
+              "size":"$(SIZE ${NUMATO_LINUX32})"
+            },
+            {
+              "host":"x86_64-pc-linux-gnu",
+              "url":"${BM_URL_BASE}/${NUMATO_LINUX64}",
+              "archiveFileName":"${NUMATO_LINUX64}",
+              "checksum":"SHA-256:$(SHA256 ${NUMATO_LINUX64})",
+              "size":"$(SIZE ${NUMATO_LINUX64})"
             }
           ]
         },
