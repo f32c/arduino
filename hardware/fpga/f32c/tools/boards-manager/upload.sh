@@ -11,4 +11,6 @@ scp bm/fpgarduino.zip  login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgardui
 #scp bm/xc3sprog-771-win32.zip login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
 #scp bm/xc3sprog-774-linux32.tar.bz2 login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
 #scp bm/xc3sprog-774-linux64.tar.bz2 login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
+scp bm/numato-1.0.0-python3.zip login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
+scp bm/fleafpga-jtag-12.2-linux32.tar.bz2 login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/bm/
 scp package_f32c_core_index.json login.nxlab.fer.hr:/jails/www/usr/local/www/data/fpgarduino/
