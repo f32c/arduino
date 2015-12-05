@@ -18,6 +18,7 @@ fpga_ulx2s_sram.build.variant=generic
 fpga_ulx2s_sram.build.mcu=f32c
 fpga_ulx2s_sram.build.core=f32c
 fpga_ulx2s_sram.build.board=F32C_FPGA_ULX2S_SRAM
+fpga_ulx2s_sram.build.sdata.size=4096
 fpga_ulx2s_sram.upload.tool=ujprog
 fpga_ulx2s_sram.upload.wait_for_upload_port=false
 fpga_ulx2s_sram.upload.native_usb=false
@@ -107,12 +108,14 @@ fpga_de0_nano_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_de0_nano_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_de0_nano_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_de0_nano_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_de0_nano_bram.menu.ramsize.32=32 KB BRAM Internal
-fpga_de0_nano_bram.menu.ramsize.32.upload.maximum_size=31232
-fpga_de0_nano_bram.menu.ramsize.32.compiler.ld.extra_flags=--section-start=.init=0x400
-fpga_de0_nano_bram.menu.ramsize.32MB=32 MB SDRAM Onboard
-fpga_de0_nano_bram.menu.ramsize.32MB.upload.maximum_size=33521664
-fpga_de0_nano_bram.menu.ramsize.32MB.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_de0_nano_bram.menu.ramsize.32K=32 KB BRAM Internal
+fpga_de0_nano_bram.menu.ramsize.32K.upload.maximum_size=31232
+fpga_de0_nano_bram.menu.ramsize.32K.build.sdata.size=32768
+fpga_de0_nano_bram.menu.ramsize.32K.compiler.ld.extra_flags=--section-start=.init=0x400
+fpga_de0_nano_bram.menu.ramsize.32M=32 MB SDRAM Onboard
+fpga_de0_nano_bram.menu.ramsize.32M.upload.maximum_size=33521664
+fpga_de0_nano_bram.menu.ramsize.32M.build.sdata.size=4096
+fpga_de0_nano_bram.menu.ramsize.32M.compiler.ld.extra_flags=--section-start=.init=0x80000000
 
 #
 # Spartan-3 (3E, 3A, 3AN) Starter Kits
@@ -212,6 +215,7 @@ fpga_zybo_bram.build.variant=generic
 fpga_zybo_bram.build.mcu=f32c
 fpga_zybo_bram.build.core=f32c
 fpga_zybo_bram.build.board=F32C_FPGA_ZYBO_BRAM
+fpga_zybo_bram.build.sdata.size=4096
 fpga_zybo_bram.upload.tool=ujprog
 fpga_zybo_bram.upload.wait_for_upload_port=false
 fpga_zybo_bram.upload.native_usb=false
@@ -325,15 +329,17 @@ fpga_scarab_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_scarab_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_scarab_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_scarab_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_scarab_bram.menu.ramsize.32MB=32 MB SDRAM Onboard
-fpga_scarab_bram.menu.ramsize.32MB.upload.maximum_size=33521664
-fpga_scarab_bram.menu.ramsize.32MB.compiler.ld.extra_flags=--section-start=.init=0x80000000
-fpga_scarab_bram.menu.ramsize.32MB.memsupport=sdram
-fpga_scarab_bram.menu.ramsize.64=64 KB BRAM Internal
-fpga_scarab_bram.menu.ramsize.64.upload.maximum_size=64000
-fpga_scarab_bram.menu.ramsize.64.compiler.ld.extra_flags=--section-start=.init=0x400
+fpga_scarab_bram.menu.ramsize.32M=32 MB SDRAM Onboard
+fpga_scarab_bram.menu.ramsize.32M.upload.maximum_size=33521664
+fpga_scarab_bram.menu.ramsize.32M.build.sdata.size=4096
+fpga_scarab_bram.menu.ramsize.32M.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_scarab_bram.menu.ramsize.32M.memsupport=sdram
+fpga_scarab_bram.menu.ramsize.64K=64 KB BRAM Internal
+fpga_scarab_bram.menu.ramsize.64K.upload.maximum_size=64000
+fpga_scarab_bram.menu.ramsize.64K.build.sdata.size=32768
+fpga_scarab_bram.menu.ramsize.64K.compiler.ld.extra_flags=--section-start=.init=0x400
 # unified bitstream sdram = both bram and sdram
-fpga_scarab_bram.menu.ramsize.64.memsupport=sdram
+fpga_scarab_bram.menu.ramsize.64K.memsupport=sdram
 fpga_scarab_bram.menu.speed.100=100 MHz
 fpga_scarab_bram.menu.speed.100.build.f_cpu=100000000
 fpga_scarab_bram.menu.speed.100.bitstream.fcpu.mhz=100
@@ -573,9 +579,11 @@ fpga_fleafpga_uno.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.fla
 fpga_fleafpga_uno.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 fpga_fleafpga_uno.menu.ramsize.512K=512KB SRAM Onboard
 fpga_fleafpga_uno.menu.ramsize.512K.upload.maximum_size=491520
+fpga_fleafpga_uno.menu.ramsize.512K.build.sdata.size=4096
 fpga_fleafpga_uno.menu.ramsize.512K.compiler.ld.extra_flags=--section-start=.init=0x80000000
 fpga_fleafpga_uno.menu.ramsize.16K=16KB BRAM Internal
 fpga_fleafpga_uno.menu.ramsize.16K.upload.maximum_size=14900
+fpga_fleafpga_uno.menu.ramsize.16K.build.sdata.size=32768
 fpga_fleafpga_uno.menu.ramsize.16K.compiler.ld.extra_flags=--section-start=.init=0x400
 fpga_fleafpga_uno.menu.speed.50=50 MHz
 fpga_fleafpga_uno.menu.speed.50.build.f_cpu=50000000
@@ -619,21 +627,27 @@ fpga_generic.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_generic.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 fpga_generic.menu.ramsize.8=8 KB BRAM Internal
 fpga_generic.menu.ramsize.8.upload.maximum_size=6656
+fpga_generic.menu.ramsize.8.build.sdata.size=32768
 fpga_generic.menu.ramsize.8.compiler.ld.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.16=16 KB BRAM Internal
 fpga_generic.menu.ramsize.16.upload.maximum_size=14848
+fpga_generic.menu.ramsize.16.build.sdata.size=32768
 fpga_generic.menu.ramsize.16.compiler.ld.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.32=32 KB BRAM Internal
 fpga_generic.menu.ramsize.32.upload.maximum_size=31232
+fpga_generic.menu.ramsize.32.build.sdata.size=32768
 fpga_generic.menu.ramsize.32.compiler.ld.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.64=64 KB BRAM Internal
 fpga_generic.menu.ramsize.64.upload.maximum_size=64000
+fpga_generic.menu.ramsize.64.build.sdata.size=32768
 fpga_generic.menu.ramsize.64.compiler.ld.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.128=128 KB BRAM Internal
 fpga_generic.menu.ramsize.128.upload.maximum_size=129536
+fpga_generic.menu.ramsize.128.build.sdata.size=4096
 fpga_generic.menu.ramsize.128.compiler.ld.extra_flags=--section-start=.init=0x400
 fpga_generic.menu.ramsize.1024=1 MB SRAM Onboard
 fpga_generic.menu.ramsize.1024.upload.maximum_size=1015808
+fpga_generic.menu.ramsize.1024.build.sdata.size=4096
 fpga_generic.menu.ramsize.1024.compiler.ld.extra_flags=--section-start=.init=0x80000000
 fpga_generic.menu.speed.10=10 MHz
 fpga_generic.menu.speed.10.build.f_cpu=10000000

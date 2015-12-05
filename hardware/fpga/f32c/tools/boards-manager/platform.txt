@@ -9,8 +9,8 @@ version=1.6.0
 # Compile variables
 # ----------------------
 
-f32c.mips.compiler.c.flags=-march=f32c -c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h
-f32c.mips.compiler.cpp.flags=-march=f32c -c -EL -G 32768 -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -fpermissive -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions
+f32c.mips.compiler.c.flags=-march=f32c -c -EL -G {build.sdata.size} -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h
+f32c.mips.compiler.cpp.flags=-march=f32c -c -EL -G {build.sdata.size} -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -fpermissive -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions
 f32c.mips.compiler.ld.flags=-N -EL -gc-sections "--library-path={build.system.path}/mips/lib"
 
 f32c.riscv.compiler.c.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h
@@ -44,6 +44,11 @@ compiler.define=-DARDUINO=
 
 # this can be overriden in boards.txt
 # build.extra_flags=--section-start=.init=0x400
+
+# recommended sdata sizes
+# small RAM <64K: 32768
+# large RAM >64K: 4096
+build.sdata.size=32768
 
 # These can be overridden in platform.local.txt
 compiler.c.extra_flags=-D__F32C__ -DF_CPU={build.f_cpu}L
