@@ -215,7 +215,7 @@ void setup() {
   }
 
   wait(10);
-  memcpy(vga.GetTextAddress(), 0x80000000, vga.width * vga.height * (vga.IsMonochromeConfigured() ? 1 : 2));
+  memcpy(vga.GetTextAddress(), (void *)0x80000000, vga.width * vga.height * (vga.IsMonochromeConfigured() ? 1 : 2));
   vga.SetPos(15, 10);
   vga.print("(Set to garbage on purpose to see full characters)");
   

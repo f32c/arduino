@@ -11,7 +11,7 @@ void drawRLE();
 uint8_t fb[FB_WIDTH * FB_HEIGHT] __attribute__ ((aligned (4)));
 //uint8_t *fb = (uint8_t *)0x80060000;
 
-static inline void plot(int x, int y, int color)
+inline void plot(int x, int y, int color)
 {
   uint32_t off = (y * FB_WIDTH) + (x>>3);
   if (off < (FB_WIDTH * FB_HEIGHT))
