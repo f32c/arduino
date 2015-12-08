@@ -11,7 +11,7 @@ void drawRLE();
 //uint8_t fb[FB_WIDTH * FB_HEIGHT] __attribute__ ((aligned (4)));
 volatile uint8_t *fb = (volatile uint8_t *) 0x80060000; // crude malloc :-)
 
-static inline void plot(int x, int y, int color)
+inline void plot(int x, int y, int color)
 {
   uint32_t off = (y * FB_WIDTH) + x;
   if (off < FB_WIDTH*FB_HEIGHT*sizeof(fb[0]))
