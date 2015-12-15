@@ -27,6 +27,7 @@ This is a library for F32C framebuffer
 
 #define F32C_VGA_WIDTH  640
 #define F32C_VGA_HEIGHT 480
+#define F32C_VGA_COMPOSITING 17
 
 class Adafruit_F32C_VGA : public Adafruit_GFX {
  public:
@@ -34,10 +35,14 @@ class Adafruit_F32C_VGA : public Adafruit_GFX {
 
   void begin(void);
 
-  uint32_t *videobase = (uint32_t *)0x8000F000;
-  volatile uint32_t *videomem = videobase;
-  volatile uint32_t *videodisplay = (uint32_t *) 0xFFFFFB80;
-  const uint32_t videosize = F32C_VGA_WIDTH*F32C_VGA_HEIGHT/8*4; // one videopage size in bytes
+  volatile uint8_t *videobase = (volatile uint8_t *)0x8000F000;
+  volatile uint8_t *videomem = videobase;
+  volatile uint32_t *videodisplay = (volatile uint32_t *) 0xFFFFFB80;
+  #if F32C_VGA_COMPOSITING
+  const uint32_t videosize = (F32C_VGA_WIDTH + 4*((F32C_VGA_WIDTH/4)/(F32C_VGA_COMPOSITING-1)) )*F32C_VGA_HEIGHT;
+  #else
+  const uint32_t videosize = F32C_VGA_WIDTH*F32C_VGA_HEIGHT; // one videopage size in bytes
+  #endif
   uint8_t videopage = 0; // alternate video page 0 or 1
 
   void clearDisplay(void);

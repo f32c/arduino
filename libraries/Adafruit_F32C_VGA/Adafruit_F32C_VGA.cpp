@@ -20,8 +20,8 @@ extern "C" {
 
 // the most basic function, set a single pixel
 void Adafruit_F32C_VGA::drawPixel(int16_t x, int16_t y, uint16_t color) {
-  uint32_t mem;
-  volatile uint32_t *ptr;
+  //uint8_t mem;
+  volatile uint8_t *ptr;
   if ((x < 0) || (x >= width()) || (y < 0) || (y >= height()))
     return;
 
@@ -40,16 +40,26 @@ void Adafruit_F32C_VGA::drawPixel(int16_t x, int16_t y, uint16_t color) {
     y = HEIGHT - y - 1;
     break;
   }
-  ptr = &(videomem[x/8+y*80]);
-  mem = *ptr & ~(0x01010101<<(x&7)); // clear old bits
+  #if F32C_VGA_COMPOSITING
+  ptr = &(videomem[(y * (F32C_VGA_WIDTH + 4*((F32C_VGA_WIDTH/4)/(F32C_VGA_COMPOSITING-1)) )) + x + 4*(1+(x/4)/((F32C_VGA_COMPOSITING-1)))]);
+  #else
+  ptr = &(videomem[x+y*640]);
+  #endif
+  //mem = *ptr & ~(0x01010101<<(x&7)); // clear old bits
   // color space highcolor RGB 565 -> RGBI
   // replace new bits (simple 16-color)
+  *ptr = ((color& (7<< 2)) >> (2-0)) // red
+       | ((color& (7<< 8)) >> (8-2)) // green
+       | ((color& (3<<14)) >> (14-6)) // blue
+       ;
+  /*
   *ptr = mem
        |  ( ((color&((1<<3)|(1<<9)|(1<<14))) ? 1<<24 : 0) // intensity bit
           | ((color&(1<<4))  << 12) // red
           | ((color&(1<<10)) >> 2)  // green
           | ((color&(1<<15)) >> 15) // blue
           ) << (x&7);
+  */
 }
 
 Adafruit_F32C_VGA::Adafruit_F32C_VGA(int8_t mode) :
@@ -60,7 +70,7 @@ Adafruit_GFX(F32C_VGA_WIDTH, F32C_VGA_HEIGHT) {
 void Adafruit_F32C_VGA::begin() {
   videomem = videobase;
   videopage = 0;
-  *videodisplay = videomem;
+  *videodisplay = (uint32_t *)&(videomem[0]);
 }
 
 void Adafruit_F32C_VGA::invertDisplay(uint8_t i) {
@@ -104,12 +114,12 @@ void Adafruit_F32C_VGA::dim(uint8_t dim) {
 }
 
 void Adafruit_F32C_VGA::display(void) {
-  *videodisplay = videomem;
+  *videodisplay = &(videomem[0]);
   videopage ^= 1;
   videomem = videobase + (videopage ? videosize : 0);
 }
 
 // clear everything on current page
 void Adafruit_F32C_VGA::clearDisplay(void) {
-  memset(videomem, 0, videosize);
+  memset((uint32_t *)videomem, 0, videosize);
 }
