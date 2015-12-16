@@ -167,7 +167,7 @@ void setup() {
     /* COMPOSITING TEST */
     if(1) // move 2 thin h-sprites from the bitmap
     {
-      for(int j = 0; j < 450; j+=4)
+      for(int j = 0; j < 450; j++)
       {
         int offset = 0;
         int16_t rj = j/4;
@@ -194,12 +194,12 @@ void setup() {
           }
         }
 
-        delay(50);
+        delay(10);
       }
     }
 
     if(1) // scroll full screen bitmap right
-    for(int j = 0; j < 4*79; j+=4)
+    for(int j = 0; j < 4*79; j++)
     {
       int offset=0;
       int16_t rj = j;
@@ -216,11 +216,11 @@ void setup() {
             fb[i] = 0xb1;
         #endif
       }
-      delay(50);
+      delay(10);
     }
 
     if(1) // scroll full screen bitmap left
-    for(int j = 4*79; j >= 0; j-=4)
+    for(int j = 4*79; j >= 0; j--)
     {
       int offset=0;
       int16_t rj = j;
@@ -237,7 +237,7 @@ void setup() {
             fb[i] = 0xb1;
         #endif
       }
-      delay(50);
+      delay(10);
     }
 
   }
