@@ -56,13 +56,13 @@ void setup() {
   display.setCursor(100,100);
   display.setTextColor(RED);
   display.print("V");
-  display.setTextColor(GREEN);
+  display.setTextColor(DARKGREEN);
   display.print("G");
   display.setTextColor(BLUE);
   display.print("A");
   display.setTextColor(WHITE);
   display.print(" DISPLAY ");
-  display.setTextColor(YELLOW);
+  display.setTextColor(MAGENTA);
   display.print("TEST");
   display.drawRect(  0,0,   640,480, WHITE);
   display.drawLine(100,180, 480,150, YELLOW);
