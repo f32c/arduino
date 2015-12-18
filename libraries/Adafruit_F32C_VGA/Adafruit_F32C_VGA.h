@@ -37,7 +37,8 @@ class Adafruit_F32C_VGA : public Adafruit_GFX {
 
   volatile uint8_t *videobase = (volatile uint8_t *)0x8000F000;
   volatile uint8_t *videomem = videobase;
-  volatile uint32_t *videodisplay = (volatile uint32_t *) 0xFFFFFB80;
+  volatile uint32_t *videodisplay = (volatile uint32_t *) 0xFFFFFB90;
+  volatile uint8_t *cntrl_reg = (volatile uint8_t *) 0xFFFFFB81; // compatibility for vgatextmode
   #if F32C_VGA_COMPOSITING
   const uint32_t videosize = (F32C_VGA_WIDTH + 4*((F32C_VGA_WIDTH/4)/(F32C_VGA_COMPOSITING-1)) )*F32C_VGA_HEIGHT;
   #else
