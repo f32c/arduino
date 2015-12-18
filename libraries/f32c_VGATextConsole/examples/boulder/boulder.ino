@@ -57,7 +57,7 @@ volatile video_char *text_ram = (volatile video_char *) 0x40000000;
 volatile uint8_t *font_ram = (volatile uint8_t *) 0x40001800;
 #else
 volatile video_char *text_ram = (volatile video_char *) 0x801F0000;
-volatile uint8_t *font_ram = (volatile uint8_t *) 0x40000800;
+volatile uint32_t *font_ram = (volatile uint32_t *) 0x40002000;
 #endif
 
 
@@ -216,7 +216,7 @@ void Init (void)
   text_addr = text_ram; // video text base address
   memset(text_ram, 0x00, 82*30*sizeof(video_char));
   cntrl_reg = 0b10100000; // enable video, no bitmap, text mode, no cursor
-  volatile uint8_t *font_ptr = font_ram;
+  volatile uint32_t *font_ptr = font_ram;
 
   // copy sprites to character ram
   for(int i = 0; i < 32; i++)
