@@ -40,7 +40,14 @@ class Adafruit_F32C_VGA : public Adafruit_GFX {
   volatile uint32_t *videodisplay = (volatile uint32_t *) 0xFFFFFB90;
   volatile uint8_t *cntrl_reg = (volatile uint8_t *) 0xFFFFFB81; // compatibility for vgatextmode
   #if F32C_VGA_COMPOSITING
-  const uint32_t videosize = (F32C_VGA_WIDTH + 4*((F32C_VGA_WIDTH/4)/(F32C_VGA_COMPOSITING-1)) )*F32C_VGA_HEIGHT;
+  // add +5 lines which we will erase
+  // we need to eerase several lines more at the bottom
+  // of the screen otherwise uninitialized junk will
+  // display garbage at top or bottom of the screen
+  // due to back-compositing from junk at bottom of the screen
+  // this is becuse fifo active signal is kept more than
+  // we need it
+  const uint32_t videosize = (F32C_VGA_WIDTH + 4*((F32C_VGA_WIDTH/4)/(F32C_VGA_COMPOSITING-1)) )*(F32C_VGA_HEIGHT+5);
   #else
   const uint32_t videosize = F32C_VGA_WIDTH*F32C_VGA_HEIGHT; // one videopage size in bytes
   #endif
