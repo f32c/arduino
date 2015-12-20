@@ -32,12 +32,14 @@ fpga_ulx2s_sram.menu.cpu.mips.cpu.arch=mips
 fpga_ulx2s_sram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
 fpga_ulx2s_sram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
 fpga_ulx2s_sram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpga_ulx2s_sram.menu.soc.normal=Normal (FB, 29 GPIO)
+fpga_ulx2s_sram.menu.soc.normal=Normal (TV, 29 GPIO)
 fpga_ulx2s_sram.menu.soc.normal.socopt=_
-fpga_ulx2s_sram.menu.soc.pidfm=(FB, PID, 87-108MHz FM/RDS, 16 GPIO)
+fpga_ulx2s_sram.menu.soc.pidfm=(TV, PID, 87-108MHz FM/RDS, 16 GPIO)
 fpga_ulx2s_sram.menu.soc.pidfm.socopt=_pid_fm_
-fpga_ulx2s_sram.menu.soc.pid433=(NO FB, PID, 433MHz, 16 GPIO)
+fpga_ulx2s_sram.menu.soc.pid433=(NO TV, PID, 433MHz, 16 GPIO)
 fpga_ulx2s_sram.menu.soc.pid433.socopt=_nofb_pid_433_
+fpga_ulx2s_sram.menu.soc.vga=(NO TV, VGA, 29 GPIO)
+fpga_ulx2s_sram.menu.soc.vga.socopt=_vga_
 
 #
 # FPGArduino ULX2S f32c SoC BRAM
