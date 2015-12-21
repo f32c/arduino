@@ -69,6 +69,7 @@ Adafruit_GFX(F32C_VGA_WIDTH, F32C_VGA_HEIGHT) {
 
 void Adafruit_F32C_VGA::begin() {
   *cntrl_reg = 0b11000000; // enable video, yes bitmap, no text mode, no cursor
+  // (volatile uint8_t *)0xFFFFFB80 = 0xBF;   // b = background, f = foreground
   videomem = videobase;
   videopage = 0;
   *videodisplay = (uint32_t *)&(videomem[0]);
