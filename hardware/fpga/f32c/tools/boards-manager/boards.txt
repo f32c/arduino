@@ -38,7 +38,7 @@ fpga_ulx2s_sram.menu.soc.pidfm=(TV, PID, 87-108MHz FM/RDS, 16 GPIO)
 fpga_ulx2s_sram.menu.soc.pidfm.socopt=_pid_fm_
 fpga_ulx2s_sram.menu.soc.pid433=(NO TV, PID, 433MHz, 16 GPIO)
 fpga_ulx2s_sram.menu.soc.pid433.socopt=_nofb_pid_433_
-fpga_ulx2s_sram.menu.soc.vga=(NO TV, VGA, 29 GPIO)
+fpga_ulx2s_sram.menu.soc.vga=(NO TV, VGA, 16 GPIO)
 fpga_ulx2s_sram.menu.soc.vga.socopt=_vga_
 
 #
