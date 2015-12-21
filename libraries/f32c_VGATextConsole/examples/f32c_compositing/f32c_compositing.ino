@@ -172,6 +172,8 @@ void setup() {
         int offset = 0;
         int16_t rj = j/4;
         volatile int16_t *relocate;
+        while (VGAText_GetVerticalBlank());
+        while (!VGAText_GetVerticalBlank());
         for(int k = COMPOSITING_WIDTH*10*4 * 200; k < COMPOSITING_WIDTH*10*4 * 300; k+=4*COMPOSITING_WIDTH*10)
         {
           for(int l = 4*COMPOSITING_WIDTH*4; l < 6*COMPOSITING_WIDTH*4; l+=4*COMPOSITING_WIDTH)
@@ -194,7 +196,7 @@ void setup() {
           }
         }
 
-        delay(10);
+        //delay(10);
       }
     }
 
@@ -204,7 +206,8 @@ void setup() {
       int offset=0;
       int16_t rj = j;
       volatile int16_t *relocate;
-      //while (VGAText_GetVerticalBlank());
+      while (VGAText_GetVerticalBlank());
+      while (!VGAText_GetVerticalBlank());
       for(int k = 0; k < COMPOSITING_WIDTH*10*4 * 480; k+=4*COMPOSITING_WIDTH)
       {
         relocate = (volatile int16_t *) &(fb[offset+k]);
@@ -216,7 +219,7 @@ void setup() {
             fb[i] = 0xb1;
         #endif
       }
-      delay(10);
+      //delay(10);
     }
 
     if(1) // scroll full screen bitmap left
@@ -225,7 +228,8 @@ void setup() {
       int offset=0;
       int16_t rj = j;
       volatile int16_t *relocate;
-      //while (VGAText_GetVerticalBlank());
+      while (VGAText_GetVerticalBlank());
+      while (!VGAText_GetVerticalBlank());
       for(int k = 0; k < COMPOSITING_WIDTH*10*4 * 480; k+=4*COMPOSITING_WIDTH)
       {
         relocate = (volatile int16_t *) &(fb[offset+k]);
@@ -237,7 +241,7 @@ void setup() {
             fb[i] = 0xb1;
         #endif
       }
-      delay(10);
+      //delay(10);
     }
 
   }
