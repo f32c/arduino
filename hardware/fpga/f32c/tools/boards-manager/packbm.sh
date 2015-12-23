@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 ARCHIVE=~/public_html/fpgarduino/bm/fpgarduino.zip
 ARDUINODIR=$(pwd)/../../../../../
 TOOLDIR=$(pwd)
