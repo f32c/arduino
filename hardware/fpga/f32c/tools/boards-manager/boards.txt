@@ -13,7 +13,6 @@ menu.model=Model
 #
 fpga_ulx2s_sram.name=FER ULX2S (Lattice XP2, 1M SRAM, 81.25 MHz)
 fpga_ulx2s_sram.compiler.ld.extra_flags=--section-start=.init=0x80000000
-fpga_ulx2s_sram.build.f_cpu=81250000
 fpga_ulx2s_sram.build.variant=generic
 fpga_ulx2s_sram.build.mcu=f32c
 fpga_ulx2s_sram.build.core=f32c
@@ -26,7 +25,7 @@ fpga_ulx2s_sram.upload.maximum_size=1015808
 fpga_ulx2s_sram.upload.protocol=bin
 fpga_ulx2s_sram.upload.flags=-re
 fpga_ulx2s_sram.upload.bitstream.command="{cmd.path}" -j FLASH "{runtime.tools.bootloaders.path}/{bootloader.file}"
-fpga_ulx2s_sram.bootloader.file=ulx2s/ulx2s_8e_mips_sram{socopt}81mhz.jed
+fpga_ulx2s_sram.bootloader.file=ulx2s/ulx2s_8e_mips_sram{socopt}{f_cpu_MHz}mhz.jed
 fpga_ulx2s_sram.menu.cpu.mips=MIPS
 fpga_ulx2s_sram.menu.cpu.mips.cpu.arch=mips
 fpga_ulx2s_sram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
@@ -34,12 +33,23 @@ fpga_ulx2s_sram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
 fpga_ulx2s_sram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
 fpga_ulx2s_sram.menu.soc.normal=Normal (TV, 29 GPIO)
 fpga_ulx2s_sram.menu.soc.normal.socopt=_
+fpga_ulx2s_sram.menu.soc.normal.build.f_cpu=81250000
 fpga_ulx2s_sram.menu.soc.pidfm=(TV, PID, 87-108MHz FM/RDS, 16 GPIO)
 fpga_ulx2s_sram.menu.soc.pidfm.socopt=_pid_fm_
+fpga_ulx2s_sram.menu.soc.pidfm.build.f_cpu=81250000
+fpga_ulx2s_sram.menu.soc.pidfm.f_cpu_MHz=81
 fpga_ulx2s_sram.menu.soc.pid433=(NO TV, PID, 433MHz, 16 GPIO)
 fpga_ulx2s_sram.menu.soc.pid433.socopt=_nofb_pid_433_
-fpga_ulx2s_sram.menu.soc.vga=(NO TV, VGA, 16 GPIO)
-fpga_ulx2s_sram.menu.soc.vga.socopt=_vga_
+fpga_ulx2s_sram.menu.soc.pid433.build.f_cpu=81250000
+fpga_ulx2s_sram.menu.soc.pid433.f_cpu_MHz=81
+fpga_ulx2s_sram.menu.soc.vgabit=(NO TV, VGA BITMAP, 16 GPIO, 81 MHz)
+fpga_ulx2s_sram.menu.soc.vgabit.socopt=_vgabit_
+fpga_ulx2s_sram.menu.soc.vgabit.build.f_cpu=81250000
+fpga_ulx2s_sram.menu.soc.vgabit.f_cpu_MHz=81
+fpga_ulx2s_sram.menu.soc.vgatxt=(NO TV, VGA TEXT, 16 GPIO, 50 MHz)
+fpga_ulx2s_sram.menu.soc.vgatxt.socopt=_vgatxt_
+fpga_ulx2s_sram.menu.soc.vgatxt.build.f_cpu=50000000
+fpga_ulx2s_sram.menu.soc.vgatxt.f_cpu_MHz=50
 
 #
 # FPGArduino ULX2S f32c SoC BRAM
