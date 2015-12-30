@@ -162,7 +162,9 @@ void gol_plot(unsigned int ix, unsigned int iy, unsigned int v)
     cell[yp][xp].n++;
   }
   // was buffer overwritten?
-  if( yn <= gol_context.y && yp >= gol_context.y )
+  if( yn == gol_context.y
+   || y  == gol_context.y
+   || yp == gol_context.y )
     gol_context.y_buf_valid = 0; // set buffer not valid
 }
 
