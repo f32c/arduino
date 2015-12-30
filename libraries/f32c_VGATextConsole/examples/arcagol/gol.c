@@ -10,7 +10,7 @@ struct gol_context gol_context;
 */
 int gol_iterate(void)
 {
-  unsigned int x, y, yb, y2, y2b;
+  uint16_t x, y, yb, y2, y2b;
   /* process one line */
   y   = (gol_context.y)         & (RANGE_Y-1);
   yb  = (gol_context.y_buf)     & (RANGE_Y_BUF-1);
@@ -32,8 +32,8 @@ int gol_iterate(void)
   y2b = (gol_context.y_buf + 2) & (RANGE_Y_BUF-1);
   for(x = 0; x < RANGE_X; x++)
   {
-    unsigned int xn,xp,yn,yp;
-    unsigned int n; // cache here number of surrounding cells
+    uint16_t xn,xp,yn,yp;
+    uint8_t n; // cache here number of surrounding cells
     /* copy y+2 to y_buf+2 */
     cell_buf[y2b][x] = cell[y2][x];
     /* simple rule: cell surrounded by 2 or 3 other cells
@@ -97,7 +97,7 @@ int gol_iterate(void)
 void gol_clear(void)
 {
   gol_context.y = gol_context.y_buf = 0;
-  unsigned int x, y;
+  uint16_t x, y;
   for(y = 0; y < RANGE_Y; y++)
   {
     for(x = 0; x < RANGE_X; x++)
@@ -120,11 +120,11 @@ void gol_clear(void)
 // v=pixel value 1-set pixel 0-clear pixel
 void gol_plot(unsigned int ix, unsigned int iy, unsigned int v)
 {
-  unsigned int xn,xp,yn,yp;
+  uint16_t xn,xp,yn,yp;
   // wraparound address
   // assuming range is 2^n value
-  unsigned int x = ix & (RANGE_X-1);
-  unsigned int y = iy & (RANGE_Y-1);
+  uint16_t x = ix & (RANGE_X-1);
+  uint16_t y = iy & (RANGE_Y-1);
   // if pixel is alreadty there
   // return immediately
   if(cell[y][x].v == v)

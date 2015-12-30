@@ -86,13 +86,13 @@ void setup() {
 
 void loop() {
   int i;
-  static int scroll_x = -1, scroll_y = -1;
-  static int dir = 0;
-  static int respawn_counter = 0;
-  static uint32_t x0=0, y0=0;
+  static int8_t scroll_x = -1, scroll_y = -1;
+  static int8_t dir = 0;
+  static uint16_t respawn_counter = 0;
+  static uint16_t x0=0, y0=0; // viewport offset
+  static uint16_t xc, yc; // screen center
   // display GoL memory
   static uint8_t fscroll_x = 0, fscroll_y = 0;
-  // delay(100);
   if( ((respawn_counter++) % 256) == 0)
   {
     scroll_x = (rand() % 3)-1;
@@ -115,40 +115,36 @@ void loop() {
   }
   more_iterate = 1;
   while((vblank_reg & 0x80) != 0)
-    do_iterate();;
-  // gol_iterate();
+    do_iterate();
   while((vblank_reg & 0x80) == 0)
     do_iterate();
-  // fscroll = (fscroll += 1) & 7;
-  if(scroll_x == 1)
+  if(scroll_x < 0)
   {
     fscroll_x = (fscroll_x += 0x02) & 0x07;
     if(fscroll_x == 0x00)
       x0++;
   }
-  if(scroll_x == -1)
+  if(scroll_x > 0)
   {
     fscroll_x = (fscroll_x -= 0x02) & 0x07;
     if(fscroll_x == 0x06)
       x0--;
   }
-  if(scroll_y == 1)
+  if(scroll_y < 0)
   {
     fscroll_y = (fscroll_y += 0x20) & 0x70;
     if(fscroll_y == 0x00)
       y0++;
   }
-  if(scroll_y == -1)
+  if(scroll_y > 0)
   {
     fscroll_y = (fscroll_y -= 0x20) & 0x70;
     if(fscroll_y == 0x60)
       y0--;
   }
   finescroll_reg = fscroll_x | fscroll_y;
-  // if(fscroll == 0x70)
   {
     uint32_t ix, iy, x,y;
-    // while(gol_iterate());
     for(iy = 0; iy < 61; iy++)
     {
       y = (iy+y0) & (RANGE_Y-1);

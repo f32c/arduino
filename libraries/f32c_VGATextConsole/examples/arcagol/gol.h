@@ -1,23 +1,26 @@
 #ifndef GOL_H
 #define GOL_H
 
+#include <stdint.h>
+
 /* GoL struct
 */
 struct gol
 {
-  unsigned int v:1; // 1-bit pixel 1=on 0=off
-  unsigned int n:4; // 4-bit number of surrounding pixels (0-8)
+  uint8_t v:1, n:4;
+  // v: 1-bit pixel 1=on 0=off
+  // n: 4-bit number of surrounding pixels (0-8)
 };
 
 /* context required to iterate gol */
 struct gol_context
 {
-  unsigned int y; // current line to process
+  uint16_t y; // current line to process
   /* buffer contains lines at y-1, y, y+1, y+2
   ** value of y_buf represents line at y
   */
-  unsigned int y_buf; // buffer circular pointer 0-3 here is copy of lines 
-  unsigned int y_buf_valid; // is the buffer content valid?
+  uint8_t y_buf; // buffer circular pointer 0-3 here is copy of lines
+  uint8_t y_buf_valid; // is the buffer content valid?
 };
 
 extern struct gol_context gol_context;
