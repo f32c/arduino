@@ -13,10 +13,23 @@ int gol_iterate(void)
   unsigned int x, y, yb, y2, y2b;
   /* process one line */
   y   = (gol_context.y)         & (RANGE_Y-1);
-  yb  = (gol_context.y_buf)     & (RANGE_Y_BUF-1);  
+  yb  = (gol_context.y_buf)     & (RANGE_Y_BUF-1);
+  if(gol_context.y_buf_valid == 0)
+  {
+    int i;
+    // buffer is not valid (cell changed in meantime)
+    // copy it fresh from cell
+    for(i = -1; i <= 1; i++)
+    {
+      y2  = (gol_context.y + i) & (RANGE_Y-1);
+      y2b = (gol_context.y_buf + i) & (RANGE_Y_BUF-1);
+      for(x = 0; x < RANGE_X; x++)
+        cell_buf[y2b][x] = cell[y2][x];
+    }
+    gol_context.y_buf_valid = 1;
+  }
   y2  = (gol_context.y + 2)     & (RANGE_Y-1);
-  y2b = (gol_context.y_buf + 2) & (RANGE_Y_BUF-1);  
-  if(1)
+  y2b = (gol_context.y_buf + 2) & (RANGE_Y_BUF-1);
   for(x = 0; x < RANGE_X; x++)
   {
     unsigned int xn,xp,yn,yp;
@@ -148,4 +161,8 @@ void gol_plot(unsigned int ix, unsigned int iy, unsigned int v)
     cell[yp][x ].n++;
     cell[yp][xp].n++;
   }
+  // was buffer overwritten?
+  if( yn <= gol_context.y && yp >= gol_context.y )
+    gol_context.y_buf_valid = 0; // set buffer not valid
 }
+

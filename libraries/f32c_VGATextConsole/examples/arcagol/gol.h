@@ -13,7 +13,11 @@ struct gol
 struct gol_context
 {
   unsigned int y; // current line to process
+  /* buffer contains lines at y-1, y, y+1, y+2
+  ** value of y_buf represents line at y
+  */
   unsigned int y_buf; // buffer circular pointer 0-3 here is copy of lines 
+  unsigned int y_buf_valid; // is the buffer content valid?
 };
 
 extern struct gol_context gol_context;
