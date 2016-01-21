@@ -83,20 +83,13 @@ void sprite_position(int sprite, int x, int y)
 void sprite_refresh(void)
 {
   int i, j, n = SPRITE_MAX;
-  // struct compositing_line *blank = &(Sprite[0]->line[0]); // fixme put real blank here
+  static int dbl_buf = 0; // double buffering
 
-  // first reset all sprite compositing linkage
-  for(i = 0; i < n; i++)
-  {
-    for(j = 0; j < Sprite[i]->h; j++)
-      Sprite[i]->line[j].next = NULL;
-  }
+  // dbl_buf ^= 1; // alternate to another buffer
 
-  // reset all screen lines to dummy (supposedly empty or transparent) content
+  // reset all screen lines to blank content
   for(i = 0; i < VGA_Y_MAX; i++)
-  {
-    scanlines[i] = &blank_line;
-  }
+    scanlines[dbl_buf][i] = &blank_line;
 
   // now link all sprites, insering them into the linked list
   for(i = 0; i < n; i++) // loop over all sprites
@@ -108,9 +101,10 @@ void sprite_refresh(void)
     {
       Sprite[i]->line[j].x = x;
       // insert sprite lines into the linked list of scan lines
-      Sprite[i]->line[j].next = scanlines[y+j];
-      scanlines[y+j] = &(Sprite[i]->line[j]);
+      Sprite[i]->line[j].next = scanlines[dbl_buf][y+j];
+      scanlines[dbl_buf][y+j] = &(Sprite[i]->line[j]);
     }
   }
+  videodisplay_reg = &(scanlines[dbl_buf][0]);
 }
 

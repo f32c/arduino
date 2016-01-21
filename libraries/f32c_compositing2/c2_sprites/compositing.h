@@ -1,6 +1,9 @@
 #ifndef COMPOSITING_H
 #define COMPOSITING_H
 
+#define videodisplay_reg (*(volatile uint32_t *)0xFFFFFB90)
+#define vblank_reg       (*(volatile  uint8_t *)0xFFFFFB87)
+
 #define VGA_X_MAX 640
 #define VGA_Y_MAX 480
 
@@ -16,7 +19,8 @@ struct compositing_line
    uint8_t *bmp; // pointer to array of pixels (could be more than 1 element)
 };
 
-extern struct compositing_line *scanlines[VGA_Y_MAX];
+// double buffering scanlines
+extern struct compositing_line *scanlines[2][VGA_Y_MAX];
 
 #endif
 

@@ -6,7 +6,6 @@ extern "C"
   #include "compositing.h"
   #include "sprite.h"
 }
-#define videodisplay_reg (*(volatile uint32_t *)0xFFFFFB90)
 
 // some green-to-blue colors
 char content_green_blue[] =
@@ -40,7 +39,7 @@ struct compositing_line reddish_line =
   content_reddish,
 };
 
-struct compositing_line *scanlines[480];
+struct compositing_line *scanlines[2][480];
 
 struct sprite_speed 
 {
@@ -52,7 +51,6 @@ void setup()
 {
   // put your setup code here, to run once:
   int i;
-  videodisplay_reg = &(scanlines[0]);
 
   for(i = 0; i < SPRITE_MAX; i++)
   {
@@ -64,13 +62,13 @@ void setup()
   }
 
   for(i = 0; i < 480; i+=1)
-    scanlines[i] = &green_blue;
+    scanlines[0][i] = &green_blue;
   for(i = 0; i < Sprite[0]->h; i++)
-    scanlines[i+60] = &(Sprite[0]->line[i]);
+    scanlines[0][i+60] = &(Sprite[0]->line[i]);
   for(i = 0; i < Sprite[0]->h; i++)
-    scanlines[i+400] = &(Sprite[1]->line[i]);
+    scanlines[0][i+400] = &(Sprite[1]->line[i]);
   for(i = 120; i < 360; i+=1)
-    scanlines[i] = &reddish_line;
+    scanlines[0][i] = &reddish_line;
   
   // enable video fetching after all the
   // pointers have been correctly sat.
@@ -78,13 +76,14 @@ void setup()
   // prevents random RAM content from
   // causing extensive fetching, and slowing
   // down CPU
-  videodisplay_reg = &(scanlines[0]);
+  videodisplay_reg = &(scanlines[0][0]);
 }
 
 void loop()
 {
   int i;
   static int red_dir = 1, green_dir = -1;
+
 
   reddish_line.x += red_dir;
   if(reddish_line.x < 4 || reddish_line.x > 636)
@@ -108,8 +107,10 @@ void loop()
     if(Sprite[i]->y > 400)
       Sprite_speed[i].y = -1;
   }
+  while((vblank_reg & 0x80) != 0);
   sprite_refresh();
+  while((vblank_reg & 0x80) == 0);
 
-  delay(20);
+  // delay(10);
 }
 
