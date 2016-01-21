@@ -27,7 +27,7 @@ This is a library for F32C framebuffer
 
 #define F32C_VGA_WIDTH  640
 #define F32C_VGA_HEIGHT 480
-#define F32C_VGA_COMPOSITING 17
+//#define F32C_VGA_COMPOSITING 17
 
 class Adafruit_F32C_VGA : public Adafruit_GFX {
  public:
