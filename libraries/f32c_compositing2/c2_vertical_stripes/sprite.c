@@ -1,19 +1,8 @@
-#include "compositing.h"
 #include "sprite.h"
 #include "shape.h"
 #include <string.h>
 
 struct sprite *Sprite[SPRITE_MAX]; // global pointer array to sprites
-
-char content_blank[] =
-  {0,0,0,0};
-struct compositing_line blank_line =
-{
-  NULL, // links to previous content
-  320, // x-position
-  4, // number of color pixels to follow:
-  content_blank,
-};
 
 // convert shape into sprite
 // addressed by index 
@@ -70,47 +59,5 @@ void shape_to_sprite(int shape, int sprite)
   }
   new_sprite->h = y[0];
   Sprite[sprite] = new_sprite;
-}
-
-void sprite_position(int sprite, int x, int y)
-{
-  Sprite[sprite]->x = x;
-  Sprite[sprite]->y = y;
-}
-
-// refresh compositing linked list after changing x/y positions
-// to avoid flickering, this must be called during video blank period
-void sprite_refresh(void)
-{
-  int i, j, n = SPRITE_MAX;
-  // struct compositing_line *blank = &(Sprite[0]->line[0]); // fixme put real blank here
-
-  // first reset all sprite compositing linkage
-  for(i = 0; i < n; i++)
-  {
-    for(j = 0; j < Sprite[i]->h; j++)
-      Sprite[i]->line[j].next = NULL;
-  }
-
-  // reset all screen lines to dummy (supposedly empty or transparent) content
-  for(i = 0; i < VGA_Y_MAX; i++)
-  {
-    scanlines[i] = &blank_line;
-  }
-
-  // now link all sprites, insering them into the linked list
-  for(i = 0; i < n; i++) // loop over all sprites
-  {
-    // cache x/y-offset of the sprite
-    int x = Sprite[i]->x;
-    int y = Sprite[i]->y;
-    for(j = 0; j < Sprite[i]->h; j++) // loop over all hor.lines of the sprite
-    {
-      Sprite[i]->line[j].x = x;
-      // insert sprite lines into the linked list of scan lines
-      Sprite[i]->line[j].next = scanlines[y+j];
-      scanlines[y+j] = &(Sprite[i]->line[j]);
-    }
-  }
 }
 

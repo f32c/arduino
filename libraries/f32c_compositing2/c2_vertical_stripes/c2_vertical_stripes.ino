@@ -1,6 +1,3 @@
-/* Compositing2 sprite example
- * with some moving vertical color stripes.
- */
 extern "C"
 {
   #include "compositing.h"
@@ -31,7 +28,7 @@ struct compositing_line blue_green =
 };
 
 char content_reddish[] =
-  {0x80,0xE0,0xE0,0xF0,0xF0,0xE0,0xE0,0x80,};
+  {0xE0,0xE0,0xE0,0xF0,0xF0,0xE0,0xE0,0xE0,};
 struct compositing_line reddish_line =
 {
   &blue_green, // links to previous content
@@ -42,48 +39,31 @@ struct compositing_line reddish_line =
 
 struct compositing_line *scanlines[480];
 
-struct sprite_speed 
-{
-  int x,y;
-};
-struct sprite_speed Sprite_speed[SPRITE_MAX];
-
-void setup()
-{
+void setup() {
   // put your setup code here, to run once:
   int i;
   videodisplay_reg = &(scanlines[0]);
-
-  for(i = 0; i < SPRITE_MAX; i++)
-  {
-    shape_to_sprite(1 + (i % 3),i);
-    Sprite[i]->x = 20 + (rand() % 600);
-    Sprite[i]->y = 20 + (rand() % 400);
-    Sprite_speed[i].x = (rand() % 3)-1;
-    Sprite_speed[i].y = (rand() % 3)-1;
-  }
+  shape_to_sprite(0,0); // sprite 0 initialize content
 
   for(i = 0; i < 480; i+=1)
     scanlines[i] = &green_blue;
   for(i = 0; i < Sprite[0]->h; i++)
     scanlines[i+60] = &(Sprite[0]->line[i]);
-  for(i = 0; i < Sprite[0]->h; i++)
-    scanlines[i+400] = &(Sprite[1]->line[i]);
   for(i = 120; i < 360; i+=1)
     scanlines[i] = &reddish_line;
+
+  shape_to_sprite(0,0);
   
   // enable video fetching after all the
   // pointers have been correctly sat.
-  sprite_refresh();
+  
   // prevents random RAM content from
   // causing extensive fetching, and slowing
   // down CPU
   videodisplay_reg = &(scanlines[0]);
 }
 
-void loop()
-{
-  int i;
+void loop() {
   static int red_dir = 1, green_dir = -1;
 
   reddish_line.x += red_dir;
@@ -94,22 +74,6 @@ void loop()
   if(green_blue.x < -80 || green_blue.x > 340)
     green_dir = -green_dir;
 
-  for(i = 0; i < SPRITE_MAX; i++)
-  {
-    Sprite[i]->x += Sprite_speed[i].x;
-    Sprite[i]->y += Sprite_speed[i].y;
-    if(Sprite[i]->x < 40)
-      Sprite_speed[i].x = 1;
-    if(Sprite[i]->x > 600)
-      Sprite_speed[i].x = -1;
-
-    if(Sprite[i]->y < 40)
-      Sprite_speed[i].y = 1;
-    if(Sprite[i]->y > 400)
-      Sprite_speed[i].y = -1;
-  }
-  sprite_refresh();
-
-  delay(20);
+  delay(10);
 }
 

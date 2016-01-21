@@ -15,6 +15,12 @@ struct charcolors std_colors[] =
   {0, 0}
 };
 
+char *shape_empty[] = 
+{
+  "    ",
+  NULL
+};
+
 char *shape_ship[] =
 {//01234567890123456789012345678901 
 "   WWW                          ",
@@ -37,9 +43,56 @@ char *shape_ship[] =
 NULL
 };
 
+char *shape_invader[] =
+{//01234567890123456789012345678901 
+"              WWWW              ",
+"              WWWW              ",
+"            WWWWWWWW            ",
+"            WWWWWWWW            ",
+"         WWWWWWWWWWWWWW         ",
+"         WWWWWWWWWWWWWW         ",
+"       WWWWW  WWWW  WWWWW       ",
+"       WWWWW  WWWW  WWWWW       ",
+"       WWWWWWWWWWWWWWWWWW       ",
+"       WWWWWWWWWWWWWWWWWW       ",
+"            WW    WW            ",
+"            WW    WW            ",
+"          WW  WWWW  WW          ",
+"          WW  WWWW  WW          ",
+"        WW  WW    WW  WW        ",
+"        WW  WW    WW  WW        ",
+"                                ",
+NULL
+};
+
+char *shape_invader2[] =
+{//01234567890123456789012345678901 
+"              OOOO              ",
+"              OOOO              ",
+"            OOOOOOOO            ",
+"            OOOOOOOO            ",
+"         OOOOOOOOOOOOOO         ",
+"         OOOOOOOOOOOOOO         ",
+"       OOOOO  OOOO  OOOOO       ",
+"       OOOOO  OOOO  OOOOO       ",
+"       OOOOOOOOOOOOOOOOOO       ",
+"       OOOOOOOOOOOOOOOOOO       ",
+"          OO        OO          ",
+"          OO        OO          ",
+"        OO            OO        ",
+"        OO            OO        ",
+"          OO        OO          ",
+"          OO        OO          ",
+"                                ",
+NULL
+};
+
 struct shape Shape[] =
 {
-  [0] = { std_colors, shape_ship },
-  [1] = { NULL, NULL }
+  [0] = { std_colors, shape_empty },
+  [1] = { std_colors, shape_ship },
+  [2] = { std_colors, shape_invader },
+  [3] = { std_colors, shape_invader2 },
+  [4] = { NULL, NULL }
 };
 
