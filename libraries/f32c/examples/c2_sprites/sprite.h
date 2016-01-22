@@ -3,7 +3,7 @@
 #include "compositing.h"
 #include "shape.h"
 
-#define SPRITE_MAX 200
+#define SPRITE_MAX 160
 
 // struct used to draw sprite in C
 struct sprite

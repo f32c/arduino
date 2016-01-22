@@ -30,7 +30,7 @@ void shape_to_sprite(int shape, int sprite)
   char **bmp; // bitmap: array of strings
   uint16_t x[0],y[0]; // running coordinates during ascii->pixel conversion
   int content_size;
-  uint8_t *new_content; // malloc'd contiguous space for the sprite
+  uint8_t *new_content, *line_content; // malloc'd contiguous space for the sprite
   struct charcolors *chc;
   struct sprite *spr = &(Sprite[sprite]), *new_sprite;
   struct shape *sh = &(Shape[shape]); // shape to read from
@@ -38,8 +38,11 @@ void shape_to_sprite(int shape, int sprite)
   // fill the color array to speed up
   for(chc = sh->colors; chc->c != 0; chc++) // read until we don't hit 0
     color_list[chc->c] = chc->color;
-
-  content_size = w*h;
+  // 1st pass read ascii art - determine content size
+  content_size = 0;
+  for(bmp = sh->bmp, y[0] = 0; y[0] < 32 && *bmp != NULL; y[0]++, bmp++)
+      content_size += strlen(*bmp);
+  h = y[0];
   new_content = (uint8_t *)malloc(content_size);
   sprite_size = sizeof(struct sprite)+h*(sizeof(struct compositing_line));
   new_sprite = (struct sprite *)malloc(sprite_size);
@@ -52,19 +55,17 @@ void shape_to_sprite(int shape, int sprite)
     new_sprite->line[i].next = NULL;
     new_sprite->line[i].x = ix;
     new_sprite->line[i].n = w;
-    //for(j = 0; j < w; j++)
-    //  new_sprite->line[i].pixel[j] = 0; // transparent
-      // new_sprite->line[i].pixel[j] = i-j; // block of 45 deg blue-to-red-colors
   }
-  // read ascii-art data and write color pixel content
+  // 2nd pass read ascii-art data and write color pixel content
+  line_content = new_content;
   for(bmp = sh->bmp, y[0] = 0; y[0] < 32 && *bmp != NULL; y[0]++, bmp++)
   {
       char *clr;
-      uint8_t *line_content = &(new_content[y[0]*w]); // pointer to current line in content
+      // uint8_t *line_content = &(new_content[y[0]*w]); // pointer to current line in content
       new_sprite->line[y[0]].bmp = line_content;
       for(x[0] = 0, clr = *bmp; x[0] < 32 && *clr != 0; x[0]++, clr++)
       {
-        line_content[x[0]] = color_list[*clr];
+        *(line_content++) = color_list[*clr];
         //bmp_plot(ix+sx*rx[0],iy+sy*ry[0],color_list[*clr]);
       }
   }
