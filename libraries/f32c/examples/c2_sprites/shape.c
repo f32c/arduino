@@ -15,6 +15,7 @@ struct charcolors std_colors[] =
   {0, 0}
 };
 
+// warning strings length must be 4-byte aligned
 char *shape_empty[] = 
 {
   "    ",
@@ -22,68 +23,69 @@ char *shape_empty[] =
 };
 
 char *shape_ship[] =
-{//01234567890123456789012345678901 
-"   WWW                          ",
-"   WWWOOOOO                     ",
-" WWWWWYYYYYYYYYY                ",
-"   WWWWWOOO                     ",
-"   WWWWWW                       ",
-"   WWCWWWWW       BBBBBB        ",
-" WWWWCCWWWWWW    BBWWWWWW       ",
-"WWWWOOOOOWWWWWWWWWWWWWWWWWW     ",
+{/* 
+ 01234567890123456789012345678901 */
+"   WWW  ",
+"   WWWOOOOO ",
+" WWWWWYYYYYYYYYY",
+"   WWWWWOOO ",
+"   WWWWWW   ",
+"   WWCWWWWW       BBBBBB",
+" WWWWCCWWWWWW    BBWWWWWW   ",
+"WWWWOOOOOWWWWWWWWWWWWWWWWWW ",
 "  WWOOOOOOYYYWWWWWWYOORRROYWWWWW",
-"WWWWOOOOOWWWWWWWWWWWWWWWWWW     ",
-" WWWWCCWWWWWW    BBWWWWWW       ",
-"   WWCWWWWW       BBBBBB        ",
-"   WWWWWW                       ",
-"   WWWWWOOO                     ",
-" WWWWWYYYYYYYYYY                ",
-"   WWWOOOOO                     ",
-"   WWW                          ",
+"WWWWOOOOOWWWWWWWWWWWWWWWWWW ",
+" WWWWCCWWWWWW    BBWWWWWW   ",
+"   WWCWWWWW       BBBBBB",
+"   WWWWWW   ",
+"   WWWWWOOO ",
+" WWWWWYYYYYYYYYY",
+"   WWWOOOOO ",
+"   WWW  ",
 NULL
 };
 
 char *shape_invader[] =
-{//01234567890123456789012345678901 
-"              GGGG              ",
-"              GGGG              ",
-"            GGGGGGGG            ",
-"            GGGGGGGG            ",
-"         GGGGGGGGGGGGGG         ",
-"         GGGGGGGGGGGGGG         ",
-"       GGGGW  GGGG  GGGGW       ",
-"       GGGGW  GGGG  GGGGW       ",
-"       GGGGGGGGGGGGGGGGGG       ",
-"       GGGGGGGGGGGGGGGGGG       ",
-"            GG    GG            ",
-"            GG    GG            ",
-"          GG  GGGG  GG          ",
-"          GG  GGGG  GG          ",
-"        GG  GG    GG  GG        ",
-"        GG  GG    GG  GG        ",
-"                                ",
+{/*
+ 01234567890123456789012345678901 */
+"      GGGG  ",
+"      GGGG  ",
+"    GGGGGGGG",
+"    GGGGGGGG",
+"  GGGGGGGGGGGG  ",
+"  GGGGGGGGGGGG  ",
+"GGGG  GGGG  GGGG",
+"GGGG  GGGG  GGGG",
+"GGGGGGGGGGGGGGGG",
+"GGGGGGGGGGGGGGGG",
+"    GG    GG",
+"    GG    GG",
+"  GG  GGGG  GG  ",
+"  GG  GGGG  GG  ",
+"GG  GG    GG  GG",
+"GG  GG    GG  GG",
 NULL
 };
 
 char *shape_invader2[] =
-{//01234567890123456789012345678901 
-"              OOOO              ",
-"              OOOO              ",
-"            OOOOOOOO            ",
-"            OOOOOOOO            ",
-"         OOOOOOOOOOOOOO         ",
-"         OOOOOOOOOOOOOO         ",
-"       OOOOO  OOOO  OOOOO       ",
-"       OOOOO  OOOO  OOOOO       ",
-"       OOOOOOOOOOOOOOOOOO       ",
-"       OOOOOOOOOOOOOOOOOO       ",
-"          OO        OO          ",
-"          OO        OO          ",
-"        OO            OO        ",
-"        OO            OO        ",
-"          OO        OO          ",
-"          OO        OO          ",
-"                                ",
+{/*
+ 01234567890123456789012345678901 */
+"      OOOO  ",
+"      OOOO  ",
+"    OOOOOOOO",
+"    OOOOOOOO",
+"  OOOOOOOOOOOO  ",
+"  OOOOOOOOOOOO  ",
+"OOOO  OOOO  OOOO",
+"OOOO  OOOO  OOOO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"  OO        OO  ",
+"  OO        OO  ",
+"OO            OO",
+"OO            OO",
+"  OO        OO  ",
+"  OO        OO  ",
 NULL
 };
 

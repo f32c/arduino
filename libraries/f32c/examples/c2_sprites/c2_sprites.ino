@@ -98,12 +98,22 @@ void loop()
     Sprite[i]->x += Sprite_speed[i].x;
     Sprite[i]->y += Sprite_speed[i].y;
     if(Sprite[i]->x < 40)
+    {
       Sprite_speed[i].x = 1;
+      if( (rand()&7) == 0 )
+        Sprite_speed[i].y = (rand()%3)-1;
+    }
     if(Sprite[i]->x > 600)
+    {
       Sprite_speed[i].x = -1;
+    }
 
     if(Sprite[i]->y < 40)
+    {
       Sprite_speed[i].y = 1;
+      if( (rand()&7) == 0 )
+        Sprite_speed[i].x = (rand()%3)-1;
+    }
     if(Sprite[i]->y > 400)
       Sprite_speed[i].y = -1;
   }

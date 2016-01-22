@@ -48,13 +48,13 @@ void shape_to_sprite(int shape, int sprite)
   new_sprite = (struct sprite *)malloc(sprite_size);
   new_sprite->x = ix;
   new_sprite->y = iy;
-  new_sprite->w = w;
+  new_sprite->w = w; // max sprite width (maybe unused)
   new_sprite->h = h;
   for(i = 0; i < h; i++)
   {
     new_sprite->line[i].next = NULL;
     new_sprite->line[i].x = ix;
-    new_sprite->line[i].n = w;
+    // new_sprite->line[i].n = w;
   }
   // 2nd pass read ascii-art data and write color pixel content
   line_content = new_content;
@@ -68,6 +68,7 @@ void shape_to_sprite(int shape, int sprite)
         *(line_content++) = color_list[*clr];
         //bmp_plot(ix+sx*rx[0],iy+sy*ry[0],color_list[*clr]);
       }
+      new_sprite->line[y[0]].n = x[0];
   }
   new_sprite->h = y[0];
   Sprite[sprite] = new_sprite;
