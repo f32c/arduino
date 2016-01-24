@@ -11,13 +11,41 @@ void drawRLE();
 //uint8_t fb[FB_WIDTH * FB_HEIGHT] __attribute__ ((aligned (4)));
 volatile uint8_t *fb = (volatile uint8_t *) 0x80006000; // crude malloc :-)
 
-#define COMPOSITING_WIDTH 17
+// static initializer of compositing2 set of pointers
+// that creates completely contiguous bitmap
+
+struct compositing_line
+{
+   struct compositing_line *next; // 32-bit continuation of the same structure, NULL if no more
+   int16_t x; // where to start on screen (can be negative)
+   uint16_t n; // number of pixels contained here
+   // pixels can be multiple of 4 (n lower 2 bits discarded)
+   // minimal n is currently 4 (when composite2 core is fixed it could be 0)
+   volatile uint8_t *bmp; // pointer to array of pixels (non-null, each must have at least 1 element)
+};
+
+struct compositing_line *scanline[FB_HEIGHT], metadata[FB_HEIGHT];
 
 static inline void plot(int x, int y, int color)
 {
-  uint32_t off = (y * (FB_WIDTH + 4*((FB_WIDTH/4)/(COMPOSITING_WIDTH-1)) )) + x + 4*(1+(x/4)/((COMPOSITING_WIDTH-1)));
-  if (off < (FB_WIDTH + 4*((FB_WIDTH/4)/(COMPOSITING_WIDTH-1)) )*FB_HEIGHT*sizeof(fb[0]))
-    fb[off] = color;
+  uint32_t offset = x + y*FB_WIDTH;
+  fb[offset] = color;
+}
+
+void init_bitmap()
+{
+  int i;
+  /* clear bitmap area for compositing */
+	for(int i = 0; i < FB_HEIGHT*FB_WIDTH; i++)
+    fb[i] = 0;
+  /* set pointers and metadata to create contiguous bitmap */
+  for(i = 0; i < FB_HEIGHT; i++)
+  {
+    scanline[i] = &(metadata[i]);
+    metadata[i].x = 0;
+    metadata[i].n = FB_WIDTH;
+    metadata[i].bmp = &(fb[i * FB_WIDTH]);
+  }
 }
 
 PS2Keyboard keyboard;
@@ -136,13 +164,11 @@ void setup() {
 
   if (vga.IsBitmapConfigured())
   {
-	  vga.SetBitmapAddress(fb);
+	  vga.SetBitmapAddress(&(scanline[0]));
 	  vga.SetBitmapColor(0x108010);
-	  vga.EnableBitmap();
 
-    /* clear a bit more for compositing */
-	  for(int i = 0; i < FB_HEIGHT*(FB_WIDTH + 4*((FB_WIDTH/4)/(COMPOSITING_WIDTH-1)) ); i++)
-      fb[i] = 0;
+    init_bitmap();
+	  vga.EnableBitmap();
   
 	  drawRLE();
     
@@ -164,85 +190,69 @@ void setup() {
 		}
     }
 
-    /* COMPOSITING TEST */
-    if(1) // move 2 thin h-sprites from the bitmap
+    #if 1
+    // scroll full screen bitmap right
+    for(int j = 0; j < 300; j++)
     {
-      for(int j = 0; j < 450; j++)
-      {
-        int offset = 0;
-        int16_t rj = j/4;
-        volatile int16_t *relocate;
-        while (VGAText_GetVerticalBlank());
-        while (!VGAText_GetVerticalBlank());
-        for(int k = COMPOSITING_WIDTH*10*4 * 200; k < COMPOSITING_WIDTH*10*4 * 300; k+=4*COMPOSITING_WIDTH*10)
-        {
-          for(int l = 4*COMPOSITING_WIDTH*4; l < 6*COMPOSITING_WIDTH*4; l+=4*COMPOSITING_WIDTH)
-          {
-            relocate =(volatile int16_t *) &(fb[offset+k+l]);
-            relocate[0] = relocate[1] = rj;
-          }
-        }
-        for(int k = COMPOSITING_WIDTH*10*4 * 410; k < COMPOSITING_WIDTH*10*4 * 480; k+=4*COMPOSITING_WIDTH*10)
-        {
-          for(int l = 7*COMPOSITING_WIDTH*4; l < 8*COMPOSITING_WIDTH*4; l+=4*COMPOSITING_WIDTH)
-          {
-            relocate =(volatile int16_t *) &(fb[offset+k+l]);
-            relocate[0] = relocate[2*COMPOSITING_WIDTH] = -j;
-          }
-          for(int l = 2*COMPOSITING_WIDTH*4; l < 3*COMPOSITING_WIDTH*4; l+=4*COMPOSITING_WIDTH)
-          {
-            relocate =(volatile int16_t *) &(fb[offset+k+l]);
-            relocate[0] = relocate[2*COMPOSITING_WIDTH] = j;
-          }
-        }
-
-        //delay(10);
-      }
-    }
-
-    if(1) // scroll full screen bitmap right
-    for(int j = 0; j < 4*79; j++)
-    {
-      int offset=0;
-      int16_t rj = j;
-      volatile int16_t *relocate;
       while (VGAText_GetVerticalBlank());
       while (!VGAText_GetVerticalBlank());
-      for(int k = 0; k < COMPOSITING_WIDTH*10*4 * 480; k+=4*COMPOSITING_WIDTH)
-      {
-        relocate = (volatile int16_t *) &(fb[offset+k]);
-        relocate[0] = relocate[1] = rj;
-        #if 0
-        // vertical orange lines
-        if(j == 0)
-          for(int i = offset+k+4; i < offset+k+9; i++)
-            fb[i] = 0xb1;
-        #endif
-      }
-      //delay(10);
+      for(int k = 0; k < FB_HEIGHT; k++)
+        metadata[k].x = j;
     }
+    #endif  
 
-    if(1) // scroll full screen bitmap left
-    for(int j = 4*79; j >= 0; j--)
+    #if 1
+    // scroll full screen bitmap leftt
+    for(int j = 300; j >= 0; j--)
     {
-      int offset=0;
-      int16_t rj = j;
-      volatile int16_t *relocate;
       while (VGAText_GetVerticalBlank());
       while (!VGAText_GetVerticalBlank());
-      for(int k = 0; k < COMPOSITING_WIDTH*10*4 * 480; k+=4*COMPOSITING_WIDTH)
-      {
-        relocate = (volatile int16_t *) &(fb[offset+k]);
-        relocate[0] = relocate[1] = rj;
-        #if 0
-        // vertical orange lines
-        if(j == 0)
-          for(int i = offset+k+4; i < offset+k+9; i++)
-            fb[i] = 0xb1;
-        #endif
-      }
-      //delay(10);
+      for(int k = 0; k < FB_HEIGHT; k++)
+        metadata[k].x = j;
     }
+    #endif
+
+    #if 1
+    // vertical scroll up
+    for(int j = 0; j <= FB_HEIGHT; j++)
+    {
+      while (VGAText_GetVerticalBlank());
+      while (!VGAText_GetVerticalBlank());
+      for(int k = 0; k < FB_HEIGHT; k++)
+        scanline[k] = &(metadata[(j + k) % FB_HEIGHT]);
+    }
+    #endif
+
+    #if 1
+    // central horizontal mirror scroll
+    for(int32_t j = FB_HEIGHT/2; j >= 0; j--)
+    {
+      while (VGAText_GetVerticalBlank());
+      while (!VGAText_GetVerticalBlank());
+      for(uint32_t k = 0; k < FB_HEIGHT/2; k++)
+      {
+        scanline[k] = &(metadata[(k + j) % (FB_HEIGHT/2)]);
+        scanline[k+FB_HEIGHT/2] = &(metadata[FB_HEIGHT/2 + ((FB_HEIGHT/2 + k - j) % (FB_HEIGHT/2))]);
+      }
+    }
+    #endif
+
+    #if 1
+    // vertical partial scrolls
+    int vstep = 48*2;
+    for(uint32_t j = 0; j <= vstep; j++)
+    {
+      //int vstep = 48*2;
+      while (VGAText_GetVerticalBlank());
+      while (!VGAText_GetVerticalBlank());
+      for(uint32_t k = 0; k < FB_HEIGHT; k+=vstep)
+      {
+        for(uint32_t i = 0; i < vstep; i++)
+          scanline[k+i] = &(metadata[k + ((i + j) % vstep)]);
+      }
+    }
+    #endif
+
 
   }
 }
