@@ -2,6 +2,7 @@
 #define COMPOSITING_H
 
 #define videodisplay_reg (*(volatile uint32_t *)0xFFFFFB90)
+#define cntrl_reg        (*(volatile  uint8_t *)0xFFFFFB81)
 #define vblank_reg       (*(volatile  uint8_t *)0xFFFFFB87)
 
 #define VGA_X_MAX 640
@@ -20,7 +21,7 @@ struct compositing_line
 };
 
 // double buffering scanlines
-extern struct compositing_line *scanlines[2][VGA_Y_MAX];
+extern volatile struct compositing_line *scanlines[2][VGA_Y_MAX];
 
 #endif
 
