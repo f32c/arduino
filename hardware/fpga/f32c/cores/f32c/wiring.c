@@ -95,11 +95,13 @@ micros(void)
 void
 delay(uint32_t ms)
 {
-	int32_t t = micros();
+	int32_t t, target;
+	RDTSC(target);
 	while (ms--)
 	{
-		while ((int32_t)(micros() - t) < 1000)
-			;
-		t += 1000;
+		target += F_CPU/1000;
+		do
+			RDTSC(t);
+		while((target-t) > 0);
 	}
 }
