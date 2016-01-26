@@ -1,5 +1,6 @@
 #include <f32c_VGATextConsole.h>
 #include <f32c_PS2Keyboard.h>
+#include <string.h> // just for the malloc
 
 // CAUTION: The sketch below is a "hack" for testing purposes.  You have been warned. :-)
 
@@ -9,7 +10,7 @@ void drawRLE();
 #define FB_HEIGHT 480
 
 //uint8_t fb[FB_WIDTH * FB_HEIGHT] __attribute__ ((aligned (4)));
-volatile uint8_t *fb = (volatile uint8_t *) 0x80006000; // crude malloc :-)
+volatile uint8_t *fb = (volatile uint8_t *) malloc(sizeof(uint8_t)*FB_WIDTH*FB_HEIGHT); // crude malloc :-)
 
 // static initializer of compositing2 set of pointers
 // that creates completely contiguous bitmap
@@ -25,6 +26,16 @@ struct compositing_line
 };
 
 struct compositing_line *scanline[FB_HEIGHT], metadata[FB_HEIGHT];
+struct compositing_line *scanline_copy[FB_HEIGHT]; // copy for some scrolling
+struct compositing_line strip_meta[4]; // 4 different types of color strips
+uint8_t *strip_data; // allocate 4*512 bytes here
+
+uint8_t *skull_bitmap; // opaque pixel content of the skull, malloc()d
+struct compositing_line *skull_meta; // contiguous metadata hor line semnets malloc()d
+int skull_meta_n; // how many metadata for the skull
+
+uint8_t blank_content[] = {0,0,0,0};
+struct compositing_line blank_line[1] = {NULL, 0, 4, blank_content};
 
 static inline void plot(int x, int y, int color)
 {
@@ -171,24 +182,45 @@ void setup() {
 	  vga.EnableBitmap();
   
 	  drawRLE();
-    
-	  for (int x = 0; x < 256; x++)
-	  {
-		for (int y = 0; y < 8; y++)
-		{
-		  plot(64+(x*2), 424+y, (x&0xfc));
-		  plot(65+(x*2), 424+y, (x&0xfc));
 
-		  plot(64+(x*2), 432+y, (x&0xfc)|1);
-		  plot(65+(x*2), 432+y, (x&0xfc)|1);
-		
-		  plot(64+(x*2), 440+y, (x&0xfc)|2);
-		  plot(65+(x*2), 440+y, (x&0xfc)|2);
-
-		  plot(64+(x*2), 448+y, (x&0xfc)|3);
-		  plot(65+(x*2), 448+y, (x&0xfc)|3);
-		}
+    // color strip below - link it
+    #if 1
+    strip_data = (uint8_t *)malloc(sizeof(uint8_t) * 4 * 512);
+    for(int t = 0; t < 4; t++)
+    {
+      // 4 different types of colorful horizontal lines
+      strip_meta[t].next = NULL;
+      strip_meta[t].x = 64;
+      strip_meta[t].n = 512;
+      for(int j = 0; j < 8; j++)
+        // each of 4 types vertically repeated 8 times
+        scanline[424+j+8*t] = &(strip_meta[t]);
+      strip_meta[t].bmp = &(strip_data[512*t]);
+      for(int x = 0; x < 256; x++)
+      {
+        strip_data[512*t+2*x] = (x&0xFC)|t;
+        strip_data[512*t+2*x+1] = (x&0xFC)|t;
+      }
     }
+	  for (int x = 0; x < 256; x++)
+    {
+      // create 8 different types of colour strips  
+      for (int y = 0; y < 8; y++)
+      {
+        plot(64+(x*2), 424+y, (x&0xfc));
+		    plot(65+(x*2), 424+y, (x&0xfc));
+
+        plot(64+(x*2), 432+y, (x&0xfc)|1);
+		    plot(65+(x*2), 432+y, (x&0xfc)|1);
+		
+    	  plot(64+(x*2), 440+y, (x&0xfc)|2);
+        plot(65+(x*2), 440+y, (x&0xfc)|2);
+
+        plot(64+(x*2), 448+y, (x&0xfc)|3);
+        plot(65+(x*2), 448+y, (x&0xfc)|3);
+      }
+    }
+    #endif
 
     #if 1
     // scroll full screen bitmap right
@@ -196,8 +228,8 @@ void setup() {
     {
       while (VGAText_GetVerticalBlank());
       while (!VGAText_GetVerticalBlank());
-      for(int k = 0; k < FB_HEIGHT; k++)
-        metadata[k].x = j;
+      for(int k = 0; k < skull_meta_n; k++)
+        skull_meta[k].x++;
     }
     #endif  
 
@@ -207,10 +239,13 @@ void setup() {
     {
       while (VGAText_GetVerticalBlank());
       while (!VGAText_GetVerticalBlank());
-      for(int k = 0; k < FB_HEIGHT; k++)
-        metadata[k].x = j;
+      for(int k = 0; k < skull_meta_n; k++)
+        skull_meta[k].x--;
     }
     #endif
+
+    for(int i = 0; i < FB_HEIGHT; i++)
+      scanline_copy[i] = scanline[i];
 
     #if 1
     // vertical scroll up
@@ -219,7 +254,7 @@ void setup() {
       while (VGAText_GetVerticalBlank());
       while (!VGAText_GetVerticalBlank());
       for(int k = 0; k < FB_HEIGHT; k++)
-        scanline[k] = &(metadata[(j + k) % FB_HEIGHT]);
+        scanline[k] = scanline_copy[(j + k) % FB_HEIGHT];
     }
     #endif
 
@@ -231,8 +266,8 @@ void setup() {
       while (!VGAText_GetVerticalBlank());
       for(uint32_t k = 0; k < FB_HEIGHT/2; k++)
       {
-        scanline[k] = &(metadata[(k + j) % (FB_HEIGHT/2)]);
-        scanline[k+FB_HEIGHT/2] = &(metadata[FB_HEIGHT/2 + ((FB_HEIGHT/2 + k - j) % (FB_HEIGHT/2))]);
+        scanline[k] = scanline_copy[(k + j) % (FB_HEIGHT/2)];
+        scanline[k+FB_HEIGHT/2] = scanline_copy[FB_HEIGHT/2 + ((FB_HEIGHT/2 + k - j) % (FB_HEIGHT/2))];
       }
     }
     #endif
@@ -248,12 +283,10 @@ void setup() {
       for(uint32_t k = 0; k < FB_HEIGHT; k+=vstep)
       {
         for(uint32_t i = 0; i < vstep; i++)
-          scanline[k+i] = &(metadata[k + ((i + j) % vstep)]);
+          scanline[k+i] = scanline_copy[k + ((i + j) % vstep)];
       }
     }
     #endif
-
-
   }
 }
 
@@ -598,19 +631,95 @@ void drawRLE()
 	int			color = 1;
 	int			curcolor = 0;
 	int			x = 0, y = 0;
+  int nseg = 0; // number of line segments
+  int nbytes = 0; // total size of bytes to malloc
+  int enable = 0;
+  uint8_t *wpix; // write to pixel data pointer
+  struct compositing_line *wmeta; // write to metadata pointer
 
 	const uint8_t *cmp = &HaDLogo[0];
 
+  // first pass: determine how much to malloc
+  // and count number of line segments
+  x=0;
+  y=0;
+  cmp = &HaDLogo[0];
+  while (cmp < &HaDLogo[sizeof(HaDLogo)])
+  {
+    cnt = *cmp++;
+    if (cnt & 0x80)
+      cnt = ((cnt & 0x7f) << 8) | *cmp++;
+    enable = curcolor != 0 && x > 0 && x < 639 ? 1 : 0;
+    if(enable) // non-transparent color, non-border
+    {
+      nseg++; // one segment more
+      nbytes += (cnt + 3) & ~3;
+      // cnt padded to full 32bit word (4 byte)
+    }
+      if (++x >= 640)
+      {
+        x = 0;
+        if (++y >= 480)
+          y = 0;
+      }
+    curcolor ^= color;
+  }
+
+  skull_meta = (struct compositing_line *)malloc(sizeof(struct compositing_line) * nseg);
+  skull_bitmap = (uint8_t *)malloc(sizeof(uint8_t) * nbytes);
+  skull_meta_n = nseg;
+
+  wpix = skull_bitmap;
+  wmeta = skull_meta;
+  for(int i = 0; i < nseg; i++)
+  {
+    skull_meta[i].next = NULL;
+    skull_meta[i].x = 0;
+    skull_meta[i].n = 4;
+    skull_meta[i].bmp = blank_content;
+  }
+
+  if(1)
+  for(int i = 0; i < FB_HEIGHT; i++)
+    scanline[i] = blank_line;
+
+  // second pass: link the metadata and write bitmap data
+  x=0;
+  y=0;
+  cmp = &HaDLogo[0];
+  curcolor = 0;
 	while (cmp < &HaDLogo[sizeof(HaDLogo)])
 	{
+    uint8_t *wptr = wpix;
+    int pad;
 		cnt = *cmp++;
 		if (cnt & 0x80)
 			cnt = ((cnt & 0x7f) << 8) | *cmp++;
-
+    enable = curcolor != 0 && x > 0 && x < 639 ? 1 : 0;
+    #if 1
+    if(enable)
+    {
+      wmeta->x = x; // starting x-position of the data
+      wmeta->n = (cnt + 3) & ~3; // round to larger 32bit (ceiling)
+      if(scanline[y] != blank_line)
+        wmeta->next = scanline[y]; // insert into linked list
+      scanline[y] = wmeta;
+      wmeta->bmp = wpix;
+      wptr = wpix; // ptr will be incrementing in next loop
+      wpix += wmeta->n; // jump over the data to next
+      wmeta++; // next metadata element
+      pad = (4-(cnt & 3))&3; // number of transparent pixels to pad to full 32bit
+    }
+    #endif
 		while (cnt--)
 		{
+      #if 0
 			plot(x, y, curcolor ? (((x>>1)+(y))) & 0xff : 0x00);
-				
+      #endif
+      #if 1
+      if(enable)
+ 		    *(wptr++) = (((x>>1)+(y))) & 0xff;
+      #endif
 			if (++x >= 640)
 			{
 				x = 0;
@@ -618,7 +727,10 @@ void drawRLE()
 					y = 0;
 			}
 		}
-
+    if(enable)
+      for(int i = 0; i < pad; i++)
+        *(wptr++) = 0;
 		curcolor ^= color;
 	}
 }
+
