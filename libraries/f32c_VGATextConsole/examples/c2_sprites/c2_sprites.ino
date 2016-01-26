@@ -141,9 +141,9 @@ void loop()
     if(Sprite[i]->y > 460)
       Sprite_speed[i].y = -1;
   }
-  while((vblank_reg & 0x80) != 0);
-  sprite_refresh();
   while((vblank_reg & 0x80) == 0);
+  sprite_refresh();
+  while((vblank_reg & 0x80) != 0);
   //delay(400);
   }
   else
