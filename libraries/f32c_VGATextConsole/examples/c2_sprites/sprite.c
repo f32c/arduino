@@ -74,6 +74,18 @@ void shape_to_sprite(int shape, int sprite)
   Sprite[sprite] = new_sprite;
 }
 
+void sprite_clone(int original, int clone)
+{
+  struct sprite *orig = Sprite[original];
+  struct sprite *clon;
+  uint32_t sprite_size;
+
+  sprite_size = sizeof(struct sprite) + (orig->h) * sizeof(struct compositing_line);
+  clon = (struct sprite *)malloc(sprite_size);
+  memcpy(clon, orig, sprite_size);
+  Sprite[clone] = clon;
+}
+
 void sprite_position(int sprite, int x, int y)
 {
   Sprite[sprite]->x = x;

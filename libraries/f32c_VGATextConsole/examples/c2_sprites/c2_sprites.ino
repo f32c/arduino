@@ -59,15 +59,21 @@ void setup()
   // put your setup code here, to run once:
   int i;
 
-  if(1)
-  for(i = 0; i < SPRITE_MAX; i++)
-  {
-    shape_to_sprite(1 + (i % 3),i);
-    Sprite[i]->x = 20 + (rand() % 600);
-    Sprite[i]->y = 20 + (rand() % 400);
-    Sprite_speed[i].x = (rand() % 3)-1;
-    Sprite_speed[i].y = (rand() % 3)-1;
-  }
+  #if 1
+    shape_to_sprite(1, 0);
+    shape_to_sprite(2, 1);
+    shape_to_sprite(3, 2);
+    for(i = 3; i < SPRITE_MAX; i++)
+     sprite_clone(i%3, i);
+    for(i = 0; i < SPRITE_MAX; i++)
+    {
+      //shape_to_sprite(1 + (i % 3),i);
+      Sprite[i]->x = 20 + (rand() % 600);
+      Sprite[i]->y = 20 + (rand() % 400);
+      Sprite_speed[i].x = (rand() % 3)-1;
+      Sprite_speed[i].y = (rand() % 3)-1;
+    }
+  #endif
 
   for(i = 0; i < 480; i++)
   {

@@ -17,7 +17,7 @@ extern struct sprite *Sprite[]; // global array of all sprites, each sprite of d
 
 void sprite_refresh(void); // refresh compositing linked list after changing x/y positions
 void shape_to_sprite(int shape, int sprite);
-void sprite_clone(int sprite_original, int sprite_clone); // clone content from one sprite to another
+void sprite_clone(int original, int clone); // clone content from one sprite to another
 void sprite_position(int sprite, int x, int y);
 
 #endif // SPRITE_H
