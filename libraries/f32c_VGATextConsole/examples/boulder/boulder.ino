@@ -50,7 +50,7 @@ typedef uint8_t video_char;
 
 //0-text in SRAM/SDRAM
 //1-text in BRAM (most boards)
-#define BRAM 1
+#define BRAM 0
 
 #if BRAM
 volatile video_char *text_ram = (volatile video_char *) 0x40000000;

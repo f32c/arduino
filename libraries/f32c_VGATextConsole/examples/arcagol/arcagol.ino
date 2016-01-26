@@ -118,17 +118,16 @@ void generate_living_beings(void)
 void setup() {
   int x, y;
   text_addr = vram; // video text base address
-  cntrl_reg = 0xE0; // enable text mode, enable bitmap, no cursor
+  cntrl_reg = 0b10100000; // enable text mode, enable bitmap, no cursor
   gol_clear();
   videodisplay_reg = &(videomem[0]);
   tspr = (struct thin_sprites *) videomem;
   //create_box(50,20);
   //create_crawler(50,30,1);
+  #if 0
   bmp_clear();
-  #if 1
   bmp_shape_draw(320,240,0,0,3);
   bmp_grab_sprite(&(sprite[0]), 320,240,320+31,240+31);
-  #endif
   for(x = 0; x < 640; x++)
   {
     bmp_plot(x, 0, 255);
@@ -139,6 +138,7 @@ void setup() {
     bmp_plot(0, y, 255);
     bmp_plot(639, y, 255);
   }
+  #endif
 }
 
 void loop() {
@@ -211,7 +211,7 @@ void loop() {
       }
     }
   }
-  #if 1
+  #if 0
   sprite_position(&(sprite[0]), ship_x, ship_y);
   if(ship_x < 16)
   {
