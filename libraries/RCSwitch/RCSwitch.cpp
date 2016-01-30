@@ -41,6 +41,7 @@ unsigned int RCSwitch::timings[RCSWITCH_MAX_CHANGES];
 RCSwitch::RCSwitch() {
   this->nTransmitterPin = -1;
   this->setPulseLength(350);
+  this->setRepeatInterval(15000);
   this->setRepeatTransmit(10);
   this->setProtocol(1);
   #if not defined( RCSwitchDisableReceiving )
@@ -64,6 +65,16 @@ void RCSwitch::setProtocol(int nProtocol) {
   else if (nProtocol == 3) {
     this->setPulseLength(100);
   }
+  else if (nProtocol == 5) {
+    this->setPulseLength(100);
+  }
+}
+
+/**
+  * Sets the interval between 2 repeated transmissions
+  */
+void RCSwitch::setRepeatInterval(int nRepeatInterval) {
+  this->nRepeatInterval = nRepeatInterval;
 }
 
 /**
@@ -512,6 +523,19 @@ void RCSwitch::transmit(int nHighPulses, int nLowPulses) {
     }
 }
 
+void RCSwitch::transmit2(int nLowPulses, int nHighPulses)
+{
+    if (this->nTransmitterPin != -1) {
+        digitalWrite(this->nTransmitterPin, LOW);
+        // delayMicroseconds( this->nPulseLength * nLowPulses);
+        delay_us( this->nPulseLength * nLowPulses);
+        digitalWrite(this->nTransmitterPin, HIGH);
+        // delayMicroseconds( this->nPulseLength * nHighPulses);
+        delay_us( this->nPulseLength * nHighPulses);
+        // digitalWrite(this->nTransmitterPin, LOW);
+    }
+}
+
 
 #define P4ACT 12
 
@@ -535,6 +559,10 @@ void RCSwitch::send0() {
     else if (this->nProtocol == 4) {
         this->transmit(P4ACT,11);
     }
+    else if (this->nProtocol == 5) {
+        digitalWrite(this->nTransmitterPin, LOW);
+        delay_us(this->nPulseLength);
+    }
 }
 
 /**
@@ -556,6 +584,10 @@ void RCSwitch::send1() {
     }
     else if (this->nProtocol == 4) {
         this->transmit(P4ACT,19);
+    }
+    else if (this->nProtocol == 5) {
+        digitalWrite(this->nTransmitterPin, HIGH);
+        delay_us(this->nPulseLength);
     }
 }
 
@@ -610,6 +642,10 @@ void RCSwitch::sendSync() {
     }
     else if (this->nProtocol == 4) {
         this->transmit(P4ACT,317);
+    }
+    else if (this->nProtocol == 5) {
+        delay_us(67700);
+        // this->transmit(1,5);
     }
 }
 

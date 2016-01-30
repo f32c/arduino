@@ -90,13 +90,13 @@ class RCSwitch {
     void enableTransmit(int nTransmitterPin);
     void disableTransmit();
     void setPulseLength(int nPulseLength);
+    void setRepeatInterval(int nRepeatInterval);
     void setRepeatTransmit(int nRepeatTransmit);
     #if not defined( RCSwitchDisableReceiving )
     void setReceiveTolerance(int nPercent);
     #endif
     void setProtocol(int nProtocol);
     void setProtocol(int nProtocol, int nPulseLength);
-  
   private:
     char* getCodeWordB(int nGroupNumber, int nSwitchNumber, boolean bStatus);
     char* getCodeWordA(char* sGroup, int nSwitchNumber, boolean bStatus);
@@ -106,10 +106,12 @@ class RCSwitch {
     void sendT0();
     void sendT1();
     void sendTF();
-    void send0();
-    void send1();
-    void sendSync();
+    // virtual functions can be overloaded
+    virtual void send0();
+    virtual void send1();
+    virtual void sendSync();
     void transmit(int nHighPulses, int nLowPulses);
+    void transmit2(int nLowPulses, int nHighPulses);
 
     static char* dec2binWzerofill(unsigned long dec, unsigned int length);
     static char* dec2binWcharfill(unsigned long dec, unsigned int length, char fill);
@@ -124,6 +126,7 @@ class RCSwitch {
     int nTransmitterPin;
     int nPulseLength;
     int nRepeatTransmit;
+    int nRepeatInterval;
     char nProtocol;
 
     #if not defined( RCSwitchDisableReceiving )
