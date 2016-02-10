@@ -23,10 +23,13 @@ If install is attempted with old cache, it will fail with CRC error.
 Delete packages directory, then remove/install from boards manager.
 
 To upload some bitstreams OpenOCD may complain about
-libusb drivers. libusb is common on linux. 
+libusb drivers. libusb is common on linux.
 To install libusb on windows, easiest way is with
 Zadig http://zadig.akeo.ie Options->List All Devices
 Select usb serial device, select driver WinUSB and click install.
+Zadig is not needed for ftdi based boards with own uploader like 
+ULX2S or FleaFPGA. Zadig can have some issues with ftdi drivers for 
+windows 10.
 
 Manual install: Copy or symlink this to existing arduino directory 
 (versions 1.6.0 and newer), close the Arduino IDE, open
