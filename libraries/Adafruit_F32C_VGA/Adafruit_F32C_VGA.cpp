@@ -11,13 +11,6 @@ This is a library for F32C PAL composite video framebuffer
 #include "Adafruit_GFX.h"
 #include "Adafruit_F32C_VGA.h"
 
-#if 0
-extern "C" {
-#include <dev/fb.h>
-#include <dev/io.h>
-}
-#endif
-
 // static initializer of compositing2 set of pointers
 // that creates completely contiguous bitmap
 
@@ -55,28 +48,13 @@ void Adafruit_F32C_VGA::drawPixel(int16_t x, int16_t y, uint16_t color) {
     y = HEIGHT - y - 1;
     break;
   }
-  #if F32C_VGA_COMPOSITING
-  // obsolete compositing1
-  ptr = &(videomem[(y * (F32C_VGA_WIDTH + 4*((F32C_VGA_WIDTH/4)/(F32C_VGA_COMPOSITING-1)) )) + x + 4*(1+(x/4)/((F32C_VGA_COMPOSITING-1)))]);
-  #else
   // compositing2 can make linear bitmap
-  ptr = &(videomem[x+y*640]);
-  #endif
-  //mem = *ptr & ~(0x01010101<<(x&7)); // clear old bits
-  // color space highcolor RGB 565 -> RGBI
-  // replace new bits (simple 16-color)
-  *ptr = ((color& (7<< 2)) >> (2-0)) // red
+  ptr = &(videomem[x+y*F32C_VGA_WIDTH]);
+  // color space highcolor RGB 565 -> RRRGGGBB
+  *ptr = ((color& (3<< 3)) >> (3-0)) // blue
        | ((color& (7<< 8)) >> (8-2)) // green
-       | ((color& (3<<14)) >> (14-6)) // blue
+       | ((color& (7<<13)) >> (13-6)) // red
        ;
-  /*
-  *ptr = mem
-       |  ( ((color&((1<<3)|(1<<9)|(1<<14))) ? 1<<24 : 0) // intensity bit
-          | ((color&(1<<4))  << 12) // red
-          | ((color&(1<<10)) >> 2)  // green
-          | ((color&(1<<15)) >> 15) // blue
-          ) << (x&7);
-  */
 }
 
 Adafruit_F32C_VGA::Adafruit_F32C_VGA(int8_t mode) :
