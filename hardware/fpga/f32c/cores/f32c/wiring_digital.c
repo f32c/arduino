@@ -45,7 +45,7 @@ digitalWrite(uint32_t pin, uint32_t val)
 		
 	// if port has PWM channel, turn PWM off
 	pwm_channel = variant_pin_map[pin].pwm;
-	if(pwm_channel >= 0)
+	if(pwm_channel != OCP_NONE)
 	{
           EMARD_TIMER[TC_CONTROL] &= ~pwm_enable_bitmask[pwm_channel].control_or;
           EMARD_TIMER[TC_APPLY] = pwm_enable_bitmask[pwm_channel].apply;
