@@ -698,44 +698,6 @@ fpga_Posedge_One_bram.menu.pinmap.generic=Generic
 fpga_Posedge_One_bram.menu.pinmap.generic.build.variant=generic
 
 #
-# Xilinx Posedge-One Spartan-6
-#
-fpga_Posedge_One_bram.name=Posedge-One (Xilinx Spartan-6 XC6SLX9, 32K BRAM, 100 MHz)
-fpga_Posedge_One_bram.build.mcu=f32c
-fpga_Posedge_One_bram.build.core=f32c
-fpga_Posedge_One_bram.build.board=F32C_FPGA_POSEDGEONE_BRAM
-fpga_Posedge_One_bram.upload.tool=ujprog
-fpga_Posedge_One_bram.upload.wait_for_upload_port=false
-fpga_Posedge_One_bram.upload.native_usb=false
-fpga_Posedge_One_bram.menu.cpu.mips=MIPS
-fpga_Posedge_One_bram.menu.cpu.mips.cpu.arch=mips
-fpga_Posedge_One_bram.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
-fpga_Posedge_One_bram.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
-fpga_Posedge_One_bram.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
-fpga_Posedge_One_bram.menu.cpu.riscv=RISC-V
-fpga_Posedge_One_bram.menu.cpu.riscv.cpu.arch=riscv
-fpga_Posedge_One_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
-fpga_Posedge_One_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
-fpga_Posedge_One_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_Posedge_One_bram.menu.ramsize.32=32 KB BRAM Internal
-fpga_Posedge_One_bram.menu.ramsize.32.upload.maximum_size=31232
-fpga_Posedge_One_bram.menu.ramsize.32.compiler.ld.extra_flags=--section-start=.init=0x400
-fpga_Posedge_One_bram.menu.speed.100=100 MHz
-fpga_Posedge_One_bram.menu.speed.100.build.f_cpu=100000000
-fpga_Posedge_One_bram.menu.speed.100.bitstream.fcpu.mhz=100
-fpga_Posedge_One_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
-fpga_Posedge_One_bram.menu.protocol.bin.upload.protocol=bin
-fpga_Posedge_One_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
-fpga_Posedge_One_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
-fpga_Posedge_One_bram.menu.protocol.hex.upload.protocol=hex
-fpga_Posedge_One_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
-fpga_Posedge_One_bram.menu.pinmap.generic=Generic
-fpga_Posedge_One_bram.menu.pinmap.generic.build.variant=generic
-fpga_Posedge_One_bram.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c ftdi_fast "{bootloader.file.bit}"
-fpga_Posedge_One_bram.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -L -c ftdi_fast "{bootloader.file.bit}"
-fpga_Posedge_One_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/posedge_one/posedgeone_bram_mips_100mhz.bit
-
-#
 # FPGArduino Generic f32c SoC
 #
 fpga_generic.name=Generic FPGA board
