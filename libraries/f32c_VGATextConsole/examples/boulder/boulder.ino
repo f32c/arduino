@@ -57,7 +57,7 @@ volatile video_char *text_ram = (volatile video_char *) 0x40000000;
 volatile uint8_t *font_ram = (volatile uint8_t *) 0x40001800;
 #else
 volatile video_char *text_ram = (volatile video_char *) 0x801F0000;
-volatile uint32_t *font_ram = (volatile uint32_t *) 0x40002000;
+volatile uint32_t *font_ram = (volatile uint32_t *) 0x4000E000; // 16x16 256-char font in bram8
 #endif
 
 
