@@ -17,8 +17,12 @@ Before upgrading to new version, boards manager cache has to be
 manually removed by deleting hidden directory 'packages'.
 If install is attempted with old cache, it will fail with CRC error.
 
-    windows cache: .../Arduino15/staging/packages (use Find files)
+    windows cache: %appdata%/Arduino15/staging/packages (use Find files)
     linux cache: ~/.arduino15/staging/packages
+    apple cache: ~/Library/Arduino15/staging/packages
+
+Windows: %appdata%/Arduino15 (open File Explorer, enter %appdata% 
+into the Address Bar and press Enter)
 
 Delete packages directory, then remove/install from boards manager.
 
