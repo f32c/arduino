@@ -579,11 +579,11 @@ fpga_esa11_7a35i_xram.menu.cpu.riscv.cpu.arch=riscv
 fpga_esa11_7a35i_xram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_esa11_7a35i_xram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_esa11_7a35i_xram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
-fpga_esa11_7a35i_xram.menu.ramsize.32M=32 MB RAM External/emulated
-fpga_esa11_7a35i_xram.menu.ramsize.32M.upload.maximum_size=33521664
-fpga_esa11_7a35i_xram.menu.ramsize.32M.build.sdata.size=4096
-fpga_esa11_7a35i_xram.menu.ramsize.32M.compiler.ld.extra_flags=--section-start=.init=0x80000000
-fpga_esa11_7a35i_xram.menu.ramsize.32M.memsupport=ddr3
+fpga_esa11_7a35i_xram.menu.ramsize.128=128 KB BRAM Emulated external
+fpga_esa11_7a35i_xram.menu.ramsize.128.upload.maximum_size=129536
+fpga_esa11_7a35i_xram.menu.ramsize.128.build.sdata.size=4096
+fpga_esa11_7a35i_xram.menu.ramsize.128.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_esa11_7a35i_xram.menu.ramsize.128.memsupport=bram
 fpga_esa11_7a35i_xram.menu.ramsize.16=16 KB BRAM Internal
 fpga_esa11_7a35i_xram.menu.ramsize.16.upload.maximum_size=14848
 fpga_esa11_7a35i_xram.menu.ramsize.16.compiler.ld.extra_flags=--section-start=.init=0x400
