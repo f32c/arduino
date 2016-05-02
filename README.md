@@ -112,21 +112,21 @@ SRAM in 8-bit mode (FleaFPGA Uno) and 16-bit mode (ULX2S)
 
 SDRAM in 16-bit mode (Altera DE0 nano and Scarab MiniSpartan6+)
 
+LPDDR, DDR, DDR2, DDR3 using Xilinx 7-series MIG and AXI. (ESA11 with DDR3)
+
 # What works only on some supported boards
 
-VGA/HDMI/DVI bitmap needs large RAM (SRAM or SDRAM
-ULX2S, FleaFPGA Uno, Scarab Minisprtan6+, Altera DE0 nano).
-However some test picture and reduced bitmap can be produced 
-with BRAM-only boards. It can run asynchronous from CPU
-clock. A new textmode is implemented to FleaFPGA and 
-under construction for other boards. 
+VGA/HDMI/DVI textmode, bitmap and audio DMA need either large 
+external RAM (SRAM, SDRAM or DDR) or sufficient BRAM (32K)
+for use with acram emulation.
+
+Boards with supported external RAM are ULX2S, FleaFPGA Uno, 
+Scarab Minisprtan6+, Altera DE0 nano and ESA11.
 
 TV Framebuffer with composite video output displaying SRAM content
-tested only on ULX2S, should work on any other capable
+works only on ULX2S, it should work on any other capable
 of 81.25 MHz CPU and 325 MHz pixel clock. Composite video
 currently must run synchronous with CPU clock.
-
-DMA works only on boards that support SRAM or SDRAM.
 
 PCM sound depends on DMA.
 PCM outputs PWM for headphones and FM for
@@ -155,9 +155,3 @@ expected to be an I2C master in most cases.
 There's SoftwareWire I2C master which works
 because F32C is fast enough and has high
 resolution 32-bit timer.
-
-DDR memory is currently not supported. 
-This includes all types, DDR, DDR2, DDR3.
-Support for it should be possible because
-FPGA vendors are providing some proprietary
-solutions for a range of selected memory chips.
