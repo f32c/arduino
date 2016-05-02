@@ -4,10 +4,10 @@ extern "C"
   #include "gol.h"
   #include "thin_sprite.h"
 }
-// crude malloc for video text memory
+// crude initial "malloc" for vram=(tiled graphics) and videomem=(sprites)
 // RAM
-volatile uint16_t *vram = (volatile uint16_t *) 0x80020000;
-volatile uint8_t *videomem = (volatile uint8_t *) 0x80022800;
+volatile uint16_t *vram = (volatile uint16_t *) 0x80006000;
+volatile uint8_t *videomem = (volatile uint8_t *) 0x80007000;
 // BRAM
 // volatile uint16_t *vram = (volatile uint16_t *) 0x40000000;
 
@@ -117,11 +117,13 @@ void generate_living_beings(void)
 
 void setup() {
   int x, y;
+  vram = (volatile uint16_t *)malloc(RANGE_TILE_X*RANGE_TILE_Y*sizeof(uint16_t));
+  //videomem = (uint8_t *)malloc(32768);
   text_addr = vram; // video text base address
   cntrl_reg = 0b10100000; // enable text mode, enable bitmap, no cursor
   gol_clear();
   videodisplay_reg = &(videomem[0]);
-  tspr = (struct thin_sprites *) videomem;
+  //tspr = (struct thin_sprites *) videomem;
   //create_box(50,20);
   //create_crawler(50,30,1);
   #if 0
