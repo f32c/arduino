@@ -121,7 +121,7 @@ external RAM (SRAM, SDRAM or DDR) or sufficient BRAM (32K)
 for use with acram emulation.
 
 Boards with supported external RAM are ULX2S, FleaFPGA Uno, 
-Scarab Minisprtan6+, Altera DE0 nano and ESA11.
+Scarab Minispartan6+, Altera DE0 nano and ESA11.
 
 TV Framebuffer with composite video output displaying SRAM content
 works only on ULX2S, it should work on any other capable
