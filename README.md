@@ -11,6 +11,18 @@ In File->Preferences->Additional Boards Manager URLs enter:
 Select pull down menu Tools->Board->Board Manager
 and instal FPGArduino (cca 100MB).
 
+Arduino needs access to usbserial ports. When user who runs
+arduino is member of "dialout" groups, then this udev rules
+might be handy (example from scarab):
+
+    # /etc/udev/rules.d/80-fpga-scarab.rules
+    # this is for usb-serial tty device
+    SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6010", \
+       MODE="664", GROUP="dialout"
+    # this is for ujprog libusb access
+    ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6010", \
+       GROUP="dialout", MODE="666"
+
 Upgrading
 
 Before upgrading to new version, boards manager cache has to be
