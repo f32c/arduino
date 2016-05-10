@@ -5,16 +5,6 @@
 
 struct sprite *Sprite[SPRITE_MAX]; // global pointer array to sprites
 
-char content_blank[] =
-  {0,0,0,0};
-struct compositing_line blank_line =
-{
-  NULL, // links to previous content
-  320, // x-position
-  4, // number of color pixels to follow:
-  content_blank,
-};
-
 // convert shape into sprite
 // addressed by index 
 // this function will use malloc()
@@ -103,7 +93,7 @@ void sprite_refresh(void)
 
   // reset all screen lines to blank content
   for(i = 0; i < VGA_Y_MAX; i++)
-    scanlines[dbl_buf][i] = &blank_line;
+    scanlines[dbl_buf][i] = NULL;
 
   // now link all sprites, insering them into the linked list
   for(i = 0; i < n; i++) // loop over all sprites

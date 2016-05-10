@@ -15,13 +15,6 @@ struct charcolors std_colors[] =
   {0, 0}
 };
 
-// warning strings length must be 4-byte aligned
-char *shape_empty[] = 
-{
-  "    ",
-  NULL
-};
-
 
 char *shape_a[] =
 {/*
@@ -116,11 +109,10 @@ NULL
 
 struct shape Shape[] =
 {
-  [0] = { std_colors, shape_empty },
-  [1] = { std_colors, shape_slash },
-  [2] = { std_colors, shape_a },
-  [3] = { std_colors, shape_b },
-  [4] = { std_colors, shape_c },
-  [5] = { NULL, NULL }
+  [0] = { std_colors, shape_slash },
+  [1] = { std_colors, shape_a },
+  [2] = { std_colors, shape_b },
+  [3] = { std_colors, shape_c },
+  [4] = { NULL, NULL }
 };
 

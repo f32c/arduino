@@ -65,10 +65,8 @@ void setup()
   cntrl_reg = 0b00000000;
   videodisplay_reg = NULL;
   #if 1
-    shape_to_sprite(1, 0);
-    shape_to_sprite(2, 1);
-    shape_to_sprite(3, 2);
-    shape_to_sprite(4, 3);
+    for(i = 0; i < SPRITE_MAX && i < 4; i++)
+      shape_to_sprite(i, i);
     for(i = 3; i < SPRITE_MAX; i++)
      sprite_clone(i%4, i);
     // position all sprites in form of a font

@@ -60,11 +60,10 @@ void setup()
   int i;
 
   #if 1
-    shape_to_sprite(1, 0);
-    shape_to_sprite(2, 1);
-    shape_to_sprite(3, 2);
+    for(i = 0; i < SPRITE_MAX && i < 3; i++)
+      shape_to_sprite(i, i);
     for(i = 3; i < SPRITE_MAX; i++)
-     sprite_clone(i%3, i);
+      sprite_clone(i%3, i);
     for(i = 0; i < SPRITE_MAX; i++)
     {
       //shape_to_sprite(1 + (i % 3),i);
@@ -90,11 +89,11 @@ void setup()
   for(i = 120; i < 360; i+=1)
     scanlines[0][i] = &reddish_line;
 
-  if(0)
+  if(1)
   {
   // enable video fetching after all the
   // pointers have been correctly sat.
-  sprite_refresh();
+    sprite_refresh();
   }
   // prevents random RAM content from
   // causing extensive fetching, and slowing
