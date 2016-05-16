@@ -8,6 +8,9 @@
 #define VGA_X_MAX 640
 #define VGA_Y_MAX 480
 
+// 1-single buffering 2-double buffering (2 not fully implemented)
+#define BUFFERING 1
+
 // compositing line without pixel content
 // content needs to be malloc'd
 struct compositing_line
@@ -21,7 +24,7 @@ struct compositing_line
 };
 
 // double buffering scanlines
-extern volatile struct compositing_line *scanlines[2][VGA_Y_MAX];
+extern volatile struct compositing_line *scanlines[BUFFERING][VGA_Y_MAX];
 
 #endif
 

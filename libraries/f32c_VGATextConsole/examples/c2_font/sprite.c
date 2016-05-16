@@ -18,7 +18,7 @@ void shape_to_sprite(int shape, int sprite)
   int sprite_size; // how much to malloc
   uint8_t color_list[256];
   char **bmp; // bitmap: array of strings
-  uint16_t x[0],y[0]; // running coordinates during ascii->pixel conversion
+  uint16_t x,y; // running coordinates during ascii->pixel conversion
   int content_size;
   uint8_t *new_content, *line_content; // malloc'd contiguous space for the sprite
   struct charcolors *chc;
@@ -30,9 +30,9 @@ void shape_to_sprite(int shape, int sprite)
     color_list[chc->c] = chc->color;
   // 1st pass read ascii art - determine content size
   content_size = 0;
-  for(bmp = sh->bmp, y[0] = 0; y[0] < 32 && *bmp != NULL; y[0]++, bmp++)
+  for(bmp = sh->bmp, y = 0; *bmp != NULL; y++, bmp++)
       content_size += strlen(*bmp);
-  h = y[0];
+  h = y;
   new_content = (uint8_t *)malloc(content_size);
   sprite_size = sizeof(struct sprite)+h*(sizeof(struct compositing_line));
   new_sprite = (struct sprite *)malloc(sprite_size);
@@ -48,22 +48,48 @@ void shape_to_sprite(int shape, int sprite)
   }
   // 2nd pass read ascii-art data and write color pixel content
   line_content = new_content;
-  for(bmp = sh->bmp, y[0] = 0; y[0] < 32 && *bmp != NULL; y[0]++, bmp++)
+  for(bmp = sh->bmp, y = 0; *bmp != NULL; y++, bmp++)
   {
       char *clr;
       // uint8_t *line_content = &(new_content[y[0]*w]); // pointer to current line in content
-      new_sprite->line[y[0]].bmp = line_content;
-      for(x[0] = 0, clr = *bmp; x[0] < 32 && *clr != 0; x[0]++, clr++)
-      {
+      new_sprite->line[y].bmp = line_content;
+      for(x = 0, clr = *bmp; *clr != 0; x++, clr++) // copy content
         *(line_content++) = color_list[*clr];
-        //bmp_plot(ix+sx*rx[0],iy+sy*ry[0],color_list[*clr]);
+      new_sprite->line[y].n = x; // set number of pixels
+      #if USE_EXISTING_CONTENT
+      // search all already generated sprites. if identical
+      // content is found, then link to prevous content, that would
+      // save RAM bandwidth
+      // todo: we will still be wasting RAM because above
+      // we already malloced full size which now we might not need all
+      uint8_t *existing_content = NULL; // used to search for same content
+      int l; // loops over lines of the existing sprite
+      // first search for identical line in the same sprite
+      for(l = 0; l < y-1 && existing_content == NULL; l++)
+        if( new_sprite->line[l].n >= x && new_sprite->line[l].bmp != NULL) // if existing pixels equal or larger than new content
+          if( 0 == memcmp(new_sprite->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(uint8_t)) ) // exact match
+            existing_content = new_sprite->line[l].bmp;
+      // then search for the same in all previous sprites
+      for(j = 0; j < sprite-1 && existing_content == NULL; j++)
+      {
+        for(l = 0; l < Sprite[j]->h && existing_content == NULL; l++) // loop over existing sprite lines
+        {
+          if( Sprite[j]->line[l].n >= x && Sprite[j]->line[l].bmp != NULL) // if existing pixels equal or larger than new content
+            if( 0 == memcmp(Sprite[j]->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(uint8_t)) ) // exact match
+              existing_content = Sprite[j]->line[l].bmp;
+        }
       }
-      new_sprite->line[y[0]].n = x[0];
+      // if found, relink new sprite content to existing content
+      if(existing_content)
+        new_sprite->line[y].bmp = existing_content; // Sprite[0]->line[0].bmp; // existing_content;
+      #endif
   }
-  new_sprite->h = y[0];
+  new_sprite->h = y;
   Sprite[sprite] = new_sprite;
 }
 
+// create new sprite with content
+// linked to existing sprite
 void sprite_clone(int original, int clone)
 {
   struct sprite *orig = Sprite[original];
@@ -74,6 +100,33 @@ void sprite_clone(int original, int clone)
   clon = (struct sprite *)malloc(sprite_size);
   memcpy(clon, orig, sprite_size);
   Sprite[clone] = clon;
+}
+
+// change shape of sprite by relinking
+// link content of existing original sprite to
+// existing clone sprite
+void sprite_link_content(int original, int clone)
+{
+  int i, n, m;
+
+  struct compositing_line *src = Sprite[original]->line;
+  struct compositing_line *dst = Sprite[clone]->line;
+
+  // how many lines
+  n = Sprite[clone]->h; // number of lines destination sprite has
+  #if 0
+  m = Sprite[original]->h; // number of lines original sprite has
+  if(m < n)
+    n = m; // smallest of the two
+  #endif
+  //memcpy(Sprite[original]->line[0], Sprite[clone]->line[0], sizeof(compositing_line)*n);
+  for(i = 0; i < n; i++)
+    dst[i].bmp = src[i].bmp;
+  // copy size (may be omitted when all are the same size)
+  #if 0
+  Sprite[clone]->h = n;
+  Sprite[clone]->w = Sprite[original]->w;
+  #endif
 }
 
 void sprite_position(int sprite, int x, int y)
@@ -89,7 +142,9 @@ void sprite_refresh(void)
   int i, j, n = SPRITE_MAX;
   static int dbl_buf = 0; // double buffering
 
-  // dbl_buf ^= 1; // alternate to another buffer
+  #if BUFFERING == 2
+    dbl_buf ^= 1; // alternate to another buffer
+  #endif
 
   // reset all screen lines to blank content
   for(i = 0; i < VGA_Y_MAX; i++)

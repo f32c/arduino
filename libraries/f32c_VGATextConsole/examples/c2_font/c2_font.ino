@@ -7,13 +7,18 @@ extern "C"
   #include "sprite.h"
 }
 
-volatile struct compositing_line *scanlines[2][480];
+volatile struct compositing_line *scanlines[BUFFERING][480];
 #define N_LETTERS 27
 
 void setup()
 {
   int i;
-  
+
+  #if 1
+  // reset pointers to all sprites
+  for(i = 0; i < SPRITE_MAX; i++)
+    Sprite[i] = NULL;
+  #endif
   // disable video during update
   // prevents random RAM content from
   // causing extensive fetching, and slowing
@@ -44,6 +49,13 @@ void setup()
   // pointers have been correctly sat.
   sprite_refresh();
 
+  // clear screen
+  #if 0
+  for(int x = 0; x < 40; x++)
+    for(int y = 1; y < 30; y++)
+      sprite_link_content(0, x+40*y);
+  #endif
+
   //videodisplay_reg = &(scanlines[0][0]); // sprite refresh will do it
   // this is needed for vgatext
   // to disable textmode and enable bitmap
@@ -55,6 +67,15 @@ void setup()
 
 void loop()
 {
+  static int f = 0;
+  static int dbl_buf = 0; // double buffering
+
+  int c = f++;
+  while((vblank_reg & 0x80) == 0);
+  while((vblank_reg & 0x80) != 0);
+  for(int x = 0; x < 40; x++)
+    for(int y = 1; y < 30; y++)
+      sprite_link_content((c--) % N_LETTERS, x+40*y);
 }
 
 
