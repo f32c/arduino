@@ -53,7 +53,7 @@ void Adafruit_F32C_VGA::drawPixel(int16_t x, int16_t y, uint16_t color) {
   // color space highcolor RGB 565 -> RRRGGGBB
   *ptr = ((color& (3<< 3)) >> (3-0)) // blue
        | ((color& (7<< 8)) >> (8-2)) // green
-       | ((color& (7<<13)) >> (13-6)) // red
+       | ((color& (7<<13)) >> (13-5)) // red
        ;
 }
 
