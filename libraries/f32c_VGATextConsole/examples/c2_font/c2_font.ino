@@ -8,7 +8,7 @@ extern "C"
 }
 
 volatile struct compositing_line *scanlines[BUFFERING][480];
-#define N_LETTERS 27
+#define N_LETTERS 31
 
 void setup()
 {
@@ -69,7 +69,7 @@ void loop()
 {
   static int f = 0;
   static int dbl_buf = 0; // double buffering
-
+return;
   int c = f++;
   while((vblank_reg & 0x80) == 0);
   while((vblank_reg & 0x80) != 0);
