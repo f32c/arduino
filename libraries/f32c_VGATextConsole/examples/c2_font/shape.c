@@ -16,27 +16,6 @@ struct charcolors std_colors[] =
 };
 
 
-char *shape_slash[] =
-{/*
- 01234567890123456789012345678901 */
-"WW              ",
-" WW             ",
-"  WW            ",
-"   WW           ",
-"    WW          ",
-"     WW         ",
-"      WW        ",
-"       WW       ",
-"        WW      ",
-"         WW     ",
-"          WW    ",
-"           WW   ",
-"            WW  ",
-"             WW ",
-"              WW",
-"W              W",
-NULL
-};
 
 char *shape_space[] =
 {/*
@@ -632,6 +611,28 @@ char *shape_z[] =
 NULL
 };
 
+char *shape_backslash[] =
+{/*
+ 01234567890123456789012345678901 */
+"WW              ",
+"WWW             ",
+" WWW            ",
+"  WWW           ",
+"   WWW          ",
+"    WWW         ",
+"     WWW        ",
+"      WWW       ",
+"       WWW      ",
+"        WWW     ",
+"         WWW    ",
+"          WWW   ",
+"           WWW  ",
+"            WWW ",
+"             WWW",
+"              WW",
+NULL
+};
+
 char *shape_0[] =
 {/*
  01234567890123456789012345678901 */
@@ -680,17 +681,17 @@ char *shape_2[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
-"   WWWWWWWWWWW  ",
-"  WWWWWWWWWWWWW ",
+"    WWWWWWWW    ",
+"   WWWWWWWWWW   ",
+"  WW        WW  ",
 " WW          WW ",
 " WW          WW ",
-"             WW ",
 "            WWW ",
-"          WWWW  ",
-"        WWWW    ",
-"      WWW       ",
-"    WWW         ",
-"   WWW          ",
+"           WWW  ",
+"         WWWW   ",
+"       WWWW     ",
+"     WWWW       ",
+"   WWWW         ",
 "  WWW           ",
 " WWWWWWWWWWWWWW ",
 " WWWWWWWWWWWWWW ",
@@ -704,14 +705,80 @@ char *shape_3[] =
 "                ",
 "   WWWWWWWWWW   ",
 "  WWWWWWWWWWWW  ",
-" WW          WW ",
-" WW          WW ",
+"             WW ",
+"             WW ",
 "             WW ",
 "            WW  ",
-"       WWWWWW   ",
-"       WWWWWW   ",
+"     WWWWWWWW   ",
+"     WWWWWWWW   ",
 "            WW  ",
 "             WW ",
+"             WW ",
+"             WW ",
+" WWWWWWWWWWWWW  ",
+"  WWWWWWWWWWW   ",
+"                ",
+NULL
+};
+
+char *shape_4[] =
+{/*
+ 01234567890123456789012345678901 */
+"                ",
+"         WWW    ",
+"        WWWW    ",
+"       WWWWW    ",
+"      WWW WW    ",
+"     WWW  WW    ",
+"    WWW   WW    ",
+"   WWW    WW    ",
+"  WWW     WW    ",
+" WWWWWWWWWWWWWW ",
+" WWWWWWWWWWWWWW ",
+"          WW    ",
+"          WW    ",
+"          wW    ",
+"          WW    ",
+"                ",
+NULL
+};
+
+char *shape_5[] =
+{/*
+ 01234567890123456789012345678901 */
+"                ",
+" WWWWWWWWWWWWWW ",
+" WWWWWWWWWWWWWW ",
+" WW             ",
+" WW             ",
+" WW             ",
+" WW             ",
+" WWWWWWWWWWWW   ",
+" WWWWWWWWWWWWW  ",
+"             WW ",
+"             WW ",
+"             WW ",
+"             WW ",
+" WWWWWWWWWWWWW  ",
+"  WWWWWWWWWWW   ",
+"                ",
+NULL
+};
+
+char *shape_6[] =
+{/*
+ 01234567890123456789012345678901 */
+"                ",
+"   WWWWWWWWWWW  ",
+"  WWWWWWWWWWWWW ",
+" WW             ",
+" WW             ",
+" WW             ",
+" WW             ",
+" WWWWWWWWWWWW   ",
+" WWWWWWWWWWWWW  ",
+" WW          WW ",
+" WW          WW ",
 " WW          WW ",
 " WW          WW ",
 "  WWWWWWWWWWWW  ",
@@ -720,19 +787,84 @@ char *shape_3[] =
 NULL
 };
 
+char *shape_7[] =
+{/*
+ 01234567890123456789012345678901 */
+"                ",
+" WWWWWWWWWWWWWW ",
+" WWWWWWWWWWWWWW ",
+" WW         WWW ",
+" WW        WWW  ",
+"          WWW   ",
+"         WWW    ",
+"        WWW     ",
+"       WWW      ",
+"      WWW       ",
+"     WWW        ",
+"    WWW         ",
+"   WWW          ",
+"  WWW           ",
+"  WWW           ",
+"                ",
+NULL
+};
+
+char *shape_8[] =
+{/*
+ 01234567890123456789012345678901 */
+"                ",
+"   WWWWWWWWWW   ",
+"  WWWWWWWWWWWW  ",
+" WW          WW ",
+" WW          WW ",
+" WW          WW ",
+" WW          WW ",
+"  WWWWWWWWWWWW  ",
+"  WWWWWWWWWWWW  ",
+" WW          WW ",
+" WW          WW ",
+" WW          WW ",
+" WW          WW ",
+"  WWWWWWWWWWWW  ",
+"   WWWWWWWWWW   ",
+"                ",
+NULL
+};
+
+char *shape_9[] =
+{/*
+ 01234567890123456789012345678901 */
+"                ",
+"   WWWWWWWWWW   ",
+"  WWWWWWWWWWWW  ",
+" WW          WW ",
+" WW          WW ",
+" WW          WW ",
+" WW          WW ",
+"  WWWWWWWWWWWW  ",
+"  WWWWWWWWWWWW  ",
+"             WW ",
+"             WW ",
+"             WW ",
+"             WW ",
+"  WWWWWWWWWWWW  ",
+"   WWWWWWWWWW   ",
+"                ",
+NULL
+};
 
 struct shape Shape[] =
 {
-  [0] = { std_colors, shape_space },
-  [1] = { std_colors, shape_a },
-  [2] = { std_colors, shape_b },
-  [3] = { std_colors, shape_c },
-  [4] = { std_colors, shape_d },
-  [5] = { std_colors, shape_e },
-  [6] = { std_colors, shape_f },
-  [7] = { std_colors, shape_g },
-  [8] = { std_colors, shape_h },
-  [9] = { std_colors, shape_i },
+   [0] = { std_colors, shape_space },
+   [1] = { std_colors, shape_a },
+   [2] = { std_colors, shape_b },
+   [3] = { std_colors, shape_c },
+   [4] = { std_colors, shape_d },
+   [5] = { std_colors, shape_e },
+   [6] = { std_colors, shape_f },
+   [7] = { std_colors, shape_g },
+   [8] = { std_colors, shape_h },
+   [9] = { std_colors, shape_i },
   [10] = { std_colors, shape_j },
   [11] = { std_colors, shape_k },
   [12] = { std_colors, shape_l },
@@ -750,10 +882,17 @@ struct shape Shape[] =
   [24] = { std_colors, shape_x },
   [25] = { std_colors, shape_y },
   [26] = { std_colors, shape_z },
-  [27] = { std_colors, shape_0 },
-  [28] = { std_colors, shape_1 },
-  [29] = { std_colors, shape_2 },
-  [30] = { std_colors, shape_3 },
-  [31] = { NULL, NULL }
+  [27] = { std_colors, shape_backslash },
+  [28] = { std_colors, shape_0 },
+  [29] = { std_colors, shape_1 },
+  [30] = { std_colors, shape_2 },
+  [31] = { std_colors, shape_3 },
+  [32] = { std_colors, shape_4 },
+  [33] = { std_colors, shape_5 },
+  [34] = { std_colors, shape_6 },
+  [35] = { std_colors, shape_7 },
+  [36] = { std_colors, shape_8 },
+  [37] = { std_colors, shape_9 },
+  [38] = { NULL, NULL }
 };
 

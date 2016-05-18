@@ -8,7 +8,7 @@ extern "C"
 }
 
 volatile struct compositing_line *scanlines[BUFFERING][480];
-#define N_LETTERS 31
+#define N_LETTERS 38
 
 void setup()
 {
