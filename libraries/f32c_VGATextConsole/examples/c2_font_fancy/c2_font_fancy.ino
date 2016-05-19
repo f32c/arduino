@@ -8,7 +8,7 @@ extern "C"
 }
 
 volatile struct compositing_line *scanlines[BUFFERING][480];
-#define N_LETTERS 38
+#define N_LETTERS 128
 
 void setup()
 {
@@ -34,10 +34,10 @@ void setup()
     int col=0, row=0;
     for(i = 0; i < SPRITE_MAX; i++)
     {
-      Sprite[i]->x = col*16;
+      Sprite[i]->x = col*16+120;
       Sprite[i]->y = row*16;
       col++;
-      if(col>=40)
+      if(col>=24)
       {
         col=0;
         row++;
@@ -62,7 +62,7 @@ void setup()
   cntrl_reg = 0b11000000; // enable video, yes bitmap, no text mode, no cursor
   // try it with text to "see" what's going
   // on with linked list :)
-  //cntrl_reg = 0b11100000; // enable video, yes bitmap, yes text mode, no cursor
+  //cntrl_reg = 0b11100000; // enable video, yes bitmap, yes text mode, no cursor 
 }
 
 void loop()
