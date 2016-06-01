@@ -16,11 +16,11 @@ void shape_to_sprite(int shape, int sprite)
   int ix=320,iy=200; // initial sprite position on screen
   int w=32,h=32; // width and height of the sprite
   int sprite_size; // how much to malloc
-  uint8_t color_list[256];
+  pixel_t color_list[256];
   char **bmp; // bitmap: array of strings
   uint16_t x,y; // running coordinates during ascii->pixel conversion
   int content_size;
-  uint8_t *new_content, *line_content; // malloc'd contiguous space for the sprite
+  pixel_t *new_content, *line_content; // malloc'd contiguous space for the sprite
   struct charcolors *chc;
   struct sprite *spr = &(Sprite[sprite]), *new_sprite;
   struct shape *sh = &(Shape[shape]); // shape to read from
@@ -33,7 +33,7 @@ void shape_to_sprite(int shape, int sprite)
   for(bmp = sh->bmp, y = 0; *bmp != NULL; y++, bmp++)
       content_size += strlen(*bmp);
   h = y;
-  new_content = (uint8_t *)malloc(content_size);
+  new_content = (pixel_t *)malloc(content_size*sizeof(pixel_t));
   sprite_size = sizeof(struct sprite)+h*(sizeof(struct compositing_line));
   new_sprite = (struct sprite *)malloc(sprite_size);
   new_sprite->x = ix;
@@ -62,12 +62,12 @@ void shape_to_sprite(int shape, int sprite)
       // save RAM bandwidth
       // todo: we will still be wasting RAM because above
       // we already malloced full size which now we might not need all
-      uint8_t *existing_content = NULL; // used to search for same content
+      pixel_t *existing_content = NULL; // used to search for same content
       int l; // loops over lines of the existing sprite
       // first search for identical line in the same sprite
       for(l = 0; l < y-1 && existing_content == NULL; l++)
         if( new_sprite->line[l].n >= x && new_sprite->line[l].bmp != NULL) // if existing pixels equal or larger than new content
-          if( 0 == memcmp(new_sprite->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(uint8_t)) ) // exact match
+          if( 0 == memcmp(new_sprite->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(pixel_t)) ) // exact match
             existing_content = new_sprite->line[l].bmp;
       // then search for the same in all previous sprites
       for(j = 0; j < sprite-1 && existing_content == NULL; j++)
@@ -75,7 +75,7 @@ void shape_to_sprite(int shape, int sprite)
         for(l = 0; l < Sprite[j]->h && existing_content == NULL; l++) // loop over existing sprite lines
         {
           if( Sprite[j]->line[l].n >= x && Sprite[j]->line[l].bmp != NULL) // if existing pixels equal or larger than new content
-            if( 0 == memcmp(Sprite[j]->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(uint8_t)) ) // exact match
+            if( 0 == memcmp(Sprite[j]->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(pixel_t)) ) // exact match
               existing_content = Sprite[j]->line[l].bmp;
         }
       }

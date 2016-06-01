@@ -1,10 +1,11 @@
 #ifndef SHAPE_H
 #define SHAPE_H
+#include "compositing.h" // pixel_t only
 
 struct charcolors
 {
   char c; // letter indicating the color (0 to end of list)
-  uint8_t color; // color value bits: RRRGGGBB
+  pixel_t color; // color value bits: RRRGGGBB if 8bpp
 };
 
 // struct used to draw sprite in C

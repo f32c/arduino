@@ -4,6 +4,7 @@
 #include "shape.h"
 
 #define SPRITE_MAX (40*30)
+//#define SPRITE_MAX (436)
 
 // if using existing content, only 2K of video cache is sufficient
 // 1-USE 0-DON'T USE

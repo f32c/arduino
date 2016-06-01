@@ -37,6 +37,7 @@ void setup()
       Sprite[i]->x = col*16;
       Sprite[i]->y = row*16;
       col++;
+      //if(col>=row)
       if(col>=40)
       {
         col=0;

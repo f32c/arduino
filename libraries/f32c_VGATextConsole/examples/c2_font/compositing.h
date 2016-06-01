@@ -11,6 +11,21 @@
 // 1-single buffering 2-double buffering (2 not fully implemented)
 #define BUFFERING 1
 
+// bits per pixel
+#define BPP 8
+
+#if BPP == 8
+typedef uint8_t pixel_t;
+#endif
+
+#if BPP == 16
+typedef uint16_t pixel_t;
+#endif
+
+#if BPP == 32
+typedef uint32_t pixel_t;
+#endif
+
 // compositing line without pixel content
 // content needs to be malloc'd
 struct compositing_line
@@ -20,7 +35,7 @@ struct compositing_line
    uint16_t n; // number of pixels contained here
    // pixels can be multiple of 4 (n lower 2 bits discarded)
    // minimal n is currently 4 (when composite2 core is fixed it could be 0)
-   uint8_t *bmp; // pointer to array of pixels (could be more than 1 element)
+   pixel_t *bmp; // pointer to array of pixels (could be more than 1 element)
 };
 
 // double buffering scanlines
