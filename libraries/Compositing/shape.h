@@ -1,6 +1,6 @@
 #ifndef SHAPE_H
 #define SHAPE_H
-#include "compositing.h" // pixel_t only
+#include "compositing_line.h" // pixel_t only
 
 struct charcolors
 {
@@ -16,6 +16,6 @@ struct shape
   uint8_t w,h; // width x-size, height y-size
 };
 
-extern struct shape Shape[];
+// extern struct shape Shape[];
 
 #endif // SHAPE_H

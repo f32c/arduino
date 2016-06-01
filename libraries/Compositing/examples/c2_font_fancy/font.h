@@ -1,56 +1,67 @@
 #include <stdlib.h>
 #include "shape.h"
 
-#define RGB_888_332(x) ( ((x & 0xE00000) >> (24-3-5)) | ((x & 0xE000) >> (16-3-2)) | ((x & 0xC0) >> (8-2)) )
+#if BPP == 8
+#define RGB_CONV(x) ( ((x & 0xE00000) >> (24-3-5)) | ((x & 0xE000) >> (16-3-2)) | ((x & 0xC0) >> (8-2)) )
+#endif
+
+#if BPP == 16
+// fixme for 16-bpp RGB565
+#define RGB_CONV(x) x
+#endif
+
+#if BPP == 32
+#define RGB_CONV(x) x
+#endif
 
 // ascii-art of the shapes
 struct charcolors std_colors[] = 
 { 
   {' ', 0}, // transparent/black
-  {'.', RGB_888_332(0x080808)},
-  {'X', RGB_888_332(0x0000BD)},
-  {'o', RGB_888_332(0x7B6B9C)},
-  {'O', RGB_888_332(0x8473A5)},
-  {'+', RGB_888_332(0x947BAD)},
-  {'@', RGB_888_332(0x5A84A5)},
-  {'#', RGB_888_332(0x6B94B5)},
-  {'$', RGB_888_332(0x739CBD)},
-  {'Z', RGB_888_332(0x7BA5C5)},
-  {'&', RGB_888_332(0x848C84)},
-  {'*', RGB_888_332(0x8C8C8C)},
-  {'=', RGB_888_332(0x848C94)},
-  {'-', RGB_888_332(0x949494)},
-  {';', RGB_888_332(0x9C9C9C)},
-  {':', RGB_888_332(0x9C84B5)},
-  {'>', RGB_888_332(0xA58CBD)},
-  {',', RGB_888_332(0xA5A5A5)},
-  {'<', RGB_888_332(0xADADAD)},
-  {'1', RGB_888_332(0xB5B5B5)},
-  {'2', RGB_888_332(0xBDBDBD)},
-  {'3', RGB_888_332(0xAD94C5)},
-  {'4', RGB_888_332(0xB59CCE)},
-  {'5', RGB_888_332(0x84ADCE)},
-  {'6', RGB_888_332(0x94B5D6)},
-  {'7', RGB_888_332(0x9CBDDE)},
-  {'8', RGB_888_332(0xBDA5D6)},
-  {'9', RGB_888_332(0xC5ADDE)},
-  {'0', RGB_888_332(0xCEB5E6)},
-  {'q', RGB_888_332(0xD6BDEF)},
-  {'w', RGB_888_332(0xA5C5E6)},
-  {'e', RGB_888_332(0xADCEEF)},
-  {'r', RGB_888_332(0xB5D6F7)},
-  {'t', RGB_888_332(0xBDDEFF)},
-  {'y', RGB_888_332(0xC5C5C5)},
-  {'u', RGB_888_332(0xCECECE)},
-  {'i', RGB_888_332(0xD6D6D6)},
-  {'p', RGB_888_332(0xDEDEDE)},
-  {'a', RGB_888_332(0xDEC5F7)},
-  {'s', RGB_888_332(0xE6CEFF)},
-  {'d', RGB_888_332(0xFFDEFF)},
-  {'f', RGB_888_332(0xDEFFFF)},
-  {'g', RGB_888_332(0xE6E6E6)},
-  {'h', RGB_888_332(0xEFEFEF)},
-  {'j', RGB_888_332(0xF7F7F7)},
+  {'.', RGB_CONV(0x080808)},
+  {'X', RGB_CONV(0x0000BD)},
+  {'o', RGB_CONV(0x7B6B9C)},
+  {'O', RGB_CONV(0x8473A5)},
+  {'+', RGB_CONV(0x947BAD)},
+  {'@', RGB_CONV(0x5A84A5)},
+  {'#', RGB_CONV(0x6B94B5)},
+  {'$', RGB_CONV(0x739CBD)},
+  {'Z', RGB_CONV(0x7BA5C5)},
+  {'&', RGB_CONV(0x848C84)},
+  {'*', RGB_CONV(0x8C8C8C)},
+  {'=', RGB_CONV(0x848C94)},
+  {'-', RGB_CONV(0x949494)},
+  {';', RGB_CONV(0x9C9C9C)},
+  {':', RGB_CONV(0x9C84B5)},
+  {'>', RGB_CONV(0xA58CBD)},
+  {',', RGB_CONV(0xA5A5A5)},
+  {'<', RGB_CONV(0xADADAD)},
+  {'1', RGB_CONV(0xB5B5B5)},
+  {'2', RGB_CONV(0xBDBDBD)},
+  {'3', RGB_CONV(0xAD94C5)},
+  {'4', RGB_CONV(0xB59CCE)},
+  {'5', RGB_CONV(0x84ADCE)},
+  {'6', RGB_CONV(0x94B5D6)},
+  {'7', RGB_CONV(0x9CBDDE)},
+  {'8', RGB_CONV(0xBDA5D6)},
+  {'9', RGB_CONV(0xC5ADDE)},
+  {'0', RGB_CONV(0xCEB5E6)},
+  {'q', RGB_CONV(0xD6BDEF)},
+  {'w', RGB_CONV(0xA5C5E6)},
+  {'e', RGB_CONV(0xADCEEF)},
+  {'r', RGB_CONV(0xB5D6F7)},
+  {'t', RGB_CONV(0xBDDEFF)},
+  {'y', RGB_CONV(0xC5C5C5)},
+  {'u', RGB_CONV(0xCECECE)},
+  {'i', RGB_CONV(0xD6D6D6)},
+  {'p', RGB_CONV(0xDEDEDE)},
+  {'a', RGB_CONV(0xDEC5F7)},
+  {'s', RGB_CONV(0xE6CEFF)},
+  {'d', RGB_CONV(0xFFDEFF)},
+  {'f', RGB_CONV(0xDEFFFF)},
+  {'g', RGB_CONV(0xE6E6E6)},
+  {'h', RGB_CONV(0xEFEFEF)},
+  {'j', RGB_CONV(0xF7F7F7)},
   {'k', 0xff}, // white
   {0, 0}
 };
@@ -2066,7 +2077,7 @@ char *shape_right_triangle[] =
 NULL
 };
 
-struct shape Shape[] =
+struct shape Font[] =
 {
    [0] = { std_colors, shape_space },
    [1] = { std_colors, shape_space },
@@ -2196,6 +2207,5 @@ struct shape Shape[] =
  [125] = { std_colors, shape_right_brace },
  [126] = { std_colors, shape_tilde }, // ~ 
  [127] = { std_colors, shape_right_triangle }, // DEL
- [128] = { NULL, NULL }
 };
 

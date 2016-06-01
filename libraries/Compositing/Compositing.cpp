@@ -1,29 +1,50 @@
-#include "compositing.h"
-#include "sprite.h"
-#include "shape.h"
-#include <string.h>
+#include "Compositing.h"
 
-struct sprite *Sprite[SPRITE_MAX]; // global pointer array to sprites
+Compositing::Compositing()
+{
+}
+ 
+void Compositing::init()
+{
+  int i;
+
+  *videobase_reg = NULL;
+  scanlines = (struct compositing_line **)malloc(VGA_Y_MAX * sizeof(struct compositing_line *));
+  for(i = 0; i < VGA_Y_MAX; i++)
+    scanlines[i] = NULL;
+  *videobase_reg = &(scanlines[0]);
+  n_sprites = 0;
+  return;
+}
+
+void Compositing::alloc_sprites(int n)
+{
+  Sprite = (struct sprite **)malloc(n * sizeof(struct sprite));
+  sprite_max = n;
+}
 
 // convert shape into sprite
 // addressed by index 
 // this function will use malloc()
 // will allocate content for the sprite
-void shape_to_sprite(int shape, int sprite)
+// sh: shape to read from
+// sprite: sprite to create
+int Compositing::shape_to_sprite(struct shape *sh)
 {
   char *pixels;
   int i,j;
-  int ix=320,iy=200; // initial sprite position on screen
+  int ix=VGA_X_MAX/2,iy=VGA_Y_MAX/2; // initial sprite position on screen
   int w=32,h=32; // width and height of the sprite
   int sprite_size; // how much to malloc
-  uint8_t color_list[256];
+  pixel_t color_list[256];
   char **bmp; // bitmap: array of strings
   uint16_t x,y; // running coordinates during ascii->pixel conversion
   int content_size;
-  uint8_t *new_content, *line_content; // malloc'd contiguous space for the sprite
+  pixel_t *new_content, *line_content; // malloc'd contiguous space for the sprite
   struct charcolors *chc;
-  struct sprite *spr = &(Sprite[sprite]), *new_sprite;
-  struct shape *sh = &(Shape[shape]); // shape to read from
+  // struct sprite *spr = &(Sprite[sprite]), *new_sprite;
+  struct sprite *new_sprite;
+  // struct shape *sh = &(Shape[shape]); // shape to read from
 
   // fill the color array to speed up
   for(chc = sh->colors; chc->c != 0; chc++) // read until we don't hit 0
@@ -33,7 +54,7 @@ void shape_to_sprite(int shape, int sprite)
   for(bmp = sh->bmp, y = 0; *bmp != NULL; y++, bmp++)
       content_size += strlen(*bmp);
   h = y;
-  new_content = (uint8_t *)malloc(content_size);
+  new_content = (pixel_t *)malloc(content_size*sizeof(pixel_t));
   sprite_size = sizeof(struct sprite)+h*(sizeof(struct compositing_line));
   new_sprite = (struct sprite *)malloc(sprite_size);
   new_sprite->x = ix;
@@ -62,20 +83,20 @@ void shape_to_sprite(int shape, int sprite)
       // save RAM bandwidth
       // todo: we will still be wasting RAM because above
       // we already malloced full size which now we might not need all
-      uint8_t *existing_content = NULL; // used to search for same content
+      pixel_t *existing_content = NULL; // used to search for same content
       int l; // loops over lines of the existing sprite
       // first search for identical line in the same sprite
       for(l = 0; l < y-1 && existing_content == NULL; l++)
         if( new_sprite->line[l].n >= x && new_sprite->line[l].bmp != NULL) // if existing pixels equal or larger than new content
-          if( 0 == memcmp(new_sprite->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(uint8_t)) ) // exact match
+          if( 0 == memcmp(new_sprite->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(pixel_t)) ) // exact match
             existing_content = new_sprite->line[l].bmp;
       // then search for the same in all previous sprites
-      for(j = 0; j < sprite-1 && existing_content == NULL; j++)
+      for(j = 0; j < n_sprites && existing_content == NULL; j++)
       {
         for(l = 0; l < Sprite[j]->h && existing_content == NULL; l++) // loop over existing sprite lines
         {
           if( Sprite[j]->line[l].n >= x && Sprite[j]->line[l].bmp != NULL) // if existing pixels equal or larger than new content
-            if( 0 == memcmp(Sprite[j]->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(uint8_t)) ) // exact match
+            if( 0 == memcmp(Sprite[j]->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(pixel_t)) ) // exact match
               existing_content = Sprite[j]->line[l].bmp;
         }
       }
@@ -85,27 +106,32 @@ void shape_to_sprite(int shape, int sprite)
       #endif
   }
   new_sprite->h = y;
-  Sprite[sprite] = new_sprite;
+  i = n_sprites;
+  Sprite[n_sprites++] = new_sprite;
+  return i;
 }
 
 // create new sprite with content
 // linked to existing sprite
-void sprite_clone(int original, int clone)
+int Compositing::sprite_clone(int original)
 {
   struct sprite *orig = Sprite[original];
   struct sprite *clon;
   uint32_t sprite_size;
+  int i;
 
   sprite_size = sizeof(struct sprite) + (orig->h) * sizeof(struct compositing_line);
   clon = (struct sprite *)malloc(sprite_size);
   memcpy(clon, orig, sprite_size);
-  Sprite[clone] = clon;
+  i = n_sprites;
+  Sprite[n_sprites++] = clon;
+  return i;
 }
 
 // change shape of sprite by relinking
 // link content of existing original sprite to
 // existing clone sprite
-void sprite_link_content(int original, int clone)
+void Compositing::sprite_link_content(int original, int clone)
 {
   int i, n, m;
 
@@ -129,7 +155,7 @@ void sprite_link_content(int original, int clone)
   #endif
 }
 
-void sprite_position(int sprite, int x, int y)
+void Compositing::sprite_position(int sprite, int x, int y)
 {
   Sprite[sprite]->x = x;
   Sprite[sprite]->y = y;
@@ -137,18 +163,13 @@ void sprite_position(int sprite, int x, int y)
 
 // refresh compositing linked list after changing x/y positions
 // to avoid flickering, this must be called during video blank period
-void sprite_refresh(void)
+void Compositing::sprite_refresh(void)
 {
-  int i, j, n = SPRITE_MAX;
-  static int dbl_buf = 0; // double buffering
-
-  #if BUFFERING == 2
-    dbl_buf ^= 1; // alternate to another buffer
-  #endif
+  int i, j, n = n_sprites;
 
   // reset all screen lines to blank content
   for(i = 0; i < VGA_Y_MAX; i++)
-    scanlines[dbl_buf][i] = NULL;
+    scanlines[i] = NULL;
 
   // now link all sprites, insering them into the linked list
   for(i = 0; i < n; i++) // loop over all sprites
@@ -156,14 +177,15 @@ void sprite_refresh(void)
     // cache x/y-offset of the sprite
     int x = Sprite[i]->x;
     int y = Sprite[i]->y;
-    for(j = 0; j < Sprite[i]->h; j++) // loop over all hor.lines of the sprite
+    int m = Sprite[i]->h;
+    if(m < VGA_Y_MAX)
+    for(j = 0; j < m; j++) // loop over all hor.lines of the sprite
     {
       Sprite[i]->line[j].x = x;
       // insert sprite lines into the linked list of scan lines
-      Sprite[i]->line[j].next = scanlines[dbl_buf][y+j];
-      scanlines[dbl_buf][y+j] = &(Sprite[i]->line[j]);
+      Sprite[i]->line[j].next = scanlines[y+j];
+      scanlines[y+j] = &(Sprite[i]->line[j]);
     }
   }
-  videodisplay_reg = &(scanlines[dbl_buf][0]);
+  videobase_reg = (volatile uint32_t *) &(scanlines[0]);
 }
-

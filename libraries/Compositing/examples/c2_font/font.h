@@ -885,7 +885,7 @@ char *shape_9[] =
 NULL
 };
 
-struct shape Shape[] =
+struct shape Font[] =
 {
    [0] = { std_colors, shape_space },
    [1] = { std_colors, shape_a },
@@ -925,6 +925,5 @@ struct shape Shape[] =
   [35] = { std_colors, shape_7 },
   [36] = { std_colors, shape_8 },
   [37] = { std_colors, shape_9 },
-  [38] = { NULL, NULL }
 };
 
