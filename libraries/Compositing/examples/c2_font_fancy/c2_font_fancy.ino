@@ -11,7 +11,8 @@ void setup()
   int unique_sprites;
   c2.init();
   c2.alloc_sprites(765); // 1200 full screen, 436 triangle, it sets c2.sprite_max
-
+  *c2.videobase_reg = NULL; // disable video during update
+  *c2.cntrl_reg = 0;
   #if 1
     for(i = 0; i < c2.sprite_max && i < N_LETTERS; i++)
       c2.shape_to_sprite(&(Font[i]));
