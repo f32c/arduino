@@ -769,7 +769,7 @@ char *shape_4[] =
 " WWWWWWWWWWWWWW ",
 "          WW    ",
 "          WW    ",
-"          wW    ",
+"          WW    ",
 "          WW    ",
 "                ",
 NULL
