@@ -187,5 +187,5 @@ void Compositing::sprite_refresh(void)
       scanlines[y+j] = &(Sprite[i]->line[j]);
     }
   }
-  videobase_reg = (volatile uint32_t *) &(scanlines[0]);
+  *videobase_reg = (volatile uint32_t *) &(scanlines[0]);
 }
