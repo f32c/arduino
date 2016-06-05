@@ -74,13 +74,13 @@ void loop()
       Sprite_speed[i].x = -1;
     }
 
-    if(c2.Sprite[i]->y < 1)
+    if(c2.Sprite[i]->y < -40)
     {
       Sprite_speed[i].y = 1;
       if( (rand()&7) == 0 )
         Sprite_speed[i].x = (rand()%3)-1;
     }
-    if(c2.Sprite[i]->y > 460)
+    if(c2.Sprite[i]->y > 480+40)
       Sprite_speed[i].y = -1;
   }
   while((*c2.vblank_reg & 0x80) == 0);
