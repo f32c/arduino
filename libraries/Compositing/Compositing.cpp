@@ -177,17 +177,21 @@ void Compositing::sprite_refresh(void)
     // cache x/y-offset of the sprite
     int x = Sprite[i]->x;
     int y = Sprite[i]->y;
-    int m = Sprite[i]->h;
-    for(j = 0; j < m; j++) // loop over all hor.lines of the sprite
+    int h = Sprite[i]->h;
+    // calculate clipping
+    int j0 = 0;
+    int j1 = h;
+    if(y < 0)
+      j0 = -y;
+    if(y + h > VGA_Y_MAX)
+      j1 = VGA_Y_MAX - y;
+    for(j = j0; j < j1; j++) // loop over all visible hor.lines of the sprite
     {
       int yj = j+y;
-      if(yj > 0 && yj < VGA_Y_MAX)
-      {
-        Sprite[i]->line[j].x = x;
-        // insert sprite lines into the linked list of scan lines
-        Sprite[i]->line[j].next = scanlines[yj];
-        scanlines[yj] = &(Sprite[i]->line[j]);
-      }
+      Sprite[i]->line[j].x = x;
+      // insert sprite lines into the linked list of scan lines
+      Sprite[i]->line[j].next = scanlines[yj];
+      scanlines[yj] = &(Sprite[i]->line[j]);
     }
   }
   *videobase_reg = (volatile uint32_t *) &(scanlines[0]);
