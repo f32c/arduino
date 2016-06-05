@@ -140,6 +140,8 @@ void setup()
   c2.sprite_clone(1);
   c2.Sprite[0]->x = 50;
   c2.sprite_refresh();
+  *c2.cntrl_reg = 0b11000000; // enable video, yes bitmap, no text mode, no cursor
+
   expectBY = expectB();
   #endif
 }
