@@ -12,18 +12,20 @@
   Self-play mode by RADIONA
  ****************************************************/
 
-#include <Adafruit_GFX.h>
-#include <Adafruit_F32C_VGA.h>
-
-#include <Compositing.h>
-#define SPRITE_MAX 10
-
 #define ADAFRUIT_GFX 0
 #define COMPOSITING2 1
 
-Compositing c2;
+#if ADAFRUIT_GFX
+#include <Adafruit_GFX.h>
+#include <Adafruit_F32C_VGA.h>
+Adafruit_F32C_VGA display(1);
+#endif
 
 #if COMPOSITING2
+  #include <Compositing.h>
+  #define SPRITE_MAX 10
+  Compositing c2;
+
   #if BPP == 8
     //                  RRRGGGBB
     #define C2_WHITE  0b11111111
@@ -49,8 +51,6 @@ Compositing c2;
 
 //Define Pins
 #define BEEPER     33
-
-Adafruit_F32C_VGA display(1);
 
 #define HAVE_ANALOG 0
 #if HAVE_ANALOG
@@ -422,8 +422,10 @@ void soundPoint()
 
 void centerPrint(char *text, int y, int size)
 {
+  #if ADAFRUIT_GFX
   display.setTextSize(size);
   display.setCursor(SCREEN_WIDTH/2 - ((strlen(text))*6*size)/2,y);
   display.print(text);
+  #endif
 }
 
