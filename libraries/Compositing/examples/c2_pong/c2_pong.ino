@@ -62,8 +62,8 @@ Adafruit_F32C_VGA display(1);
 
 //Define Visuals
 #define FONT_SIZE 4
-#define SCREEN_WIDTH (640-1)  //real size minus 1, because coordinate system starts with 0
-#define SCREEN_HEIGHT (480-1)  //real size minus 1, because coordinate system starts with 0
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
 #define PADDLE_WIDTH 8
 #define PADDLE_HEIGHT 32
 #define PADDLE_PADDING 16
@@ -74,7 +74,7 @@ Adafruit_F32C_VGA display(1);
 #define MIN_Y_SPEED 1
 #define MAX_Y_SPEED 3
 
-#define X_BOUNCE_DISTANCE (SCREEN_WIDTH-1*PADDLE_PADDING-1*BALL_SIZE)
+#define X_BOUNCE_DISTANCE (SCREEN_WIDTH-2*PADDLE_PADDING-2*PADDLE_WIDTH-1*BALL_SIZE)
 #define Y_BOUNCE_DISTANCE (SCREEN_HEIGHT-1*BALL_SIZE)
 
 #if 0
@@ -167,17 +167,17 @@ void setup()
   c2.sprite_clone(1);
 
   // sprite 3: playfield horizontal lines of ball size is
-  c2.sprite_fill_rect(SCREEN_WIDTH+1, BALL_SIZE, C2_ORANGE);
+  c2.sprite_fill_rect(SCREEN_WIDTH, BALL_SIZE, C2_ORANGE);
   c2.Sprite[3]->x = 0;
   c2.Sprite[3]->y = 0;
 
   // sprite 4: same line as above
   c2.sprite_clone(3);
-  c2.Sprite[4]->y = (SCREEN_HEIGHT+1)-BALL_SIZE;
+  c2.Sprite[4]->y = (SCREEN_HEIGHT)-BALL_SIZE;
   
   // sprite 5: playfield vertical line
-  c2.sprite_fill_rect(BALL_SIZE, SCREEN_HEIGHT+1, C2_BLUE);
-  c2.Sprite[5]->x = (SCREEN_WIDTH+1)/2 - BALL_SIZE/2;
+  c2.sprite_fill_rect(BALL_SIZE, SCREEN_HEIGHT, C2_BLUE);
+  c2.Sprite[5]->x = SCREEN_WIDTH/2 - BALL_SIZE/2;
   c2.Sprite[5]->y = 0;
 
   // draw them all
@@ -326,10 +326,10 @@ void draw()
   }
   
   // draw horizontal top line
-  display.drawFastHLine(0, 0, SCREEN_WIDTH, WHITE);
+  display.drawFastHLine(0, 0, SCREEN_WIDTH-1, WHITE);
 
   // draw horizontal bottom line
-  display.drawFastHLine(0, SCREEN_HEIGHT, SCREEN_WIDTH, WHITE);
+  display.drawFastHLine(0, SCREEN_HEIGHT-1, SCREEN_WIDTH-1, WHITE);
 
   //draw ball
   display.fillRect(ballX,ballY,BALL_SIZE,BALL_SIZE,WHITE);
