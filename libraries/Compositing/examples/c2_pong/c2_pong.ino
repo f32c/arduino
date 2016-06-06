@@ -176,9 +176,9 @@ void setup()
   c2.Sprite[4]->y = (SCREEN_HEIGHT)-BALL_SIZE;
   
   // sprite 5: playfield vertical line
-  c2.sprite_fill_rect(BALL_SIZE, SCREEN_HEIGHT, C2_BLUE);
+  c2.sprite_fill_rect(BALL_SIZE, SCREEN_HEIGHT-2*BALL_SIZE, C2_BLUE);
   c2.Sprite[5]->x = SCREEN_WIDTH/2 - BALL_SIZE/2;
-  c2.Sprite[5]->y = 0;
+  c2.Sprite[5]->y = BALL_SIZE;
 
   // draw them all
   c2.sprite_refresh();
