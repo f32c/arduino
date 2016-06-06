@@ -276,10 +276,10 @@ fpga_zybo_bram.build.sdata.size=4096
 fpga_zybo_bram.upload.tool=ujprog
 fpga_zybo_bram.upload.wait_for_upload_port=false
 fpga_zybo_bram.upload.native_usb=false
-fpga_zybo_bram.upload.maximum_size=129536
+#fpga_zybo_bram.upload.maximum_size=129536
 #fpga_zybo_bram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
-fpga_zybo_bram.bootloader.file.svf={runtime.tools.bootloaders.path}/zybo/zybo_{cpu.arch}_bram_{bitstream.fcpu.mhz}mhz.svf
-fpga_zybo_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/zybo/zybo_{cpu.arch}_bram_{bitstream.fcpu.mhz}mhz.bit
+fpga_zybo_bram.bootloader.file.svf={runtime.tools.bootloaders.path}/zybo/zybo_{cpu.arch}_{memsupport}_{socopt}_{bitstream.fcpu.mhz}mhz.svf
+fpga_zybo_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/zybo/zybo_{cpu.arch}_{memsupport}_{socopt}_{bitstream.fcpu.mhz}mhz.bit
 fpga_zybo_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/zybo.cfg
 fpga_zybo_bram.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
 fpga_zybo_bram.bitstream.fcpu.mhz=100
@@ -297,17 +297,32 @@ fpga_zybo_bram.menu.jtag.zybo=ZYBO onboard JTAG
 fpga_zybo_bram.menu.jtag.zybo.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/digilent_adept.cfg
 fpga_zybo_bram.menu.jtag.fpu1=PLDkit FPU1 JTAG
 fpga_zybo_bram.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
-fpga_zybo_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
-fpga_zybo_bram.menu.protocol.hex.upload.protocol=hex
-fpga_zybo_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_zybo_bram.menu.ramsize.128=128 KB BRAM Emulated external
+fpga_zybo_bram.menu.ramsize.128.upload.maximum_size=129536
+fpga_zybo_bram.menu.ramsize.128.build.sdata.size=4096
+fpga_zybo_bram.menu.ramsize.128.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_zybo_bram.menu.ramsize.128.memsupport=acram_emu
+fpga_zybo_bram.menu.ramsize.16=16 KB BRAM Internal
+fpga_zybo_bram.menu.ramsize.16.upload.maximum_size=14848
+fpga_zybo_bram.menu.ramsize.16.compiler.ld.extra_flags=--section-start=.init=0x400
+fpga_zybo_bram.menu.ramsize.16.memsupport=bram
+fpga_zybo_bram.menu.soc.vgatxt80x30=text 80x30 bitmap 640x480
+fpga_zybo_bram.menu.soc.vgatxt80x30.socopt=vgatxt80x30
+fpga_zybo_bram.menu.soc.vgatxt80x60=text 80x60 bitmap 640x480
+fpga_zybo_bram.menu.soc.vgatxt80x60.socopt=vgatxt80x60
+fpga_zybo_bram.menu.soc.vgabit=bitmap 640x480
+fpga_zybo_bram.menu.soc.vgabit.socopt=vgabit
 fpga_zybo_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
 fpga_zybo_bram.menu.protocol.bin.upload.protocol=bin
 fpga_zybo_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
-fpga_zybo_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
-fpga_zybo_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+fpga_zybo_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_zybo_bram.menu.protocol.hex.upload.protocol=hex
+fpga_zybo_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_zybo_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
 fpga_zybo_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c jtaghs1_fast -p 1 "{bootloader.file.bit}"
 fpga_zybo_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c jtaghs1_fast -p 1 "{bootloader.file.bit}"
+fpga_zybo_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
+fpga_zybo_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 
 #
 # Lattice Brevia / Brevia2
