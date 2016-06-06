@@ -111,6 +111,13 @@ int Compositing::shape_to_sprite(struct shape *sh)
   return i;
 }
 
+int Compositing::sprite_add(struct sprite *s)
+{
+  int i = n_sprites;
+  Sprite[n_sprites++] = s;
+  return i;
+}
+
 // create new sprite with content
 // linked to existing sprite
 int Compositing::sprite_clone(int original)
@@ -126,6 +133,38 @@ int Compositing::sprite_clone(int original)
   i = n_sprites;
   Sprite[n_sprites++] = clon;
   return i;
+}
+
+// make sprite as the rectangular area of some color
+// by vertically extruding single coloured line
+// only w pixels of content will be allocated
+// in one contiguous memory block of pixel content
+// representing one horizontal lines. All other lines
+// in the sprite will refer to the same content
+int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
+{
+  int i;
+  uint32_t sprite_size;
+  struct sprite *spr;
+  pixel_t *content = (pixel_t *)malloc(w * sizeof(pixel_t));
+
+  for(i = 0; i < w; i++)
+    content[i] = color;
+  sprite_size = sizeof(struct sprite) + h * sizeof(struct compositing_line);
+
+  spr = (struct sprite *)malloc(sprite_size);
+  spr->x = 0;
+  spr->y = 0;
+  spr->w = w;
+  spr->h = h;
+  for(i = 0; i < h; i++)
+  {
+    spr->line[i].next = NULL;
+    spr->line[i].x = spr->x;
+    spr->line[i].n = w;
+    spr->line[i].bmp = content;
+  }
+  return sprite_add(spr);
 }
 
 // change shape of sprite by relinking

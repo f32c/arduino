@@ -16,14 +16,36 @@
 #include <Adafruit_F32C_VGA.h>
 
 #include <Compositing.h>
-#include "shapes.h"
 #define SPRITE_MAX 10
-#define N_SHAPES (sizeof(Shape)/sizeof(Shape[0]))
 
 #define ADAFRUIT_GFX 0
 #define COMPOSITING2 1
 
 Compositing c2;
+
+#if COMPOSITING2
+  #if BPP == 8
+    //                  RRRGGGBB
+    #define C2_WHITE  0b11111111
+    #define C2_GREEN  0b00011100
+    #define C2_ORANGE 0b11110000
+    #define C2_BLUE   0b00110011
+  #endif
+  #if BPP == 16
+    //                  RRRRRGGGGGGBBBBB
+    #define C2_WHITE  0b1111111111111111
+    #define C2_GREEN  0b0000011111100000
+    #define C2_ORANGE 0b1111110000000000
+    #define C2_BLUE   0b0010010000011111
+  #endif
+  #if BPP == 32
+    //                  RRGGBB
+    #define C2_WHITE  0xFFFFFF
+    #define C2_GREEN  0x00FF00
+    #define C2_ORANGE 0xFF7F00
+    #define C2_BLUE   0x4080FF
+  #endif
+#endif
 
 //Define Pins
 #define BEEPER     33
@@ -66,8 +88,8 @@ int paddleLocationB = 0;
 
 int ballX = SCREEN_WIDTH/2;
 int ballY = SCREEN_HEIGHT/2;
-int ballSpeedX = 2;
-int ballSpeedY = 1;
+int ballSpeedX = 8;
+int ballSpeedY = 8;
 
 int lastPaddleLocationA = 0;
 int lastPaddleLocationB = 0;
@@ -134,14 +156,34 @@ void setup()
   #if COMPOSITING2
   c2.init();
   c2.alloc_sprites(SPRITE_MAX);
+  
+  // sprite 0: ball
+  c2.sprite_fill_rect(BALL_SIZE, BALL_SIZE, C2_WHITE);
 
-  for(i = 0; i < c2.sprite_max && i < N_SHAPES; i++)
-    c2.shape_to_sprite(&Shape[i]);
+  // sprite 1: paddle
+  c2.sprite_fill_rect(PADDLE_WIDTH, PADDLE_HEIGHT, C2_WHITE);
+
+  // sprite 2: another paddle, clone of sprite 1
   c2.sprite_clone(1);
-  c2.Sprite[0]->x = 50;
+
+  // sprite 3: playfield horizontal lines of ball size is
+  c2.sprite_fill_rect(SCREEN_WIDTH+1, BALL_SIZE, C2_ORANGE);
+  c2.Sprite[3]->x = 0;
+  c2.Sprite[3]->y = 0;
+
+  // sprite 4: same line as above
+  c2.sprite_clone(3);
+  c2.Sprite[4]->y = (SCREEN_HEIGHT+1)-BALL_SIZE;
+  
+  // sprite 5: playfield vertical line
+  c2.sprite_fill_rect(BALL_SIZE, SCREEN_HEIGHT+1, C2_BLUE);
+  c2.Sprite[5]->x = (SCREEN_WIDTH+1)/2 - BALL_SIZE/2;
+  c2.Sprite[5]->y = 0;
+
+  // draw them all
   c2.sprite_refresh();
   *c2.cntrl_reg = 0b11000000; // enable video, yes bitmap, no text mode, no cursor
-
+  
   expectBY = expectB();
   #endif
 }
@@ -309,6 +351,7 @@ void draw()
   
   display.display();
   #endif
+
   #if COMPOSITING2
   c2.Sprite[0]->x = ballX;
   c2.Sprite[0]->y = ballY;
@@ -320,7 +363,6 @@ void draw()
   while((*c2.vblank_reg & 0x80) == 0);
   c2.sprite_refresh();
   while((*c2.vblank_reg & 0x80) != 0);
-
   #endif
 } 
 
@@ -384,3 +426,4 @@ void centerPrint(char *text, int y, int size)
   display.setCursor(SCREEN_WIDTH/2 - ((strlen(text))*6*size)/2,y);
   display.print(text);
 }
+

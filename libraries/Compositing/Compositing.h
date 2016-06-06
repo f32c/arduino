@@ -35,6 +35,8 @@ class Compositing
     void sprite_refresh(void); // refresh compositing linked list after changing x/y positions
     int shape_to_sprite(struct shape *sh);
     int sprite_clone(int original); // new sprite with clone content from existing sprite
+    int sprite_add(struct sprite *s); // new sprite with clone content from existing sprite
+    int sprite_fill_rect(int w, int h, pixel_t color);
     void sprite_position(int sprite, int x, int y);
     void sprite_link_content(int original, int clone);
 
