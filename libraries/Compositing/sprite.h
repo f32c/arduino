@@ -11,7 +11,7 @@
 struct sprite
 {
   int16_t x,y; // current position on the screen
-  uint8_t w,h; // width x-size, height y-size (number of lines)
+  uint16_t w,h; // w: width x-size (currently ignored), h: height y-size (number of lines)
   struct compositing_line line[]; // content: array of lines - NULL to terminate
 };
 
