@@ -25,28 +25,11 @@ Adafruit_F32C_VGA display(1);
   #include <Compositing.h>
   #define SPRITE_MAX 10
   Compositing c2;
-
-  #if BPP == 8
-    //                  RRRGGGBB
-    #define C2_WHITE  0b11111111
-    #define C2_GREEN  0b00011100
-    #define C2_ORANGE 0b11110000
-    #define C2_BLUE   0b00110011
-  #endif
-  #if BPP == 16
-    //                  RRRRRGGGGGGBBBBB
-    #define C2_WHITE  0b1111111111111111
-    #define C2_GREEN  0b0000011111100000
-    #define C2_ORANGE 0b1111110000000000
-    #define C2_BLUE   0b0010010000011111
-  #endif
-  #if BPP == 32
-    //                  RRGGBB
-    #define C2_WHITE  0xFFFFFF
-    #define C2_GREEN  0x00FF00
-    #define C2_ORANGE 0xFF7F00
-    #define C2_BLUE   0x4080FF
-  #endif
+  //                            RRGGBB
+  #define C2_WHITE  RGB2PIXEL(0xFFFFFF)
+  #define C2_GREEN  RGB2PIXEL(0x00FF00)
+  #define C2_ORANGE RGB2PIXEL(0xFF7F00)
+  #define C2_BLUE   RGB2PIXEL(0x4080FF)
 #endif
 
 //Define Pins
