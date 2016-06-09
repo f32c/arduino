@@ -167,6 +167,36 @@ int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
   return sprite_add(spr);
 }
 
+// user should allocate bitmap, sprite will
+// be created to point its content to user's allocated bitmap
+// content will not be allocated and copied but just reused
+// only sprite metadata (vertical lines) will be allocated
+// when making content, note that its location in memory
+// and its width must be 32-bit word aligned in case of 8bpp or 16bpp
+int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
+{
+  int i;
+  uint32_t sprite_size;
+  struct sprite *spr;
+
+  sprite_size = sizeof(struct sprite) + h * sizeof(struct compositing_line);
+
+  spr = (struct sprite *)malloc(sprite_size);
+  spr->x = 0;
+  spr->y = 0;
+  spr->w = w;
+  spr->h = h;
+  for(i = 0; i < h; i++)
+  {
+    spr->line[i].next = NULL;
+    spr->line[i].x = spr->x;
+    spr->line[i].n = w;
+    spr->line[i].bmp = bmp;
+    bmp += w;
+  }
+  return sprite_add(spr);
+}
+
 // change shape of sprite by relinking
 // link content of existing original sprite to
 // existing clone sprite
