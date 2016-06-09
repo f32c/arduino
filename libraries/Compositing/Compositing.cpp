@@ -226,11 +226,11 @@ void Compositing::sprite_refresh(void)
       j1 = VGA_Y_MAX - y;
     for(j = j0; j < j1; j++) // loop over all visible hor.lines of the sprite
     {
-      int yj = j+y;
+      struct compositing_line **sl = &(scanlines[j+y]);
       Sprite[i]->line[j].x = x;
       // insert sprite lines into the linked list of scan lines
-      Sprite[i]->line[j].next = scanlines[yj];
-      scanlines[yj] = &(Sprite[i]->line[j]);
+      Sprite[i]->line[j].next = *sl;
+      *sl = &(Sprite[i]->line[j]);
     }
   }
   *videobase_reg = (volatile uint32_t *) &(scanlines[0]);
