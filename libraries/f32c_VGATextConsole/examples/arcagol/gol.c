@@ -116,9 +116,10 @@ void gol_clear(void)
   }
 }
 
+
 // plot a pixel
 // v=pixel value 1-set pixel 0-clear pixel
-void gol_plot(unsigned int ix, unsigned int iy, unsigned int v)
+void gol_plot(uint16_t ix, uint16_t iy, uint8_t v)
 {
   uint16_t xn,xp,yn,yp;
   // wraparound address

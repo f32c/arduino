@@ -46,6 +46,8 @@ extern struct gol cell_buf[RANGE_Y_BUF][RANGE_X];
 */
 int gol_iterate(void); // calculates a part of the iteration
 void gol_clear(void);
-void gol_plot(unsigned int x, unsigned int y, unsigned int v); // plot a gol pixel
+void gol_plot(uint16_t x, uint16_t y, uint8_t v); // plot a gol pixel
+// peek for the gol cell (returns struct gol)
+#define gol_peek(x,y) (cell[y & (RANGE_Y-1)][x & (RANGE_X-1)])
 #endif
 

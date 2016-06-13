@@ -1,26 +1,49 @@
+// (c)EMARD
+// License=BSD
+
+// Arcade Game of Life
 // this example needs 8x8 font
+
+#include <Compositing.h>
+Compositing c2;
+
 extern "C"
 {
   #include "gol.h"
-  #include "thin_sprite.h"
 }
+
+#define MISSILE_MAX 8
+#define RESOLUTION_X 640
+#define RESOLUTION_Y 480
+
+int16_t ship_x = RESOLUTION_X/2, ship_y = RESOLUTION_Y/2;
+
+struct missile
+{
+  uint8_t active;
+  int16_t x, y;
+  int8_t vx, vy;
+  uint8_t sprite; // sprite index  
+};
+
+struct missile missile[MISSILE_MAX];
+
 // crude initial "malloc" for vram=(tiled graphics) and videomem=(sprites)
 // RAM
 volatile uint16_t *vram = (volatile uint16_t *) 0x80006000;
-volatile uint8_t *videomem = (volatile uint8_t *) 0x80007000;
 // BRAM
 // volatile uint16_t *vram = (volatile uint16_t *) 0x40000000;
 
 #define text_addr (*(volatile uint32_t *)0xFFFFFB8C)
 #define cntrl_reg (*(volatile uint8_t *)0xfffffb81)
 #define finescroll_reg (*(volatile uint8_t *)0xfffffb8b)
-#define videodisplay_reg (*(volatile uint32_t *)0xFFFFFB90)
 #define vblank_reg (*(volatile uint8_t *)0xfffffb87)
 
-// 8x8 font, 82*31 screen memory (soft scrolled, but visible 80x30)
+// 8x8 font, 82*61 screen memory (soft scrolled, but visible 80x60)
 #define RANGE_TILE_X 82
 #define RANGE_TILE_Y 61
 #define FONT_HEIGHT 8
+
 #if FONT_HEIGHT == 8
   #define F_SCROLL_Y_AND 0x70
   #define F_SCROLL_Y_CARRY 0x60
@@ -34,13 +57,13 @@ int more_iterate = 0;
 
 void do_iterate(void)
 {
-//  return;
+  // return;
   if(more_iterate)
     more_iterate = gol_iterate();
 }
 
 // diagonal crawler
-void create_crawler(unsigned int px, unsigned int py, uint8_t dir)
+void create_crawler(uint16_t px, uint16_t py, uint8_t dir)
 {
   int sx, sy;
   sx = dir & 2 ? 1 : -1;
@@ -53,7 +76,7 @@ void create_crawler(unsigned int px, unsigned int py, uint8_t dir)
 }
 
 // straight crawler
-void create_crawler_straight(unsigned int px, unsigned int py, uint8_t dir)
+void create_crawler_straight(uint16_t px, uint16_t py, uint8_t dir)
 {
   int sx, sy;
   sx = dir & 2 ? 1 : -1;
@@ -71,7 +94,8 @@ void create_crawler_straight(unsigned int px, unsigned int py, uint8_t dir)
   gol_plot(px+2*sx,py+2*sy,1);
 }
 
-void create_box(unsigned int px, unsigned int py)
+
+void create_box(uint16_t px, uint16_t py)
 {
   gol_plot(px  ,py  ,1);
   gol_plot(px+1,py+1,1);
@@ -79,7 +103,21 @@ void create_box(unsigned int px, unsigned int py)
   gol_plot(px  ,py+1,1);
 }
 
-void create_explode(unsigned int px, unsigned int py)
+void erase_box(uint16_t px, uint16_t py)
+{
+  gol_plot(px-1,py-1,0);
+  gol_plot(px  ,py-1,0);
+  gol_plot(px+1,py-1,0);
+  gol_plot(px-1,py  ,0);
+  gol_plot(px  ,py  ,0);
+  gol_plot(px+1,py  ,0);
+  gol_plot(px-1,py+1,0);
+  gol_plot(px  ,py+1,0);
+  gol_plot(px+1,py+1,0);
+}
+
+
+void create_explode(uint16_t px, uint16_t py)
 {
   gol_plot(px-1,py-1,1);
   gol_plot(px-1,py  ,1);
@@ -88,8 +126,8 @@ void create_explode(unsigned int px, unsigned int py)
   gol_plot(px+1,py-1,1);
   gol_plot(px+1,py  ,1);
   gol_plot(px+1,py+1,1);
-
 }
+
 
 void generate_living_beings(void)
 {
@@ -115,35 +153,89 @@ void generate_living_beings(void)
 }
 
 
-void setup() {
+void setup()
+{
   int x, y;
+  int spr;
+  int i, j;
+  
+  c2.init();
+  c2.alloc_sprites(50); // max 50 sprites
+  // sprite 0: the ship
+  spr = c2.sprite_fill_rect(20,20,RGB2PIXEL(0xFF0000));
+  c2.Sprite[spr]->x = ship_x-10;
+  c2.Sprite[spr]->y = ship_y-10;
+
+  // create 1 missile and additionally clone it 7 times, will make 8 missiles total
+  for(i = 0; i < MISSILE_MAX; i++)
+  {
+    if(i == 0) // sprite 1: the missile
+      j = spr = c2.sprite_fill_rect(8,8,RGB2PIXEL(0xFFFF80));
+    else
+      j = c2.sprite_clone(spr);
+    c2.Sprite[j]->x = 20 + i * 10;
+    c2.Sprite[j]->y = 0;
+    missile[i].active = 0;
+    missile[i].sprite = j;
+  }
+  
+  c2.sprite_refresh();
   vram = (volatile uint16_t *)malloc(RANGE_TILE_X*RANGE_TILE_Y*sizeof(uint16_t));
   //videomem = (uint8_t *)malloc(32768);
   text_addr = vram; // video text base address
-  cntrl_reg = 0b10100000; // enable text mode, enable bitmap, no cursor
+  cntrl_reg = 0b11100000; // enable text mode, enable bitmap, no cursor
   gol_clear();
-  videodisplay_reg = &(videomem[0]);
+  // videodisplay_reg = &(videomem[0]);
   //tspr = (struct thin_sprites *) videomem;
   //create_box(50,20);
   //create_crawler(50,30,1);
-  #if 0
-  bmp_clear();
-  bmp_shape_draw(320,240,0,0,3);
-  bmp_grab_sprite(&(sprite[0]), 320,240,320+31,240+31);
-  for(x = 0; x < 640; x++)
-  {
-    bmp_plot(x, 0, 255);
-    bmp_plot(x, 479, 255);
-  }
-  for(y = 0; y < 480; y++)
-  {
-    bmp_plot(0, y, 255);
-    bmp_plot(639, y, 255);
-  }
-  #endif
 }
 
-void loop() {
+// xc,yc -- current screen center coordinates in gol cell array
+void fly_missiles(uint16_t xc, uint16_t yc, uint8_t fsx, uint8_t fsy)
+{
+  int i;
+
+  for(i = 0; i < MISSILE_MAX; i++)
+  {
+    if(missile[i].active)
+    {
+      int16_t mx = missile[i].x + missile[i].vx;
+      int16_t my = missile[i].y + missile[i].vy;
+      missile[i].x = mx;
+      missile[i].y = my;
+      c2.Sprite[missile[i].sprite]->x = mx-4; // center of sprite
+      c2.Sprite[missile[i].sprite]->y = my-4;
+      // clipping - out of screen will de-activate missile
+      if(mx < 0 || my < 0 || mx > RESOLUTION_X || my > RESOLUTION_Y)
+        missile[i].active = 0;
+      // collision detection
+      // convert missile screen position to gol cell position
+      uint16_t gx = xc + (mx-12+fsx-RESOLUTION_X/2)/8;
+      uint16_t gy = yc + (my-4+fsy-RESOLUTION_Y/2)/8;
+      struct gol gol_cell = gol_peek(gx, gy);
+      if(gol_cell.v != 0 || gol_cell.n != 0)
+      {
+        erase_box(gx, gy);
+        missile[i].active = 0;
+      }
+    }
+    else
+    {
+      // activate inactive missiles randomly
+      missile[i].x = ship_x;
+      missile[i].y = ship_y;
+      missile[i].vx = 16*(rand()%3-1);
+      missile[i].vy = 16*(rand()%3-1);
+      if(missile[i].vx != 0 || missile[i].vy != 0)
+        missile[i].active = 1;
+    }
+  }
+}
+
+
+void loop()
+{
   int i;
   static int8_t scroll_x = -1, scroll_y = -1;
   static int8_t dir = 0;
@@ -151,7 +243,8 @@ void loop() {
   static uint16_t x0=0, y0=0; // viewport offset
   static uint16_t xc, yc; // screen center
   static uint8_t fscroll_x = 0, fscroll_y = 0;
-  static int16_t ship_x = 320, ship_y = 240, ship_vx = 1, ship_vy = 1;
+
+  //static int16_t ship_x = 320, ship_y = 240, ship_vx = 1, ship_vy = 1;
   // calculate the "center" in cell array
   // this is a cell array address that corresponds
   // to currently visible center of the screen
@@ -163,8 +256,22 @@ void loop() {
   {
     scroll_x = (rand() % 3)-1;
     scroll_y = (rand() % 3)-1;
-    create_crawler(xc, yc, rand());
+    //scroll_x = 0;
+    //scroll_y = 0;
+    //create_crawler(xc+10, yc+20, rand());
+    if((rand()&1) == 0)
+      create_crawler(xc-32+rand()%64, yc-32+rand()%64, rand());
+    else
+      create_crawler_straight(xc-32+rand()%64, yc-32+rand()%64, rand());
+    #if 0
+    // shoooting targets to adjust missile center
+    create_box(xc-20, yc+0);
+    create_box(xc+20, yc+0);
+    create_box(xc-1, yc+20);
+    create_box(xc-1, yc-20);
+    #endif
   }
+  fly_missiles(xc,yc, (fscroll_x)&7, (fscroll_y>>4)&7);
   // wait for vertical video blank
   // busy waiting, calculating next
   // GoL generation
@@ -213,30 +320,6 @@ void loop() {
       }
     }
   }
-  #if 0
-  sprite_position(&(sprite[0]), ship_x, ship_y);
-  if(ship_x < 16)
-  {
-    ship_vx = 1;
-    bmp_shape_draw(sprite[0].x0,sprite[0].y0,0,0,0);
-  }
-  if(ship_x > 640-48)
-  {
-    ship_vx = -1;
-    bmp_shape_draw(sprite[0].x0,sprite[0].y0,0,0,2);
-  }
-  if(ship_y < 16)
-  {
-    ship_vy = 1;
-    bmp_shape_draw(sprite[0].x0,sprite[0].y0,0,0,1);
-  }
-  if(ship_y > 480-48)
-  {
-    ship_vy = -1;
-    bmp_shape_draw(sprite[0].x0,sprite[0].y0,0,0,3);
-  }
-  ship_x += ship_vx;
-  ship_y += ship_vy;
-  #endif
+  c2.sprite_refresh();
 }
 
