@@ -93,7 +93,11 @@ void frac_main()
 				hb = bz*bz;
 			}	while (((ha+hb) < 2.0) && (zaehler <=  ANZCOL));
 			if (zaehler <= ANZCOL)
-				emu_set_pix(x, y, zaehler, zaehler, zaehler);
+				emu_set_pix(x, y,
+                                   (zaehler & 0x1C)<<3,
+                                   (zaehler & 0xE0),
+                                   (zaehler & 0x03)<<5
+				);
 		}
 	}
 }
