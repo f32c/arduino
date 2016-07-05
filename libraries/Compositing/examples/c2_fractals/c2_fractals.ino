@@ -13,17 +13,15 @@ Compositing c2;
 //Define Visuals
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
-
-#define XRES (SCREEN_WIDTH-1)
-#define YRES (SCREEN_HEIGHT-1)
-#define ANZCOL 255
+#define ANZCOL 256
 
 // crude malloc()
 pixel_t *bitmap = (pixel_t *)0x80080000;
 
-void emu_set_pix(int x, int y, int r, int g, int b)
+pixel_t color_map[ANZCOL];
+void emu_set_pix(int x, int y, int c)
 {
-  bitmap[x + SCREEN_WIDTH*y] = RGB2PIXEL((r << 16) | (g << 8) | b);
+  bitmap[x + SCREEN_WIDTH*y] = RGB2PIXEL(color_map[c]);
 }
 
 void setup() 
@@ -49,18 +47,23 @@ void loop()
 
 void frac_main()
 {
-	double 	az,ac,bz,bc;
-	double	ha, hb, hc;
-	int 	x, y, k, color, i;
-	double	spalt_x, spalt_y;
-	double 	aecke, becke, seite_x, seite_y;
-	double	linke_ecke, rechte_ecke, untere_ecke, obere_ecke;
-	int 	zaehler;
+	double az,ac,bz,bc;
+	double ha, hb, hc;
+	int x, y, k, color, i;
+	double spalt_x, spalt_y;
+	double aecke, becke, seite_x, seite_y;
+	double linke_ecke, rechte_ecke, untere_ecke, obere_ecke;
+	int zaehler;
 
-	linke_ecke =  -1.00;		rechte_ecke = 1.00;
+  // set color map
+  for(i = 0; i < ANZCOL; i++)
+    color_map[i] = rand();
 
-	obere_ecke =   1.25;
-	untere_ecke = -1.25;
+	linke_ecke =  -1.45;
+	rechte_ecke =  0.60;
+
+	obere_ecke =   1.15;
+	untere_ecke = -1.15;
 
 	aecke  = linke_ecke;
 	becke  = obere_ecke;
@@ -68,15 +71,14 @@ void frac_main()
 	seite_x = rechte_ecke - linke_ecke;
 	seite_y = untere_ecke - obere_ecke;
 
-	spalt_x = seite_x / (double) XRES;
-	spalt_y = seite_y / (double) XRES;
+	spalt_x = seite_x / (double) SCREEN_WIDTH;
+	spalt_y = seite_y / (double) SCREEN_HEIGHT;
 
-	bc = becke - spalt_y;
-
-	for (y = 0; y <= XRES; y++)	{
+	bc = becke;
+	for (y = 0; y < SCREEN_HEIGHT; y++)	{
 		bc = bc+spalt_y;
-		ac = aecke-spalt_x;
-		for (x = 0 ; x <= XRES ; x++)	{
+		ac = aecke;
+		for (x = 0 ; x < SCREEN_WIDTH ; x++)	{
 			ac = ac+spalt_x;
 			az = 0;
 			bz = 0;
@@ -90,13 +92,8 @@ void frac_main()
 				zaehler++;
 				ha = az*az;
 				hb = bz*bz;
-			}	while (((ha+hb) < 2.0) && (zaehler <=  ANZCOL));
-			if (zaehler <= ANZCOL)
-				emu_set_pix(x, y,
-                                   (zaehler & 0x1C)<<3,
-                                   (zaehler & 0xE0),
-                                   (zaehler & 0x03)<<5
-				);
+			}	while (((ha+hb) < 2.0) && (zaehler < ANZCOL));
+			emu_set_pix(x, y, zaehler);
 		}
 	}
 }

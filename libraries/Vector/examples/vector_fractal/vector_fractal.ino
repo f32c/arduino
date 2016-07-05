@@ -18,10 +18,11 @@ Vector V;
 
 // crude malloc()
 pixel_t *bitmap = (pixel_t *)0x80080000;
+pixel_t color_map[ANZCOL];
 
-void emu_set_pix(int x, int y, int r, int g, int b)
+void emu_set_pix(int x, int y, int c)
 {
-  bitmap[x + SCREEN_WIDTH*y] = RGB2PIXEL((r << 16) | (g << 8) | b);
+  bitmap[x + SCREEN_WIDTH*y] = RGB2PIXEL(color_map[c]);
 }
 
 void alloc_bitmap()
@@ -35,19 +36,23 @@ void alloc_bitmap()
   c2.sprite_refresh(); // show it on screen
   *c2.cntrl_reg = 0b11000000; // vgatextmode: enable video, yes bitmap, no text mode, no cursor
 
-  for(i = 0; i < SCREEN_WIDTH*SCREEN_HEIGHT; i++) bitmap[i] = 164;  // clear screen
+  for(i = 0; i < SCREEN_WIDTH*SCREEN_HEIGHT; i++) bitmap[i] = 0;  // clear screen
 }
 
 void fractal()
 {
-	float 	ac;
+	float ac;
 	struct vector_header_s *vaz,*vac,*vbz,*vbc,*vha,*vhb,*vhc;
 	struct vector_header_s *vbc_inc,*vresult;
-	int 	x, y, i;
+	int x, y, i;
 	float	spalt_x, spalt_y;
-	float 	aecke, becke, seite_x, seite_y;
+	float aecke, becke, seite_x, seite_y;
 	float	linke_ecke, rechte_ecke, untere_ecke, obere_ecke;
-	int     pixdone[SCREEN_WIDTH]; // 0 if pix is not yet calculated
+	int pixdone[SCREEN_WIDTH]; // 0 if pix is not yet calculated
+
+  // set color map
+  for(i = 0; i < ANZCOL; i++)
+    color_map[i] = rand();
 
   // vector length is 1 screen line (640 elements)
 	vaz = V.create(SCREEN_WIDTH);
@@ -60,19 +65,20 @@ void fractal()
 	vbc_inc = V.create(SCREEN_WIDTH);
 	vresult = V.create(SCREEN_WIDTH);
 
-	linke_ecke =  -1.00;		rechte_ecke = 1.00;
+	linke_ecke = -1.45;
+	rechte_ecke = 0.60;
 
-	obere_ecke =   1.25;
-	untere_ecke = -1.25;
+	obere_ecke = 1.15;
+	untere_ecke = -1.15;
 
-	aecke  = linke_ecke;
-	becke  = obere_ecke;
+	aecke = linke_ecke;
+	becke = obere_ecke;
 
 	seite_x = rechte_ecke - linke_ecke;
 	seite_y = untere_ecke - obere_ecke;
 
-	spalt_x = seite_x / (double) SCREEN_WIDTH;
-	spalt_y = seite_y / (double) SCREEN_HEIGHT;
+	spalt_x = seite_x / (float) SCREEN_WIDTH;
+	spalt_y = seite_y / (float) SCREEN_HEIGHT;
 
 	ac = aecke;
 	for(x = 0; x < SCREEN_WIDTH; x++)
@@ -117,11 +123,7 @@ void fractal()
                 // if pixel is not yet placed, check calculation results
                 if(vresult->data[x].f > 2.0)
                 {
-                  emu_set_pix(x, y,
-                                   (i & 0x1C)<<3,
-                                   (i & 0xE0),
-                                   (i & 0x03)<<5
-			            );
+                  emu_set_pix(x, y, i);
                   pixdone[x] = 1; // pixel is placed, won't check anymore for this line
                 }
               }
