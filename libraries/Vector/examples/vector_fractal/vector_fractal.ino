@@ -118,7 +118,8 @@ void fractal()
       	if(pixdone[x] == 0)
         {
           // if pixel is not yet placed, check calculation results
-          if(vresult->data[x].part.exponent > 127) // same as vresult->data[x].f > 2.0 but faster
+          //if(vresult->data[x].f > 2.0)
+          if(vresult->data[x].part.sign == 0 && vresult->data[x].part.exponent > 127) // same as above but faster
           {
             emu_set_pix(x, y, i);
             pixdone[x] = 1; // pixel is placed, won't check anymore for this line
