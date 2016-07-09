@@ -82,37 +82,35 @@ void fractal()
     vbc->data[x].f = becke;
     vbc_inc->data[x].f = spalt_y;
   }
-  V.io(5, vac, 0);
-  V.io(6, vbc, 0);
+  V.load(5, vac); // v5=vac
+  V.load(1, vbc); // v1=vbc
   for(y = 0; y < SCREEN_HEIGHT; y++)
   {
     // printf("processing screen line %d\n", y);
-    // increment bc for the next line
-    V.io(0, vbc_inc, 0); // v0=vbc_inc
-    V.oper(1, 6, 0, 0); // v1=v6+v0 (vbc+vbc_inc)
-    V.oper(0, 1, 1, 1); // az=0: v0=v1-v1
-    V.oper(6, 0, 1, 0); // vbc:  v6=v0+v1
+    V.sub(0, 1, 1); // az=0: v0=v1-v1
+    V.add(6, 0, 1); // vbc:  v6=v0+v1
     // set vectors to zero before each horizontal line
-    V.oper(1, 5, 5, 1); // bz=0: v1=v5-v5
-    V.oper(2, 5, 5, 1); // ha=0: v0=v5-v5 
-    V.oper(3, 5, 5, 1); // hb=0: v0=v5-v5 
+    V.sub(1, 0, 0); // bz=0: v1=v0-v0
+    V.sub(2, 0, 0); // ha=0: v2=v0-v0
+    V.sub(3, 0, 0); // hb=0: v3=v0-v0
     // set no pixels are done yet in this line
+    int pixinline=0;
     for(x = 0; x < SCREEN_WIDTH; x++)
       pixdone[x] = 0;
     // calculate the line using vectors
-    for(i = 0; i < ANZCOL; i++)
+    for(i = 0; i < ANZCOL && pixinline < SCREEN_WIDTH; i++)
     {
       // main fractal loop is completely done in vector registers (FAST)
-      V.oper(4, 0, 1, 2); // v4=v0*v1 // hc=az*bz
-      V.oper(7, 2, 3, 1); // v7=v2-v3 // az: tmp=ha-hb
-      V.oper(0, 7, 5, 0); // v0=v7+v5 // az=tmp+ac
-      V.oper(7, 4, 4, 0); // v7=v4+v4 // bz: tmp=hc+hc
-      V.oper(1, 7, 6, 0); // v1=v7+v6 // bz=tmp+bc
-      V.oper(2, 0, 0, 2); // v2=v0*v0 // ha=az*az
-      V.oper(3, 1, 1, 2); // v3=v1*v1 // hb=bz*bz
-      V.oper(7, 2, 3, 0); // v7=v2+v3 // tmp=ha+hb
+      V.mul(4, 0, 1); // v4=v0*v1 // hc=az*bz
+      V.sub(7, 2, 3); // v7=v2-v3 // az: tmp=ha-hb
+      V.add(0, 7, 5); // v0=v7+v5 // az=tmp+ac
+      V.add(7, 4, 4); // v7=v4+v4 // bz: tmp=hc+hc
+      V.add(1, 7, 6); // v1=v7+v6 // bz=tmp+bc
+      V.mul(2, 0, 0); // v2=v0*v0 // ha=az*az
+      V.mul(3, 1, 1); // v3=v1*v1 // hb=bz*bz
+      V.add(7, 2, 3); // v7=v2+v3 // tmp=ha+hb
       // only I/O is to store temporery result in RAM to plot pixels
-      V.io(7, vresult, 1); // vres=v7 // tmp
+      V.store(vresult, 7); // vresult=v7 // tmp
       for(x = 0; x < SCREEN_WIDTH; x++)
       {
       	if(pixdone[x] == 0)
@@ -123,10 +121,14 @@ void fractal()
           {
             emu_set_pix(x, y, i);
             pixdone[x] = 1; // pixel is placed, won't check anymore for this line
+            pixinline++;
           } // if > 2.0
         } // if pixdone
       } // for screen width
     } // for anzcol
+    // increment bc for the next line
+    V.load(0, vbc_inc); // v0=vbc_inc
+    V.add(1, 6, 0); // v1=v6+v0 (vbc+vbc_inc)
   } // for y
 }
 
@@ -140,3 +142,4 @@ void loop(void)
 {
   delay(1000);
 }
+

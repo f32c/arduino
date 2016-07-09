@@ -22,6 +22,14 @@ class Vector
     void print(struct vector_header_s *v);
     void io(int i, struct vector_header_s *vh, int store_mode);
     void oper(int a, int b, int c, int oper);
+    void load(int i, struct vector_header_s *vh);
+    void store(struct vector_header_s *vh, int i);
+    void add(int a, int b, int c);
+    void sub(int a, int b, int c);
+    void mul(int a, int b, int c);
+    void div(int a, int b, int c);
+    void f2i(int a, int b);
+    void i2f(int a, int b);
 };
 
 #endif

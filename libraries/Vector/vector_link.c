@@ -130,7 +130,7 @@ void printvector(struct vector_header_s *vh, int from, int to)
 {
   int i, j, l, n = 0;
   char line[100];
-  int total = 0;
+  //int total = 0;
   
   for(i = 0; vh != NULL; i++, vh = vh->next)
   {
@@ -140,8 +140,7 @@ void printvector(struct vector_header_s *vh, int from, int to)
     {
       if(n >= from && n <= to)
       {
-        sprintf(line, "%d:", n);
-        print(line);
+        printf("%d:", n);
         float2hex(line, &(vh->data[j]));
         print(line);
         if(j < l)
@@ -151,9 +150,9 @@ void printvector(struct vector_header_s *vh, int from, int to)
       }
       n++;
     }
-    total += l+1;
+    //total += l+1;
   }
-  sprintf(line, "total %d\n", total);
+  sprintf(line, "total %d\n", n);
   print(line);
 }
 
