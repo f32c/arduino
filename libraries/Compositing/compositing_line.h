@@ -4,7 +4,11 @@
 #include <inttypes.h>
 
 // bits per pixel
+#ifndef SOC_VIDEO_BPP
 #define BPP 8
+#else
+#define BPP SOC_VIDEO_BPP
+#endif
 
 // RGB2PIXEL converts from 24-bit RGB888 to actual pixel_t format (8/16/32 bit)
 #if BPP == 8

@@ -22,7 +22,7 @@ pixel_t color_map[ANZCOL];
 
 void emu_set_pix(int x, int y, int c)
 {
-  bitmap[x + SCREEN_WIDTH*y] = RGB2PIXEL(color_map[c]);
+  bitmap[x + SCREEN_WIDTH*y] = color_map[c];
 }
 
 void alloc_bitmap()
@@ -51,7 +51,7 @@ void fractal()
 
   // set color map
   for(i = 0; i < ANZCOL; i++)
-    color_map[i] = rand();
+    color_map[i] = RGB2PIXEL(rand());
 
   // vector length is 1 screen line (640 elements)
   vac = V.create(SCREEN_WIDTH);

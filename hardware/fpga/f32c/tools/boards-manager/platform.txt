@@ -51,9 +51,9 @@ compiler.define=-DARDUINO=
 build.sdata.size=32768
 
 # These can be overridden in platform.local.txt
-compiler.c.extra_flags=-D__F32C__ -DF_CPU={build.f_cpu}L
+compiler.c.extra_flags=-D__F32C__ -DF_CPU={build.f_cpu}L -DSOC_VIDEO_BPP={build.soc_video_bpp}
 compiler.c.elf.extra_flags=
-compiler.cpp.extra_flags=-D__F32C__ -DF_CPU={build.f_cpu}L
+compiler.cpp.extra_flags=-D__F32C__ -DF_CPU={build.f_cpu}L -DSOC_VIDEO_BPP={build.soc_video_bpp}
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
 compiler.ld.extra_flags=--section-start=.init=0x400
