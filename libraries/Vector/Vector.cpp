@@ -148,3 +148,35 @@ void Vector::f2i(int a, int b)
   else
     soft_vector_oper(a,b,0,5);
 }
+
+Vector_REG operator + (Vector_REG& lhs, const Vector_REG& rhs)
+{
+  return lhs += rhs;
+}
+
+Vector_REG operator - (Vector_REG& lhs, const Vector_REG& rhs)
+{
+  return lhs -= rhs;
+}
+
+Vector_REG operator * (Vector_REG& lhs, const Vector_REG& rhs)
+{
+  return lhs *= rhs;
+}
+
+Vector_REG operator / (Vector_REG& lhs, const Vector_REG& rhs)
+{
+  return lhs /= rhs;
+}
+
+#if 1
+Vector_REG& Vector_REG::operator = (int i)
+{
+#if 0
+  vector_mmio[0] = (uint32_t)rhs.vh;
+  vector_mmio[4] = 0x01000000 | (1<<(8+number));
+  wait_vector_mask(1<<16);
+#endif
+  return *this;
+}
+#endif

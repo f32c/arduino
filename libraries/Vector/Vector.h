@@ -1,8 +1,9 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-//#include <Arduino.h>
 #include <inttypes.h>
+#include "Vector_RAM.h"
+#include "Vector_REG.h"
 
 extern "C"
 {
