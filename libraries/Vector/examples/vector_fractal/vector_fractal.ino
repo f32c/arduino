@@ -20,10 +20,7 @@ Vector V;
 pixel_t *bitmap = (pixel_t *)0x80080000;
 pixel_t color_map[ANZCOL];
 
-void emu_set_pix(int x, int y, int c)
-{
-  bitmap[x + SCREEN_WIDTH*y] = color_map[c];
-}
+#define emu_set_pix(x,y,c) bitmap[x+SCREEN_WIDTH*y]=color_map[c]
 
 void alloc_bitmap()
 {
