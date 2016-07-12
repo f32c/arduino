@@ -169,14 +169,21 @@ Vector_REG operator / (Vector_REG& lhs, const Vector_REG& rhs)
   return lhs /= rhs;
 }
 
-#if 1
-Vector_REG& Vector_REG::operator = (int i)
+// vector load from RAM
+Vector_REG& Vector_REG::operator = (const class Vector_RAM& rhs)
 {
-#if 0
   vector_mmio[0] = (uint32_t)rhs.vh;
   vector_mmio[4] = 0x01000000 | (1<<(8+number));
   wait_vector_mask(1<<16);
-#endif
   return *this;
 }
-#endif
+
+// vector store to RAM
+Vector_RAM& Vector_RAM::operator = (const class Vector_REG& rhs)
+{
+  vector_mmio[0] = (uint32_t)vh;
+  vector_mmio[4] = 0x01800000 | rhs.number;
+  vector_flush(vh);
+  wait_vector_mask(1<<16);
+  return *this;
+}

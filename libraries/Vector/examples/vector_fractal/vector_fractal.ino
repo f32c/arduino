@@ -38,10 +38,9 @@ void alloc_bitmap()
 
 void fractal()
 {
-  float ac;
-  struct vector_header_s *vac, *vbc, *vbc_inc, *vresult;
-  Vector_RAM Mac(640);
+  Vector_RAM Mac(SCREEN_WIDTH), Mbc(SCREEN_WIDTH), Mbc_inc(SCREEN_WIDTH), Mresult(SCREEN_WIDTH);
   Vector_REG Vaz(0), Vbz(1), Vha(2), Vhb(3), Vhc(4), Vac(5), Vbc(6), Vtmp(7);
+  float ac;
   int x, y, i;
   float spalt_x, spalt_y;
   float aecke, becke, seite_x, seite_y;
@@ -51,12 +50,6 @@ void fractal()
   // set color map
   for(i = 0; i < ANZCOL; i++)
     color_map[i] = RGB2PIXEL(rand());
-
-  // vector length is 1 screen line (640 elements)
-  vac = V.create(SCREEN_WIDTH);
-  vbc = V.create(SCREEN_WIDTH);
-  vbc_inc = V.create(SCREEN_WIDTH);
-  vresult = V.create(SCREEN_WIDTH);
 
   linke_ecke = -1.45;
   rechte_ecke = 0.60;
@@ -76,30 +69,23 @@ void fractal()
   ac = aecke;
   for(x = 0; x < SCREEN_WIDTH; x++)
   {
-    vac->data[x].f = ac;
+    Mac.vh->data[x].f = ac;
     ac += spalt_x;
-    vbc->data[x].f = becke;
-    vbc_inc->data[x].f = spalt_y;
+    Mbc.vh->data[x].f = becke;
+    Mbc_inc.vh->data[x].f = spalt_y;
   }
   int tstart = millis();
-  V.load(5, vac); // v5=vac
-  // Vac = vac;
-  V.load(1, vbc); // v1=vbc
-  // Vbc = vbc;
+  Vac = Mac;
+  Vbz = Mbc; // use Vbz as temporary
   for(y = 0; y < SCREEN_HEIGHT; y++)
   {
     // printf("processing screen line %d\n", y);
-    //V.sub(0, 1, 1); // az=0: v0=v1-v1
-    Vaz = Vbz - Vbz;
-    //V.add(6, 0, 1); // vbc:  v6=v0+v1
+    Vaz = Vbz - Vbz; // 0
     Vbc = Vaz + Vbz;
     // set vectors to zero before each horizontal line
-    //V.sub(1, 0, 0); // bz=0: v1=v0-v0
-    Vbz = Vaz - Vaz;
-    //V.sub(2, 0, 0); // ha=0: v2=v0-v0
-    Vha = Vaz - Vaz;
-    //V.sub(3, 0, 0); // hb=0: v3=v0-v0
-    Vhb = Vaz - Vaz;
+    Vbz = Vaz - Vaz; // 0
+    Vha = Vaz - Vaz; // 0
+    Vhb = Vaz - Vaz; // 0
     // set no pixels are done yet in this line
     int pixinline=0;
     for(x = 0; x < SCREEN_WIDTH; x++)
@@ -108,32 +94,23 @@ void fractal()
     for(i = 0; i < ANZCOL && pixinline < SCREEN_WIDTH; i++)
     {
       // main fractal loop is completely done in vector registers (FAST)
-      //V.mul(4, 0, 1); // v4=v0*v1 // hc=az*bz
       Vhc = Vaz * Vbz;
-      //V.sub(7, 2, 3); // v7=v2-v3 // az: tmp=ha-hb
       Vtmp = Vha - Vhb;
-      //V.add(0, 7, 5); // v0=v7+v5 // az=tmp+ac
       Vaz = Vtmp + Vac;
-      //V.add(7, 4, 4); // v7=v4+v4 // bz: tmp=hc+hc
       Vtmp = Vhc + Vhc;
-      //V.add(1, 7, 6); // v1=v7+v6 // bz=tmp+bc
       Vbz = Vtmp + Vbc;
-      //V.mul(2, 0, 0); // v2=v0*v0 // ha=az*az
       Vha = Vaz * Vaz;
-      //V.mul(3, 1, 1); // v3=v1*v1 // hb=bz*bz
       Vhb = Vbz * Vbz;
-      //V.add(7, 2, 3); // v7=v2+v3 // tmp=ha+hb
       Vtmp = Vha + Vhb;
       // only I/O is to store temporery result in RAM to plot pixels
-      V.store(vresult, 7); // vresult=v7 // tmp
-      // vresult = Vtmp;
+      Mresult = Vtmp;
       for(x = 0; x < SCREEN_WIDTH; x++)
       {
       	if(pixdone[x] == 0)
         {
           // if pixel is not yet placed, check calculation results
           //if(vresult->data[x].f > 2.0)
-          if(vresult->data[x].part.sign == 0 && vresult->data[x].part.exponent > 127) // same as above but faster
+          if(Mresult.vh->data[x].part.sign == 0 && Mresult.vh->data[x].part.exponent > 127) // same as above but faster
           {
             emu_set_pix(x, y, i);
             pixdone[x] = 1; // pixel is placed, won't check anymore for this line
@@ -143,9 +120,7 @@ void fractal()
       } // for screen width
     } // for anzcol
     // increment bc for the next line
-    V.load(0, vbc_inc); // v0=vbc_inc
-    // Vaz = vbc_inc;
-    //V.add(1, 6, 0); // v1=v6+v0 (vbc+vbc_inc)
+    Vaz = Mbc_inc;
     Vbz = Vbc + Vaz;
   } // for y
   int tstop = millis();

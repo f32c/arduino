@@ -58,7 +58,7 @@ class Vector_REG
       return *this;
     }
     // vector load from RAM
-    Vector_REG& operator = (int i);
+    Vector_REG& operator = (const class Vector_RAM& rhs);
 };
 
 Vector_REG operator + (Vector_REG&, const Vector_REG&);

@@ -18,14 +18,7 @@ class Vector_RAM
       vh = create_segmented_vector(length, 0);
     }
     // vector store to RAM
-    Vector_RAM& operator = (const Vector_REG& rhs)
-    {
-      vector_mmio[0] = (uint32_t)vh;
-      vector_mmio[4] = 0x01800000 | rhs.number;
-      vector_flush(vh);
-      wait_vector_mask(1<<16);
-      return *this;
-    }
+    Vector_RAM& operator = (const class Vector_REG& rhs);
 };
 
 #endif
