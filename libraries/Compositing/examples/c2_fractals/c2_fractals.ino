@@ -14,14 +14,67 @@ Compositing c2;
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define ANZCOL 256
+#define emu_set_pix(x,y,c) bitmap[x + SCREEN_WIDTH*y] = color_map[c]
 
 // crude malloc()
 pixel_t *bitmap = (pixel_t *)0x80080000;
-
 pixel_t color_map[ANZCOL];
-void emu_set_pix(int x, int y, int c)
+
+void frac_main()
 {
-  bitmap[x + SCREEN_WIDTH*y] = RGB2PIXEL(color_map[c]);
+  double az,ac,bz,bc;
+  double ha, hb, hc;
+  int x, y, k, color, i;
+  double spalt_x, spalt_y;
+  double aecke, becke, seite_x, seite_y;
+  double linke_ecke, rechte_ecke, untere_ecke, obere_ecke;
+  int zaehler;
+
+  // set color map
+  for(i = 0; i < ANZCOL; i++)
+    color_map[i] = RGB2PIXEL(rand());
+
+  linke_ecke =  -1.45;
+  rechte_ecke =  0.60;
+
+  obere_ecke =   1.15;
+  untere_ecke = -1.15;
+
+  aecke  = linke_ecke;
+  becke  = obere_ecke;
+
+  seite_x = rechte_ecke - linke_ecke;
+  seite_y = untere_ecke - obere_ecke;
+
+  spalt_x = seite_x / (double) SCREEN_WIDTH;
+  spalt_y = seite_y / (double) SCREEN_HEIGHT;
+
+  bc = becke;
+  for (y = 0; y < SCREEN_HEIGHT; y++)
+  {
+    bc = bc+spalt_y;
+    ac = aecke;
+    for (x = 0 ; x < SCREEN_WIDTH ; x++)
+    {
+      ac = ac+spalt_x;
+      az = 0;
+      bz = 0;
+      zaehler = -1;
+      ha = az*az;
+      hb = bz*bz;
+      do
+      {
+        hc = az*bz;
+        az = ha-hb+ac;
+        bz = hc+hc+bc;
+        zaehler++;
+        ha = az*az;
+        hb = bz*bz;
+      }
+      while (((ha+hb) < 2.0) && (zaehler < ANZCOL));
+      emu_set_pix(x, y, zaehler);
+    }
+  }
 }
 
 void setup() 
@@ -41,60 +94,7 @@ void setup()
 void loop()
 {
   int i;
-	for(i = 0; i < SCREEN_WIDTH*SCREEN_HEIGHT; i++) bitmap[i] = 0;
-	  frac_main(); 
-}
-
-void frac_main()
-{
-	double az,ac,bz,bc;
-	double ha, hb, hc;
-	int x, y, k, color, i;
-	double spalt_x, spalt_y;
-	double aecke, becke, seite_x, seite_y;
-	double linke_ecke, rechte_ecke, untere_ecke, obere_ecke;
-	int zaehler;
-
-  // set color map
-  for(i = 0; i < ANZCOL; i++)
-    color_map[i] = rand();
-
-	linke_ecke =  -1.45;
-	rechte_ecke =  0.60;
-
-	obere_ecke =   1.15;
-	untere_ecke = -1.15;
-
-	aecke  = linke_ecke;
-	becke  = obere_ecke;
-
-	seite_x = rechte_ecke - linke_ecke;
-	seite_y = untere_ecke - obere_ecke;
-
-	spalt_x = seite_x / (double) SCREEN_WIDTH;
-	spalt_y = seite_y / (double) SCREEN_HEIGHT;
-
-	bc = becke;
-	for (y = 0; y < SCREEN_HEIGHT; y++)	{
-		bc = bc+spalt_y;
-		ac = aecke;
-		for (x = 0 ; x < SCREEN_WIDTH ; x++)	{
-			ac = ac+spalt_x;
-			az = 0;
-			bz = 0;
-			zaehler = -1;
-			ha = az*az;
-			hb = bz*bz;
-			do	{
-				hc = az*bz;
-				az = ha-hb+ac;
-				bz = hc+hc+bc;
-				zaehler++;
-				ha = az*az;
-				hb = bz*bz;
-			}	while (((ha+hb) < 2.0) && (zaehler < ANZCOL));
-			emu_set_pix(x, y, zaehler);
-		}
-	}
+  for(i = 0; i < SCREEN_WIDTH*SCREEN_HEIGHT; i++) bitmap[i] = 0;
+    frac_main();
 }
 
