@@ -340,7 +340,7 @@ void hard_vector_oper(int a, int b, int c, int oper)
     if(oper == 1)
       vector_mmio[4] = 0x33010000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
     if(oper == 2)
-      vector_mmio[4] = 0x33020000 | a | (b<<4) | (c<<8); // a=b*c float (selected by index)
+      vector_mmio[4] = 0x35000000 | a | (b<<4) | (c<<8); // a=b*c float (selected by index)
     if(oper == 3)
       vector_mmio[4] = 0x34000000 | a | (b<<4) | (c<<8); // a=b/c float (selected by index)
     if(oper == 4)
@@ -371,7 +371,7 @@ int vector_difference(struct vector_header_s *a, struct vector_header_s *b)
   {
     if(     a->data[ai].part.sign     != b->data[bi].part.sign
     ||      a->data[ai].part.exponent != b->data[bi].part.exponent
-    || iabs(a->data[ai].part.mantissa -  b->data[bi].part.mantissa) > 0 )
+    || iabs(a->data[ai].part.mantissa -  b->data[bi].part.mantissa) > 1 )
        err_count++;
     if(first_error < 0 && err_count == 1)
       first_error = i;

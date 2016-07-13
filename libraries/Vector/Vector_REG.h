@@ -50,7 +50,7 @@ class Vector_REG
       {
         0x33000000, // VECTOR_ADD
         0x33010000, // VECTOR_SUB
-        0x33020000, // VECTOR_MUL
+        0x35000000, // VECTOR_MUL
         0x34000000, // VECTOR_DIV
       };
       vector_mmio[4] = vector_opcode[rhs.operation] | number | (rhs.number_lhs<<4) | (rhs.number_rhs<<8); // a=b+c float (selected by index)
