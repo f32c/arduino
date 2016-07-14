@@ -19,19 +19,28 @@ class Compositing
   private:
 
   public:
-  // compositing line without pixel content
-  // content needs to be malloc'd
-    Compositing();
-    void init();
-    void alloc_sprites(int n);
+    // compositing line without pixel content
+    // content needs to be malloc'd
     struct compositing_line **scanlines;
-    volatile uint32_t *videobase_reg = (volatile uint32_t *)0xFFFFFB90;
-    volatile uint8_t *cntrl_reg = (volatile uint8_t *)0xFFFFFB81;
-    volatile uint8_t *vblank_reg = (volatile uint8_t *)0xFFFFFB87;
+    volatile uint32_t *videobase_reg;
+    volatile uint8_t *cntrl_reg;
+    volatile uint8_t *vblank_reg;
     
     struct sprite **Sprite; // global pointer array to sprites
-    int n_sprites = 0, sprite_max = 0; // number of sprites currently created
+    int n_sprites, sprite_max; // number of sprites currently created
 
+    // constructor will initialize
+    Compositing()
+    {
+       videobase_reg = (volatile uint32_t *)0xFFFFFB90;
+       cntrl_reg = (volatile uint8_t *)0xFFFFFB81;
+       vblank_reg = (volatile uint8_t *)0xFFFFFB87;
+       n_sprites = 0;
+       sprite_max = 0;
+    }
+
+    void init();
+    void alloc_sprites(int n);
     void sprite_refresh(void); // refresh compositing linked list after changing x/y positions
     int shape_to_sprite(struct shape *sh);
     int sprite_clone(int original); // new sprite with clone content from existing sprite
@@ -40,7 +49,6 @@ class Compositing
     int sprite_from_bitmap(int w, int h, pixel_t *bmp);
     void sprite_position(int sprite, int x, int y);
     void sprite_link_content(int original, int clone);
-
 };
 
 #endif

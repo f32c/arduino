@@ -1,18 +1,14 @@
 #include "Compositing.h"
 
-Compositing::Compositing()
-{
-}
- 
 void Compositing::init()
 {
   int i;
 
-  *videobase_reg = NULL;
+  *videobase_reg = (uint32_t) NULL; // NULL pointer
   scanlines = (struct compositing_line **)malloc(VGA_Y_MAX * sizeof(struct compositing_line *));
   for(i = 0; i < VGA_Y_MAX; i++)
     scanlines[i] = NULL;
-  *videobase_reg = &(scanlines[0]);
+  *videobase_reg = (uint32_t)&(scanlines[0]);
   n_sprites = 0;
   return;
 }
@@ -31,7 +27,6 @@ void Compositing::alloc_sprites(int n)
 // sprite: sprite to create
 int Compositing::shape_to_sprite(struct shape *sh)
 {
-  char *pixels;
   int i,j;
   int ix=VGA_X_MAX/2,iy=VGA_Y_MAX/2; // initial sprite position on screen
   int w=32,h=32; // width and height of the sprite
@@ -48,7 +43,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
 
   // fill the color array to speed up
   for(chc = sh->colors; chc->c != 0; chc++) // read until we don't hit 0
-    color_list[chc->c] = chc->color;
+    color_list[(int)(chc->c)] = chc->color;
   // 1st pass read ascii art - determine content size
   content_size = 0;
   for(bmp = sh->bmp, y = 0; *bmp != NULL; y++, bmp++)
@@ -75,7 +70,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
       // uint8_t *line_content = &(new_content[y[0]*w]); // pointer to current line in content
       new_sprite->line[y].bmp = line_content;
       for(x = 0, clr = *bmp; *clr != 0; x++, clr++) // copy content
-        *(line_content++) = color_list[*clr];
+        *(line_content++) = color_list[(int)*clr];
       new_sprite->line[y].n = x; // set number of pixels
       #if USE_EXISTING_CONTENT
       // search all already generated sprites. if identical
@@ -202,7 +197,7 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
 // existing clone sprite
 void Compositing::sprite_link_content(int original, int clone)
 {
-  int i, n, m;
+  int i, n;
 
   struct compositing_line *src = Sprite[original]->line;
   struct compositing_line *dst = Sprite[clone]->line;
@@ -263,5 +258,5 @@ void Compositing::sprite_refresh(void)
       *sl = &(Sprite[i]->line[j]);
     }
   }
-  *videobase_reg = (volatile uint32_t *) &(scanlines[0]);
+  *videobase_reg = (uint32_t) &(scanlines[0]);
 }
