@@ -10,8 +10,6 @@
 // run test n times
 void run_test(int n)
 {
-  char line[100];
-  //test_float2hex();
   int i;
   int t;
   char operation[] = "+-*/"; 
@@ -26,15 +24,7 @@ void run_test(int n)
   }  
   // create vectors in RAM for the arguments
   for(i = 0; i < 2; i++)
-  {
     arg[i] = create_segmented_vector(VECTOR_MAXLEN,VECTOR_MAXLEN/4);
-    #if 0
-      // print first few values
-      sprintf(line, "value %d\n", i);
-      print(line);
-      printvector(arg[i], 0, 10);
-    #endif
-  }
   // first load vectors from RAM into soft registers
   // to get correct length, those registers will be used for random
   // generation
@@ -76,13 +66,5 @@ void run_test(int n)
       }
     }
   }
-  #if 0
-    sprintf(line, "soft_result[%d]\n", 0);
-    print(line);
-    printvector(soft_result[0], 0, 10); // print value result[0]
-    sprintf(line, "hard_result[%d]\n", 0);
-    print(line);
-    printvector(hard_result[0], 0, 10); // print value result[0]
-  #endif
 }
 

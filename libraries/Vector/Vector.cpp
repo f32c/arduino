@@ -26,7 +26,7 @@ void Vector::test(int i)
   run_test(i);
 }
 
-struct vector_header_s *Vector::create(int n)
+volatile struct vector_header_s *Vector::create(int n)
 {
   return create_segmented_vector(n, 0);
 }

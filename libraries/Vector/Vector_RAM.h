@@ -12,7 +12,7 @@ extern "C"
 class Vector_RAM
 {
   public:
-    struct vector_header_s *vh;
+    volatile struct vector_header_s *vh;
     Vector_RAM(int length) // create RAM-based vector
     {
       vh = create_segmented_vector(length, 0);

@@ -37,7 +37,7 @@ struct vector_header_s
   uint16_t length; // length=0 means 1 element, length=1 means 2 elements etc. 
   uint16_t type;
   union ifloat_u *data;
-  struct vector_header_s *next;
+  volatile struct vector_header_s *next;
 };
 
 // for goldschmidt's division
@@ -61,22 +61,22 @@ extern struct vector_register_s *vr[VECTOR_REGISTERS]; // 8 vector registers
 extern volatile uint32_t *vector_mmio;
 
 void print(char *a);
-struct vector_header_s *create_segmented_vector(int n, int m);
+volatile struct vector_header_s *create_segmented_vector(int n, int m);
 void float2hex(char *hex, union ifloat_u *a);
 void test_float2hex(void);
-void printvector(struct vector_header_s *vh, int from, int to);
+void printvector(volatile struct vector_header_s *vh, int from, int to);
 void soft_alloc_vector_registers(void);
-void soft_vector_io(int i, struct vector_header_s *vh, int store_mode);
-void vector_flush(struct vector_header_s *vh);
+void soft_vector_io(int i, volatile struct vector_header_s *vh, int store_mode);
+void vector_flush(volatile struct vector_header_s *vh);
 void hard_init(void);
-void hard_vector_io(int i, struct vector_header_s *vh, int store_mode);
+void hard_vector_io(int i, volatile struct vector_header_s *vh, int store_mode);
 void soft_vector_oper(int a, int b, int c, int oper);
 void hard_vector_oper(int a, int b, int c, int oper);
 void wait_vector_mask(uint32_t mask);
 void wait_vector(void);
 void soft_vector_random(int n);
 void soft_vector_incremental(int n);
-int vector_difference(struct vector_header_s *a, struct vector_header_s *b);
+int vector_difference(volatile struct vector_header_s *a, volatile struct vector_header_s *b);
 void vector_dumpreg(void);
 int vector_detect(void);
 

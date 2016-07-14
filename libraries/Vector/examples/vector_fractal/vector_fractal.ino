@@ -3,7 +3,7 @@
 LICENSE=BSD
 
 Vectorized fractal calculation (Mandelbrot)
-based on Emanuel's source
+Based on the source of Emu
 ****************************************************/
 #include <Compositing.h>
 #include <Vector.h>
@@ -24,7 +24,7 @@ pixel_t color_map[ANZCOL];
 
 void alloc_bitmap()
 {
-  int i, x,y;
+  int i;
 
   c2.init();
   c2.alloc_sprites(SPRITE_MAX);
@@ -38,14 +38,38 @@ void alloc_bitmap()
 
 void fractal()
 {
+  // Create vectors in RAM.
+  // Vector_RAM will be allocated in RAM to given number of elemennts.
+  // It can be any number of Vector_RAM registers as long as they fit into RAM memory.
+  // Each Vector_RAM can be of any size but only first 2048 elements can be loaded or stored
+  // to Vector_REG registers (hardware limitation).
+  // CPU can directly read or write to elements of Vector_RAM.
+  // Vector_RAM can be used for loading and storing Vector_REG results
+  // and as a temporary storage.
   Vector_RAM Mac(SCREEN_WIDTH), Mbc(SCREEN_WIDTH), Mbc_inc(SCREEN_WIDTH), Mresult(SCREEN_WIDTH);
+
+  // Associate hardware vector registers indexed by number 0-7 with 
+  // comprehensive variable names which perform vector operation in
+  // simple c++ expressions: A=B+C, A=B*C, A=B+B, A=B-B... 
+  // Only simple binary expressions currently do work.
+  // Expressions which do not work are: A=A+A, A=A+B, A=B+C+D, A=B+C*D.
+  // Compound operators also don't work: A+=A, A+=B, etc ...
+  // CPU cannot directly access individual elements of Vector_REG.
+  // For CPU to prepare input data and get results from Vector_REG,
+  // load or store to Vector_RAM registers has to be used.
+  // Hardware limit of hardware vector register length is 2048 elements,
+  // therefore load/store can max to this length, ignoring the reset.
   Vector_REG Vaz(0), Vbz(1), Vha(2), Vhb(3), Vhc(4), Vac(5), Vbc(6), Vtmp(7);
-  float ac;
+
+  // Arithmetic operations between Vector_REG's are FAST (1 element = 1 clock).
+  // load/store operations between Vector_RAM and Vector_REG are SLOW.
+
   int x, y, i;
+  int pixdone[SCREEN_WIDTH]; // 0 if pix is not yet calculated
+  float ac;
   float spalt_x, spalt_y;
   float aecke, becke, seite_x, seite_y;
   float linke_ecke, rechte_ecke, untere_ecke, obere_ecke;
-  int pixdone[SCREEN_WIDTH]; // 0 if pix is not yet calculated
 
   // set color map
   for(i = 0; i < ANZCOL; i++)

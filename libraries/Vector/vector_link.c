@@ -27,10 +27,10 @@ int vector_detect(void)
 // define some vectors and headers
 // malloc the data and return pointer to header struct
 // creates segments in reverse order (this is simpler for ppinter linkage)
-struct vector_header_s *create_segmented_vector(int n, int m)
+volatile struct vector_header_s *create_segmented_vector(int n, int m)
 {
   // create multi-segment randomly splitted vector of total length n
-  struct vector_header_s *vh = NULL, *new_vh; // vector-headers
+  volatile struct vector_header_s *vh = NULL, *new_vh; // vector-headers
   
   // each segment max length m
   int total_length = 0, segment_length = n;
@@ -43,7 +43,7 @@ struct vector_header_s *create_segmented_vector(int n, int m)
     if(total_length + segment_length > n)
       segment_length = n - total_length;
 
-    new_vh = (struct vector_header_s *)malloc(sizeof(struct vector_header_s)); // alloc the header
+    new_vh = (volatile struct vector_header_s *)malloc(sizeof(struct vector_header_s)); // alloc the header
     new_vh->next = vh; // link it in front
     vh = new_vh;
 
@@ -126,7 +126,7 @@ int iabs(int a)
   return a > 0 ? a : -a;
 }
 
-void printvector(struct vector_header_s *vh, int from, int to)
+void printvector(volatile struct vector_header_s *vh, int from, int to)
 {
   int i, j, l, n = 0;
   char line[100];
@@ -168,7 +168,7 @@ void soft_alloc_vector_registers(void)
 // store_mode
 // 0:load
 // 1:store
-void soft_vector_io(int i, struct vector_header_s *vh, int store_mode)
+void soft_vector_io(int i, volatile struct vector_header_s *vh, int store_mode)
 {
   int e = 0;
   int j = 0;
@@ -201,7 +201,7 @@ void wait_vector_mask(uint32_t mask)
   do
   {
     a = vector_mmio[1];
-  } while((a & mask) != mask && ++i < 2000);
+  } while((a & mask) != mask && ++i < 200000);
   vector_mmio[1] = a; // clear interrupt flag(s)
 }
 
@@ -221,7 +221,7 @@ void hard_init()
   vector_mmio[1] = 0xFFFFFFFF; // clear all interrupts
 }
 
-void dcache_flush(void *p, int len)
+void dcache_flush(volatile void *p, int len)
 {
   #ifdef __F32C__
   do 
@@ -234,7 +234,7 @@ void dcache_flush(void *p, int len)
   #endif
 }
 
-void vector_flush(struct vector_header_s *vh)
+void vector_flush(volatile struct vector_header_s *vh)
 {
   for(; vh != NULL; vh = vh->next)
   {
@@ -243,7 +243,7 @@ void vector_flush(struct vector_header_s *vh)
   }
 }
 
-void hard_vector_io(int i, struct vector_header_s *vh, int store_mode)
+void hard_vector_io(int i, volatile struct vector_header_s *vh, int store_mode)
 {
   #if HARD_USE_SOFT
     soft_vector_io(i, vh, store_mode);
@@ -325,8 +325,8 @@ void soft_vector_oper(int a, int b, int c, int oper)
 
 void hard_vector_oper(int a, int b, int c, int oper)
 {
-  int i;
   #if HARD_USE_SOFT
+    int i;
     // hardware math will use software operation
     if(oper < 3)
       soft_vector_oper(a, b, c, oper);
@@ -349,18 +349,13 @@ void hard_vector_oper(int a, int b, int c, int oper)
       vector_mmio[4] = 0x33050000 | a | (b<<4); // f2i
     wait_vector_mask(1<<a);
   #endif
-  
-  #if 0
-  if(oper == 3)
-    vr[a]->data[200].f = 0.0; // create some error
-  #endif
   return;
 }
 
 // returns
 // -1  no error
 // >=0 index of first error occurrence
-int vector_difference(struct vector_header_s *a, struct vector_header_s *b)
+int vector_difference(volatile struct vector_header_s *a, volatile struct vector_header_s *b)
 {
   int ai = 0, bi = 0;
   int err_count = 0;

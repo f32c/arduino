@@ -26,7 +26,7 @@ struct goldschmit_s
 
 void divide_goldschmidt(union ifloat_u *result, union ifloat_u *x, union ifloat_u *y)
 {
-  union ifloat_u a,b,c;
+  union ifloat_u a,b;
 
   struct goldschmit_s g;
   int i;
@@ -44,6 +44,10 @@ void divide_goldschmidt(union ifloat_u *result, union ifloat_u *x, union ifloat_
   print(line);
   print("\n");
   #endif
+  g.a = REVEAL_MSB(a.part.mantissa) << (PRECISION_BITS-MANTISSA_BITS-1);
+  g.b = REVEAL_MSB(b.part.mantissa) << (PRECISION_BITS-MANTISSA_BITS-1);
+  g.expfix=0;
+  g.next_expfix=0;
   for(i = 0; i < n; i++)
   {
     g.not_a = ~g.a;
@@ -66,10 +70,13 @@ void divide_goldschmidt(union ifloat_u *result, union ifloat_u *x, union ifloat_
     }
     if(i == 0)
     {
+      #if 1
+      // this may be omitted, initialized before for()-loop
       g.a = REVEAL_MSB(a.part.mantissa) << (PRECISION_BITS-MANTISSA_BITS-1);
       g.b = REVEAL_MSB(b.part.mantissa) << (PRECISION_BITS-MANTISSA_BITS-1);
       g.expfix=0;
       g.next_expfix=0;
+      #endif
     }
     if(i > 0)
     {
