@@ -100,16 +100,16 @@ void fractal()
   }
   int tstart = millis();
   Vac = Mac;
-  Vbz = Mbc; // use Vbz as temporary
+  Vtmp = Mbc; // use Vtmp to temporary hold Mbc
   for(y = 0; y < SCREEN_HEIGHT; y++)
   {
     // printf("processing screen line %d\n", y);
-    Vaz = Vbz - Vbz; // 0
-    Vbc = Vaz + Vbz;
+    Vaz = Vtmp - Vtmp; // 0
+    Vbc = Vtmp + Vaz; // Vbc = Vtmp
     // set vectors to zero before each horizontal line
-    Vbz = Vaz - Vaz; // 0
-    Vha = Vaz - Vaz; // 0
-    Vhb = Vaz - Vaz; // 0
+    Vbz = Vtmp - Vtmp; // 0
+    Vha = Vtmp - Vtmp; // 0
+    Vhb = Vtmp - Vtmp; // 0
     // set no pixels are done yet in this line
     int pixinline=0;
     for(x = 0; x < SCREEN_WIDTH; x++)
@@ -145,7 +145,7 @@ void fractal()
     } // for anzcol
     // increment bc for the next line
     Vaz = Mbc_inc;
-    Vbz = Vbc + Vaz;
+    Vtmp = Vbc + Vaz; // Vtmp = Vbc + Mbc_inc
   } // for y
   int tstop = millis();
 
