@@ -212,7 +212,7 @@ void wait_vector(void)
   do
   {
     a = vector_mmio[1];
-  } while(a == 0 && ++i < 21000);
+  } while(a == 0 && ++i < 200000);
   vector_mmio[1] = a; // clear interrupt flag(s)
 }
 
