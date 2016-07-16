@@ -336,13 +336,13 @@ void hard_vector_oper(int a, int b, int c, int oper)
   #else
     // hardware math will use vector processor
     if(oper == 0)
-      vector_mmio[4] = 0x33000000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
+      vector_mmio[4] = 0x30000000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
     if(oper == 1)
-      vector_mmio[4] = 0x33010000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
+      vector_mmio[4] = 0x30010000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
     if(oper == 2)
-      vector_mmio[4] = 0x35000000 | a | (b<<4) | (c<<8); // a=b*c float (selected by index)
+      vector_mmio[4] = 0x31000000 | a | (b<<4) | (c<<8); // a=b*c float (selected by index)
     if(oper == 3)
-      vector_mmio[4] = 0x34000000 | a | (b<<4) | (c<<8); // a=b/c float (selected by index)
+      vector_mmio[4] = 0x32000000 | a | (b<<4) | (c<<8); // a=b/c float (selected by index)
     if(oper == 4)
       vector_mmio[4] = 0x33040000 | a | (b<<4); // i2f
     if(oper == 5)
