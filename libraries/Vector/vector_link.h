@@ -1,24 +1,22 @@
 #ifndef VECTOR_LINK_H
 #define VECTOR_LINK_H
-
-//#include <stdio.h>
-//#include <unistd.h>
 #include <stdint.h>
-//#include <stdlib.h>
-//#include <math.h>
 
-/* linked list vector test header file*/
+#define VECTOR_REGISTERS 8
+#define VECTOR_MAXLEN 2048
 
+// for soft-float vector replacement
 #define EXPONENT_BITS 8
 #define MANTISSA_BITS 23
-
+// offset for 0-exponent
 #define EXPONENT_OFFSET ((1<<(EXPONENT_BITS-1))-1)
 
 // soft-math will use internal goldschmidt's
 // division instead of C-library floating point division
+// to exactly match hardware results
 #define SOFT_USE_GOLDSCHMIDT 1
 
-// hardware routines will use software math
+// force hardware routines to use software math
 #define HARD_USE_SOFT 0
 
 struct ifloat_s
@@ -40,12 +38,6 @@ struct vector_header_s
   volatile struct vector_header_s *next;
 };
 
-// for goldschmidt's division
-//#define PRECISION_BITS 27
-//#define ITERATION_STEPS 6
-
-#define VECTOR_MAXLEN 2048
-
 // the vector values 2 input argumnets, 4 results for soft and hard
 extern volatile struct vector_header_s *arg[2], *soft_result[4], *hard_result[4];
 
@@ -55,7 +47,6 @@ struct vector_register_s
   union ifloat_u data[VECTOR_MAXLEN]; // the data array
 };
 
-#define VECTOR_REGISTERS 8
 extern struct vector_register_s *vr[VECTOR_REGISTERS]; // 8 vector registers
 
 extern volatile uint32_t *vector_mmio;
@@ -81,4 +72,3 @@ void vector_dumpreg(void);
 int vector_detect(void);
 
 #endif
-

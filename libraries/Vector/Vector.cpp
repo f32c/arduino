@@ -49,8 +49,18 @@ void Vector::load(int i, struct vector_header_s *vh)
   if(vector_present)
   {
     vector_mmio[0] = (uint32_t) vh;
-    vector_mmio[4] = 0x01000000 | (1<<(8+i)); // load vector (selected by bitmask)
-    wait_vector_mask(1<<16);
+    // vector load command must also pass vector
+    // length, better this way than to waste LUTs
+    // CPU will travel thru vector headers, sum the vector length
+    uint16_t length = -1;
+    for(; vh != NULL; vh = vh->next)
+      length += 1 + vh->length;
+    length %= VECTOR_MAXLEN; // limit max length with bitmask
+    uint16_t start = 0, stop = length;
+    vector_mmio[4] = 0xA0000000 | i | (start<<4) | (stop<<16);
+    vector_mmio[4] = 0xE3000000 | i | (i<<4); // execute load vector, no increment delay
+    wait_vector_mask(1<<i);
+    vector_mmio[1] = 1<<16; // clear I/O interrupt bit
   }
   else
     soft_vector_io(i, vh, 0);
@@ -61,7 +71,8 @@ void Vector::store(struct vector_header_s *vh, int i)
   if(vector_present)
   {
     vector_mmio[0] = (uint32_t) vh;
-    vector_mmio[4] = 0x01800000 | i; // store vector (selected by index)
+    // vector_mmio[4] = 0x01800000 | i; // store vector (selected by index)
+    vector_mmio[4] = 0xE381F000 | i | (i<<4); // execute store vector
     vector_flush(vh);
     wait_vector_mask(1<<16);
   }
@@ -82,7 +93,7 @@ void Vector::add(int a, int b, int c)
 {
   if(vector_present)
   {
-    vector_mmio[4] = 0x33000000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
+    vector_mmio[4] = 0xE0004000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
     wait_vector_mask(1<<a);
   }
   else
@@ -94,7 +105,7 @@ void Vector::sub(int a, int b, int c)
 {
   if(vector_present)
   {
-    vector_mmio[4] = 0x33010000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
+    vector_mmio[4] = 0xE0404000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
     wait_vector_mask(1<<a);
   }
   else
@@ -106,7 +117,7 @@ void Vector::mul(int a, int b, int c)
 {
   if(vector_present)
   {
-    vector_mmio[4] = 0x33020000 | a | (b<<4) | (c<<8); // a=b*c float (selected by index)
+    vector_mmio[4] = 0xE1004000 | a | (b<<4) | (c<<8); // a=b*c float (selected by index)
     wait_vector_mask(1<<a);
   }
   else
@@ -118,31 +129,31 @@ void Vector::div(int a, int b, int c)
 {
   if(vector_present)
   {
-    vector_mmio[4] = 0x34000000 | a | (b<<4) | (c<<8); // a=b/c float (selected by index)
+    vector_mmio[4] = 0xE200B000 | a | (b<<4) | (c<<8); // a=b/c float (selected by index)
     wait_vector_mask(1<<a);
   }
   else
     soft_vector_oper(a,b,c,3);
 }
 
-// a = i2f(b) integer to float
+// a = i2f(b) integer to float (not supported by hardware)
 void Vector::i2f(int a, int b)
 {
   if(vector_present)
   {
-    vector_mmio[4] = 0x33040000 | a | (b<<4); // a=i2f(b) integer to float (selected by index)
+    vector_mmio[4] = 0xE0040000 | a | (b<<4); // a=i2f(b) integer to float (selected by index)
     wait_vector_mask(1<<a);
   }
   else
     soft_vector_oper(a,b,0,4);
 }
 
-// a = f2i(b) float to integer
+// a = f2i(b) float to integer (not supported by hardware)
 void Vector::f2i(int a, int b)
 {
   if(vector_present)
   {
-    vector_mmio[4] = 0x33050000 | a | (b<<4); // a=f2i(b) float to integer (selected by index)
+    vector_mmio[4] = 0xE0050000 | a | (b<<4); // a=f2i(b) float to integer (selected by index)
     wait_vector_mask(1<<a);
   }
   else
@@ -173,8 +184,19 @@ Vector_REG operator / (Vector_REG& lhs, const Vector_REG& rhs)
 Vector_REG& Vector_REG::operator = (const class Vector_RAM& rhs)
 {
   vector_mmio[0] = (uint32_t)rhs.vh;
-  vector_mmio[4] = 0x01000000 | (1<<(8+number));
-  wait_vector_mask(1<<16);
+  volatile struct vector_header_s *vh = rhs.vh;
+  // vector load command must also pass vector
+  // length, better this way than to waste LUTs
+  // CPU will travel thru vector headers, sum the vector length
+  uint16_t length = -1;
+  for(; vh != NULL; vh = vh->next)
+    length += 1 + vh->length;
+  length %= VECTOR_MAXLEN; // limit max length with bitmask
+  uint16_t start = 0, stop = length;
+  vector_mmio[4] = 0xA0000000 | number | (start<<4) | (stop<<16);
+  vector_mmio[4] = 0xE3000000 | number | (number<<4);
+  wait_vector_mask(1<<number);
+  vector_mmio[1] = 1<<16; // clear I/O bit
   return *this;
 }
 
@@ -182,7 +204,7 @@ Vector_REG& Vector_REG::operator = (const class Vector_RAM& rhs)
 Vector_RAM& Vector_RAM::operator = (const class Vector_REG& rhs)
 {
   vector_mmio[0] = (uint32_t)vh;
-  vector_mmio[4] = 0x01800000 | rhs.number;
+  vector_mmio[4] = 0xE381F000 | rhs.number | (rhs.number<<4);
   vector_flush(vh);
   wait_vector_mask(1<<16);
   return *this;

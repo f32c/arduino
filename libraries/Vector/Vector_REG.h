@@ -48,10 +48,10 @@ class Vector_REG
     {
       uint32_t vector_opcode[4] = 
       {
-        0x30000000, // VECTOR_ADD
-        0x30010000, // VECTOR_SUB
-        0x31000000, // VECTOR_MUL
-        0x32000000, // VECTOR_DIV
+        0xE0004000, // VECTOR_ADD
+        0xE0404000, // VECTOR_SUB
+        0xE1004000, // VECTOR_MUL
+        0xE200B000, // VECTOR_DIV
       };
       vector_mmio[4] = vector_opcode[rhs.operation] | number | (rhs.number_lhs<<4) | (rhs.number_rhs<<8); // a=b+c float (selected by index)
       wait_vector_mask(1<<number);

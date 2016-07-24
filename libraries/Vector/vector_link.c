@@ -38,6 +38,7 @@ volatile struct vector_header_s *create_segmented_vector(int n, int m)
   for(i = 0; total_length < n; total_length+=segment_length, i++)
   {
     if(m)
+      // segment_length = m;
       segment_length = 1+(rand() % m);
     // clip segment length for total n
     if(total_length + segment_length > n)
@@ -135,7 +136,7 @@ void printvector(volatile struct vector_header_s *vh, int from, int to)
   for(i = 0; vh != NULL; i++, vh = vh->next)
   {
     l = vh->length;
-    //printf("segment %d length %d\n", i, l);
+    // printf("segment %d length %d\n", i, l);
     for(j = 0; j <= l; j++)
     {
       if(n >= from && n <= to)
@@ -251,16 +252,24 @@ void hard_vector_io(int i, volatile struct vector_header_s *vh, int store_mode)
     vector_mmio[0] = (uint32_t) vh;
     if(store_mode == 0)
     {
-      vector_flush(vh);
-      vector_mmio[4] = 0x01000000 | (1<<(8+i)); // load vector (selected by bitmask)
+      uint16_t length = -1;
+      for(; vh != NULL; vh = vh->next)
+        length += 1 + vh->length;
+      length %= VECTOR_MAXLEN; // limit max length with bitmask
+      //vector_flush(vh);
+      uint16_t start = 0, stop = length;
+      vector_mmio[4] = 0xA0000000 | i | (start<<4) | (stop<<16);
+      vector_mmio[4] = 0xE3000000 | i | (i<<4); // load vector
+      wait_vector_mask(1<<i);
+      vector_mmio[1] = 1<<16; // clear I/O interrupt bit
     }
     else
     {
-      vector_mmio[4] = 0x01800000 | i; // store vector (selected by index)
+      vector_mmio[4] = 0xE381F000 | i | (i<<4); // store vector
       // for the CPU to be able to use stored vector, we must flush CPU cache
       vector_flush(vh);
+      wait_vector_mask(1<<16);
     }
-    wait_vector_mask(1<<16);
   #endif
 }
 
@@ -336,17 +345,17 @@ void hard_vector_oper(int a, int b, int c, int oper)
   #else
     // hardware math will use vector processor
     if(oper == 0)
-      vector_mmio[4] = 0x30000000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
+      vector_mmio[4] = 0xE0004000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
     if(oper == 1)
-      vector_mmio[4] = 0x30010000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
+      vector_mmio[4] = 0xE0404000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
     if(oper == 2)
-      vector_mmio[4] = 0x31000000 | a | (b<<4) | (c<<8); // a=b*c float (selected by index)
+      vector_mmio[4] = 0xE1004000 | a | (b<<4) | (c<<8); // a=b*c float (selected by index)
     if(oper == 3)
-      vector_mmio[4] = 0x32000000 | a | (b<<4) | (c<<8); // a=b/c float (selected by index)
+      vector_mmio[4] = 0xE200B000 | a | (b<<4) | (c<<8); // a=b/c float (selected by index)
     if(oper == 4)
-      vector_mmio[4] = 0x33040000 | a | (b<<4); // i2f
+      vector_mmio[4] = 0xE4040000 | a | (b<<4); // i2f, not supported by hardware
     if(oper == 5)
-      vector_mmio[4] = 0x33050000 | a | (b<<4); // f2i
+      vector_mmio[4] = 0xE4050000 | a | (b<<4); // f2i, not supported by hardware
     wait_vector_mask(1<<a);
   #endif
   return;

@@ -7,43 +7,33 @@ struct vector_header_s *a, *b, *c;
 
 void setup()
 {
-  int i;
-  int vlen = 3;
+  int i, j;
+  int vlen = 14;
+  struct vector_header_s *vh;
   delay(1000);
   V.test(1); // run test N times
   // output can be seen with Serial Monitor
   a = V.create(vlen); // create vector of 5 elements
   b = V.create(vlen);
   c = V.create(vlen);
-  for(i = 0; i < vlen; i++)
-  {
-    a->data[i].f = 1.0*i;
-    b->data[i].f = 1.0/(1+i);
-    c->data[i].f = -5.0; // should be overwritten with result
-  }
+  for(i = 0, vh = a; vh != NULL; vh = vh->next)
+    for(j = 0; j <= vh->length; j++, i++)
+      vh->data[j].f = 5.1 + (3+i);
+  for(i = 0, vh = b; vh != NULL; vh = vh->next)
+    for(j = 0; j <= vh->length; j++, i++)
+      vh->data[j].f = 1.0 / (1+i);
+  for(i = 0, vh = c; vh != NULL; vh = vh->next)
+    for(j = 0; j <= vh->length; j++, i++)
+      vh->data[j].f = -6.6;
   V.load(0, a); // load v(0)=a
-  V.load(1, b); // load v(1)=b
-  //V.mul(2, 0, 1); // v(2) = v(0)*v(1)
-  V.f2i(2, 0);
-  V.store(c, 2); // store c=v(2)
-  //V.i2f(1, 2);
-  //V.store(b, 1);
+  V.load(1, a); // load v(1)=a, just to initialize size, v(1) has same data as v(0)
+  V.load(2, b); // load v(2)=b
+  V.add(0, 1, 2); // v(0) = v(1)+v(2), actually does v(0) += v(2)
+  V.store(c, 0);
   V.dumpreg();
-  #if 0
-  float *pa = &(a->data[0].f);
-  for(int i = 0; i < 4; i++)
-    pa[i] = 9.9;
-  #endif
-  #if 1
   V.print(a); // print the vector
   V.print(b); // print the vector
   V.print(c); // print the vector
-  #endif
-  int err=0;
-  for(i = 0; i < vlen; i++)
-    if(c->data[i].f == -5.0)
-      err++;
-  printf("errors: %d\n", err);
 }
 
 void loop()
