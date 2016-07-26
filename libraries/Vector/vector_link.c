@@ -260,8 +260,7 @@ void hard_vector_io(int i, volatile struct vector_header_s *vh, int store_mode)
       uint16_t start = 0, stop = length;
       vector_mmio[4] = 0xA0000000 | i | (start<<4) | (stop<<16);
       vector_mmio[4] = 0xE3000000 | i | (i<<4); // load vector
-      wait_vector_mask(1<<i);
-      vector_mmio[1] = 1<<16; // clear I/O interrupt bit
+      wait_vector_mask((1<<i)|(1<<16));
     }
     else
     {
