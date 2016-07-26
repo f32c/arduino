@@ -16,6 +16,12 @@ class Vector_REG
   public:
     uint32_t number, number_lhs, number_rhs, operation; // hardware vector register number, usually 0-7
     Vector_REG(uint8_t n):number(n){}; // constructor sets register number
+    range(uint16_t start, uint16_t stop)
+    { // set range of the vector (inclusive)
+      // if data beyond last element are needed as argument to produce result,
+      // then the last element of the argument will be constantly repeated.
+      vector_mmio[4] = 0xA0000000 | number | (start << 4) | (stop << 16);
+    }
     Vector_REG& operator += (const Vector_REG& rhs)
     { // memorize lhs, rhs and operator type to use at assignment
       number_lhs = number;
