@@ -2,7 +2,7 @@
  Timer interrupt
 
  This example shows how to blink LED
- using the interrput.
+ using the interrupt.
 
  This example code is in the public domain.
 */
@@ -16,9 +16,10 @@ static int incrementInterval = 1000000;
 #define MANIFEST_MUL_INTERRUPT_BUG 0
 
 // WARNING:
-// Currently (2016-07-30) f32c core doesn't allow integer
-// multiply instruction to be executed in interrupt context.
-// Depending how the code compiles, bug will not always
+// Currently (2016-07-30), when f32c core is in interrupt context,
+// it doesn't correctly execute integer multiply instruction.
+// Sometimes, register corruption will occur.
+// Depending on how the code is compiled, bug will not always
 // manifest.
 
 void timer_handler()
