@@ -8,16 +8,30 @@
 */
 
 static int led = 13; // timer interrupt hardwired to arduino LED
+volatile uint8_t *led_pointer; // address of LED MMIO register
+static uint8_t led_bitmask; // LED bit set to 1, other bits 0
 static int timer_ticks;
-static int incrementInterval = 10000000;
+static int incrementInterval = 1000000;
+
+#define MANIFEST_MUL_INTERRUPT_BUG 0
+
+// WARNING:
+// Currently (2016-07-30) f32c core doesn't allow integer
+// multiply instruction to be executed in interrupt context.
+// Depending how the code compiles, bug will not always
+// manifest.
 
 void timer_handler()
 {
-  digitalWrite(led, timer_ticks & 1);
-  if(timerInterval < VARIANT_MCK>>8)
-    incrementInterval = 1000000;
-  if(timerInterval > VARIANT_MCK>>2)
-    incrementInterval = -1000000;
+  #if MANIFEST_MUL_INTERRUPT_BUG
+    digitalWrite(led, timer_ticks & 1); // may contain MUL
+  #else
+    *led_pointer = timer_ticks & 1 ? led_bitmask : 0; // no MUL
+  #endif
+  if(timerInterval < (F_CPU>>8))
+    incrementInterval =  100000;
+  if(timerInterval > (F_CPU>>2))
+    incrementInterval = -100000;
   timerInterval += incrementInterval;
   timer_ticks++;
 }
@@ -25,8 +39,10 @@ void timer_handler()
 // the setup routine runs once when you press reset:
 void setup() {
   Serial.begin(115200);
-  // timerInterval = VARIANT_MCK;
-  attachInterrupt(led, timer_handler, VARIANT_MCK>>3);
+  // led_pointer = -240; // dirty way
+  led_pointer = (volatile uint8_t *) portOutputRegister(digitalPinToPort(led)); // clean way
+  led_bitmask = digitalPinToBitMask(led);
+  attachInterrupt(led, timer_handler, F_CPU>>3);
 }
 
 // the loop routine runs over and over again forever:
@@ -34,3 +50,4 @@ void loop() {
   Serial.println(timer_ticks);
   delay(100);
 }
+
