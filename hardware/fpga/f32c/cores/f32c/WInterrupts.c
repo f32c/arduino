@@ -90,13 +90,13 @@ static int gpio_isr(void)
   {
     if( (bit & *if_rising) != 0 )
     {
-      *if_rising = ~bit; // clear flag with implicit &=
+      *if_rising = bit; // clear flag with implicit &=
       if(gpio_rising_Func[i])
         gpio_rising_Func[i]();
     }
     if( (bit & *if_falling) != 0 )
     {
-      *if_falling = ~bit; // clear flag with implicit &=
+      *if_falling = bit; // clear flag with implicit &=
       if(gpio_falling_Func[i])
         gpio_falling_Func[i]();
     }
@@ -206,6 +206,10 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     /* standard GPIO pin */
     if(bit >= 0)
     {
+      // warning problematic: if sketch using GPIO interrupt is uploaded again
+      // the *ie_rising and *ie_falling must be cleared at startup
+      // otherwise isr_register_handler() will not be initialized,
+      // or in simple words, GPIO interrupts won't work.
       if(*ie_rising == 0 && *ie_falling == 0)
         isr_register_handler(irq, &gpio_isr_link); // 5 is gpio interrput
       if(mode == RISING)
