@@ -69,7 +69,7 @@ static int timer_isr(void)
   {
     if( (EMARD_TIMER[TC_CONTROL] & timerIFlags[i]) != 0 )
     {
-      EMARD_TIMER[TC_CONTROL] &= ~timerIFlags[i]; // clear the interrupt flag
+      EMARD_TIMER[TC_CONTROL] |= timerIFlags[i]; // clear the interrupt flag
       if(timerFunc[i])
         timerFunc[i](); // call the function
     }
