@@ -71,6 +71,7 @@ void vector_move_tile(int src, int dest)
   #endif
   #if 1
     // hardware blitter
+    V.range(0, 0, TILE_WIDTH*TILE_HEIGHT-1);
     V.io(0, vsrc, 0); // load v0, from src
     V.io(0, vdest, 1); // store v0, overwrite dest
   #endif
