@@ -118,8 +118,23 @@ void fractal_to_file(File &Image)
   Serial.print("line: ");
 
   //initialize: all vectors must have the same size, aliases too
-  Vaz=Mac; Vbz=Mac; Vha=Mac; Vhb=Mac; Vhc=Mac; Vac=Mac, Vbc=Mac; Vtmp=Mac;
-  Vaz1=Mac;Vbz1=Mac;Vha1=Mac;Vhb1=Mac;Vhc1=Mac;Vac1=Mac,Vbc1=Mac;Vtmp1=Mac;
+  Vaz.range(0, SCREEN_WIDTH-1);
+  Vaz1.range(0, SCREEN_WIDTH-1);
+  Vbz.range(0, SCREEN_WIDTH-1);
+  Vbz1.range(0, SCREEN_WIDTH-1);
+  Vha.range(0, SCREEN_WIDTH-1);
+  Vha1.range(0, SCREEN_WIDTH-1);
+  Vhb.range(0, SCREEN_WIDTH-1);
+  Vhb1.range(0, SCREEN_WIDTH-1);
+  Vhc.range(0, SCREEN_WIDTH-1);
+  Vhc1.range(0, SCREEN_WIDTH-1);
+  Vac.range(0, SCREEN_WIDTH-1);
+  Vac1.range(0, SCREEN_WIDTH-1);
+  Vbc.range(0, SCREEN_WIDTH-1);
+  Vbc1.range(0, SCREEN_WIDTH-1);
+  Vtmp.range(0, SCREEN_WIDTH-1);
+  Vtmp1.range(0, SCREEN_WIDTH-1);
+
   // run time
   int tstart = millis();
   // now real application initialization
