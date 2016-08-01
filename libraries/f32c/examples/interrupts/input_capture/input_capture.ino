@@ -87,7 +87,7 @@ void print_timer()
   if(i & (1<<(TIMER_BITS+PRESCALER_BITS-1))) /* is i negative? */
     i |= INC_EXTEND_SIGN;
   
-  f = ((uint64_t)VARIANT_MCK * i) >> (TIMER_BITS+PRESCALER_BITS);
+  f = ((uint64_t)F_CPU * i) >> (TIMER_BITS+PRESCALER_BITS);
 
   print_event += print_interval;
   Serial.write("inc= "); Serial.print(i, DEC);
