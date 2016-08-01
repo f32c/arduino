@@ -23,6 +23,7 @@ class Vector
     void print(struct vector_header_s *v);
     void io(int i, struct vector_header_s *vh, int store_mode);
     void oper(int a, int b, int c, int oper);
+    void range(int i, uint16_t start, uint16_t stop);
     void load(int i, struct vector_header_s *vh);
     void store(struct vector_header_s *vh, int i);
     void add(int a, int b, int c);

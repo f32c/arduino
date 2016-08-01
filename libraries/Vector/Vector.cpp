@@ -44,10 +44,16 @@ void Vector::io(int i, struct vector_header_s *vh, int store_mode)
     soft_vector_io(i, vh, store_mode);
 }
 
+void Vector::range(int i, uint16_t start, uint16_t stop)
+{
+  vector_mmio[4] = 0xA0000000 | i | (start<<4) | (stop<<16);
+}
+
 void Vector::load(int i, struct vector_header_s *vh)
 {
   if(vector_present)
   {
+    #if 0
     vector_mmio[0] = (uint32_t) vh;
     // vector load command must also pass vector
     // length, better this way than to waste LUTs
@@ -58,6 +64,7 @@ void Vector::load(int i, struct vector_header_s *vh)
     length %= VECTOR_MAXLEN; // limit max length with bitmask
     uint16_t start = 0, stop = length;
     vector_mmio[4] = 0xA0000000 | i | (start<<4) | (stop<<16);
+    #endif
     vector_mmio[4] = 0xE3000000 | i | (i<<4); // execute load vector, no increment delay
     wait_vector_mask(1<<i);
     vector_mmio[1] = 1<<16; // clear I/O interrupt bit
@@ -184,6 +191,7 @@ Vector_REG operator / (Vector_REG& lhs, const Vector_REG& rhs)
 Vector_REG& Vector_REG::operator = (const class Vector_RAM& rhs)
 {
   vector_mmio[0] = (uint32_t)rhs.vh;
+  #if 0
   volatile struct vector_header_s *vh = rhs.vh;
   // vector load command must also pass vector
   // length, better this way than to waste LUTs
@@ -194,6 +202,7 @@ Vector_REG& Vector_REG::operator = (const class Vector_RAM& rhs)
   length %= VECTOR_MAXLEN; // limit max length with bitmask
   uint16_t start = 0, stop = length;
   vector_mmio[4] = 0xA0000000 | number | (start<<4) | (stop<<16);
+  #endif
   vector_mmio[4] = 0xE3000000 | number | (number<<4);
   wait_vector_mask(1<<number);
   vector_mmio[1] = 1<<16; // clear I/O bit

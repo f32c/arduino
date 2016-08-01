@@ -40,8 +40,11 @@ void run_test(int n)
     //soft_vector_incremental(1);
     soft_vector_io(0, arg[0], 1); // soft store random to arg[0]
     soft_vector_io(2, arg[2], 1); // soft store random to arg[1]
+    hard_vector_range(0, 0, VECTOR_MAXLEN-1);
     hard_vector_io(0, arg[0], 0); // hard load vector reg vr[0] with value arg[0]
+    hard_vector_range(2, 0, VECTOR_MAXLEN-1);
     hard_vector_io(2, arg[2], 0); // hard load vector reg vr[0] with value arg[1]
+    hard_vector_range(4, 0, VECTOR_MAXLEN-1);
     hard_vector_io(4, arg[2], 0); // only to set result vector to the size
     for(i = 0; i < 4; i++)
     {

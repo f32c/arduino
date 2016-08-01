@@ -244,6 +244,11 @@ void vector_flush(volatile struct vector_header_s *vh)
   }
 }
 
+void hard_vector_range(int i, uint16_t start, uint16_t stop)
+{
+  vector_mmio[4] = 0xA0000000 | i | (start<<4) | (stop<<16);
+}
+
 void hard_vector_io(int i, volatile struct vector_header_s *vh, int store_mode)
 {
   #if HARD_USE_SOFT
@@ -252,6 +257,7 @@ void hard_vector_io(int i, volatile struct vector_header_s *vh, int store_mode)
     vector_mmio[0] = (uint32_t) vh;
     if(store_mode == 0)
     {
+      #if 0
       uint16_t length = -1;
       for(; vh != NULL; vh = vh->next)
         length += 1 + vh->length;
@@ -259,6 +265,7 @@ void hard_vector_io(int i, volatile struct vector_header_s *vh, int store_mode)
       //vector_flush(vh);
       uint16_t start = 0, stop = length;
       vector_mmio[4] = 0xA0000000 | i | (start<<4) | (stop<<16);
+      #endif
       vector_mmio[4] = 0xE3000000 | i | (i<<4); // load vector
       wait_vector_mask((1<<i)|(1<<16));
     }

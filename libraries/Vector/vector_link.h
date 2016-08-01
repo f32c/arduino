@@ -60,6 +60,7 @@ void soft_alloc_vector_registers(void);
 void soft_vector_io(int i, volatile struct vector_header_s *vh, int store_mode);
 void vector_flush(volatile struct vector_header_s *vh);
 void hard_init(void);
+void hard_vector_range(int i, uint16_t start, uint16_t stop);
 void hard_vector_io(int i, volatile struct vector_header_s *vh, int store_mode);
 void soft_vector_oper(int a, int b, int c, int oper);
 void hard_vector_oper(int a, int b, int c, int oper);
