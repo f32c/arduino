@@ -13,12 +13,12 @@
 // RGB2PIXEL converts from 24-bit RGB888 to actual pixel_t format (8/16/32 bit)
 #if BPP == 8
 typedef uint8_t pixel_t;
-#define RGB2PIXEL(x) ( ((x & 0xE00000) >> (24-3-5)) | ((x & 0xE000) >> (16-3-2)) | ((x & 0xC0) >> (8-2)) )
+#define RGB2PIXEL(x) ( (((x) & 0xE00000) >> (24-3-5)) | (((x) & 0xE000) >> (16-3-2)) | (((x) & 0xC0) >> (8-2)) )
 #endif
 
 #if BPP == 16
 typedef uint16_t pixel_t;
-#define RGB2PIXEL(x) ( ((x & 0xF80000) >> (24-5-11)) | ((x & 0xFC00) >> (16-6-5)) | ((x & 0xF8) >> (8-5)) )
+#define RGB2PIXEL(x) ( (((x) & 0xF80000) >> (24-5-11)) | (((x) & 0xFC00) >> (16-6-5)) | (((x) & 0xF8) >> (8-5)) )
 #endif
 
 #if BPP == 32
