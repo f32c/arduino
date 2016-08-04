@@ -53,8 +53,8 @@ void Vector::load(int i, struct vector_header_s *vh)
 {
   if(vector_present)
   {
-    #if 0
     vector_mmio[0] = (uint32_t) vh;
+    #if 0
     // vector load command must also pass vector
     // length, better this way than to waste LUTs
     // CPU will travel thru vector headers, sum the vector length
