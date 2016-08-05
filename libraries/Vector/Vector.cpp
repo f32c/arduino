@@ -66,8 +66,7 @@ void Vector::load(int i, struct vector_header_s *vh)
     vector_mmio[4] = 0xA0000000 | i | (start<<4) | (stop<<16);
     #endif
     vector_mmio[4] = 0xE3000000 | i | (i<<4); // execute load vector, no increment delay
-    wait_vector_mask(1<<i);
-    vector_mmio[1] = 1<<16; // clear I/O interrupt bit
+    wait_vector_mask((1<<i)|(1<<16));
   }
   else
     soft_vector_io(i, vh, 0);
@@ -204,8 +203,7 @@ Vector_REG& Vector_REG::operator = (const class Vector_RAM& rhs)
   vector_mmio[4] = 0xA0000000 | number | (start<<4) | (stop<<16);
   #endif
   vector_mmio[4] = 0xE3000000 | number | (number<<4);
-  wait_vector_mask(1<<number);
-  vector_mmio[1] = 1<<16; // clear I/O bit
+  wait_vector_mask((1<<number)|(1<<16));
   return *this;
 }
 
