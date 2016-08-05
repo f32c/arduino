@@ -272,9 +272,9 @@ void hard_vector_io(int i, volatile struct vector_header_s *vh, int store_mode)
     else
     {
       vector_mmio[4] = 0xE381F000 | i | (i<<4); // store vector
+      wait_vector_mask(1<<16);
       // for the CPU to be able to use stored vector, we must flush CPU cache
       vector_flush(vh);
-      wait_vector_mask(1<<16);
     }
   #endif
 }

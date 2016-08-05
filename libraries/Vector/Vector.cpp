@@ -79,8 +79,8 @@ void Vector::store(struct vector_header_s *vh, int i)
     vector_mmio[0] = (uint32_t) vh;
     // vector_mmio[4] = 0x01800000 | i; // store vector (selected by index)
     vector_mmio[4] = 0xE381F000 | i | (i<<4); // execute store vector
-    vector_flush(vh);
     wait_vector_mask(1<<16);
+    vector_flush(vh);
   }
   else
     soft_vector_io(i, vh, 1);
@@ -212,7 +212,7 @@ Vector_RAM& Vector_RAM::operator = (const class Vector_REG& rhs)
 {
   vector_mmio[0] = (uint32_t)vh;
   vector_mmio[4] = 0xE381F000 | rhs.number | (rhs.number<<4);
-  vector_flush(vh);
   wait_vector_mask(1<<16);
+  vector_flush(vh);
   return *this;
 }
