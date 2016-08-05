@@ -203,7 +203,7 @@ void wait_vector_mask(uint32_t mask)
   {
     a = vector_mmio[1];
   } while((a & mask) != mask && ++i < 200000);
-  vector_mmio[1] = a; // clear interrupt flag(s)
+  vector_mmio[1] = mask; // clear interrupt flag(s)
 }
 
 // wait for first interrupt flag to be set
