@@ -53,11 +53,13 @@ typedef uint8_t video_char;
 #define BRAM 0
 
 #if BRAM
+typedef uint8_t font_t;
 volatile video_char *text_ram = (volatile video_char *) 0x40000000;
-volatile uint8_t *font_ram = (volatile uint8_t *) 0x40001800;
+volatile font_t *font_ram = (volatile uint8_t *) 0x40003800;
 #else
+typedef uint32_t font_t;
 volatile video_char *text_ram = (volatile video_char *) 0x80006000;
-volatile uint32_t *font_ram = (volatile uint32_t *) 0x4000E000;
+volatile font_t *font_ram = (volatile uint32_t *) 0x4000E000;
 #endif
 
 
@@ -164,7 +166,6 @@ void joystick ()
 void setup ()
 {
     char n;
-    text_ram = (volatile video_char *) malloc(82*30*sizeof(video_char));
     Init();
 
     OS_Init();              //Operating system init
@@ -214,10 +215,14 @@ void loop ()
 
 void Init (void)
 {
-  text_addr = text_ram; // video text base address
+  #if BRAM
+  #else
+  text_ram = malloc(82*30*sizeof(video_char));
+  #endif
   memset(text_ram, 0x00, 82*30*sizeof(video_char));
+  text_addr = text_ram; // video text base address
   cntrl_reg = 0b10100000; // enable video, no bitmap, text mode, no cursor
-  volatile uint32_t *font_ptr = font_ram;
+  volatile font_t *font_ptr = font_ram;
 
   // copy sprites to character ram
   for(int i = 0; i < 32; i++)
