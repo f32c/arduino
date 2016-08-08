@@ -20,6 +20,7 @@ class Vector
     void dumpreg();
     void test(int i);
     volatile struct vector_header_s *create(int n);
+    volatile struct vector_header_s *create(int n,int seglen);
     void print(struct vector_header_s *v);
     void io(int i, struct vector_header_s *vh, int store_mode);
     void oper(int a, int b, int c, int oper);

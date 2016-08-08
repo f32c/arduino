@@ -31,6 +31,11 @@ volatile struct vector_header_s *Vector::create(int n)
   return create_segmented_vector(n, 0);
 }
 
+volatile struct vector_header_s *Vector::create(int n, int seglen)
+{
+  return create_segmented_vector(n, seglen);
+}
+
 void Vector::print(struct vector_header_s *v)
 {
   printvector(v, 0, 2048);
