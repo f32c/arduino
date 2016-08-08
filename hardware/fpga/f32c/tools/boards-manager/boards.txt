@@ -400,8 +400,8 @@ fpga_scarab_sdram.upload.tool=ujprog
 fpga_scarab_sdram.upload.wait_for_upload_port=false
 fpga_scarab_sdram.upload.native_usb=false
 fpga_scarab_sdram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/scarab_ms6p.cfg
-fpga_scarab_sdram.bootloader.file.svf={runtime.tools.bootloaders.path}/scarab/scarab_{memsupport}_xc6slx25_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.svf
-fpga_scarab_sdram.bootloader.file.bit={runtime.tools.bootloaders.path}/scarab/scarab_{memsupport}_xc6slx25_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.bit
+fpga_scarab_sdram.bootloader.file.svf={runtime.tools.bootloaders.path}/scarab/scarab_{memsupport}_{chip}_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.svf
+fpga_scarab_sdram.bootloader.file.bit={runtime.tools.bootloaders.path}/scarab/scarab_{memsupport}_{chip}_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.bit
 fpga_scarab_sdram.bootloader.jtag_spi_bridge.bit={runtime.tools.bootloaders.path}/scarab/bscan_xc6s_ftg256_blink.bit
 fpga_scarab_sdram.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
 fpga_scarab_sdram.menu.cpu.mips=MIPS
@@ -414,17 +414,20 @@ fpga_scarab_sdram.menu.cpu.riscv.cpu.arch=riscv
 fpga_scarab_sdram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_scarab_sdram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_scarab_sdram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_scarab_sdram.menu.fpga.lx25=XC6SLX25
+fpga_scarab_sdram.menu.fpga.lx25.chip=xc6slx25
+fpga_scarab_sdram.menu.fpga.lx9=XC6SLX9
+fpga_scarab_sdram.menu.fpga.lx9.chip=xc6slx9
 fpga_scarab_sdram.menu.ramsize.32M=32 MB SDRAM Onboard
 fpga_scarab_sdram.menu.ramsize.32M.upload.maximum_size=33521664
 fpga_scarab_sdram.menu.ramsize.32M.build.sdata.size=4096
 fpga_scarab_sdram.menu.ramsize.32M.compiler.ld.extra_flags=--section-start=.init=0x80000000
 fpga_scarab_sdram.menu.ramsize.32M.memsupport=sdram
-fpga_scarab_sdram.menu.ramsize.64K=64 KB BRAM Internal
-fpga_scarab_sdram.menu.ramsize.64K.upload.maximum_size=64000
-fpga_scarab_sdram.menu.ramsize.64K.build.sdata.size=32768
-fpga_scarab_sdram.menu.ramsize.64K.compiler.ld.extra_flags=--section-start=.init=0x400
-# unified bitstream sdram = both bram and sdram
-fpga_scarab_sdram.menu.ramsize.64K.memsupport=sdram
+fpga_scarab_sdram.menu.ramsize.32K=32 KB BRAM Internal
+fpga_scarab_sdram.menu.ramsize.32K.upload.maximum_size=31232
+fpga_scarab_sdram.menu.ramsize.32K.build.sdata.size=32768
+fpga_scarab_sdram.menu.ramsize.32K.compiler.ld.extra_flags=--section-start=.init=0x400
+fpga_scarab_sdram.menu.ramsize.32K.memsupport=bram
 fpga_scarab_sdram.menu.soc.vgatxt80x30=text 80x30 bitmap 640x480
 fpga_scarab_sdram.menu.soc.vgatxt80x30.socopt=vgatxt80x30
 fpga_scarab_sdram.menu.soc.vgatxt80x30.build.soc_video_bpp=8
