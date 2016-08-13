@@ -272,6 +272,37 @@ fpga_basys3_bram.menu.cpu.riscv.cpu.arch=riscv
 fpga_basys3_bram.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
 fpga_basys3_bram.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
 fpga_basys3_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_basys3_bram.bootloader.file.svf={runtime.tools.bootloaders.path}/basys3/basys3_{cpu.arch}_{memsupport}_{socopt}_{bitstream.fcpu.mhz}mhz.svf
+fpga_basys3_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/basys3/basys3_{cpu.arch}_{memsupport}_{socopt}_{bitstream.fcpu.mhz}mhz.bit
+fpga_basys3_bram.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/basys3.cfg
+fpga_basys3_bram.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
+fpga_basys3_bram.bitstream.fcpu.mhz=100
+fpga_basys3_bram.menu.jtag.basys3=BASYS3 onboard JTAG
+fpga_basys3_bram.menu.jtag.basys3.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/digilent_adept.cfg
+fpga_basys3_bram.menu.ramsize.128=128 KB BRAM Emulated external
+fpga_basys3_bram.menu.ramsize.128.upload.maximum_size=129536
+fpga_basys3_bram.menu.ramsize.128.build.sdata.size=4096
+fpga_basys3_bram.menu.ramsize.128.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_basys3_bram.menu.ramsize.128.memsupport=acram_emu
+fpga_basys3_bram.menu.ramsize.16=16 KB BRAM Internal
+fpga_basys3_bram.menu.ramsize.16.upload.maximum_size=14848
+fpga_basys3_bram.menu.ramsize.16.compiler.ld.extra_flags=--section-start=.init=0x400
+fpga_basys3_bram.menu.ramsize.16.memsupport=bram
+fpga_basys3_bram.menu.soc.minimal=Minimal
+fpga_basys3_bram.menu.soc.minimal.socopt=minimal
+fpga_basys3_bram.menu.soc.vector=Vector FPU
+fpga_basys3_bram.menu.soc.vector.socopt=vector
+fpga_basys3_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_basys3_bram.menu.protocol.bin.upload.protocol=bin
+fpga_basys3_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_basys3_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_basys3_bram.menu.protocol.hex.upload.protocol=hex
+fpga_basys3_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_basys3_bram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
+fpga_basys3_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c jtaghs1_fast -p 1 "{bootloader.file.bit}"
+fpga_basys3_bram.menu.bitstream.sram_xc3sprog.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c jtaghs1_fast -p 1 "{bootloader.file.bit}"
+fpga_basys3_bram.menu.bitstream.sram_openocd=SRAM openocd (temporary)
+fpga_basys3_bram.menu.bitstream.sram_openocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 
 #
 # ZYBO
@@ -321,8 +352,10 @@ fpga_zybo_bram.menu.soc.vgatxt80x30=text 80x30 bitmap 640x480
 fpga_zybo_bram.menu.soc.vgatxt80x30.socopt=vgatxt80x30
 fpga_zybo_bram.menu.soc.vgatxt80x60=text 80x60 bitmap 640x480
 fpga_zybo_bram.menu.soc.vgatxt80x60.socopt=vgatxt80x60
-fpga_zybo_bram.menu.soc.vgabit=bitmap 640x480
-fpga_zybo_bram.menu.soc.vgabit.socopt=vgabit
+fpga_zybo_bram.menu.soc.vgabit=Bitmap 640x480
+fpga_zybo_bram.menu.soc.vgabit.socopt=vgabit640x480
+fpga_zybo_bram.menu.soc.vector=Bitmat 640x480 Vector FPU
+fpga_zybo_bram.menu.soc.vector.socopt=vgabit640x480_vector
 fpga_zybo_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
 fpga_zybo_bram.menu.protocol.bin.upload.protocol=bin
 fpga_zybo_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
