@@ -18,7 +18,6 @@ class Vector
   public:
     Vector();
     void dumpreg();
-    void test(int i);
     volatile struct vector_header_s *create(int n);
     volatile struct vector_header_s *create(int n,int seglen);
     void print(struct vector_header_s *v);

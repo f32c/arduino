@@ -3,14 +3,13 @@
 extern "C"
 {
   #include "vector_link.h"
-  #include "run_test.h"
 }
 
 Vector::Vector()
 {
   // todo: autodetection of the vector unit
   vector_present = vector_detect();
-  soft_alloc_vector_registers(); // allocate regs for vector emulation
+  //soft_alloc_vector_registers(); // allocate regs for vector emulation
   // clear any interrupts
   hard_init();
 }
@@ -19,11 +18,6 @@ void Vector::dumpreg()
 {
   vector_dumpreg();
   return;
-}
-
-void Vector::test(int i)
-{
-  run_test(i);
 }
 
 volatile struct vector_header_s *Vector::create(int n)

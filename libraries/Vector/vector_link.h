@@ -38,8 +38,6 @@ struct vector_header_s
   volatile struct vector_header_s *next;
 };
 
-// the vector values 2 input argumnets, 4 results for soft and hard
-extern volatile struct vector_header_s *arg[2], *soft_result[4], *hard_result[4];
 
 struct vector_register_s
 {
@@ -56,7 +54,7 @@ volatile struct vector_header_s *create_segmented_vector(int n, int m);
 void float2hex(char *hex, union ifloat_u *a);
 void test_float2hex(void);
 void printvector(volatile struct vector_header_s *vh, int from, int to);
-void soft_alloc_vector_registers(void);
+void soft_alloc_vector_registers(int n);
 void soft_vector_io(int i, volatile struct vector_header_s *vh, int store_mode);
 void vector_flush(volatile struct vector_header_s *vh);
 void hard_init(void);
@@ -68,7 +66,6 @@ void wait_vector_mask(uint32_t mask);
 void wait_vector(void);
 void soft_vector_random(int n);
 void soft_vector_incremental(int n);
-int vector_difference(volatile struct vector_header_s *a, volatile struct vector_header_s *b);
 void vector_dumpreg(void);
 int vector_detect(void);
 

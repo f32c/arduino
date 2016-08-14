@@ -10,8 +10,6 @@
 
 volatile uint32_t *vector_mmio = (volatile uint32_t *)0xFFFFFC20;
 
-// the vector values 2 input argumnets, 4 results for soft and hard
-volatile struct vector_header_s *arg[2], *soft_result[4], *hard_result[4];
 struct vector_register_s *vr[VECTOR_REGISTERS]; // 8 vector registers
 
 void print(char *a)
@@ -157,10 +155,10 @@ void printvector(volatile struct vector_header_s *vh, int from, int to)
   print(line);
 }
 
-void soft_alloc_vector_registers(void)
+void soft_alloc_vector_registers(int n)
 {
  int i;
- for(i = 0; i < VECTOR_REGISTERS; i++)
+ for(i = 0; i < n; i++)
    vr[i] = (struct vector_register_s *)malloc(sizeof(struct vector_register_s));
 }
 
@@ -365,44 +363,6 @@ void hard_vector_oper(int a, int b, int c, int oper)
     wait_vector_mask(1<<a);
   #endif
   return;
-}
-
-// returns
-// -1  no error
-// >=0 index of first error occurrence
-int vector_difference(volatile struct vector_header_s *a, volatile struct vector_header_s *b)
-{
-  int ai = 0, bi = 0;
-  int err_count = 0;
-  int i;
-  int first_error = -1;
-  char line[100];
-  for(i = 0; i < VECTOR_MAXLEN; i++)
-  {
-    if(     a->data[ai].part.sign     != b->data[bi].part.sign
-    ||      a->data[ai].part.exponent != b->data[bi].part.exponent
-    || iabs(a->data[ai].part.mantissa -  b->data[bi].part.mantissa) > 1 )
-       err_count++;
-    if(first_error < 0 && err_count == 1)
-      first_error = i;
-    if(ai++ >= a->length)
-    {
-      if(a->next == NULL)
-        continue; // exit for-loop
-      a = a->next;
-      ai = 0;
-    }
-    if(bi++ >= b->length)
-    {
-      if(b->next == NULL)
-        continue; // exit for-loop
-      b = b->next;
-      bi = 0;
-    }
-  }
-  sprintf(line, "total len:%d errors:%d\n", i, err_count);
-  print(line);
-  return first_error;
 }
 
 void vector_dumpreg(void)
