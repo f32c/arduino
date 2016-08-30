@@ -30,9 +30,9 @@ struct compositing_line
 {
    struct compositing_line *next; // 32-bit continuation of the same structure, NULL if no more
    int16_t x; // where to start on screen (can be negative)
-   uint16_t n; // number of pixels contained here
+   uint16_t n; // number of pixels -1 contained here (0: 1 pixel)
    // pixels can be multiple of 4 (n lower 2 bits discarded)
-   // minimal n is currently 4 (when composite2 core is fixed it could be 0)
+   // for 8bpp minimum is 4 pixels
    pixel_t *bmp; // pointer to array of pixels (could be more than 1 element)
 };
 

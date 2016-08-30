@@ -71,7 +71,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
       new_sprite->line[y].bmp = line_content;
       for(x = 0, clr = *bmp; *clr != 0; x++, clr++) // copy content
         *(line_content++) = color_list[(int)*clr];
-      new_sprite->line[y].n = x; // set number of pixels
+      new_sprite->line[y].n = x-1; // set number of pixels
       #if USE_EXISTING_CONTENT
       // search all already generated sprites. if identical
       // content is found, then link to prevous content, that would
@@ -82,7 +82,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
       int l; // loops over lines of the existing sprite
       // first search for identical line in the same sprite
       for(l = 0; l < y-1 && existing_content == NULL; l++)
-        if( new_sprite->line[l].n >= x && new_sprite->line[l].bmp != NULL) // if existing pixels equal or larger than new content
+        if( new_sprite->line[l].n > x && new_sprite->line[l].bmp != NULL) // if existing pixels equal or larger than new content
           if( 0 == memcmp(new_sprite->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(pixel_t)) ) // exact match
             existing_content = new_sprite->line[l].bmp;
       // then search for the same in all previous sprites
@@ -90,7 +90,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
       {
         for(l = 0; l < Sprite[j]->h && existing_content == NULL; l++) // loop over existing sprite lines
         {
-          if( Sprite[j]->line[l].n >= x && Sprite[j]->line[l].bmp != NULL) // if existing pixels equal or larger than new content
+          if( Sprite[j]->line[l].n > x && Sprite[j]->line[l].bmp != NULL) // if existing pixels equal or larger than new content
             if( 0 == memcmp(Sprite[j]->line[l].bmp, new_sprite->line[y].bmp, x*sizeof(pixel_t)) ) // exact match
               existing_content = Sprite[j]->line[l].bmp;
         }
@@ -156,7 +156,7 @@ int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
   {
     spr->line[i].next = NULL;
     spr->line[i].x = spr->x;
-    spr->line[i].n = w;
+    spr->line[i].n = w-1;
     spr->line[i].bmp = content;
   }
   return sprite_add(spr);
@@ -185,7 +185,7 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
   {
     spr->line[i].next = NULL;
     spr->line[i].x = spr->x;
-    spr->line[i].n = w;
+    spr->line[i].n = w-1;
     spr->line[i].bmp = bmp;
     bmp += w;
   }
