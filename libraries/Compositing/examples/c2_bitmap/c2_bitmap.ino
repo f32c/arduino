@@ -15,8 +15,8 @@ Compositing c2;
 #define C2_ORANGE RGB2PIXEL(0xFF7F00)
 #define C2_BLUE   RGB2PIXEL(0x4080FF)
 
-#define RESOLUTION_X 640
-#define RESOLUTION_Y 480
+#define RESOLUTION_X VGA_X_MAX
+#define RESOLUTION_Y VGA_Y_MAX
 
 #define BLOCK_X 256
 #define BLOCK_Y 256

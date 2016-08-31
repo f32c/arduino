@@ -69,7 +69,7 @@ void loop()
       if( (rand()&7) == 0 )
         Sprite_speed[i].y = (rand()%3)-1;
     }
-    if(c2.Sprite[i]->x > 640)
+    if(c2.Sprite[i]->x > VGA_X_MAX)
     {
       Sprite_speed[i].x = -1;
     }
@@ -80,7 +80,7 @@ void loop()
       if( (rand()&7) == 0 )
         Sprite_speed[i].x = (rand()%3)-1;
     }
-    if(c2.Sprite[i]->y > 480+40)
+    if(c2.Sprite[i]->y > VGA_Y_MAX+40)
       Sprite_speed[i].y = -1;
   }
   while((*c2.vblank_reg & 0x80) == 0);

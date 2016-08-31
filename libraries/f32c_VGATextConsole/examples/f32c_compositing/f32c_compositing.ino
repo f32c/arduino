@@ -35,7 +35,7 @@ struct compositing_line *skull_meta; // contiguous metadata hor line semnets mal
 int skull_meta_n; // how many metadata for the skull
 
 uint8_t blank_content[] = {0,0,0,0};
-struct compositing_line blank_line[1] = {NULL, 0, 4, blank_content};
+struct compositing_line blank_line[1] = {NULL, 0, 0, blank_content};
 
 static inline void plot(int x, int y, int color)
 {
@@ -54,7 +54,7 @@ void init_bitmap()
   {
     scanline[i] = &(metadata[i]);
     metadata[i].x = 0;
-    metadata[i].n = FB_WIDTH;
+    metadata[i].n = FB_WIDTH-4;
     metadata[i].bmp = &(fb[i * FB_WIDTH]);
   }
 }
@@ -191,7 +191,7 @@ void setup() {
       // 4 different types of colorful horizontal lines
       strip_meta[t].next = NULL;
       strip_meta[t].x = 64;
-      strip_meta[t].n = 512;
+      strip_meta[t].n = 512-4;
       for(int j = 0; j < 8; j++)
         // each of 4 types vertically repeated 8 times
         scanline[424+j+8*t] = &(strip_meta[t]);
@@ -675,7 +675,7 @@ void drawRLE()
   {
     skull_meta[i].next = NULL;
     skull_meta[i].x = 0;
-    skull_meta[i].n = 4;
+    skull_meta[i].n = 0;
     skull_meta[i].bmp = blank_content;
   }
 
@@ -700,13 +700,13 @@ void drawRLE()
     if(enable)
     {
       wmeta->x = x; // starting x-position of the data
-      wmeta->n = (cnt + 3) & ~3; // round to larger 32bit (ceiling)
+      wmeta->n = (cnt - 1) & ~3; // round to larger 32bit (floor)
       if(scanline[y] != blank_line)
         wmeta->next = scanline[y]; // insert into linked list
       scanline[y] = wmeta;
       wmeta->bmp = wpix;
       wptr = wpix; // ptr will be incrementing in next loop
-      wpix += wmeta->n; // jump over the data to next
+      wpix += wmeta->n + 4; // jump over the data to next
       wmeta++; // next metadata element
       pad = (4-(cnt & 3))&3; // number of transparent pixels to pad to full 32bit
     }

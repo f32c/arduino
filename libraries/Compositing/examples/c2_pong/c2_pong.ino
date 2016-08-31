@@ -45,8 +45,8 @@ Adafruit_F32C_VGA display(1);
 
 //Define Visuals
 #define FONT_SIZE 4
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH VGA_X_MAX // 640
+#define SCREEN_HEIGHT VGA_Y_MAX // 480
 #define PADDLE_WIDTH 8
 #define PADDLE_HEIGHT 32
 #define PADDLE_PADDING 16
