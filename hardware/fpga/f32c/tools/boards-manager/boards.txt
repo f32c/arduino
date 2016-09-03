@@ -139,12 +139,12 @@ fpga_ulx2s_bram.menu.soc.tx433=433.92MHz (433.92MHz, 16 GPIO, 25MHz)
 fpga_ulx2s_bram.menu.soc.tx433.socopt=_433_
 fpga_ulx2s_bram.menu.soc.tx433.build.f_cpu=25000000
 fpga_ulx2s_bram.menu.soc.tx433.f_cpu_MHz=25
-fpga_ulx2s_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
-fpga_ulx2s_bram.menu.protocol.hex.upload.protocol=hex
-fpga_ulx2s_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_ulx2s_bram.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
 fpga_ulx2s_bram.menu.protocol.bin.upload.protocol=bin
 fpga_ulx2s_bram.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_ulx2s_bram.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_ulx2s_bram.menu.protocol.hex.upload.protocol=hex
+fpga_ulx2s_bram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 
 #
 # Terasic DE0-Nano
@@ -624,12 +624,12 @@ fpga_tb276.menu.speed.81.bitstream.fcpu.mhz=81
 fpga_tb276.menu.speed.112=112.5 MHz
 fpga_tb276.menu.speed.112.build.f_cpu=112500000
 fpga_tb276.menu.speed.112.bitstream.fcpu.mhz=112
-fpga_tb276.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
-fpga_tb276.menu.protocol.hex.upload.protocol=hex
-fpga_tb276.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_tb276.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
 fpga_tb276.menu.protocol.bin.upload.protocol=bin
 fpga_tb276.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_tb276.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_tb276.menu.protocol.hex.upload.protocol=hex
+fpga_tb276.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_tb276.menu.pinmap.generic=Generic
 fpga_tb276.menu.pinmap.generic.build.variant=generic
 fpga_tb276.menu.jtag.alterablaster=Altera Blaster
@@ -913,6 +913,52 @@ fpga_Posedge_One_bram.menu.pinmap.generic.build.variant=generic
 fpga_Posedge_One_bram.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c ftdi_fast "{bootloader.file.bit}"
 fpga_Posedge_One_bram.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -L -c ftdi_fast "{bootloader.file.bit}"
 fpga_Posedge_One_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/posedge1/posedgeone_bram_{socopt}_{cpu.arch}_{bitstream.fcpu.mhz}mhz.bit
+
+#
+# Mikroprojekt Sparrowhawk Lattice ECP3
+#
+fpga_sparrowhawk.name=Mikroprojekt Sparrowhawk (Lattice ECP3 LFE3-150EA-8, 128K ACRAM EMU, 100 MHz)
+fpga_sparrowhawk.build.mcu=f32c
+fpga_sparrowhawk.build.core=f32c
+fpga_sparrowhawk.build.board=F32C_FPGA_SPARROWHAWK
+fpga_sparrowhawk.build.soc_video_bpp=8
+fpga_sparrowhawk.upload.tool=ujprog
+fpga_sparrowhawk.upload.wait_for_upload_port=false
+fpga_sparrowhawk.upload.native_usb=false
+fpga_sparrowhawk.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/sparrowhawk.cfg
+fpga_sparrowhawk.bootloader.file.svf={runtime.tools.bootloaders.path}/sparrowhawk/sparrowhawk_{cpu.arch}_{memsupport}_{bitstream.fcpu.mhz}mhz.svf
+fpga_sparrowhawk.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
+fpga_sparrowhawk.menu.cpu.mips=MIPS
+fpga_sparrowhawk.menu.cpu.mips.cpu.arch=mips
+fpga_sparrowhawk.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_sparrowhawk.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_sparrowhawk.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_sparrowhawk.menu.cpu.riscv=RISC-V
+fpga_sparrowhawk.menu.cpu.riscv.cpu.arch=riscv
+fpga_sparrowhawk.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_sparrowhawk.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_sparrowhawk.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_sparrowhawk.menu.ramsize.128=128 KB BRAM Emulated External
+fpga_sparrowhawk.menu.ramsize.128.upload.maximum_size=128000
+fpga_sparrowhawk.menu.ramsize.128.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_sparrowhawk.menu.ramsize.128.memsupport=acram_emu
+fpga_sparrowhawk.menu.speed.100=100 MHz
+fpga_sparrowhawk.menu.speed.100.build.f_cpu=100000000
+fpga_sparrowhawk.menu.speed.100.bitstream.fcpu.mhz=100
+fpga_sparrowhawk.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_sparrowhawk.menu.protocol.bin.upload.protocol=bin
+fpga_sparrowhawk.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_sparrowhawk.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_sparrowhawk.menu.protocol.hex.upload.protocol=hex
+fpga_sparrowhawk.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_sparrowhawk.menu.pinmap.generic=Generic
+fpga_sparrowhawk.menu.pinmap.generic.build.variant=generic
+fpga_sparrowhawk.menu.jtag.remotebitbang=Remote bitbang (TCP jtag:3335)
+fpga_sparrowhawk.menu.jtag.remotebitbang.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/remote_bitbang.cfg
+fpga_sparrowhawk.menu.jtag.fpu1=FT2232 PLDkit FPU1
+fpga_sparrowhawk.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
+fpga_sparrowhawk.menu.bitstream.sram=SRAM openocd (temporary)
+fpga_sparrowhawk.menu.bitstream.sram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 
 #
 # FPGArduino Generic f32c SoC
