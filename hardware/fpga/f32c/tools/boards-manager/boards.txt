@@ -255,10 +255,10 @@ fpga_sparrowhawk.menu.protocol.hex.upload.protocol=hex
 fpga_sparrowhawk.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_sparrowhawk.menu.pinmap.generic=Generic
 fpga_sparrowhawk.menu.pinmap.generic.build.variant=generic
-fpga_sparrowhawk.menu.jtag.remotebitbang=Remote bitbang (TCP jtag:3335)
-fpga_sparrowhawk.menu.jtag.remotebitbang.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/remote_bitbang.cfg
 fpga_sparrowhawk.menu.jtag.fpu1=FT2232 PLDkit FPU1
 fpga_sparrowhawk.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
+#fpga_sparrowhawk.menu.jtag.remotebitbang=Remote bitbang (TCP jtag:3335)
+#fpga_sparrowhawk.menu.jtag.remotebitbang.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/remote_bitbang.cfg
 fpga_sparrowhawk.menu.bitstream.sram=SRAM openocd (temporary)
 fpga_sparrowhawk.menu.bitstream.sram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 
