@@ -872,7 +872,7 @@ fpga_Posedge_One_bram.bootloader.file.bit={runtime.tools.bootloaders.path}/posed
 #
 # Xilinx TB299 Board (ebay), f32c SoC
 #
-fpga_tb299.name=TB299 (Xilinx Spartan-6 XC6SLX9, 32K BRAM, 81.25/112.5 MHz)
+fpga_tb299.name=TB299 (Xilinx Spartan-6 XC6SLX9, 32K BRAM, 81.25/100/112.5 MHz)
 fpga_tb299.build.mcu=f32c
 fpga_tb299.build.core=f32c
 fpga_tb299.build.board=F32C_FPGA_TB299
@@ -899,15 +899,15 @@ fpga_tb299.menu.ramsize.32.compiler.ld.extra_flags=--section-start=.init=0x400
 fpga_tb299.menu.speed.81=81.25 MHz
 fpga_tb299.menu.speed.81.build.f_cpu=81250000
 fpga_tb299.menu.speed.81.bitstream.fcpu.mhz=81
-fpga_tb299.menu.speed.112=112.5 MHz
-fpga_tb299.menu.speed.112.build.f_cpu=112500000
-fpga_tb299.menu.speed.112.bitstream.fcpu.mhz=112
-fpga_tb299.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
-fpga_tb299.menu.protocol.hex.upload.protocol=hex
-fpga_tb299.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_tb299.menu.speed.100=100 MHz
+fpga_tb299.menu.speed.100.build.f_cpu=100000000
+fpga_tb299.menu.speed.100.bitstream.fcpu.mhz=100
 fpga_tb299.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
 fpga_tb299.menu.protocol.bin.upload.protocol=bin
 fpga_tb299.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_tb299.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_tb299.menu.protocol.hex.upload.protocol=hex
+fpga_tb299.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_tb299.menu.pinmap.generic=Generic
 fpga_tb299.menu.pinmap.generic.build.variant=generic
 fpga_tb299.menu.jtag.alterablaster=Altera Blaster
