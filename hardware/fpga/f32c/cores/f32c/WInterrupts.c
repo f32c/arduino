@@ -85,7 +85,7 @@ static int gpio_isr(void)
   uint32_t bit;
   volatile uint32_t *if_rising  = (volatile uint32_t *)IO_GPIO_RISE_IF;
   volatile uint32_t *if_falling = (volatile uint32_t *)IO_GPIO_FALL_IF;
-  
+
   for(i = 31, bit = (1<<31); i >= 0; i--, bit >>= 1)
   {
     if( (bit & *if_rising) != 0 )
@@ -104,6 +104,14 @@ static int gpio_isr(void)
   return 1;
 }
 static struct isr_link gpio_isr_link = {.handler_fn = &gpio_isr};
+
+static int serialrx_isr(void)
+{
+  if(intFunc[3])
+    intFunc[3]();
+  return 1;
+}
+static struct isr_link serialrx_isr_link = {.handler_fn = &serialrx_isr};
 
 void icpFilter(uint32_t pin, uint32_t icp_start, uint32_t icp_stop)
 {
@@ -157,7 +165,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
   bit = variant_pin_map[pin].bit_pos;
   port = (PortRegister_t)digitalPinToPort(pin);
   
-  if(bit == 5 && port == (volatile uint32_t *) IO_LED) // arduino LED at pin 13
+  if(bit == 5 && port == (volatile uint32_t *) IO_LED) // MIPS timer irq magic pin: arduino LED at pin 13
   {
     uint8_t init_required = 0;
     irq = 7;
@@ -168,7 +176,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     intFunc[irq] = callback; // todo - set it above, 
     if(init_required)
     {
-      isr_register_handler(irq, &tsc_isr_link); // 7 is MIPS timer interrput
+      isr_register_handler(irq, &tsc_isr_link); // 7 is MIPS timer interrupt
       mfc0_macro(tsc_next, MIPS_COP_0_COUNT);
       tsc_next += timerInterval;
       mtc0_macro(tsc_next, MIPS_COP_0_COMPARE);
@@ -176,12 +184,23 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     asm("ei");
   }
 
+  if(bit == 7 && port == (volatile uint32_t *) IO_LED) // serial RX irq magic pin: arduino LED at pin 15
+  {
+    irq = 3; // sio rx MIPS interrupt 3
+    if(intFunc[irq] == NULL)
+    {
+      intFunc[irq] = callback;
+      isr_register_handler(irq, &serialrx_isr_link); // 1 is serial rx interrupt
+      asm("ei");
+    }
+  }
+
   if(ocp != OCP_NONE || icp != ICP_NONE)
   {
     irq = VARIANT_TIMER_INTERRUPT;
     if(intFunc[irq] == NULL)
     {
-      isr_register_handler(irq, &timer_isr_link); // 4 is EMARD timer interrput
+      isr_register_handler(irq, &timer_isr_link); // 4 is EMARD timer interrupt
       intFunc[irq] = NULL+1; // not used as callback, just as non-zero to init only once
     }
     if(ocp != OCP_NONE)
@@ -211,7 +230,7 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
       // otherwise isr_register_handler() will not be initialized,
       // or in simple words, GPIO interrupts won't work.
       if(*ie_rising == 0 && *ie_falling == 0)
-        isr_register_handler(irq, &gpio_isr_link); // 5 is gpio interrput
+        isr_register_handler(irq, &gpio_isr_link); // 5 is gpio interrupt
       if(mode == RISING)
       {
         gpio_rising_Func[bit] = callback;
@@ -237,13 +256,19 @@ void detachInterrupt(uint32_t pin)
   ocp = variant_pin_map[pin].pwm;
   bit = variant_pin_map[pin].bit_pos;
   port = (PortRegister_t)digitalPinToPort(pin);
-  if(bit == 5 && port == (volatile uint32_t *) IO_LED) // arduino LED at pin 13
+  if(bit == 5 && port == (volatile uint32_t *) IO_LED) // MIPS timer irq magic pin: arduino LED at pin 13
   {
     int irq = 7;
     asm("di");
-    #if 1
-    isr_remove_handler(irq, &tsc_isr_link); // 7 is MIPS timer interrput
-    #endif
+    isr_remove_handler(irq, &tsc_isr_link); // 7 is MIPS timer interrupt
+    intFunc[irq] = NULL;
+    asm("ei");
+  }
+  if(bit == 7 && port == (volatile uint32_t *) IO_LED) // serial RX irq magic pin: arduino LED at pin 15
+  {
+    int irq = 3; // MIPS CPU interrupt 3 is serial rx
+    asm("di");
+    isr_remove_handler(irq, &tsc_isr_link); // 7 is MIPS timer interrupt
     intFunc[irq] = NULL;
     asm("ei");
   }
@@ -270,13 +295,11 @@ void detachInterrupt(uint32_t pin)
         ) == 0
       )
     {
-      #if 1
       int irq = VARIANT_TIMER_INTERRUPT;
       asm("di");
-      isr_remove_handler(irq, &timer_isr_link); // 4 is EMARD timer interrput
+      isr_remove_handler(irq, &timer_isr_link); // 4 is EMARD timer interrupt
       intFunc[irq] = NULL;
       asm("ei");
-      #endif
     }
   }
   if (port == (volatile uint32_t *)IO_GPIO_DATA)
@@ -292,7 +315,7 @@ void detachInterrupt(uint32_t pin)
       if(*ie_rising == 0 && *ie_falling == 0)
       {
         asm("di");
-        isr_remove_handler(irq, &gpio_isr_link); // 5 is gpio interrput
+        isr_remove_handler(irq, &gpio_isr_link); // 5 is gpio interrupt
         asm("ei");
       }
     }        
