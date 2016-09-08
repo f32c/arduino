@@ -1,17 +1,22 @@
 /* PWM changing sequence
- * tested at 100MHz f32c CPU
+ * recommended clock 100MHz f32c CPU
+ * PWM     output: OCP1 (dedicated pin) and led pin 9
+ * monitor output: arduino pin 32
  */
 int ocp1_led = 9;         // the pin for OCP1 channel (hardwired)
 int ocp2_led = 10;         // the pin for OCP2 channel (hardwired)
 int control_led1 = 13;
 int control_led2 = 14;
+int monitor_gpio = 32;
+volatile uint8_t *monitor_pointer; // address of GPIO for fast access
 
 static uint32_t icount = 0, iset = 0, nswitch = 0;
 
 /*
  * -- timer hardware pins for ulx2s board
  *    icp(0) => j2_4 (JA7), icp(1) => j2_11 (JA3)
- *    ocp(0) => j2_3 (JA8), ocp(1) => j2_10 (JA4)
+ *    ocp(0) => j2_3   led_pointer = (volatile uint8_t *) portOutputRegister(digitalPinToPort(led)); // clean way
+(JA8), ocp(1) => j2_10 (JA4)
  */
 
 struct S_pwm_set
@@ -88,6 +93,7 @@ void ocp2_isr(void)
       (1<<TC_INCREMENT)
     | (1<<TC_OCP1_START)
     | (1<<TC_OCP1_STOP);
+    *monitor_pointer = iset;
     nswitch = pwm_set[iset].count;
     if(++iset >= N_changes) // change set index and prepare next change
       iset = 0; // wraparound
@@ -104,6 +110,8 @@ void ocp2_isr(void)
 void setup()
 {
   int i;
+  monitor_pointer = (volatile uint8_t *) portOutputRegister(digitalPinToPort(monitor_gpio)); // clean way for fast access
+  pinMode(monitor_gpio, OUTPUT);
   // convert from human readable frequency switching plan 
   // to timer register switching PWM set
   for(i = 0; i < N_changes; i++)
