@@ -217,9 +217,53 @@ fpga_fleafpga_uno.menu.pinmap.generic=generic
 fpga_fleafpga_uno.menu.pinmap.generic.build.variant=generic
 
 #
-# Mikroprojekt Sparrowhawk Lattice ECP3
+# Mikroprojekt Kondor AX Lattice ECP5
 #
-fpga_sparrowhawk.name=Mikroprojekt Sparrowhawk (Lattice ECP3 LFE3-150EA-8, 128K ACRAM EMU, 100 MHz)
+fpga_kondor_ax.name=Mikroprojekt Kondor AX (Lattice ECP5 LFE5UM-85F-7, 128K ACRAM EMU, 100 MHz)
+fpga_kondor_ax.build.mcu=f32c
+fpga_kondor_ax.build.core=f32c
+fpga_kondor_ax.build.board=F32C_FPGA_KONDOR_AX
+fpga_kondor_ax.build.soc_video_bpp=8
+fpga_kondor_ax.upload.tool=ujprog
+fpga_kondor_ax.upload.wait_for_upload_port=false
+fpga_kondor_ax.upload.native_usb=false
+fpga_kondor_ax.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/kondor_ax.cfg
+fpga_kondor_ax.bootloader.file.svf={runtime.tools.bootloaders.path}/kondor_ax/kondorax_{cpu.arch}_{memsupport}_{bitstream.fcpu.mhz}mhz.svf
+fpga_kondor_ax.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
+fpga_kondor_ax.menu.cpu.mips=MIPS
+fpga_kondor_ax.menu.cpu.mips.cpu.arch=mips
+fpga_kondor_ax.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_kondor_ax.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_kondor_ax.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_kondor_ax.menu.cpu.riscv=RISC-V
+fpga_kondor_ax.menu.cpu.riscv.cpu.arch=riscv
+fpga_kondor_ax.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_kondor_ax.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_kondor_ax.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_kondor_ax.menu.ramsize.128=128 KB BRAM Emulated External
+fpga_kondor_ax.menu.ramsize.128.upload.maximum_size=128000
+fpga_kondor_ax.menu.ramsize.128.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_kondor_ax.menu.ramsize.128.memsupport=acram_emu
+fpga_kondor_ax.menu.speed.100=100 MHz
+fpga_kondor_ax.menu.speed.100.build.f_cpu=100000000
+fpga_kondor_ax.menu.speed.100.bitstream.fcpu.mhz=100
+fpga_kondor_ax.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_kondor_ax.menu.protocol.bin.upload.protocol=bin
+fpga_kondor_ax.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_kondor_ax.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_kondor_ax.menu.protocol.hex.upload.protocol=hex
+fpga_kondor_ax.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_kondor_ax.menu.pinmap.generic=Generic
+fpga_kondor_ax.menu.pinmap.generic.build.variant=generic
+fpga_kondor_ax.menu.jtag.onboard=Onboard FT2232 USB-JTAG
+fpga_kondor_ax.menu.jtag.onboard.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft2232-generic.cfg
+fpga_kondor_ax.menu.bitstream.sram=SRAM openocd (temporary)
+fpga_kondor_ax.menu.bitstream.sram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+
+#
+# Mikroprojekt Sparrowhawk FX Lattice ECP3
+#
+fpga_sparrowhawk.name=Mikroprojekt Sparrowhawk FX (Lattice ECP3 LFE3-150EA-8, 128K ACRAM EMU, 100 MHz)
 fpga_sparrowhawk.build.mcu=f32c
 fpga_sparrowhawk.build.core=f32c
 fpga_sparrowhawk.build.board=F32C_FPGA_SPARROWHAWK
@@ -261,6 +305,7 @@ fpga_sparrowhawk.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.p
 #fpga_sparrowhawk.menu.jtag.remotebitbang.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/remote_bitbang.cfg
 fpga_sparrowhawk.menu.bitstream.sram=SRAM openocd (temporary)
 fpga_sparrowhawk.menu.bitstream.sram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+
 
 #
 # Lattice Brevia / Brevia2
@@ -724,7 +769,7 @@ fpga_scarab_sdram.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_scarab_sdram.menu.pinmap.generic=Generic
 fpga_scarab_sdram.menu.pinmap.generic.build.variant=generic
 fpga_scarab_sdram.menu.jtag.ft2232=Onboard FT2232 JTAG
-fpga_scarab_sdram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft2232-generic.ocd
+fpga_scarab_sdram.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/ft2232-generic.cfg
 fpga_scarab_sdram.menu.bitstream.sram_xc3sprog=SRAM xc3sprog (temporary)
 fpga_scarab_sdram.menu.bitstream.sram_xc3sprog.upload.bitstream.command="{runtime.tools.xc3sprog.path}/xc3sprog" -c ftdi_fast "{bootloader.file.bit}"
 fpga_scarab_sdram.menu.bitstream.sram_xc3sprog.upload.bitstream.command.windows="{runtime.tools.xc3sprog.path}/xc3sprog.bat" -c ftdi_fast "{bootloader.file.bit}"
