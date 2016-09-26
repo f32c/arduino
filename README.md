@@ -140,17 +140,12 @@ LPDDR, DDR, DDR2, DDR3 using Xilinx 7-series MIG and AXI. (ESA11 with DDR3)
 
 # What works only on some supported boards
 
-VGA/HDMI/DVI textmode, bitmap and audio DMA need either large 
+VGA/HDMI/DVI/TV video and audio DMA need either large 
 external RAM (SRAM, SDRAM or DDR) or sufficient BRAM (32K)
 for use with acram emulation.
 
 Boards with supported external RAM are ULX2S, FleaFPGA Uno, 
 Scarab Minispartan6+, Altera DE0 nano and ESA11.
-
-TV Framebuffer with composite video output displaying SRAM content
-works only on ULX2S, it should work on any other capable
-of 81.25 MHz CPU and 325 MHz pixel clock. Composite video
-currently must run synchronous with CPU clock.
 
 PCM sound depends on DMA.
 PCM outputs PWM for headphones and FM for
