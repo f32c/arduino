@@ -1,7 +1,5 @@
 /* PWM changing sequence
- * recommended clock 100MHz f32c CPU
- * PWM     output: OCP1 (dedicated pin) and led pin 9
- * monitor output: arduino pin 32
+ * tested at 100MHz f32c CPU
  */
 int ocp1_led = 9;         // the pin for OCP1 channel (hardwired)
 int ocp2_led = 10;         // the pin for OCP2 channel (hardwired)
@@ -10,19 +8,34 @@ int control_led2 = 14;
 int monitor_gpio = 32;
 volatile uint8_t *monitor_pointer; // address of GPIO for fast access
 
+// patch defines to use OCP instead of ICP
+int ocp3_led = 11; // the pin to which OCP3 interrupt attaches
+#define OCP3 ICP2
+#define TC_OCP3_START TC_ICP2_START
+#define TC_OCP3_STOP TC_ICP2_STOP
+#define TCTRL_IE_OCP3 TCTRL_IE_ICP2
+#define TCTRL_IF_OCP3 TCTRL_IF_ICP2
+#define TCTRL_ENABLE_OCP3 TCTRL_ENABLE_ICP2
+#define TCTRL_AND_OR_OCP3 TCTRL_AND_OR_ICP2
+
+int ocp4_led = 8; // the pin to which OCP4 interrupt attaches
+#define OCP4 ICP1
+#define TC_OCP4_START TC_ICP1_START
+
+
 static uint32_t icount = 0, iset = 0, nswitch = 0;
 
 /*
  * -- timer hardware pins for ulx2s board
  *    icp(0) => j2_4 (JA7), icp(1) => j2_11 (JA3)
- *    ocp(0) => j2_3   led_pointer = (volatile uint8_t *) portOutputRegister(digitalPinToPort(led)); // clean way
-(JA8), ocp(1) => j2_10 (JA4)
+ *    ocp(0) => j2_3 (JA8), ocp(1) => j2_10 (JA4)
  */
 
 struct S_pwm_set
 {
   uint32_t increment;
-  uint16_t start, stop, change;
+  uint16_t start[2], stop[2];
+  uint16_t change;
   uint32_t count; // how many periods to keep this set
 };
 
@@ -70,91 +83,135 @@ struct S_frequency_switching_plan FSP[] =
 };
 #endif
 
+#if 0
+// debugging sequence with short counts
+// for easier counting on the scope
+struct S_frequency_switching_plan FSP[] =
+{ // frequency, duty cycle,   count
+  //        Hz,    /100000,      x1
+  {      25000,          0,      4 }, // OFF
+  {      26000,      30000,      4 },
+  {      27000,      45000,      4 },
+  {      30000,      30000,      4 },
+};
+#endif
+
 enum { N_changes = sizeof(FSP)/sizeof(FSP[0]) };
 
-#define PHASE_CENTER 2048
 #define PHASE_FULL 4096
 #define COUNTER_MASK 0xFFF
 
 struct S_pwm_set pwm_set[N_changes];
-/*
-= 
-{//freq,  start,              stop,               count
-  {FREQ1, (PHASE_CENTER-DUTY1)&COUNTER_MASK, (PHASE_CENTER+DUTY1)&COUNTER_MASK, 3}, 
-  {FREQ2, (PHASE_CENTER-DUTY2)&COUNTER_MASK, (PHASE_CENTER+DUTY2)&COUNTER_MASK, 3},
-};
-*/
 
-void ocp2_isr(void)
+void ocp3_isr(void)
 {
   if(++icount >= nswitch)
   { // as soon as possible apply settings which are previously prepared
     EMARD_TIMER[TC_APPLY] = // atomic apply (freq,duty)
       (1<<TC_INCREMENT)
     | (1<<TC_OCP1_START)
-    | (1<<TC_OCP1_STOP);
+    | (1<<TC_OCP1_STOP)
+    | (1<<TC_OCP2_START)
+    | (1<<TC_OCP2_STOP)
+    | (1<<TC_OCP3_START)
+    ;
     *monitor_pointer = iset;
     nswitch = pwm_set[iset].count;
     if(++iset >= N_changes) // change set index and prepare next change
       iset = 0; // wraparound
     EMARD_TIMER[TC_INCREMENT] = pwm_set[iset].increment;
-    EMARD_TIMER[TC_OCP1_START] = pwm_set[iset].start;
-    EMARD_TIMER[TC_OCP1_STOP] = pwm_set[iset].stop;
+    EMARD_TIMER[TC_OCP1_START] = pwm_set[iset].start[0];
+    EMARD_TIMER[TC_OCP1_STOP] = pwm_set[iset].stop[0];
+    EMARD_TIMER[TC_OCP2_START] = pwm_set[iset].start[1];
+    EMARD_TIMER[TC_OCP2_STOP] = pwm_set[iset].stop[1];
     icount = 0; // reset count for the next interrupt
     // set triggering phase for ISR to make the next switch "smooth"
-    EMARD_TIMER[TC_OCP2_START] = pwm_set[iset].change;
-    EMARD_TIMER[TC_APPLY] = 1<<TC_OCP2_START;
+    EMARD_TIMER[TC_OCP3_START] = pwm_set[iset].change;
   }
 }
 
 void setup()
 {
   int i;
+
   monitor_pointer = (volatile uint8_t *) portOutputRegister(digitalPinToPort(monitor_gpio)); // clean way for fast access
   pinMode(monitor_gpio, OUTPUT);
+
   // convert from human readable frequency switching plan 
   // to timer register switching PWM set
   for(i = 0; i < N_changes; i++)
   {
     pwm_set[i].increment = ((uint64_t)(FSP[i].f)) * (1<<22) / F_CPU;
-    pwm_set[i].start = PHASE_CENTER - (uint64_t)(PHASE_FULL/2) * (FSP[i].dtc) / 100000;
-    pwm_set[i].stop  = PHASE_CENTER + (uint64_t)(PHASE_FULL/2) * (FSP[i].dtc) / 100000;
-    pwm_set[i].change = pwm_set[i].stop * 2/3; // experimentally determined change time
+    pwm_set[i].start[0] = (0            - (uint64_t)(PHASE_FULL/2) * (FSP[i].dtc) / 100000) & COUNTER_MASK;
+    pwm_set[i].stop[0]  = (0            + (uint64_t)(PHASE_FULL/2) * (FSP[i].dtc) / 100000) & COUNTER_MASK;
+    pwm_set[i].start[1] = (PHASE_FULL/2 - (uint64_t)(PHASE_FULL/2) * (FSP[i].dtc) / 100000) & COUNTER_MASK;
+    pwm_set[i].stop[1]  = (PHASE_FULL/2 + (uint64_t)(PHASE_FULL/2) * (FSP[i].dtc) / 100000) & COUNTER_MASK;
     if(FSP[i].f < 900000)
       pwm_set[i].count = FSP[i].n; // count (# of periods)
     else
       pwm_set[i].count = FSP[i].n * 7 / 16; // experimentally determined to compensate loss of interrupt counter
   }
 
+  for(i = 0; i < N_changes; i++)
+  {
+    int i_next = (i+1) % N_changes;
+    #if 1
+    if(pwm_set[i].stop[0] < pwm_set[i_next].stop[0])
+      pwm_set[i].change = (pwm_set[i].stop[0] - 150) & COUNTER_MASK ;
+    else
+      pwm_set[i].change = (pwm_set[i].stop[1] - 150) & COUNTER_MASK;
+    #endif
+    #if 0
+    if(pwm_set[i].stop[0] < 2048)
+      pwm_set[i].change = pwm_set[i].stop[1];
+    else
+      pwm_set[i].change = pwm_set[i].stop[1];
+    #endif
+    // limit range to reliably trigger OCP3
+    // ocp3 stop is 4095
+    if(pwm_set[i].change < 7)
+      pwm_set[i].change = 7;
+    if(pwm_set[i].change > 4088)
+      pwm_set[i].change = 4088;
+  }
+
   nswitch = pwm_set[0].count;
   // set initial timer registers to first PWM set
   EMARD_TIMER[TC_INCREMENT] = pwm_set[0].increment;
-  EMARD_TIMER[TC_OCP1_START] = pwm_set[0].start;
-  EMARD_TIMER[TC_OCP1_STOP] = pwm_set[0].stop;
+  EMARD_TIMER[TC_OCP1_START] = pwm_set[0].start[0];
+  EMARD_TIMER[TC_OCP1_STOP] = pwm_set[0].stop[0];
+  EMARD_TIMER[TC_OCP2_START] = pwm_set[0].start[1];
+  EMARD_TIMER[TC_OCP2_STOP] = pwm_set[0].stop[1];
 
   // ocp2 rising edge interrupt is used
   // precisely schedule time of the phase change of ocp1
-  EMARD_TIMER[TC_OCP2_START] = 1000;
-  EMARD_TIMER[TC_OCP2_STOP] = 2047;
+  EMARD_TIMER[TC_OCP3_START] = pwm_set[0].change;
+  EMARD_TIMER[TC_OCP3_STOP] = 4095;
 
   EMARD_TIMER[TC_APPLY] =
       (1<<TC_INCREMENT)
     | (1<<TC_OCP1_START)
     | (1<<TC_OCP1_STOP)
     | (1<<TC_OCP2_START)
-    | (1<<TC_OCP2_STOP);
+    | (1<<TC_OCP2_STOP)
+    | (1<<TC_OCP3_START)
+    | (1<<TC_OCP3_STOP);
 
   EMARD_TIMER[TC_CONTROL] =
-      (1<<TCTRL_AND_OR_OCP1)
-    | (0<<TCTRL_ENABLE_OCP1)
+      (0<<TCTRL_AND_OR_OCP1) // "OR" mode (0-crossing)
+    | (1<<TCTRL_ENABLE_OCP1) // enable output
     | (0<<TCTRL_IE_OCP1) // no interrupt for ocp1
     | (1<<TCTRL_IF_OCP1) // clear the interrupt flag
-    | (1<<TCTRL_AND_OR_OCP2)
-    | (1<<TCTRL_ENABLE_OCP2)
-    | (1<<TCTRL_IE_OCP2) // ocp2 will trigger interrupt
+    | (1<<TCTRL_AND_OR_OCP2) // "AND" mode
+    | (1<<TCTRL_ENABLE_OCP2) // enable output
+    | (0<<TCTRL_IE_OCP2) // no interrupt for ocp2
     | (1<<TCTRL_IF_OCP2) // clear the interrupt flag
+    | (1<<TCTRL_AND_OR_OCP3) // "AND" mode
+    | (0<<TCTRL_ENABLE_OCP3) // no output
+    | (0<<TCTRL_IE_OCP3) // ocp3 will trigger interrupt
+    | (1<<TCTRL_IF_OCP3) // clear the interrupt flag
     ;
-  attachInterrupt(ocp2_led, ocp2_isr, RISING); // rising edge of OCP2 will trigger interrupt
+  attachInterrupt(ocp3_led, ocp3_isr, RISING); // rising edge of OCP3 will trigger interrupt
 }
 
 void loop() {
