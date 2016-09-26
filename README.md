@@ -38,8 +38,17 @@ into the Address Bar and press Enter)
 
 Delete packages directory, then remove/install from boards manager.
 
-To upload some bitstreams OpenOCD may complain about
-libusb drivers. libusb is common on linux.
+Troubleshooting
+
+Windows 10 DLL problem: ujprog.exe has FTDI DLL dependency.
+Check this issue for a possible workaround:
+https://github.com/f32c/tools/issues/4
+
+Some boards need OpenOCD to upload bitstream. 
+OpenOCD has libusb dependency which needs to be manually 
+installed on windows. On Linux libusb is probably already
+installed.
+Install libusb on windows only if you need it.
 To install libusb on windows, easiest way is with
 Zadig http://zadig.akeo.ie Options->List All Devices
 Select usb serial device, select driver WinUSB and click install.
