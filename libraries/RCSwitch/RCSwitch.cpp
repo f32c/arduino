@@ -68,6 +68,9 @@ void RCSwitch::setProtocol(int nProtocol) {
   else if (nProtocol == 5) {
     this->setPulseLength(100);
   }
+  else if (nProtocol == 6) {
+    this->setPulseLength(21);
+  }
 }
 
 /**
@@ -563,6 +566,9 @@ void RCSwitch::send0() {
         digitalWrite(this->nTransmitterPin, LOW);
         delay_us(this->nPulseLength);
     }
+    else if (this->nProtocol == 6) {
+        this->transmit(12,11);
+    }
 }
 
 /**
@@ -573,7 +579,7 @@ void RCSwitch::send0() {
  * Waveform Protocol 2: |  |_
  */
 void RCSwitch::send1() {
-      if (this->nProtocol == 1){
+    if (this->nProtocol == 1){
         this->transmit(3,1);
     }
     else if (this->nProtocol == 2) {
@@ -588,6 +594,9 @@ void RCSwitch::send1() {
     else if (this->nProtocol == 5) {
         digitalWrite(this->nTransmitterPin, HIGH);
         delay_us(this->nPulseLength);
+    }
+    else if (this->nProtocol == 6) {
+        this->transmit(12,60);
     }
 }
 
@@ -630,7 +639,6 @@ void RCSwitch::sendTF() {
  * Waveform Protocol 2: | |__________
  */
 void RCSwitch::sendSync() {
-
     if (this->nProtocol == 1){
         this->transmit(1,31);
     }
@@ -646,6 +654,9 @@ void RCSwitch::sendSync() {
     else if (this->nProtocol == 5) {
         delay_us(67700);
         // this->transmit(1,5);
+    }
+    else if (this->nProtocol == 6) {
+        this->transmit(12,1000);
     }
 }
 
