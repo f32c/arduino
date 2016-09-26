@@ -52,9 +52,12 @@ Install libusb on windows only if you need it.
 To install libusb on windows, easiest way is with
 Zadig http://zadig.akeo.ie Options->List All Devices
 Select usb serial device, select driver WinUSB and click install.
-Zadig is not needed for ftdi based boards with own uploader like 
-ULX2S or FleaFPGA. Zadig can have some issues with ftdi drivers for 
-windows 10.
+Zadig is not needed for boards with own uploaders like
+ULX2S or FleaFPGA. 
+Zadig can have some issues with FTDI drivers for windows 10.
+Uploader for Numato MimasV2 boards needs Python.
+On Linux, Python is already installed.
+On Windows, Python needs to be manually installed.
 
 Manual install: Copy or symlink this to existing arduino directory 
 (versions 1.6.0 and newer), close the Arduino IDE, open
