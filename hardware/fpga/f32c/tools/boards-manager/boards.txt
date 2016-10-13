@@ -391,6 +391,47 @@ fpga_de0_nano_bram.menu.ramsize.32M.build.sdata.size=4096
 fpga_de0_nano_bram.menu.ramsize.32M.compiler.ld.extra_flags=--section-start=.init=0x80000000
 
 #
+# ReVerSE-U16 (Altera Cyclone-IV)
+#
+fpga_reverse_u16.name=ReVerSE-U16 (Altera Cyclone-IV, 16M SDRAM, 83.33 MHz)
+fpga_reverse_u16.build.f_cpu=83333333
+fpga_reverse_u16.build.variant=generic
+fpga_reverse_u16.build.mcu=f32c
+fpga_reverse_u16.build.core=f32c
+fpga_reverse_u16.build.board=F32C_FPGA_REVERSE_U16
+fpga_reverse_u16.build.soc_video_bpp=8
+fpga_reverse_u16.upload.tool=ujprog
+fpga_reverse_u16.upload.wait_for_upload_port=false
+fpga_reverse_u16.upload.native_usb=false
+#fpga_reverse_u16.upload.maximum_size=31232
+#fpga_reverse_u16.upload.protocol=hex
+#fpga_reverse_u16.upload.flags=-P{serial.port} -ra
+fpga_reverse_u16.menu.cpu.mips=MIPS
+fpga_reverse_u16.menu.cpu.mips.cpu.arch=mips
+fpga_reverse_u16.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_reverse_u16.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_reverse_u16.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_reverse_u16.menu.cpu.riscv=RISC-V
+fpga_reverse_u16.menu.cpu.riscv.cpu.arch=riscv
+fpga_reverse_u16.menu.cpu.riscv.compiler.c.flags={f32c.riscv.compiler.c.flags}
+fpga_reverse_u16.menu.cpu.riscv.compiler.cpp.flags={f32c.riscv.compiler.cpp.flags}
+fpga_reverse_u16.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
+fpga_reverse_u16.menu.ramsize.16M=16 MB SDRAM Onboard
+fpga_reverse_u16.menu.ramsize.16M.upload.maximum_size=16000000
+fpga_reverse_u16.menu.ramsize.16M.build.sdata.size=4096
+fpga_reverse_u16.menu.ramsize.16M.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_reverse_u16.menu.ramsize.32K=32 KB BRAM Internal
+fpga_reverse_u16.menu.ramsize.32K.upload.maximum_size=31232
+fpga_reverse_u16.menu.ramsize.32K.build.sdata.size=32768
+fpga_reverse_u16.menu.ramsize.32K.compiler.ld.extra_flags=--section-start=.init=0x400
+fpga_reverse_u16.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_reverse_u16.menu.protocol.bin.upload.protocol=bin
+fpga_reverse_u16.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_reverse_u16.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_reverse_u16.menu.protocol.hex.upload.protocol=hex
+fpga_reverse_u16.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+
+#
 # Altera TB276 Board (ebay), f32c SoC
 #
 fpga_tb276.name=TB276 (Altera Cyclone IV E EP4CE6, 16K BRAM, 81.25/112.5 MHz)
@@ -740,36 +781,51 @@ fpga_scarab_sdram.menu.soc.vgatxt80x60.socopt=vgatxt80x60
 fpga_scarab_sdram.menu.soc.vgatxt80x60.build.soc_video_bpp=8
 fpga_scarab_sdram.menu.soc.vgatxt80x60.build.f_cpu=100000000
 fpga_scarab_sdram.menu.soc.vgatxt80x60.bitstream.fcpu.mhz=100
-fpga_scarab_sdram.menu.soc.vgabit8bpp640x360_vector=640x360-8bpp Vector FPU 100 MHz
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x360_vector=640x360-8bpp 8-Vector FPU 100 MHz
 fpga_scarab_sdram.menu.soc.vgabit8bpp640x360_vector.socopt=vgabit8bpp640x360_vector
 fpga_scarab_sdram.menu.soc.vgabit8bpp640x360_vector.build.soc_video_bpp=8
 fpga_scarab_sdram.menu.soc.vgabit8bpp640x360_vector.build.f_cpu=100000000
 fpga_scarab_sdram.menu.soc.vgabit8bpp640x360_vector.bitstream.fcpu.mhz=100
-fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_vector=640x480-8bpp Vector FPU 100 MHz
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_4vector=640x480-8bpp 4-Vector FPU 100 MHz
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_4vector.socopt=vgabit8bpp640x480_4vector
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_4vector.build.soc_video_bpp=8
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_4vector.build.f_cpu=100000000
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_4vector.bitstream.fcpu.mhz=100
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_vector=640x480-8bpp 8-Vector FPU 100 MHz
 fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_vector.socopt=vgabit8bpp640x480_vector
 fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_vector.build.soc_video_bpp=8
 fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_vector.build.f_cpu=100000000
 fpga_scarab_sdram.menu.soc.vgabit8bpp640x480_vector.bitstream.fcpu.mhz=100
-fpga_scarab_sdram.menu.soc.vgabit8bpp800x480_vector=800x480-8bpp Vector FPU 100 MHz
+fpga_scarab_sdram.menu.soc.vgabit8bpp800x480_vector=800x480-8bpp 8-Vector FPU 100 MHz
 fpga_scarab_sdram.menu.soc.vgabit8bpp800x480_vector.socopt=vgabit8bpp800x480_vector
 fpga_scarab_sdram.menu.soc.vgabit8bpp800x480_vector.build.soc_video_bpp=8
 fpga_scarab_sdram.menu.soc.vgabit8bpp800x480_vector.build.f_cpu=100000000
 fpga_scarab_sdram.menu.soc.vgabit8bpp800x480_vector.bitstream.fcpu.mhz=100
-fpga_scarab_sdram.menu.soc.vgabit8bpp1024x576_vector=1024x576-8bpp Vector FPU 100 MHz
+fpga_scarab_sdram.menu.soc.vgabit8bpp1024x576_vector=1024x576-8bpp 8-Vector FPU 100 MHz
 fpga_scarab_sdram.menu.soc.vgabit8bpp1024x576_vector.socopt=vgabit8bpp1024x576_vector
 fpga_scarab_sdram.menu.soc.vgabit8bpp1024x576_vector.build.soc_video_bpp=8
 fpga_scarab_sdram.menu.soc.vgabit8bpp1024x576_vector.build.f_cpu=100000000
 fpga_scarab_sdram.menu.soc.vgabit8bpp1024x576_vector.bitstream.fcpu.mhz=100
-fpga_scarab_sdram.menu.soc.vgabit8bpp1024x768_vector=1024x768-8bpp Vector FPU 98 MHz
+fpga_scarab_sdram.menu.soc.vgabit8bpp1024x768_vector=1024x768-8bpp 8-Vector FPU 98 MHz
 fpga_scarab_sdram.menu.soc.vgabit8bpp1024x768_vector.socopt=vgabit8bpp1024x768_vector
 fpga_scarab_sdram.menu.soc.vgabit8bpp1024x768_vector.build.soc_video_bpp=8
 fpga_scarab_sdram.menu.soc.vgabit8bpp1024x768_vector.build.f_cpu=98000000
 fpga_scarab_sdram.menu.soc.vgabit8bpp1024x768_vector.bitstream.fcpu.mhz=98
-fpga_scarab_sdram.menu.soc.vgabit16bpp640x480_vector=640x480-16bpp Vector FPU 100 MHz
+fpga_scarab_sdram.menu.soc.vgabit16bpp640x480_vector=640x480-16bpp 8-Vector FPU 100 MHz
 fpga_scarab_sdram.menu.soc.vgabit16bpp640x480_vector.socopt=vgabit16bpp640x480_vector
 fpga_scarab_sdram.menu.soc.vgabit16bpp640x480_vector.build.soc_video_bpp=16
 fpga_scarab_sdram.menu.soc.vgabit16bpp640x480_vector.build.f_cpu=100000000
 fpga_scarab_sdram.menu.soc.vgabit16bpp640x480_vector.bitstream.fcpu.mhz=100
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480=640x480-8bpp 100 MHz
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480.socopt=vgabit8bpp640x480
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480.build.soc_video_bpp=8
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480.build.f_cpu=100000000
+fpga_scarab_sdram.menu.soc.vgabit8bpp640x480.bitstream.fcpu.mhz=100
+fpga_scarab_sdram.menu.soc.vgabit16bpp640x480=640x480-16bpp 100 MHz
+fpga_scarab_sdram.menu.soc.vgabit16bpp640x480.socopt=vgabit16bpp640x480
+fpga_scarab_sdram.menu.soc.vgabit16bpp640x480.build.soc_video_bpp=16
+fpga_scarab_sdram.menu.soc.vgabit16bpp640x480.build.f_cpu=100000000
+fpga_scarab_sdram.menu.soc.vgabit16bpp640x480.bitstream.fcpu.mhz=100
 fpga_scarab_sdram.menu.soc.vgabit32bpp640x480=640x480-32bpp 100 MHz
 fpga_scarab_sdram.menu.soc.vgabit32bpp640x480.socopt=vgabit32bpp640x480
 fpga_scarab_sdram.menu.soc.vgabit32bpp640x480.build.soc_video_bpp=32
