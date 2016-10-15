@@ -394,7 +394,7 @@ fpga_de0_nano_bram.menu.ramsize.32M.compiler.ld.extra_flags=--section-start=.ini
 # ReVerSE-U16 (Altera Cyclone-IV)
 #
 fpga_reverse_u16.name=ReVerSE-U16 (Altera Cyclone-IV, 16M SDRAM, 83.33 MHz)
-fpga_reverse_u16.build.f_cpu=83333333
+#fpga_reverse_u16.build.f_cpu=83333333
 fpga_reverse_u16.build.variant=generic
 fpga_reverse_u16.build.mcu=f32c
 fpga_reverse_u16.build.core=f32c
@@ -406,6 +406,11 @@ fpga_reverse_u16.upload.native_usb=false
 #fpga_reverse_u16.upload.maximum_size=31232
 #fpga_reverse_u16.upload.protocol=hex
 #fpga_reverse_u16.upload.flags=-P{serial.port} -ra
+fpga_reverse_u16.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/reverse-u16.cfg
+fpga_reverse_u16.bootloader.file.svf={runtime.tools.bootloaders.path}/reverse-u16/reverseu16_revc_sdram_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.svf
+fpga_reverse_u16.bootloader.file.jic={runtime.tools.bootloaders.path}/reverse-u16/reverseu16_revc_sdram_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.jic
+fpga_reverse_u16.bootloader.file.sof={runtime.tools.bootloaders.path}/reverse-u16/reverseu16_revc_sdram_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.sof
+fpga_reverse_u16.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
 fpga_reverse_u16.menu.cpu.mips=MIPS
 fpga_reverse_u16.menu.cpu.mips.cpu.arch=mips
 fpga_reverse_u16.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
@@ -424,12 +429,34 @@ fpga_reverse_u16.menu.ramsize.32K=32 KB BRAM Internal
 fpga_reverse_u16.menu.ramsize.32K.upload.maximum_size=31232
 fpga_reverse_u16.menu.ramsize.32K.build.sdata.size=32768
 fpga_reverse_u16.menu.ramsize.32K.compiler.ld.extra_flags=--section-start=.init=0x400
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480=640x480-8bpp 83 MHz
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480.socopt=vgabit8bpp640x480
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480.build.soc_video_bpp=8
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480.build.f_cpu=83333333
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480.bitstream.fcpu.mhz=83
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480_vector=640x480-8bpp 8-Vector FPU 83 MHz
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480_vector.socopt=vgabit8bpp640x480_vector
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480_vector.build.soc_video_bpp=8
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480_vector.build.f_cpu=83333333
+fpga_reverse_u16.menu.soc.vgabit8bpp640x480_vector.bitstream.fcpu.mhz=83
 fpga_reverse_u16.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
 fpga_reverse_u16.menu.protocol.bin.upload.protocol=bin
 fpga_reverse_u16.menu.protocol.bin.upload.flags=-P{serial.port} -re
 fpga_reverse_u16.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
 fpga_reverse_u16.menu.protocol.hex.upload.protocol=hex
 fpga_reverse_u16.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_reverse_u16.menu.jtag.alterablaster=Altera Blaster
+fpga_reverse_u16.menu.jtag.alterablaster.bootloader.openocd.interface={runtime.tools.openocd.path}/scripts/interface/altera-usb-blaster.cfg
+fpga_reverse_u16.menu.jtag.remotebitbang=Remote bitbang (TCP jtag:3335)
+fpga_reverse_u16.menu.jtag.remotebitbang.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/remote_bitbang.cfg
+fpga_reverse_u16.menu.jtag.fpu1=FT2232 PLDkit FPU1
+fpga_reverse_u16.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
+fpga_reverse_u16.menu.bitstream.sram=SRAM openocd (temporary)
+fpga_reverse_u16.menu.bitstream.sram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+fpga_reverse_u16.menu.bitstream.sramquartus=SRAM quartus (temporary)
+fpga_reverse_u16.menu.bitstream.sramquartus.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "P;{bootloader.file.sof}"
+fpga_reverse_u16.menu.bitstream.flashquartus=FLASH quartus (permanent)
+fpga_reverse_u16.menu.bitstream.flashquartus.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IP;{bootloader.file.jic}"
 
 #
 # Altera TB276 Board (ebay), f32c SoC
