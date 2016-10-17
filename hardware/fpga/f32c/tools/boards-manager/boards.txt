@@ -447,12 +447,12 @@ fpga_reverse_u16.menu.protocol.hex.upload.protocol=hex
 fpga_reverse_u16.menu.protocol.hex.upload.flags=-P{serial.port} -ra
 fpga_reverse_u16.menu.jtag.alterablaster=Altera Blaster
 fpga_reverse_u16.menu.jtag.alterablaster.bootloader.openocd.interface={runtime.tools.openocd.path}/scripts/interface/altera-usb-blaster.cfg
-fpga_reverse_u16.menu.jtag.remotebitbang=Remote bitbang (TCP jtag:3335)
-fpga_reverse_u16.menu.jtag.remotebitbang.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/remote_bitbang.cfg
-fpga_reverse_u16.menu.jtag.fpu1=FT2232 PLDkit FPU1
-fpga_reverse_u16.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
-fpga_reverse_u16.menu.bitstream.sram=SRAM openocd (temporary)
-fpga_reverse_u16.menu.bitstream.sram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+#fpga_reverse_u16.menu.jtag.remotebitbang=Remote bitbang (TCP jtag:3335)
+#fpga_reverse_u16.menu.jtag.remotebitbang.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/remote_bitbang.cfg
+#fpga_reverse_u16.menu.jtag.fpu1=FT2232 PLDkit FPU1
+#fpga_reverse_u16.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/ftdi/fpu1.cfg
+#fpga_reverse_u16.menu.bitstream.sram=SRAM openocd (temporary)
+#fpga_reverse_u16.menu.bitstream.sram.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
 fpga_reverse_u16.menu.bitstream.sramquartus=SRAM quartus (temporary)
 fpga_reverse_u16.menu.bitstream.sramquartus.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "P;{bootloader.file.sof}"
 fpga_reverse_u16.menu.bitstream.flashquartus=FLASH quartus (permanent)
