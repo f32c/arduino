@@ -134,7 +134,7 @@ to work.
 
 SRAM in 8-bit mode (FleaFPGA Uno) and 16-bit mode (ULX2S)
 
-SDRAM in 16-bit mode (Altera DE0 nano and Scarab MiniSpartan6+)
+SDRAM in 16-bit mode (Altera DE0 nano, ReVerSE-U16 and Scarab MiniSpartan6+)
 
 LPDDR, DDR, DDR2, DDR3 using Xilinx 7-series MIG and AXI. (ESA11 with DDR3)
 
@@ -145,7 +145,7 @@ external RAM (SRAM, SDRAM or DDR) or sufficient BRAM (32K)
 for use with acram emulation.
 
 Boards with supported external RAM are ULX2S, FleaFPGA Uno, 
-Scarab Minispartan6+, Altera DE0 nano and ESA11.
+Scarab Minispartan6+, Altera DE0 nano, ReVerSE-U16 and ESA11.
 
 PCM sound depends on DMA.
 PCM outputs PWM for headphones and FM for
