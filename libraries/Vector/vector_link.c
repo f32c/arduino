@@ -200,7 +200,7 @@ void wait_vector_mask(uint32_t mask)
   do
   {
     a = vector_mmio[1];
-  } while((a & mask) != mask && ++i < 200000);
+  } while((a & mask) != mask && ++i < 400000);
   vector_mmio[1] = mask; // clear interrupt flag(s)
 }
 
@@ -211,7 +211,7 @@ void wait_vector(void)
   do
   {
     a = vector_mmio[1];
-  } while(a == 0 && ++i < 200000);
+  } while(a == 0 && ++i < 400000);
   vector_mmio[1] = a; // clear interrupt flag(s)
 }
 
