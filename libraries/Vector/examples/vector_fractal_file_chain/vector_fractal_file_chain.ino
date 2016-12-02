@@ -227,7 +227,7 @@ void fractal_to_file(File &Image)
         vector_mmio[0] = (uint32_t) Mresult.vh; // address where to store
         vector_mmio[4] = 0xE381F0FF; // store alias of Vtmp
       #endif
-      //vector_flush(Mresult.vh); // discard cache, CPU will read fresh Mresult
+      vector_flush(Mresult.vh); // discard cache, CPU will read fresh Mresult
       // on scarab it works without discarding cache -> great speed increase :)
       // we don't need to wait for I/O here because CPU plots pixels slow enough
       //wait_vector_mask( (1<<16) | (1<<14) ); // wait for I/O and previous chain member
