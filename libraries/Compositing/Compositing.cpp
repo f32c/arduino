@@ -56,6 +56,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
   new_sprite->y = iy;
   new_sprite->w = w; // max sprite width (maybe unused)
   new_sprite->h = h;
+  new_sprite->ha = h; // allocated size
   for(i = 0; i < h; i++)
   {
     new_sprite->line[i].next = NULL;
@@ -152,6 +153,7 @@ int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
   spr->y = 0;
   spr->w = w;
   spr->h = h;
+  spr->ha = h;
   for(i = 0; i < h; i++)
   {
     spr->line[i].next = NULL;
@@ -181,6 +183,7 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
   spr->y = 0;
   spr->w = w;
   spr->h = h;
+  spr->ha = h;
   for(i = 0; i < h; i++)
   {
     spr->line[i].next = NULL;
@@ -198,22 +201,26 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
 void Compositing::sprite_link_content(int original, int clone)
 {
   int i, n;
+  int m;
 
   struct compositing_line *src = Sprite[original]->line;
   struct compositing_line *dst = Sprite[clone]->line;
 
   // how many lines
-  n = Sprite[clone]->h; // number of lines destination sprite has
-  #if 0
+  n = Sprite[clone]->ha; // number of lines destination sprite has allocated
+  #if 1
   m = Sprite[original]->h; // number of lines original sprite has
   if(m < n)
     n = m; // smallest of the two
   #endif
   //memcpy(Sprite[original]->line[0], Sprite[clone]->line[0], sizeof(compositing_line)*n);
   for(i = 0; i < n; i++)
+  {
     dst[i].bmp = src[i].bmp;
+    dst[i].n = src[i].n;
+  }
   // copy size (may be omitted when all are the same size)
-  #if 0
+  #if 1
   Sprite[clone]->h = n;
   Sprite[clone]->w = Sprite[original]->w;
   #endif
