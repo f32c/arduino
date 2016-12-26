@@ -23,6 +23,8 @@ compiler.path={runtime.tools.f32c-compiler.path}/bin/
 # compiler.path={runtime.platform.path}/tools/f32c/bin/
 # f32c toolchain extracted in arduino-1.6.x/hardware/tools/
 # compiler.path={runtime.ide.path}/hardware/tools/f32c/bin/
+# f32c toolchain extracted in local directory
+# compiler.path=/opt/gnu_mips_f32c/bin/
 compiler.c.cmd={cpu.arch}-elf-gcc
 # taken from boards.txt
 #compiler.c.flags={f32c.mips.compiler.c.flags}
