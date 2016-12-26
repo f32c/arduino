@@ -464,6 +464,59 @@ fpga_reverse_u16.menu.bitstream.flashquartus=FLASH quartus (permanent)
 fpga_reverse_u16.menu.bitstream.flashquartus.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "IP;{bootloader.file.jic}"
 
 #
+# Terasic DE10-Lite (Altera MAX 10)
+#
+fpga_de10_lite.name=DE10-Lite (Altera MAX 10, 64M SDRAM, 75 MHz)
+fpga_de10_lite.build.variant=generic
+fpga_de10_lite.build.mcu=f32c
+fpga_de10_lite.build.core=f32c
+fpga_de10_lite.build.board=F32C_FPGA_DE10_LITE
+#fpga_de10_lite.build.soc_video_bpp=8
+fpga_de10_lite.upload.tool=ujprog
+fpga_de10_lite.upload.wait_for_upload_port=false
+fpga_de10_lite.upload.native_usb=false
+fpga_de10_lite.bootloader.openocd.board={runtime.platform.path}/tools/openocd/scripts/board/de10-lite.cfg
+fpga_de10_lite.bootloader.file.svf={runtime.tools.bootloaders.path}/de10_lite/de10_lite_sdram_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.svf
+#fpga_de10_lite.bootloader.file.jic={runtime.tools.bootloaders.path}/de10_lite/de10_lite_sdram_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.jic
+fpga_de10_lite.bootloader.file.sof={runtime.tools.bootloaders.path}/de10_lite/de10_lite_sdram_{cpu.arch}_{socopt}_{bitstream.fcpu.mhz}mhz.sof
+fpga_de10_lite.bootloader.openocd.command=svf -tap chip.tap {{bootloader.file.svf}}
+fpga_de10_lite.menu.cpu.mips=MIPS
+fpga_de10_lite.menu.cpu.mips.cpu.arch=mips
+fpga_de10_lite.menu.cpu.mips.compiler.c.flags={f32c.mips.compiler.c.flags}
+fpga_de10_lite.menu.cpu.mips.compiler.cpp.flags={f32c.mips.compiler.cpp.flags}
+fpga_de10_lite.menu.cpu.mips.compiler.ld.flags={f32c.mips.compiler.ld.flags}
+fpga_de10_lite.menu.ramsize.64M=64 MB SDRAM Onboard
+fpga_de10_lite.menu.ramsize.64M.upload.maximum_size=64000000
+fpga_de10_lite.menu.ramsize.64M.build.sdata.size=4096
+fpga_de10_lite.menu.ramsize.64M.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_de10_lite.menu.ramsize.128K=128 KB BRAM Emulated External
+fpga_de10_lite.menu.ramsize.128K.upload.maximum_size=128000
+fpga_de10_lite.menu.ramsize.128K.build.sdata.size=4096
+fpga_de10_lite.menu.ramsize.128K.compiler.ld.extra_flags=--section-start=.init=0x80000000
+fpga_de10_lite.menu.soc.vgabit8bpp640x480=640x480-8bpp 75 MHz
+fpga_de10_lite.menu.soc.vgabit8bpp640x480.socopt=vgabit8bpp640x480
+fpga_de10_lite.menu.soc.vgabit8bpp640x480.build.soc_video_bpp=8
+fpga_de10_lite.menu.soc.vgabit8bpp640x480.build.f_cpu=75000000
+fpga_de10_lite.menu.soc.vgabit8bpp640x480.bitstream.fcpu.mhz=75
+fpga_de10_lite.menu.soc.vgabit8bpp640x480_8vector_75MHz=640x480-8bpp 8-Vector FPU 75 MHz
+fpga_de10_lite.menu.soc.vgabit8bpp640x480_8vector_75MHz.socopt=vgabit8bpp640x480_8vector
+fpga_de10_lite.menu.soc.vgabit8bpp640x480_8vector_75MHz.build.soc_video_bpp=8
+fpga_de10_lite.menu.soc.vgabit8bpp640x480_8vector_75MHz.build.f_cpu=75000000
+fpga_de10_lite.menu.soc.vgabit8bpp640x480_8vector_75MHz.bitstream.fcpu.mhz=75
+fpga_de10_lite.menu.protocol.bin=Binary 115.2 kbit/s CRC RS232
+fpga_de10_lite.menu.protocol.bin.upload.protocol=bin
+fpga_de10_lite.menu.protocol.bin.upload.flags=-P{serial.port} -re
+fpga_de10_lite.menu.protocol.hex=Hex 115.2 kbit/s no verify RS232
+fpga_de10_lite.menu.protocol.hex.upload.protocol=hex
+fpga_de10_lite.menu.protocol.hex.upload.flags=-P{serial.port} -ra
+fpga_de10_lite.menu.jtag.alterablaster=Altera Blaster
+fpga_de10_lite.menu.jtag.alterablaster.bootloader.openocd.interface={runtime.platform.path}/tools/openocd/scripts/interface/altera-usb-blaster-ftdi.cfg
+fpga_de10_lite.menu.bitstream.sramopenocd=SRAM openocd (temporary)
+fpga_de10_lite.menu.bitstream.sramopenocd.upload.bitstream.command={runtime.tools.openocd.path}/bin/openocd "--file={bootloader.openocd.interface}" "--file={bootloader.openocd.board}" "--command={bootloader.openocd.command}" "--command=shutdown"
+fpga_de10_lite.menu.bitstream.sramquartus=SRAM quartus (temporary)
+fpga_de10_lite.menu.bitstream.sramquartus.upload.bitstream.command="quartus_pgm" "--no_banner" "--mode=jtag" "-o" "P;{bootloader.file.sof}"
+
+#
 # Altera TB276 Board (ebay), f32c SoC
 #
 fpga_tb276.name=TB276 (Altera Cyclone IV E EP4CE6, 16K BRAM, 81.25/112.5 MHz)
