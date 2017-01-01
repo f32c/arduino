@@ -378,6 +378,7 @@ struct starship
   int prepare; // prepare countdown (also shooting reload)
   int sprite; // sprite number which is used to display this starship
   int shape; // sprite base carrying the shape
+  int group; // group membership for alien attacks
   int path_type; // current path type
   int path_state; // state of the current path
   int path_count; // frame countdown until next path state
@@ -468,12 +469,13 @@ struct convoy Convoy_demo[] =
 };
 
 // explosion particle colors for alien types 0-3
-int Alien_particle[4][4] =
+int Alien_particle[][4] =
 {
   { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_BLUE },
   { SH_BLOCK_YELLOW, SH_BLOCK_YELLOW, SH_BLOCK_CYAN, SH_BLOCK_RED },
   { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_VIOLETT, SH_BLOCK_VIOLETT },
   { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_VIOLETT, SH_BLOCK_ORANGE },
+  { SH_BLOCK_RED, SH_BLOCK_RED, SH_BLOCK_RED, SH_BLOCK_ORANGE },
 };
 
 void create_sine_table()
@@ -546,6 +548,7 @@ void create_aliens()
     s->prepare = convoy[i].prepare * CONVOY_DISTANCE / SPEED;
     s->shape = (convoy[i].alien_type & 3)*4; // shape base
     s->path_type = convoy[i].path; // path to follow
+    s->group = convoy[i].group;
     path = Path_types[s->path_type].path;
     s->a = path[0].a;
     s->v = path[0].v;
@@ -592,7 +595,7 @@ void explosion_create(int x, int y, int t, uint8_t n)
     s->path_count = 16; // countdown to disappear
     s->a = rng >> 16; // random angular direction
     // s->shape = SH_BLOCK_RED + (rng&7); // explosion with random colorful particles
-    s->shape = Alien_particle[t & 3][rng & 3];
+    s->shape = Alien_particle[t & 7][rng & 3];
     c2.sprite_link_content(s->shape, s->sprite);
     object_angular_move(s);
   }
@@ -666,7 +669,7 @@ struct starship *alien_hit(struct starship *s)
   int i;
   struct starship *as;
   // struct convoy *convoy = Convoy1;
-  int xr = 8*FPSCALE, yr = 8*FPSCALE; // collision range
+  int xr = 8*FPSCALE, yr = 12*FPSCALE; // collision range
   for(i = 0; i < SHIPS_MAX; i++)
   {
     as = &(Starship[i]);
@@ -897,18 +900,17 @@ void fleet_select_attack()
   uint32_t rng = rand();
   int group;
   int i;
-  if(rng < 60000000)
+  if(rng < 200000000)
   {
-    struct convoy *convoy = Convoy1;
     group = 1 + (rng % 10); // select which group will attack
-    // group = 1;
     // todo: if no ships are in this group in the fleet,
     // choose next group
     // search for all ships, find those which are members of
     // selected group and are in FLEET HOME state
     for(i = 0; i < SHIPS_MAX; i++)
     {
-      if(Starship[i].state == S_ALIEN_HOME && convoy[i].group == group)
+      // fixme convoy[i] no longer descibes ship's group membership
+      if(Starship[i].state == S_ALIEN_HOME && Starship[i].group == group)
       {
         // found the candidate for the group attack
         struct starship *s = &(Starship[i]);
@@ -991,23 +993,36 @@ void ship_create(int x, int y)
   c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
 }
 
-// search for possible alien above
-int ship_aim(struct starship *s)
+// detect collision and
+// search for possible alien above (aiming to aliens)
+//  0 nothing
+// -1 alien in the x-shooting range
+//  1 ship hit by alien or bomb
+int ship_aim_hit(struct starship *s)
 {
   int i;
   struct starship *as;
-  int xr = 32*FPSCALE; // shooting range
+  int xs = 32*FPSCALE; // shooting range
+  int xr = 12*FPSCALE, yr = 12*FPSCALE; // collision range
+  int retval = 0;
   for(i = 0; i < SHIPS_MAX; i++)
   {
     as = &(Starship[i]);
-    // is this ship alien alive?
+    // is the alien or bomb near enough to destroy the ship?
+    if((as->state >= S_ALIEN_CONVOY && as->state <= S_ALIEN_ATTACK) || (as->state == S_BOMB))
+    {
+      if(as->x - xr < s->x && as->x + xr > s->x
+      && as->y - yr < s->y && as->y + yr > s->y)
+        return 1; // alien or bomb near, ship should explode
+    }
+    // is the alien above?
     if(as->state >= S_ALIEN_CONVOY && as->state <= S_ALIEN_ATTACK)
     {
-      if(as->x - xr < s->x && as->x + xr > s->x)
-        return 1;
+      if(as->x - xs < s->x && as->x + xs > s->x)
+        retval = -1; // alien found above, ship should shoot
     }
   }
-  return 0;
+  return retval;
 }
 
 void ship_move(struct starship *s)
@@ -1015,6 +1030,12 @@ void ship_move(struct starship *s)
   uint32_t rng = rand();
   int shooting_freq = 5000000;
   static int xdir = SPEED*FPSCALE/2; // x-direction that ship moves
+  int collision = ship_aim_hit(s);
+  if(collision == 1)
+  {
+    explosion_create(s->x, s->y, 4, 64); // rich explosion color type 4 (ship)
+    return;
+  }
   if(Alien_friendly == 0)
     shooting_freq = 600000000;
   if(s->prepare > 0)
@@ -1022,7 +1043,7 @@ void ship_move(struct starship *s)
   else
   {
     if(rng < shooting_freq)
-    if(ship_aim(s) != 0)
+    if(collision == -1)
     {
       s->prepare = SHIP_MISSILE_RELOAD;
       missile_create(Ship.x, Ship.y);
