@@ -42,6 +42,9 @@
 // time to reload next ship missile
 #define ALIEN_BOMB_RELOAD 8
 
+// alien suction bars distance
+#define SUCTION_DISTANCE 12
+
 Compositing c2;
 
 // starship states
@@ -50,11 +53,11 @@ enum
   S_NONE,
   S_ALIEN_PREPARE,
   S_ALIEN_CONVOY, S_ALIEN_HOMING, S_ALIEN_HOME, S_ALIEN_ATTACK,
-  S_ALIEN_EXPLODING, S_ALIEN_DEAD,
-  S_BOMB, S_MISSILE, S_EXPLOSION, S_SHIP,
+  S_SUCTION_BAR,
+  S_BOMB, S_MISSILE, S_EXPLOSION, S_SHIP, S_FIREBALL
 };
 
-int *isin; // sine table for angles 0-255
+int *isin; // sine table for full circle 0-255 
 uint8_t *iatan; // arctan table 0-FPSCALE
 int Alien_count = 0; // number of aliens on the screen
 int Alien_friendly = 1; // by default aliens are friendly (they don't attack)
@@ -85,25 +88,29 @@ struct shape_center Scenter[] =
   [SH_ALIEN4U] = { 9, 5},   // up
   [SH_ALIEN4L] = { 5, 10},  // left
   [SH_ALIEN4D] = {10, 6},   // down
-  // radiate
-  [SH_ALIEN_RADIATE1] = { 1, 1},
-  [SH_ALIEN_RADIATE3] = { 5, 1},
-  [SH_ALIEN_RADIATE5] = { 9, 1},
-  [SH_ALIEN_RADIATE7] = {13, 1},
-  [SH_ALIEN_RADIATE9] = {17, 1},
-  [SH_ALIEN_RADIATE11] = {21, 1},
-  // missile
-  [SH_MISSILE0] = {1, 5},
-  [SH_MISSILE1] = {1, 5},
-  [SH_MISSILE2] = {1, 5},
-  [SH_MISSILE3] = {1, 5},
-  // ship signle
+  [SH_ALIEN5R] = {10, 9},   // right
+  [SH_ALIEN5U] = { 9, 13},  // up
+  [SH_ALIEN5L] = { 5, 10},  // left
+  [SH_ALIEN5D] = {10, 14},  // down
+  // ship single
   [SH_SHIP1R] = {5, 5},
   [SH_SHIP1U] = {5, 5},
   [SH_SHIP1L] = {5, 5},
   [SH_SHIP1D] = {5, 5},
   // ship double
   [SH_SHIP2] = {9, 5},
+  // suction bars
+  [SH_ALIEN_SUCTION1] = { 1, 1},
+  [SH_ALIEN_SUCTION3] = { 5, 1},
+  [SH_ALIEN_SUCTION5] = { 9, 1},
+  [SH_ALIEN_SUCTION7] = {13, 1},
+  [SH_ALIEN_SUCTION9] = {17, 1},
+  [SH_ALIEN_SUCTION11] = {21, 1},
+  // missile
+  [SH_MISSILE0] = {1, 5},
+  [SH_MISSILE1] = {1, 5},
+  [SH_MISSILE2] = {1, 5},
+  [SH_MISSILE3] = {1, 5},
   // bomb
   [SH_BLOCK_RED] = {1, 1},
   [SH_BLOCK_ORANGE] = {1, 1},
@@ -113,6 +120,11 @@ struct shape_center Scenter[] =
   [SH_BLOCK_BLUE] = {1, 1},
   [SH_BLOCK_VIOLETT] = {1, 1},
   [SH_BLOCK_WHITE] = {1, 1},
+  // fireball
+  [SH_FIREBALL0] = {32, 32},
+  [SH_FIREBALL1] = {32, 32},
+  [SH_FIREBALL2] = {28, 28},
+  [SH_FIREBALL3] = {20, 20},
 };
 
 struct fleet
@@ -133,11 +145,13 @@ struct fleet Fleet =
 struct ship
 {
   int x,y;
+  int n; // 1-single ship, 2-double ship
 };
 
 struct ship Ship =
 {
   391*FPSCALE,400*FPSCALE, // x=392..407 ship coordinates
+  1,
 };
 
 struct path_segment
@@ -318,10 +332,23 @@ struct path_segment alien_attack_zig_zag_big_circle[] =
   {0,0,0} // end
 };
 
+struct path_segment alien_suction[] =
+{
+  {SPEED*FPSCALE,  192, 0,     304/SPEED }, // straight down 304 frames
+  {            0,  192, 0,     512/SPEED }, // stop for 512 frames
+  {SPEED*FPSCALE,  192, 0,     512/SPEED }, // straight down 512 frames
+  {0,0,0} // end
+};
+
 struct path_types
 {
   struct path_segment *path;
   int orientation; // should the sprite be reshaped (for angular orientation)
+};
+
+enum
+{
+  PT_ALIEN_SUCTION=12,
 };
 
 struct path_types Path_types[] =
@@ -338,6 +365,7 @@ struct path_types Path_types[] =
   [9] = {alien_attack_zig_zag_thru,0}, // go down zig-zag way all way thru
  [10] = {alien_attack_zig_zag_small_circle,1}, // go down zig-zag way all way thru
  [11] = {alien_attack_zig_zag_big_circle,1}, // go down zig-zag way all way thru
+ [PT_ALIEN_SUCTION] = {alien_suction,0}, // go down, stop to suck, continue down
   {NULL}
 };
 
@@ -385,6 +413,8 @@ struct starship
   int hx, hy; // home position in the fleet
 };
 struct starship *Starship;
+
+struct starship *Fighter; // direct pointer to player's ship
 
 // defines which members of convoy are to enter the stage
 // their flight path and their position in the fleet
@@ -471,17 +501,18 @@ struct convoy Convoy_demo[] =
 // explosion particle colors for alien types 0-3
 int Alien_particle[][4] =
 {
-  { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_BLUE },
-  { SH_BLOCK_YELLOW, SH_BLOCK_YELLOW, SH_BLOCK_CYAN, SH_BLOCK_RED },
-  { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_VIOLETT, SH_BLOCK_VIOLETT },
-  { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_VIOLETT, SH_BLOCK_ORANGE },
-  { SH_BLOCK_RED, SH_BLOCK_RED, SH_BLOCK_RED, SH_BLOCK_ORANGE },
+  [0] = { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_BLUE },
+  [1] = { SH_BLOCK_YELLOW, SH_BLOCK_YELLOW, SH_BLOCK_CYAN, SH_BLOCK_RED },
+  [2] = { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_VIOLETT, SH_BLOCK_VIOLETT },
+  [3] = { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_VIOLETT, SH_BLOCK_ORANGE },
+  [4] = { SH_BLOCK_WHITE, SH_BLOCK_WHITE, SH_BLOCK_GREEN, SH_BLOCK_ORANGE },
+  [5] = { SH_BLOCK_RED, SH_BLOCK_RED, SH_BLOCK_RED, SH_BLOCK_ORANGE },
 };
 
 void create_sine_table()
 {
   int i;
-  isin = (int) malloc(256 * sizeof(int));
+  isin = (int *) malloc(256 * sizeof(int));
   for(i = 0; i < 256; i++)
     isin[i] = sin(i * 2.0 * M_PI / 256.0) * (1.0*FPSCALE) + 0.5;
   #if 0
@@ -494,7 +525,7 @@ void create_sine_table()
 void create_atan_table()
 {
   int i;
-  iatan = (int) malloc(FPSCALE * sizeof(int));
+  iatan = (uint8_t *) malloc(FPSCALE * sizeof(int));
   for(i = 0; i < FPSCALE; i++)
     iatan[i] = atan(i * (1.0 / FPSCALE)) * 256.0 / (2 * M_PI) + 0.5;
 }
@@ -506,7 +537,7 @@ void allocate_ships()
   for(i = 0; i < SHIPS_MAX; i++)
   {
     Starship[i].state = S_NONE;
-    Starship[i].sprite = SH_MAX+i;
+    Starship[i].sprite = N_SHAPES+i;
   }
 }
 
@@ -546,7 +577,7 @@ void create_aliens()
     s->hy = convoy[i].hy * FPSCALE;
     s->state = S_ALIEN_PREPARE;
     s->prepare = convoy[i].prepare * CONVOY_DISTANCE / SPEED;
-    s->shape = (convoy[i].alien_type & 3)*4; // shape base
+    s->shape = (convoy[i].alien_type % 5)*4; // shape base
     s->path_type = convoy[i].path; // path to follow
     s->group = convoy[i].group;
     path = Path_types[s->path_type].path;
@@ -574,6 +605,34 @@ void object_angular_move(struct starship *s)
     c2.Sprite[s->sprite]->x = s->x / FPSCALE;
     c2.Sprite[s->sprite]->y = s->y / FPSCALE;
   }
+}
+
+void fireball_create(int x, int y)
+{
+  struct starship *s = find_free();
+  if(s == NULL)
+    return;
+  s->x = x;
+  s->y = y;
+  s->state = S_FIREBALL;
+  s->shape = SH_FIREBALL0;
+  s->path_count = 0;
+  c2.sprite_link_content(s->shape, s->sprite);
+  c2.Sprite[s->sprite]->x = s->x / FPSCALE - Scenter[s->shape].x;
+  c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
+}
+
+void fireball_move(struct starship *s)
+{
+  if(++s->shape <= SH_FIREBALL3)
+  {
+    c2.Sprite[s->sprite]->x = s->x / FPSCALE - Scenter[s->shape].x;
+    c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
+    c2.sprite_link_content(s->shape, s->sprite);
+    return;
+  }
+  s->state = S_NONE;
+  c2.Sprite[s->sprite]->y =  OFF_SCREEN;
 }
 
 // create N explosion particles flying from x,y
@@ -668,7 +727,6 @@ struct starship *alien_hit(struct starship *s)
 {
   int i;
   struct starship *as;
-  // struct convoy *convoy = Convoy1;
   int xr = 8*FPSCALE, yr = 12*FPSCALE; // collision range
   for(i = 0; i < SHIPS_MAX; i++)
   {
@@ -690,9 +748,9 @@ void missile_move(struct starship *s)
   if(ah != NULL)
   {
     int alien_type = ah->shape / 4;
-    if(alien_type == 3)
+    if(alien_type >= 3)
     {
-      ah->shape -= 4; // change to big alien type 2
+      ah->shape -= 4; // change from big alien type 3 to type 2
       c2.sprite_link_content(ah->shape, ah->sprite);
     }
     else
@@ -702,6 +760,7 @@ void missile_move(struct starship *s)
       if(Alien_count > 0)
         Alien_count--;
     }
+    fireball_create(ah->x, ah->y);
     explosion_create(ah->x, ah->y, alien_type, 64);
     Alien_friendly = 0;
   }
@@ -713,6 +772,44 @@ void missile_move(struct starship *s)
   }
   s->shape = SH_MISSILE0 + Missile_wiggle;
   c2.sprite_link_content(s->shape, s->sprite);
+  object_angular_move(s);
+}
+
+void suction_create(int x, int y)
+{
+  int i;
+  struct starship *s; // suction bar
+  for(i = 0; i < 6; i++)
+  {
+    s = find_free();
+    if(s == NULL)
+      return;
+    s->x = x;
+    s->y = y + i*SUCTION_DISTANCE*FPSCALE;
+    s->a = 64; // move up
+    s->v = FPSCALE; // one frame at a time
+    s->shape = SH_ALIEN_SUCTION1 + i;
+    s->path_state = 0; // y-reset
+    s->path_count = (512 - i*SPEED*SUCTION_DISTANCE/4)/SPEED; // suction time
+    s->state = S_SUCTION_BAR;
+    c2.sprite_link_content(s->shape, s->sprite); // the suction bar
+  }
+}
+
+void suction_move(struct starship *s)
+{
+  if(s->x < 10*FPSCALE || s->x > 640*FPSCALE || s->y > 480*FPSCALE || s->y < 10*FPSCALE
+  || --s->path_count < 0)
+  {
+    s->state = S_NONE;
+    c2.Sprite[s->sprite]->y = OFF_SCREEN; // off-screen, invisible
+    return;
+  }
+  if( ++s->path_state >= SUCTION_DISTANCE)
+  {
+    s->y += SUCTION_DISTANCE*FPSCALE; // reset y-position of the suction bar
+    s->path_state = 0;
+  }
   object_angular_move(s);
 }
 
@@ -743,6 +840,34 @@ void alien_convoy(struct starship *s)
     {
       s->path_state++;
       s->path_count = path[s->path_state].n;
+      if(s->path_type == PT_ALIEN_SUCTION)
+      {
+        if(path[s->path_state].v == 0) // alien stops to suck
+        {
+          int alien_type = s->shape / 4;
+          if(alien_type == 3) // is it still alien type 3? (haven't been hit in meantime)
+            suction_create(s->x, s->y + 20 * FPSCALE); // yes, suck
+          else
+          { // no type 3 alien, skip suction state
+            if( path[s->path_state+1].n > 0 )
+            {
+              s->path_state++;
+              s->path_count = path[s->path_state].n;
+            }
+          }
+        }
+        else if(v == 0) // alien restarts after sucking
+        {
+          if(Ship.n == 1) // currently there's single fighter ship
+          {
+            Ship.n = 2; // double fighter ship
+            Fighter->shape = SH_SHIP2; // double ship shape
+            c2.sprite_link_content(Fighter->shape, Fighter->sprite);
+            s->shape = SH_ALIEN5D; // reshape the alien into big one with suckered ship on the back
+            c2.sprite_link_content(s->shape, s->sprite);
+          }
+        }
+      }
       s->a = path[s->path_state].a;
       if(reshape != 0)
       {
@@ -915,7 +1040,11 @@ void fleet_select_attack()
         // found the candidate for the group attack
         struct starship *s = &(Starship[i]);
         struct path_segment *path;
-        s->path_type = 5+(rng % 7); // 5 is attack path
+        s->path_type = 5+((rng / 256) % 8); // 5 is attack path
+        // s->path_type = PT_ALIEN_SUCTION; // force alien suction (debugging)
+        int alien_type = s->shape / 4;
+        if(s->path_type == PT_ALIEN_SUCTION && alien_type != 3) // only big alien type 3 can suck
+          s->path_type = 11; // not big alien, don't suck
         path = Path_types[s->path_type].path;
         s->state = S_ALIEN_ATTACK;
         s->path_state = 0; // 0 resets path to the first segment of the path
@@ -981,13 +1110,24 @@ void ship_create(int x, int y)
   s = find_free();
   if(s == NULL)
     return;
+  Fighter = s; // update direct pointer to player's ship
   s->x = x;
   s->y = y;
   s->a = 64; // fly up
   s->v = 0;
   s->prepare = 0;
   s->state = S_SHIP;
+  Ship.x = x;
+  Ship.y = y;
+  #if 1
+  // start with single ship
+  Ship.n = 1;
   s->shape = SH_SHIP1U;
+  #else
+  // start with double ship
+  Ship.n = 2;
+  s->shape = SH_SHIP2;
+  #endif
   c2.sprite_link_content(s->shape, s->sprite);
   c2.Sprite[s->sprite]->x = s->x / FPSCALE - Scenter[s->shape].x;
   c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
@@ -1033,7 +1173,14 @@ void ship_move(struct starship *s)
   int collision = ship_aim_hit(s);
   if(collision == 1)
   {
-    explosion_create(s->x, s->y, 4, 64); // rich explosion color type 4 (ship)
+    if(Ship.n == 2) // ship hit: double ship will turn into single ship
+    {
+      Ship.n = 1;
+      s->shape = SH_SHIP1U;
+      c2.sprite_link_content(s->shape, s->sprite);   
+    }
+    fireball_create(s->x, s->y);
+    explosion_create(s->x, s->y, 5, 16); // explosion color type 5 (player ship)
     return;
   }
   if(Alien_friendly == 0)
@@ -1046,7 +1193,13 @@ void ship_move(struct starship *s)
     if(collision == -1)
     {
       s->prepare = SHIP_MISSILE_RELOAD;
-      missile_create(Ship.x, Ship.y);
+      if(Ship.n == 1) // single ship shingle shots
+        missile_create(Ship.x, Ship.y);
+      if(Ship.n == 2) // double ship double shots
+      {
+        missile_create(Ship.x - 6*FPSCALE, Ship.y);
+        missile_create(Ship.x + 6*FPSCALE, Ship.y);
+      }
     }
   }
   if((s->x > 600*FPSCALE || s->x > Fleet.x + 240*FPSCALE) && xdir > 0)
@@ -1059,41 +1212,26 @@ void ship_move(struct starship *s)
   c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
 }
 
-void everything_move(struct starship *s)
+void nothing_move(struct starship *s)
 {
-  switch(s->state)
-  {
-    case S_NONE:
-      return;
-    case S_ALIEN_PREPARE:
-      alien_prepare(s);
-      break;
-    case S_ALIEN_CONVOY:
-      alien_convoy(s);
-      break;
-    case S_ALIEN_HOMING:
-      alien_homing(s);
-      break;
-    case S_ALIEN_HOME:
-      alien_fleet(s);
-      break;
-    case S_ALIEN_ATTACK:
-      alien_attack(s);
-      break;
-    case S_BOMB:
-      bomb_move(s);
-      break;
-    case S_MISSILE:
-      missile_move(s);
-      break;
-    case S_EXPLOSION:
-      explosion_move(s);
-      break;
-    case S_SHIP:
-      ship_move(s);
-      break;
-  }
+  return;
 }
+
+void (*jumptable_move[])(struct starship *) =
+{
+  [S_NONE] = nothing_move,
+  [S_ALIEN_PREPARE] = alien_prepare,
+  [S_ALIEN_CONVOY] = alien_convoy,
+  [S_ALIEN_HOMING] = alien_homing,
+  [S_ALIEN_HOME] = alien_fleet,
+  [S_ALIEN_ATTACK] = alien_attack,
+  [S_SUCTION_BAR] = suction_move,
+  [S_BOMB] = bomb_move,
+  [S_MISSILE] = missile_move,
+  [S_EXPLOSION] = explosion_move,
+  [S_SHIP] = ship_move,
+  [S_FIREBALL] = fireball_move,
+};
 
 void setup()
 {
@@ -1105,8 +1243,14 @@ void setup()
   allocate_ships();
 
   #if 1
+    // ORIGINAL SHAPE SPRITES
+    // first number of sprites will be used only to carry
+    // original shapes. They will not be displayed
     for(i = 0; i < c2.sprite_max && i < N_SHAPES; i++)
       c2.shape_to_sprite(&Shape[i]);
+    // CLONED SHAPE SPRITES
+    // rest of the sprites can be displayed they
+    // contain cloned shapes from original shape sprites
     for(i = c2.n_sprites; i < c2.sprite_max; i++)
       c2.sprite_clone(SH_PLACEHOLDER); // shape is big enough to allow reshaping with smaller ones
     for(i = 0; i < c2.n_sprites; i++)
@@ -1122,6 +1266,8 @@ void setup()
 
   // create the ship, just to display something
   ship_create(Ship.x, Ship.y);
+
+  // suction_create(320*FPSCALE,200*FPSCALE);
 
   // experimental bomb
   // bomb_create(300*FPSCALE,50*FPSCALE,191);
@@ -1155,10 +1301,17 @@ void loop()
   if(Alien_friendly == 0)
     fleet_select_attack();
   for(i = 0; i < SHIPS_MAX; i++)
-    everything_move( &(Starship[i]) );
+  {
+    struct starship *s = &(Starship[i]);
+    jumptable_move[s->state](s);
+  }
 
   while((*c2.vblank_reg & 0x80) == 0);
-  c2.sprite_refresh();
+  #if SHOWCASE_SPRITES
+  c2.sprite_refresh(); // display all sprites, originals and clones
+  #else
+  c2.sprite_refresh(N_SHAPES); // display only clones (faster)
+  #endif
   while((*c2.vblank_reg & 0x80) != 0);
   //delay(400);
 }
