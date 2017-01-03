@@ -41,7 +41,9 @@ class Compositing
 
     void init();
     void alloc_sprites(int n);
-    void sprite_refresh(void); // refresh compositing linked list after changing x/y positions
+    void sprite_refresh(); // refresh compositing linked list after changing x/y positions
+    void sprite_refresh(int m); // refresh from sprite number 'm' to last sprite
+    void sprite_refresh(int m, int n); // refresh sprites from 'm' to 'n'-1 ('n' non-inclusive)
     int shape_to_sprite(struct shape *sh);
     int sprite_clone(int original); // new sprite with clone content from existing sprite
     int sprite_add(struct sprite *s); // new sprite with clone content from existing sprite

@@ -234,16 +234,17 @@ void Compositing::sprite_position(int sprite, int x, int y)
 
 // refresh compositing linked list after changing x/y positions
 // to avoid flickering, this must be called during video blank period
-void Compositing::sprite_refresh(void)
+// display sprites from m to n
+void Compositing::sprite_refresh(int m, int n)
 {
-  int i, j, n = n_sprites;
+  int i, j;
 
   // reset all screen lines to blank content
   for(i = 0; i < VGA_Y_MAX; i++)
     scanlines[i] = NULL;
 
   // now link all sprites, insering them into the linked list
-  for(i = 0; i < n; i++) // loop over all sprites
+  for(i = m; i < n; i++) // loop over all sprites
   {
     // cache x/y-offset of the sprite
     int x = Sprite[i]->x;
@@ -252,13 +253,14 @@ void Compositing::sprite_refresh(void)
     // calculate clipping
     int j0 = 0;
     int j1 = h;
+    int jy;
     if(y < 0)
       j0 = -y;
     if(y + h > VGA_Y_MAX)
       j1 = VGA_Y_MAX - y;
-    for(j = j0; j < j1; j++) // loop over all visible hor.lines of the sprite
+    for(j = j0, jy = j0+y; j < j1; j++, jy++) // loop over all visible hor.lines of the sprite
     {
-      struct compositing_line **sl = &(scanlines[j+y]);
+      struct compositing_line **sl = &(scanlines[jy]);
       Sprite[i]->line[j].x = x;
       // insert sprite lines into the linked list of scan lines
       Sprite[i]->line[j].next = *sl;
@@ -266,4 +268,14 @@ void Compositing::sprite_refresh(void)
     }
   }
   *videobase_reg = (uint32_t) &(scanlines[0]);
+}
+
+void Compositing::sprite_refresh(int m)
+{
+  sprite_refresh(m, n_sprites);
+}
+
+void Compositing::sprite_refresh()
+{
+  sprite_refresh(0, n_sprites);
 }
