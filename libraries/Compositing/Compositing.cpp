@@ -30,7 +30,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
   int i,j;
   int ix=VGA_X_MAX/2,iy=VGA_Y_MAX/2; // initial sprite position on screen
   int w=32,h=32; // width and height of the sprite
-  int sprite_size; // how much to malloc
+  int sprite_size, line_size; // how much to malloc
   pixel_t color_list[256];
   char **bmp; // bitmap: array of strings
   uint16_t x,y; // running coordinates during ascii->pixel conversion
@@ -50,8 +50,10 @@ int Compositing::shape_to_sprite(struct shape *sh)
       content_size += strlen(*bmp);
   h = y;
   new_content = (pixel_t *)malloc(content_size*sizeof(pixel_t));
-  sprite_size = sizeof(struct sprite)+h*(sizeof(struct compositing_line));
+  sprite_size = sizeof(struct sprite); // +h*(sizeof(struct compositing_line));
   new_sprite = (struct sprite *)malloc(sprite_size);
+  line_size = h*(sizeof(struct compositing_line));
+  new_sprite->line = (struct compositing_line *)malloc(line_size);
   new_sprite->x = ix;
   new_sprite->y = iy;
   new_sprite->w = w; // max sprite width (maybe unused)
@@ -120,12 +122,15 @@ int Compositing::sprite_clone(int original)
 {
   struct sprite *orig = Sprite[original];
   struct sprite *clon;
-  uint32_t sprite_size;
+  uint32_t sprite_size, line_size;
   int i;
 
-  sprite_size = sizeof(struct sprite) + (orig->h) * sizeof(struct compositing_line);
+  sprite_size = sizeof(struct sprite);
   clon = (struct sprite *)malloc(sprite_size);
   memcpy(clon, orig, sprite_size);
+  line_size = orig->ha * sizeof(struct compositing_line);
+  clon->line = (struct compositing_line *)malloc(line_size);
+  memcpy(clon->line, orig->line, line_size);
   i = n_sprites;
   Sprite[n_sprites++] = clon;
   return i;
@@ -146,7 +151,7 @@ int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
 
   for(i = 0; i < w; i++)
     content[i] = color;
-  sprite_size = sizeof(struct sprite) + h * sizeof(struct compositing_line);
+  sprite_size = sizeof(struct sprite);
 
   spr = (struct sprite *)malloc(sprite_size);
   spr->x = 0;
@@ -154,6 +159,7 @@ int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
   spr->w = w;
   spr->h = h;
   spr->ha = h;
+  spr->line = (struct compositing_line *)malloc(h * sizeof(struct compositing_line));
   for(i = 0; i < h; i++)
   {
     spr->line[i].next = NULL;
@@ -176,7 +182,7 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
   uint32_t sprite_size;
   struct sprite *spr;
 
-  sprite_size = sizeof(struct sprite) + h * sizeof(struct compositing_line);
+  sprite_size = sizeof(struct sprite);
 
   spr = (struct sprite *)malloc(sprite_size);
   spr->x = 0;
@@ -184,6 +190,7 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
   spr->w = w;
   spr->h = h;
   spr->ha = h;
+  spr->line = (struct compositing_line *)malloc(h * sizeof(struct compositing_line));
   for(i = 0; i < h; i++)
   {
     spr->line[i].next = NULL;
@@ -203,27 +210,24 @@ void Compositing::sprite_link_content(int original, int clone)
   int i, n;
   int m;
 
-  struct compositing_line *src = Sprite[original]->line;
-  struct compositing_line *dst = Sprite[clone]->line;
-
   // how many lines
   n = Sprite[clone]->ha; // number of lines destination sprite has allocated
-  #if 1
   m = Sprite[original]->h; // number of lines original sprite has
-  if(m < n)
-    n = m; // smallest of the two
-  #endif
-  //memcpy(Sprite[original]->line[0], Sprite[clone]->line[0], sizeof(compositing_line)*n);
-  for(i = 0; i < n; i++)
+  if(m > n)
+  {
+    Sprite[clone]->line = (struct compositing_line *)realloc(Sprite[clone]->line, m * sizeof(struct compositing_line));
+    Sprite[clone]->ha = m; // increase allocated size to the clone
+  }
+  struct compositing_line *src = Sprite[original]->line;
+  struct compositing_line *dst = Sprite[clone]->line;
+  for(i = 0; i < m; i++)
   {
     dst[i].bmp = src[i].bmp;
     dst[i].n = src[i].n;
   }
   // copy size (may be omitted when all are the same size)
-  #if 1
-  Sprite[clone]->h = n;
-  Sprite[clone]->w = Sprite[original]->w;
-  #endif
+  Sprite[clone]->h = m;
+  Sprite[clone]->w = Sprite[original]->w; // not used, copy anyway
 }
 
 void Compositing::sprite_position(int sprite, int x, int y)
