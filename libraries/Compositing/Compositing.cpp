@@ -58,7 +58,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
     for(clr = *bmp; *clr != 0 && color_list[(int)*clr] == 0; clr++);
     #endif
     int rl = strlen(clr); // reverse length to find last non-transparent pixel
-    for(; color_list[(int)clr[rl-1]] == 0 && rl > PAD_STEP; rl--);
+    for(; color_list[(int)clr[rl-1]] == 0 && rl > 0; rl--);
     int pixlen = (rl + (PAD_STEP-1)) & ~(PAD_STEP-1); // 32-bit even
     content_size += pixlen;
   }
@@ -81,7 +81,6 @@ int Compositing::shape_to_sprite(struct shape *sh)
   {
     new_sprite->line[i].next = NULL;
     new_sprite->line[i].x = ix;
-    // new_sprite->line[i].n = w;
     // new_sprite->lxo[i] = 0;
   }
   // 2nd pass read ascii-art data and write color pixel content
@@ -90,22 +89,30 @@ int Compositing::shape_to_sprite(struct shape *sh)
   {
       // uint8_t *line_content = &(new_content[y[0]*w]); // pointer to current line in content
       // enforce 32-bit even line content start address
-      line_content = (pixel_t *) ( (3 + (uint32_t)line_content) & ~3 );
-      new_sprite->line[y].bmp = line_content;
       int16_t lxo = 0; // line x-offset fo skipping transparent pixels
       clr = *bmp;
       #if REMOVE_LEADING_TRANSPARENT
       for(clr = *bmp; *clr != 0 && color_list[(int)*clr] == 0; clr++, lxo++); // skip leading transparent pixels (color 0)
       #endif
       new_sprite->lxo[y] = lxo; // x-offset for skipping
-      int rl = strlen(clr); // reverse length to find last non-transparent pixel
-      for(; color_list[(int)clr[rl-1]] == 0 && rl > PAD_STEP; rl--);
-      for(x = 0; *clr != 0 && x < rl; x++, clr++) // copy content
-        *(line_content++) = color_list[(int)*clr];
-      if(x == 0)
+      int rl = strlen(clr); // reverse length to cut off trailing transparent pixels
+      for(; color_list[(int)clr[rl-1]] == 0 && rl > 0; rl--);
+      if(rl == 0)
+      {
+        new_sprite->line[y].n = 0; // minimize glitches if hardware catches NULL line
+        new_sprite->line[y].x = -4; // minimize glitches move it off screen
         new_sprite->line[y].bmp = NULL; // no content: the NULL line
-      x = (x + (PAD_STEP-1)) & ~(PAD_STEP-1); // the length padding
-      new_sprite->line[y].n = x-1; // set number of pixels
+        x = 0;
+      }
+      else
+      {
+        line_content = (pixel_t *) ( (3 + (uint32_t)line_content) & ~3 );
+        new_sprite->line[y].bmp = line_content;
+        for(x = 0; *clr != 0 && x < rl; x++, clr++) // copy content
+          *(line_content++) = color_list[(int)*clr];
+        x = (x + (PAD_STEP-1)) & ~(PAD_STEP-1); // the length padding
+        new_sprite->line[y].n = x-1; // hardware needs x-1
+      }
       #if USE_EXISTING_CONTENT
       if(x > 0)
       {
@@ -253,13 +260,13 @@ void Compositing::sprite_link_content(int original, int clone)
   if(m > n)
   {
     Sprite[clone]->line = (struct compositing_line *)realloc(Sprite[clone]->line, m * sizeof(struct compositing_line));
-    // Sprite[clone]->line = (struct compositing_line *)realloc(Sprite[clone]->line, m * (sizeof(struct compositing_line) + sizeof(int16_t)));
-    // Sprite[clone]->lxo = (int16_t *) &(Sprite[clone]->line[m]);
+    //Sprite[clone]->line = (struct compositing_line *)realloc(Sprite[clone]->line, m * (sizeof(struct compositing_line) + sizeof(int16_t)));
+    //Sprite[clone]->lxo = (int16_t *) &(Sprite[clone]->line[m]);
     Sprite[clone]->ha = m; // increase allocated size to the clone
   }
   struct compositing_line *src = Sprite[original]->line;
   struct compositing_line *dst = Sprite[clone]->line;
-  int16_t *src_lxo = Sprite[original]->lxo, *dst_lxo = Sprite[clone]->lxo;
+  //int16_t *src_lxo = Sprite[original]->lxo, *dst_lxo = Sprite[clone]->lxo;
   Sprite[clone]->lxo = Sprite[original]->lxo; // faster: don't copy x-line-offset, just change the pointer
   for(i = 0; i < m; i++)
   {
@@ -305,7 +312,7 @@ void Compositing::sprite_refresh(int m, int n)
       j1 = VGA_Y_MAX - y;
     for(j = j0, jy = j0+y; j < j1; j++, jy++) // loop over all visible hor.lines of the sprite
     {
-      if(Sprite[i]->line[j].bmp != NULL)
+      if(Sprite[i]->line[j].bmp)
       {
         struct compositing_line **sl = &(scanlines[jy]);
         #if REMOVE_LEADING_TRANSPARENT
