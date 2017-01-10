@@ -694,7 +694,7 @@ char *shape_block_white[] =
 NULL
 };
 
-char *shape_fireball0[] =
+char *shape_firebally0[] =
 {
 "         WYWWWW                  Y                              ",
 "       WWWWWWWWWWY      Y               Y     YWWWWWY      Y    ",
@@ -761,7 +761,7 @@ char *shape_fireball0[] =
 NULL
 };
 
-char *shape_fireball1[] =
+char *shape_firebally1[] =
 {
 "      O                            O      WWWWWWW        ",
 " O         WWWWWWW        O             WWWWWWWWWWW   O  ",
@@ -823,7 +823,7 @@ char *shape_fireball1[] =
 NULL
 };
 
-char *shape_fireball2[] =
+char *shape_firebally2[] =
 {
 "                                       R     OOOOOOOOO        ",
 "     R                                     OOOOOOOOOOOOO   R  ",
@@ -887,7 +887,7 @@ char *shape_fireball2[] =
 NULL
 };
 
-char *shape_fireball3[] =
+char *shape_firebally3[] =
 {
 "R               R       RRRRRRR   R    R ",
 "      RRRRRRR         RRRRRRRRRRR        ",
@@ -934,6 +934,236 @@ char *shape_fireball3[] =
 NULL
 };
 
+char *shape_fireballb0[] =
+{
+"                          WWWWWWW                               ",
+"                        WWWWWWWWWWW                             ",
+"                       WWWWWWWWWWWWW                            ",
+"                      WWWWWWWWWWWWWWW                           ",
+"                     WWWWWWWWWWWWWWWWW                          ",
+"                     WWWWWWWWWWWWWWWWW                          ",
+"                    WWWWWWWWWWWWWWWWWWW                         ",
+"                    WWWWWWWWWWWWWWWWWWW                         ",
+"                    WWWWWWWWWWWWWWWWWWW                         ",
+"                    WWWWWWWWWWWWWWWWWWW                         ",
+"                    WWWWWWWWWWWWWWWWWWW                         ",
+"                    WWWWWWWWWWWWWWWWWWWWW                       ",
+"                    WWWWWWWWWWWWWWWWWWWWWW                      ",
+"                     WWWWWWWWWWWWWWWWWWWWWW                     ",
+"                     WWWWWWWWWWWWWWWWWWWWWWW                    ",
+"                     WWWWWWWWWWWWWWWWWWWWWWW                    ",
+"                    WWWWWWWWWWWWWWWWWWWWWWWWW      WWWWWWW      ",
+"                    WWWWWWWWWWWWWWWWWWWWWWWWWW   WWWWWWWWWWW    ",
+"                    WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW   ",
+"                    WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW  ",
+"                   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ",
+"                   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ",
+"                  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+"                 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+"                WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+"      WWWWWWW   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+"    WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+"   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+"  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+" WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ",
+" WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW ",
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW  ",
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW   ",
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW    ",
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW      ",
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW            ",
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW             ",
+"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW             ",
+" WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW              ",
+" WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW               ",
+"  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW               ",
+"   WWWWWWWWWWWWW   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW               ",
+"    WWWWWWWWWWW     WWWWWWWWWWWWWWWWWWWWWWWWWWWWW               ",
+"      WWWWWWW       WWWWWWWWWWWWWWWWWWWWWWWWWWWW                ",
+"                     WWWWWWWWWWWWWWWWWWWWWWWWWWW                ",
+"                     WWWWWWWWWWWWWWWWWWWWWWWWWW                 ",
+"                     WWWWWWWWWWWWWWWWWWWWWWWWW                  ",
+"                      WWWWWWWWWWWWWWWWWWWWWWW                   ",
+"                      WWWWWWWWWWWWWWWWWWWWW                     ",
+"                       WWWWWWWWWWWWWWWWWWWW                     ",
+"                        WWWWWWWWWWWWWWWWWWW                     ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                          WWWWWWWWWWWWWWWWW                     ",
+"                          WWWWWWWWWWWWWWWWW                     ",
+"                           WWWWWWWWWWWWWWW                      ",
+"                            WWWWWWWWWWWWW                       ",
+"                             WWWWWWWWWWW                        ",
+"                               WWWWWWW                          ",
+NULL
+};
+
+char *shape_fireballb1[] =
+{
+"                             WWWWWWW                            ",
+"                           WWWWWWWWWWW                          ",
+"                          WWWWWWWWWWWWW                         ",
+"                         WWWWWWWWWWWWWWW                        ",
+"                        WWWWWWWWWWWWWWWWW                       ",
+"                        WWWWWWWWWWWWWWWWW                       ",
+"                       WWWWWWWWWWWWWWWWWWW                      ",
+"                       WWWWWWWWWWWWWWWWWWW                      ",
+"                       WWWWWWWWWWWWWWWWWWW                      ",
+"                       WWWWWWWWWWWWWWWWWWW                      ",
+"                       WWWWWWWWWWWWWWWWWWW                      ",
+"                       WWWWWWWWWWWWWWWWWWW                      ",
+"                       WWWWWWWWWWWWWWWWWWW                      ",
+"                        WWWWWWWWWWWWWWWWWW                      ",
+"                       WWWWWWWWWWWWWWWWWWWWW                    ",
+"                     WWWWWWWWWWWWWWWWWWWWWWWW                   ",
+"                    WWWWWWWWWWWWWWWWWWWWWWWWWW                  ",
+"                   WWWWWWWWWWWWWWWWWWWWWWWWWWWW                 ",
+"                  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW          ",
+"                  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW        ",
+"                 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW       ",
+"                 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW      ",
+"           WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW     ",
+"         WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW     ",
+"        WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW    ",
+"       WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW    ",
+"      WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW    ",
+"      WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW    ",
+"     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW    ",
+"     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW    ",
+"     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW    ",
+"     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW     ",
+"     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW     ",
+"     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW      ",
+"     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW       ",
+"      WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW        ",
+"      WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW          ",
+"       WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW             ",
+"        WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW               ",
+"         WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW                 ",
+"           WWWWWWW  WWWWWWWWWWWWWWWWWWWWWWWWWW                  ",
+"                     WWWWWWWWWWWWWWWWWWWWWWWWW                  ",
+"                      WWWWWWWWWWWWWWWWWWWWWWW                   ",
+"                       WWWWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWW                     ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                         WWWWWWWWWWWWWWWWWWW                    ",
+"                          WWWWWWWWWWWWWWWWW                     ",
+"                          WWWWWWWWWWWWWWWWW                     ",
+"                           WWWWWWWWWWWWWWW                      ",
+"                            WWWWWWWWWWWWW                       ",
+"                             WWWWWWWWWWW                        ",
+"                               WWWWWWW                          ",
+NULL
+};
+
+char *shape_fireballb2[] =
+{
+"                              CCCCCCC                           ",
+"                            CCCCCCCCCCC                         ",
+"                           CCCCCCCCCCCCC                        ",
+"                          CCCCCCCCCCCCCCC                       ",
+"                         CCCCCCCCCCCCCCCCC                      ",
+"                         CCCCCCCCCCCCCCCCC                      ",
+"                        CCCCCCCCCCCCCCCCCCC                     ",
+"                        CCCCCCCCCCCCCCCCCCCCC                   ",
+"                       CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC           ",
+"                     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC         ",
+"                    CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC        ",
+"                   CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC       ",
+"                CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC      ",
+"              CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC      ",
+"             CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC     ",
+"            CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC     ",
+"           CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC     ",
+"          CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC     ",
+"         CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC     ",
+"         CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC     ",
+"        CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC     ",
+"        CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC      ",
+"        CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC      ",
+"        CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC       ",
+"        CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC        ",
+"        CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC        ",
+"        CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC        ",
+"         CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC         ",
+"         CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC         ",
+"          CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC          ",
+"           CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC           ",
+"            CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC            ",
+"              CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC            ",
+"                CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC             ",
+"                CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC             ",
+"                 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC              ",
+"                  CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC               ",
+"                   CCCCCCCCCCCCCCCCCCCCCCCCCCCCC                ",
+"                     CCCCCCCCCCCCCCCCCCCCCCCCC                  ",
+"                        CCCCCCCCCCCCCCCCCCC                     ",
+"                        CCCCCCCCCCCCCCCCCCC                     ",
+"                         CCCCCCCCCCCCCCCCC                      ",
+"                         CCCCCCCCCCCCCCCCC                      ",
+"                          CCCCCCCCCCCCCCC                       ",
+"                           CCCCCCCCCCCCC                        ",
+"                            CCCCCCCCCCC                         ",
+"                              CCCCCCC                           ",
+NULL
+};
+
+char *shape_fireballb3[] =
+{
+"                               BBBBBBB                          ",
+"                             BBBBBBBBBBB                        ",
+"                            BBBBBBBBBBBBB                       ",
+"                           BBBBBBBBBBBBBBB                      ",
+"                          BBBBBBBBBBBBBBBBB                     ",
+"                          BBBBBBBBBBBBBBBBB                     ",
+"                         BBBBBBBBBBBBBBBBBBB                    ",
+"                         BBBBBBBBBBBBBBBBBBB                    ",
+"                         BBBBBBBBBBBBBBBBBBBB                   ",
+"                         BBBBBBBBBBBBBBBBBBBB                   ",
+"                        BBBBBBBBBBBBBBBBBBBBBBBBB               ",
+"                       BBBBBBBBBBBBBBBBBBBBBBBBBBBB             ",
+"                      BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB            ",
+"                    BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB           ",
+"                  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB          ",
+"                 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB          ",
+"                BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB         ",
+"               BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB         ",
+"               BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB         ",
+"              BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB         ",
+"              BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB         ",
+"              BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB         ",
+"              BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB         ",
+"              BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB          ",
+"              BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB          ",
+"              BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB           ",
+"               BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB            ",
+"               BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB             ",
+"                BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB               ",
+"                 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB                ",
+"                  BBBBBBBBBBBBBBBBBBBBBBBBBBBBB                 ",
+"                    BBBBBBBBBBBBBBBBBBBBBBBBBB                  ",
+"                       BBBBBBBBBBBBBBBBBBBBBBB                  ",
+"                        BBBBBBBBBBBBBBBBBBBBBB                  ",
+"                         BBBBBBBBBBBBBBBBBBBBB                  ",
+"                          BBBBBBBBBBBBBBBBBBB                   ",
+"                            BBBBBBBBBBBBBBBBB                   ",
+"                             BBBBBBBBBBBBBBB                    ",
+"                              BBBBBBBBBBBBB                     ",
+"                               BBBBBBBBBBB                      ",
+"                                 BBBBBBB                        ",
+NULL
+};
+
 enum
 {
   SH_ALIEN1R=0,  SH_ALIEN1U, SH_ALIEN1L, SH_ALIEN1D,
@@ -945,7 +1175,8 @@ enum
   SH_ALIEN_SUCTION1, SH_ALIEN_SUCTION3, SH_ALIEN_SUCTION5, SH_ALIEN_SUCTION7, SH_ALIEN_SUCTION9, SH_ALIEN_SUCTION11,
   SH_MISSILE0, SH_MISSILE1, SH_MISSILE2, SH_MISSILE3,
   SH_BLOCK_RED, SH_BLOCK_ORANGE, SH_BLOCK_YELLOW, SH_BLOCK_GREEN, SH_BLOCK_CYAN, SH_BLOCK_BLUE, SH_BLOCK_VIOLETT, SH_BLOCK_WHITE,
-  SH_FIREBALL0, SH_FIREBALL1, SH_FIREBALL2, SH_FIREBALL3,
+  SH_FIREBALLY0, SH_FIREBALLY1, SH_FIREBALLY2, SH_FIREBALLY3,
+  SH_FIREBALLB0, SH_FIREBALLB1, SH_FIREBALLB2, SH_FIREBALLB3,
   SH_PLACEHOLDER,
 };
 
@@ -1003,10 +1234,16 @@ struct shape Shape[] =
   [SH_BLOCK_VIOLETT] = { std_colors, shape_block_violett },
   [SH_BLOCK_WHITE] = { std_colors, shape_block_white },
  
-  [SH_FIREBALL0] = { std_colors, shape_fireball0 },
-  [SH_FIREBALL1] = { std_colors, shape_fireball1 },
-  [SH_FIREBALL2] = { std_colors, shape_fireball2 },
-  [SH_FIREBALL3] = { std_colors, shape_fireball3 },
+  [SH_FIREBALLY0] = { std_colors, shape_firebally0 },
+  [SH_FIREBALLY1] = { std_colors, shape_firebally1 },
+  [SH_FIREBALLY2] = { std_colors, shape_firebally2 },
+  [SH_FIREBALLY3] = { std_colors, shape_firebally3 },
+
+  [SH_FIREBALLB0] = { std_colors, shape_fireballb0 },
+  [SH_FIREBALLB1] = { std_colors, shape_fireballb1 },
+  [SH_FIREBALLB2] = { std_colors, shape_fireballb2 },
+  [SH_FIREBALLB3] = { std_colors, shape_fireballb3 },
+
   [SH_PLACEHOLDER] = { std_colors, shape_block_white }, 
   // active sprites initially have SH_PLACEHOLDER and
   // are dynamically reshaped with other shapes

@@ -15,7 +15,7 @@
 // fixed point scale
 #define FPSCALE 256
 
-// global speed 1/2/4/8 (more=faster)
+// global speed 1/2/4 (more=faster)
 #define SPEED 4
 
 // fleet drift (more = SLOWER)
@@ -121,10 +121,14 @@ struct shape_center Scenter[] =
   [SH_BLOCK_VIOLETT] = {1, 1},
   [SH_BLOCK_WHITE] = {1, 1},
   // fireball
-  [SH_FIREBALL0] = {32, 32},
-  [SH_FIREBALL1] = {32, 32},
-  [SH_FIREBALL2] = {28, 28},
-  [SH_FIREBALL3] = {20, 20},
+  [SH_FIREBALLY0] = {32, 32},
+  [SH_FIREBALLY1] = {32, 32},
+  [SH_FIREBALLY2] = {28, 28},
+  [SH_FIREBALLY3] = {20, 20},
+  [SH_FIREBALLB0] = {32, 32},
+  [SH_FIREBALLB1] = {32, 28},
+  [SH_FIREBALLB2] = {32, 21},
+  [SH_FIREBALLB3] = {32, 21},
 };
 
 struct fleet
@@ -405,7 +409,7 @@ struct starship
   int state; // the state number
   int prepare; // prepare countdown (also shooting reload)
   int sprite; // sprite number which is used to display this starship
-  int shape; // sprite base carrying the shape
+  uint32_t shape; // sprite base carrying the shape
   int group; // group membership for alien attacks
   int path_type; // current path type
   int path_state; // state of the current path
@@ -532,7 +536,7 @@ void create_atan_table()
 
 void allocate_ships()
 {
-  int i;
+  uint32_t i;
   Starship = (struct starship *) malloc(SHIPS_MAX * sizeof(struct starship) );
   for(i = 0; i < SHIPS_MAX; i++)
   {
@@ -543,7 +547,7 @@ void allocate_ships()
 
 struct starship *find_free()
 {
-  int i;
+  uint32_t i;
   for(i = 0; i < SHIPS_MAX; i++)
   {
     if( Starship[i].state == S_NONE )
@@ -554,8 +558,7 @@ struct starship *find_free()
 
 void create_aliens()
 {
-  int i;
-  int path_type;
+  uint32_t i;
   struct convoy *convoy;
   struct path_segment *path;
   struct starship *s;
@@ -607,7 +610,10 @@ void object_angular_move(struct starship *s)
   }
 }
 
-void fireball_create(int x, int y)
+// initiate 4-frame fireball animaton
+// starting from specified shape.
+// each frame increases shape number
+void fireball_create(int x, int y, int shape)
 {
   struct starship *s = find_free();
   if(s == NULL)
@@ -615,7 +621,7 @@ void fireball_create(int x, int y)
   s->x = x;
   s->y = y;
   s->state = S_FIREBALL;
-  s->shape = SH_FIREBALL0;
+  s->shape = shape;
   s->path_count = 0;
   c2.sprite_link_content(s->shape, s->sprite);
   c2.Sprite[s->sprite]->x = s->x / FPSCALE - Scenter[s->shape].x;
@@ -624,15 +630,18 @@ void fireball_create(int x, int y)
 
 void fireball_move(struct starship *s)
 {
-  if(++s->shape <= SH_FIREBALL3)
+  if(++s->path_count <= 3)
   {
+    s->shape++;
+    c2.sprite_link_content(s->shape, s->sprite);
     c2.Sprite[s->sprite]->x = s->x / FPSCALE - Scenter[s->shape].x;
     c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
-    c2.sprite_link_content(s->shape, s->sprite);
-    return;
   }
-  s->state = S_NONE;
-  c2.Sprite[s->sprite]->y =  OFF_SCREEN;
+  else
+  {
+    s->state = S_NONE;
+    c2.Sprite[s->sprite]->y = OFF_SCREEN;
+  }
 }
 
 // create N explosion particles flying from x,y
@@ -725,7 +734,7 @@ void missile_create(int x, int y)
 // to the alien which is hit by the missile s
 struct starship *alien_hit(struct starship *s)
 {
-  int i;
+  uint32_t i;
   struct starship *as;
   int xr = 8*FPSCALE, yr = 12*FPSCALE; // collision range
   for(i = 0; i < SHIPS_MAX; i++)
@@ -742,9 +751,8 @@ struct starship *alien_hit(struct starship *s)
   return NULL; // no alien is hit
 }
 
-void missile_move(struct starship *s)
+void kill_alien(struct starship *ah)
 {
-  struct starship *ah = alien_hit(s);
   if(ah != NULL)
   {
     int alien_type = ah->shape / 4;
@@ -760,10 +768,17 @@ void missile_move(struct starship *s)
       if(Alien_count > 0)
         Alien_count--;
     }
-    fireball_create(ah->x, ah->y);
+    fireball_create(ah->x, ah->y, alien_type == 0 ? SH_FIREBALLB0 : SH_FIREBALLY0);
     explosion_create(ah->x, ah->y, alien_type, 64);
     Alien_friendly = 0;
   }
+}
+
+void missile_move(struct starship *s)
+{
+  struct starship *ah = alien_hit(s);
+  if(ah != NULL)
+    kill_alien(ah);
   if(s->x < 10*FPSCALE || s->x > 640*FPSCALE || s->y > 480*FPSCALE || s->y < 10*FPSCALE || ah != NULL)
   {
     s->state = S_NONE;
@@ -817,8 +832,6 @@ void suction_move(struct starship *s)
 // reshape=0 -> do not change shape on direction change
 void alien_convoy(struct starship *s)
 {
-  int v;
-  uint8_t xa;
   struct path_segment *path;
   path = Path_types[s->path_type].path;
   int reshape = Path_types[s->path_type].orientation;
@@ -856,7 +869,7 @@ void alien_convoy(struct starship *s)
             }
           }
         }
-        else if(v == 0) // alien restarts after sucking
+        else if(s->v == 0) // alien restarts after sucking
         {
           if(Ship.n == 1) // currently there's single fighter ship
           {
@@ -894,7 +907,7 @@ void alien_prepare(struct starship *s)
 
 void alien_homing(struct starship *s)
 {
-  int dir;
+  int dir = 192; // default orient down
   int xd, yd;
   xd = Fleet.x + s->hx - s->x;
   yd = Fleet.y + s->hy - s->y;
@@ -935,7 +948,7 @@ void alien_homing(struct starship *s)
     s->y = Fleet.y + s->hy;
     dir = 3; // down
   }
-  s->a = dir * 64; // orient alien down
+  s->a = dir * 64; // orientation of the alien
   s->shape = (s->shape & ~3) | (dir & 3);
   c2.sprite_link_content(s->shape, s->sprite); // orient alien down
   c2.Sprite[s->sprite]->x = s->x / FPSCALE - Scenter[s->shape].x;
@@ -1024,7 +1037,7 @@ void fleet_select_attack()
 {
   uint32_t rng = rand();
   int group;
-  int i;
+  uint32_t i;
   if(rng < 200000000)
   {
     group = 1 + (rng % 10); // select which group will attack
@@ -1138,9 +1151,9 @@ void ship_create(int x, int y)
 //  0 nothing
 // -1 alien in the x-shooting range
 //  1 ship hit by alien or bomb
-int ship_aim_hit(struct starship *s)
+int ship_aim_hit(struct starship *s, struct starship **alien)
 {
-  int i;
+  uint32_t i;
   struct starship *as;
   int xs = 32*FPSCALE; // shooting range
   int xr = 12*FPSCALE, yr = 12*FPSCALE; // collision range
@@ -1153,7 +1166,11 @@ int ship_aim_hit(struct starship *s)
     {
       if(as->x - xr < s->x && as->x + xr > s->x
       && as->y - yr < s->y && as->y + yr > s->y)
+      {
+        if(alien != NULL)
+          *alien = as;
         return 1; // alien or bomb near, ship should explode
+      }
     }
     // is the alien above?
     if(as->state >= S_ALIEN_CONVOY && as->state <= S_ALIEN_ATTACK)
@@ -1168,18 +1185,31 @@ int ship_aim_hit(struct starship *s)
 void ship_move(struct starship *s)
 {
   uint32_t rng = rand();
-  int shooting_freq = 5000000;
+  uint32_t shooting_freq = 5000000;
   static int xdir = SPEED*FPSCALE/2; // x-direction that ship moves
-  int collision = ship_aim_hit(s);
+  struct starship *object_collided;
+  int collision = ship_aim_hit(s, &object_collided);
   if(collision == 1)
   {
+    if(object_collided)
+    {
+      if(object_collided->state >= S_ALIEN_CONVOY && object_collided->state <= S_ALIEN_ATTACK)
+        kill_alien(object_collided);
+      // if it was not alien but just a bomb, silently remove it
+      // so the ship will not continously keep exploding
+      if(object_collided->state == S_BOMB)
+      {
+        object_collided->state = S_NONE;
+        c2.Sprite[object_collided->sprite]->y = OFF_SCREEN;
+      }
+    }
     if(Ship.n == 2) // ship hit: double ship will turn into single ship
     {
       Ship.n = 1;
       s->shape = SH_SHIP1U;
       c2.sprite_link_content(s->shape, s->sprite);   
     }
-    fireball_create(s->x, s->y);
+    fireball_create(s->x, s->y, SH_FIREBALLY0);
     explosion_create(s->x, s->y, 5, 16); // explosion color type 5 (player ship)
     return;
   }
@@ -1246,7 +1276,7 @@ void setup()
     // ORIGINAL SHAPE SPRITES
     // first number of sprites will be used only to carry
     // original shapes. They will not be displayed
-    for(i = 0; i < c2.sprite_max && i < N_SHAPES; i++)
+    for(i = 0; i < c2.sprite_max && i < (int)N_SHAPES; i++)
       c2.shape_to_sprite(&Shape[i]);
     // CLONED SHAPE SPRITES
     // rest of the sprites can be displayed they
@@ -1292,7 +1322,7 @@ void setup()
 
 void loop()
 {
-  int i;
+  uint32_t i;
 
   if(Alien_count <= 0)
     create_aliens();
