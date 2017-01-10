@@ -33,8 +33,11 @@ int Compositing::shape_to_sprite(struct shape *sh)
   int sprite_size, line_size; // how much to malloc
   pixel_t color_list[256];
   char **bmp; // bitmap: array of strings
+  char *clr; // ascii art color pixel pointer
   uint16_t x,y; // running coordinates during ascii->pixel conversion
   int content_size;
+  // padding to sizeof pixel, assuming sizeof(pixel_t) is power of 2 bytes
+  int PAD_STEP = 4 / sizeof(pixel_t);
   pixel_t *new_content, *line_content; // malloc'd contiguous space for the sprite
   struct charcolors *chc;
   // struct sprite *spr = &(Sprite[sprite]), *new_sprite;
@@ -44,19 +47,34 @@ int Compositing::shape_to_sprite(struct shape *sh)
   // fill the color array to speed up
   for(chc = sh->colors; chc->c != 0; chc++) // read until we don't hit 0
     color_list[(int)(chc->c)] = chc->color;
+  color_list[(int)(chc->c)] = chc->color;
   // 1st pass read ascii art - determine content size
   content_size = 0;
   for(bmp = sh->bmp, y = 0; *bmp != NULL; y++, bmp++)
-      content_size += strlen(*bmp);
+  {
+    // skip leading transparent pixels (color 0)
+    clr = *bmp;
+    #if REMOVE_LEADING_TRANSPARENT
+    for(clr = *bmp; *clr != 0 && color_list[(int)*clr] == 0; clr++);
+    #endif
+    int rl = strlen(clr); // reverse length to find last non-transparent pixel
+    for(; color_list[(int)clr[rl-1]] == 0 && rl > PAD_STEP; rl--);
+    int pixlen = (rl + (PAD_STEP-1)) & ~(PAD_STEP-1); // 32-bit even
+    content_size += pixlen;
+  }
   h = y;
-  new_content = (pixel_t *)malloc(content_size*sizeof(pixel_t));
+  // malloc normally returns 32-bit even start
+  // c2 hardware must have first pixel on 32-bit even location
+  // add 4 to assure 32-bit padding even if malloc doesn't return 32-bit even values
+  new_content = (pixel_t *)malloc(content_size*sizeof(pixel_t)+4);
+  memset(new_content, 0, content_size*sizeof(pixel_t)+4); // reset to transparency
   sprite_size = sizeof(struct sprite); // +h*(sizeof(struct compositing_line));
   new_sprite = (struct sprite *)malloc(sprite_size);
-  line_size = h*(sizeof(struct compositing_line));
+  line_size = h*(sizeof(struct compositing_line) + sizeof(int16_t));
   new_sprite->line = (struct compositing_line *)malloc(line_size);
+  new_sprite->lxo = (int16_t *) &(new_sprite->line[h]);
   new_sprite->x = ix;
   new_sprite->y = iy;
-  new_sprite->w = w; // max sprite width (maybe unused)
   new_sprite->h = h;
   new_sprite->ha = h; // allocated size
   for(i = 0; i < h; i++)
@@ -64,18 +82,33 @@ int Compositing::shape_to_sprite(struct shape *sh)
     new_sprite->line[i].next = NULL;
     new_sprite->line[i].x = ix;
     // new_sprite->line[i].n = w;
+    // new_sprite->lxo[i] = 0;
   }
   // 2nd pass read ascii-art data and write color pixel content
   line_content = new_content;
   for(bmp = sh->bmp, y = 0; *bmp != NULL; y++, bmp++)
   {
-      char *clr;
       // uint8_t *line_content = &(new_content[y[0]*w]); // pointer to current line in content
+      // enforce 32-bit even line content start address
+      line_content = (pixel_t *) ( (3 + (uint32_t)line_content) & ~3 );
       new_sprite->line[y].bmp = line_content;
-      for(x = 0, clr = *bmp; *clr != 0; x++, clr++) // copy content
+      int16_t lxo = 0; // line x-offset fo skipping transparent pixels
+      clr = *bmp;
+      #if REMOVE_LEADING_TRANSPARENT
+      for(clr = *bmp; *clr != 0 && color_list[(int)*clr] == 0; clr++, lxo++); // skip leading transparent pixels (color 0)
+      #endif
+      new_sprite->lxo[y] = lxo; // x-offset for skipping
+      int rl = strlen(clr); // reverse length to find last non-transparent pixel
+      for(; color_list[(int)clr[rl-1]] == 0 && rl > PAD_STEP; rl--);
+      for(x = 0; *clr != 0 && x < rl; x++, clr++) // copy content
         *(line_content++) = color_list[(int)*clr];
+      if(x == 0)
+        new_sprite->line[y].bmp = NULL; // no content: the NULL line
+      x = (x + (PAD_STEP-1)) & ~(PAD_STEP-1); // the length padding
       new_sprite->line[y].n = x-1; // set number of pixels
       #if USE_EXISTING_CONTENT
+      if(x > 0)
+      {
       // search all already generated sprites. if identical
       // content is found, then link to prevous content, that would
       // save RAM bandwidth
@@ -101,6 +134,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
       // if found, relink new sprite content to existing content
       if(existing_content)
         new_sprite->line[y].bmp = existing_content; // Sprite[0]->line[0].bmp; // existing_content;
+      }
       #endif
   }
   new_sprite->h = y;
@@ -128,8 +162,9 @@ int Compositing::sprite_clone(int original)
   sprite_size = sizeof(struct sprite);
   clon = (struct sprite *)malloc(sprite_size);
   memcpy(clon, orig, sprite_size);
-  line_size = orig->ha * sizeof(struct compositing_line);
+  line_size = orig->ha * (sizeof(struct compositing_line) + sizeof(int16_t));
   clon->line = (struct compositing_line *)malloc(line_size);
+  clon->lxo = (int16_t *) &(clon->line[orig->ha]);
   memcpy(clon->line, orig->line, line_size);
   i = n_sprites;
   Sprite[n_sprites++] = clon;
@@ -156,16 +191,17 @@ int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
   spr = (struct sprite *)malloc(sprite_size);
   spr->x = 0;
   spr->y = 0;
-  spr->w = w;
   spr->h = h;
   spr->ha = h;
-  spr->line = (struct compositing_line *)malloc(h * sizeof(struct compositing_line));
+  spr->line = (struct compositing_line *)malloc(h * (sizeof(struct compositing_line) + sizeof(int16_t)) );
+  spr->lxo = (int16_t *) &(spr->line[h]);
   for(i = 0; i < h; i++)
   {
     spr->line[i].next = NULL;
     spr->line[i].x = spr->x;
     spr->line[i].n = w-1;
     spr->line[i].bmp = content;
+    spr->lxo[i] = 0;
   }
   return sprite_add(spr);
 }
@@ -187,16 +223,17 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
   spr = (struct sprite *)malloc(sprite_size);
   spr->x = 0;
   spr->y = 0;
-  spr->w = w;
   spr->h = h;
   spr->ha = h;
-  spr->line = (struct compositing_line *)malloc(h * sizeof(struct compositing_line));
+  spr->line = (struct compositing_line *)malloc(h * (sizeof(struct compositing_line) + sizeof(int16_t)) );
+  spr->lxo = (int16_t *) &(spr->line[h]);
   for(i = 0; i < h; i++)
   {
     spr->line[i].next = NULL;
     spr->line[i].x = spr->x;
     spr->line[i].n = w-1;
     spr->line[i].bmp = bmp;
+    spr->lxo[i] = 0;
     bmp += w;
   }
   return sprite_add(spr);
@@ -216,18 +253,22 @@ void Compositing::sprite_link_content(int original, int clone)
   if(m > n)
   {
     Sprite[clone]->line = (struct compositing_line *)realloc(Sprite[clone]->line, m * sizeof(struct compositing_line));
+    // Sprite[clone]->line = (struct compositing_line *)realloc(Sprite[clone]->line, m * (sizeof(struct compositing_line) + sizeof(int16_t)));
+    // Sprite[clone]->lxo = (int16_t *) &(Sprite[clone]->line[m]);
     Sprite[clone]->ha = m; // increase allocated size to the clone
   }
   struct compositing_line *src = Sprite[original]->line;
   struct compositing_line *dst = Sprite[clone]->line;
+  int16_t *src_lxo = Sprite[original]->lxo, *dst_lxo = Sprite[clone]->lxo;
+  Sprite[clone]->lxo = Sprite[original]->lxo; // faster: don't copy x-line-offset, just change the pointer
   for(i = 0; i < m; i++)
   {
     dst[i].bmp = src[i].bmp;
     dst[i].n = src[i].n;
+    // dst_lxo[i] = src_lxo[i];
   }
   // copy size (may be omitted when all are the same size)
   Sprite[clone]->h = m;
-  Sprite[clone]->w = Sprite[original]->w; // not used, copy anyway
 }
 
 void Compositing::sprite_position(int sprite, int x, int y)
@@ -264,11 +305,18 @@ void Compositing::sprite_refresh(int m, int n)
       j1 = VGA_Y_MAX - y;
     for(j = j0, jy = j0+y; j < j1; j++, jy++) // loop over all visible hor.lines of the sprite
     {
-      struct compositing_line **sl = &(scanlines[jy]);
-      Sprite[i]->line[j].x = x;
-      // insert sprite lines into the linked list of scan lines
-      Sprite[i]->line[j].next = *sl;
-      *sl = &(Sprite[i]->line[j]);
+      if(Sprite[i]->line[j].bmp != NULL)
+      {
+        struct compositing_line **sl = &(scanlines[jy]);
+        #if REMOVE_LEADING_TRANSPARENT
+        Sprite[i]->line[j].x = x + Sprite[i]->lxo[j];
+        #else
+        Sprite[i]->line[j].x = x;
+        #endif
+        // insert sprite lines into the linked list of scan lines
+        Sprite[i]->line[j].next = *sl;
+        *sl = &(Sprite[i]->line[j]);
+      }
     }
   }
   *videobase_reg = (uint32_t) &(scanlines[0]);
