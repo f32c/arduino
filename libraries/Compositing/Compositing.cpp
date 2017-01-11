@@ -29,7 +29,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
 {
   int i,j;
   int ix=VGA_X_MAX/2,iy=VGA_Y_MAX/2; // initial sprite position on screen
-  int w=32,h=32; // width and height of the sprite
+  int h; // width and height of the sprite
   int sprite_size, line_size; // how much to malloc
   pixel_t color_list[256];
   char **bmp; // bitmap: array of strings
@@ -108,7 +108,7 @@ int Compositing::shape_to_sprite(struct shape *sh)
       {
         line_content = (pixel_t *) ( (3 + (uint32_t)line_content) & ~3 );
         new_sprite->line[y].bmp = line_content;
-        for(x = 0; *clr != 0 && x < rl; x++, clr++) // copy content
+        for(x = 0; x < rl; x++, clr++) // copy content
           *(line_content++) = color_list[(int)*clr];
         x = (x + (PAD_STEP-1)) & ~(PAD_STEP-1); // the length padding
         new_sprite->line[y].n = x-1; // hardware needs x-1
@@ -189,12 +189,13 @@ int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
   int i;
   uint32_t sprite_size;
   struct sprite *spr;
-  pixel_t *content = (pixel_t *)malloc(w * sizeof(pixel_t));
-
+  int content_size = (w * sizeof(pixel_t) + 3) & ~3;
+  pixel_t *content = (pixel_t *)malloc(content_size); // assume malloc returns 32-bit even
+  if(content_size >= 4)
+    memset(content+content_size-4, 0, 4); // fill last 4 with 0
   for(i = 0; i < w; i++)
     content[i] = color;
   sprite_size = sizeof(struct sprite);
-
   spr = (struct sprite *)malloc(sprite_size);
   spr->x = 0;
   spr->y = 0;
