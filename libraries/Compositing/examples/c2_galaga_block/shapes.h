@@ -7,7 +7,7 @@
 #include "shape.h"
 
 // ascii-art of the shapes
-struct charcolors std_colors[] = 
+const struct charcolors std_colors[] =
 {  //               RRGGBB
   {'O', RGB2PIXEL(0xFF7F00)}, // orange
   {'R', RGB2PIXEL(0xFF0000)}, // red
@@ -22,7 +22,7 @@ struct charcolors std_colors[] =
 };
 
 
-char *shape_alien1u[] =
+const char *shape_alien1u[] =
 {
 "    WWWW",
 "    WWWW",
@@ -35,7 +35,7 @@ char *shape_alien1u[] =
 NULL
 };
 
-char *shape_alien1d[] =
+const char *shape_alien1d[] =
 {
 "WWWWBBBBWWWW",
 "WWWWBBBBWWWW",
@@ -48,7 +48,7 @@ char *shape_alien1d[] =
 NULL
 };
 
-char *shape_alien1l[] =
+const char *shape_alien1l[] =
 {
 "    WWWW",
 "    WWWW",
@@ -65,7 +65,7 @@ char *shape_alien1l[] =
 NULL
 };
 
-char *shape_alien1r[] =
+const char *shape_alien1r[] =
 {
 "WWWW",
 "WWWW",
@@ -82,7 +82,7 @@ char *shape_alien1r[] =
 NULL
 };
 
-char *shape_alien2u[] =
+const char *shape_alien2u[] =
 {
 "    CCCC",
 "    CCCC",
@@ -95,7 +95,7 @@ char *shape_alien2u[] =
 NULL
 };
 
-char *shape_alien2d[] =
+const char *shape_alien2d[] =
 {
 "YYYYRRRRYYYY",
 "YYYYRRRRYYYY",
@@ -108,7 +108,7 @@ char *shape_alien2d[] =
 NULL
 };
 
-char *shape_alien2l[] =
+const char *shape_alien2l[] =
 {
 "    YYYY",
 "    YYYY",
@@ -125,7 +125,7 @@ char *shape_alien2l[] =
 NULL
 };
 
-char *shape_alien2r[] =
+const char *shape_alien2r[] =
 {
 "YYYY",
 "YYYY",
@@ -142,7 +142,7 @@ char *shape_alien2r[] =
 NULL
 };
 
-char *shape_alien3u[] =
+const char *shape_alien3u[] =
 {
 "        WWWW",
 "        WWWW",
@@ -159,7 +159,7 @@ char *shape_alien3u[] =
 NULL
 };
 
-char *shape_alien3d[] =
+const char *shape_alien3d[] =
 {
 "WWWW            WWWW",
 "WWWW            WWWW",
@@ -176,7 +176,7 @@ char *shape_alien3d[] =
 NULL
 };
 
-char *shape_alien3l[] =
+const char *shape_alien3l[] =
 {
 "        WWWW",
 "        WWWW",
@@ -201,7 +201,7 @@ char *shape_alien3l[] =
 NULL
 };
 
-char *shape_alien3r[] =
+const char *shape_alien3r[] =
 {
 "WWWW",
 "WWWW",
@@ -226,7 +226,7 @@ char *shape_alien3r[] =
 NULL
 };
 
-char *shape_alien4u[] =
+const char *shape_alien4u[] =
 {
 "        WWWW",
 "        WWWW",
@@ -243,7 +243,7 @@ char *shape_alien4u[] =
 NULL
 };
 
-char *shape_alien4d[] =
+const char *shape_alien4d[] =
 {
 "VVVV            VVVV",
 "VVVV            VVVV",
@@ -260,7 +260,7 @@ char *shape_alien4d[] =
 NULL
 };
 
-char *shape_alien4l[] =
+const char *shape_alien4l[] =
 {
 "        VVVV",
 "        VVVV",
@@ -285,7 +285,7 @@ char *shape_alien4l[] =
 NULL
 };
 
-char *shape_alien4r[] =
+const char *shape_alien4r[] =
 {
 "VVVV",
 "VVVV",
@@ -310,7 +310,7 @@ char *shape_alien4r[] =
 NULL
 };
 
-char *shape_alien5u[] =
+const char *shape_alien5u[] =
 {
 "        WWWW",
 "        WWWW",
@@ -335,7 +335,7 @@ char *shape_alien5u[] =
 NULL
 };
 
-char *shape_alien5d[] =
+const char *shape_alien5d[] =
 {
 "    WWWW    WWWW",
 "    WWWW    WWWW",
@@ -360,7 +360,7 @@ char *shape_alien5d[] =
 NULL
 };
 
-char *shape_alien5l[] =
+const char *shape_alien5l[] =
 {
 "        GGGG",
 "        GGGG",
@@ -385,7 +385,7 @@ char *shape_alien5l[] =
 NULL
 };
 
-char *shape_alien5r[] =
+const char *shape_alien5r[] =
 {
 "        GGGG",
 "        GGGG",
@@ -410,7 +410,7 @@ char *shape_alien5r[] =
 NULL
 };
 
-char *shape_ship1u[] =
+const char *shape_ship1u[] =
 {
 "    WWWW",
 "    WWWW",
@@ -427,7 +427,7 @@ char *shape_ship1u[] =
 NULL
 };
 
-char *shape_ship1d[] =
+const char *shape_ship1d[] =
 {
 "WWWW    WWWW",
 "WWWW    WWWW",
@@ -444,7 +444,7 @@ char *shape_ship1d[] =
 NULL
 };
 
-char *shape_ship1l[] =
+const char *shape_ship1l[] =
 {
 "        WWWW",
 "        WWWW",
@@ -461,7 +461,7 @@ char *shape_ship1l[] =
 NULL
 };
 
-char *shape_ship1r[] =
+const char *shape_ship1r[] =
 {
 "WWWW",
 "WWWW",
@@ -478,7 +478,7 @@ char *shape_ship1r[] =
 NULL
 };
 
-char *shape_ship2u[] =
+const char *shape_ship2u[] =
 {
 "    WWWW    WWWW",
 "    WWWW    WWWW",
@@ -495,7 +495,7 @@ char *shape_ship2u[] =
 NULL
 };
 
-char *shape_alien_suction1[] =
+const char *shape_alien_suction1[] =
 {
 "GGGG",
 "GGGG",
@@ -504,7 +504,7 @@ char *shape_alien_suction1[] =
 NULL
 };
 
-char *shape_alien_suction3[] =
+const char *shape_alien_suction3[] =
 {
 "GGGGGGGGGGGG",
 "GGGGGGGGGGGG",
@@ -513,7 +513,7 @@ char *shape_alien_suction3[] =
 NULL
 };
 
-char *shape_alien_suction5[] =
+const char *shape_alien_suction5[] =
 {
 "GGGGGGGGGGGGGGGGGGGG",
 "GGGGGGGGGGGGGGGGGGGG",
@@ -522,7 +522,7 @@ char *shape_alien_suction5[] =
 NULL
 };
 
-char *shape_alien_suction7[] =
+const char *shape_alien_suction7[] =
 {
 "GGGGGGGGGGGGGGGGGGGGGGGGGGGG",
 "GGGGGGGGGGGGGGGGGGGGGGGGGGGG",
@@ -531,7 +531,7 @@ char *shape_alien_suction7[] =
 NULL
 };
 
-char *shape_alien_suction9[] =
+const char *shape_alien_suction9[] =
 {
 "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
 "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
@@ -540,7 +540,7 @@ char *shape_alien_suction9[] =
 NULL
 };
 
-char *shape_alien_suction11[] =
+const char *shape_alien_suction11[] =
 {
 "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
 "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG",
@@ -549,7 +549,7 @@ char *shape_alien_suction11[] =
 NULL
 };
 
-char *shape_bomb[] =
+const char *shape_bomb[] =
 {
 "WWWW",
 "WWWW",
@@ -558,7 +558,7 @@ char *shape_bomb[] =
 NULL
 };
 
-char *shape_missile0[] =
+const char *shape_missile0[] =
 {
 " WW ",
 "  WW",
@@ -574,7 +574,7 @@ char *shape_missile0[] =
 NULL
 };
 
-char *shape_missile1[] =
+const char *shape_missile1[] =
 {
 "  WW",
 " WW ",
@@ -590,7 +590,7 @@ char *shape_missile1[] =
 NULL
 };
 
-char *shape_missile2[] =
+const char *shape_missile2[] =
 {
 " WW ",
 "WW  ",
@@ -606,7 +606,7 @@ char *shape_missile2[] =
 NULL
 };
 
-char *shape_missile3[] =
+const char *shape_missile3[] =
 {
 "WW  ",
 " WW ",
@@ -622,7 +622,7 @@ char *shape_missile3[] =
 NULL
 };
 
-char *shape_block_red[] =
+const char *shape_block_red[] =
 {
 "RRRR",
 "RRRR",
@@ -631,7 +631,7 @@ char *shape_block_red[] =
 NULL
 };
 
-char *shape_block_yellow[] =
+const char *shape_block_yellow[] =
 {
 "YYYY",
 "YYYY",
@@ -640,7 +640,7 @@ char *shape_block_yellow[] =
 NULL
 };
 
-char *shape_block_orange[] =
+const char *shape_block_orange[] =
 {
 "OOOO",
 "OOOO",
@@ -649,7 +649,7 @@ char *shape_block_orange[] =
 NULL
 };
 
-char *shape_block_green[] =
+const char *shape_block_green[] =
 {
 "GGGG",
 "GGGG",
@@ -658,7 +658,7 @@ char *shape_block_green[] =
 NULL
 };
 
-char *shape_block_cyan[] =
+const char *shape_block_cyan[] =
 {
 "CCCC",
 "CCCC",
@@ -667,7 +667,7 @@ char *shape_block_cyan[] =
 NULL
 };
 
-char *shape_block_blue[] =
+const char *shape_block_blue[] =
 {
 "BBBB",
 "BBBB",
@@ -676,7 +676,7 @@ char *shape_block_blue[] =
 NULL
 };
 
-char *shape_block_violett[] =
+const char *shape_block_violett[] =
 {
 "VVVV",
 "VVVV",
@@ -685,7 +685,7 @@ char *shape_block_violett[] =
 NULL
 };
 
-char *shape_block_white[] =
+const char *shape_block_white[] =
 {
 "WWWW",
 "WWWW",
@@ -694,7 +694,7 @@ char *shape_block_white[] =
 NULL
 };
 
-char *shape_firebally0[] =
+const char *shape_firebally0[] =
 {
 "         WYWWWW                  Y                              ",
 "       WWWWWWWWWWY      Y               Y     YWWWWWY      Y    ",
@@ -761,7 +761,7 @@ char *shape_firebally0[] =
 NULL
 };
 
-char *shape_firebally1[] =
+const char *shape_firebally1[] =
 {
 "      O                            O      WWWWWWW        ",
 " O         WWWWWWW        O             WWWWWWWWWWW   O  ",
@@ -823,7 +823,7 @@ char *shape_firebally1[] =
 NULL
 };
 
-char *shape_firebally2[] =
+const char *shape_firebally2[] =
 {
 "                                       R     OOOOOOOOO        ",
 "     R                                     OOOOOOOOOOOOO   R  ",
@@ -887,7 +887,7 @@ char *shape_firebally2[] =
 NULL
 };
 
-char *shape_firebally3[] =
+const char *shape_firebally3[] =
 {
 "R               R       RRRRRRR   R    R ",
 "      RRRRRRR         RRRRRRRRRRR        ",
@@ -934,7 +934,7 @@ char *shape_firebally3[] =
 NULL
 };
 
-char *shape_fireballb0[] =
+const char *shape_fireballb0[] =
 {
 "                          WWWWWWW                               ",
 "                        WWWWWWWWWWW                             ",
@@ -1003,7 +1003,7 @@ char *shape_fireballb0[] =
 NULL
 };
 
-char *shape_fireballb1[] =
+const char *shape_fireballb1[] =
 {
 "                             WWWWWWW                            ",
 "                           WWWWWWWWWWW                          ",
@@ -1066,7 +1066,7 @@ char *shape_fireballb1[] =
 NULL
 };
 
-char *shape_fireballb2[] =
+const char *shape_fireballb2[] =
 {
 "                              CCCCCCC                           ",
 "                            CCCCCCCCCCC                         ",
@@ -1118,7 +1118,7 @@ char *shape_fireballb2[] =
 NULL
 };
 
-char *shape_fireballb3[] =
+const char *shape_fireballb3[] =
 {
 "                               BBBBBBB                          ",
 "                             BBBBBBBBBBB                        ",
@@ -1180,7 +1180,7 @@ enum
   SH_PLACEHOLDER,
 };
 
-struct shape Shape[] =
+const struct shape Shape[] =
 {
   [SH_ALIEN1R] = { std_colors, shape_alien1r },
   [SH_ALIEN1U] = { std_colors, shape_alien1u },

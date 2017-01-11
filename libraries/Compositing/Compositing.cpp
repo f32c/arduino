@@ -25,21 +25,21 @@ void Compositing::alloc_sprites(int n)
 // will allocate content for the sprite
 // sh: shape to read from
 // sprite: sprite to create
-int Compositing::shape_to_sprite(struct shape *sh)
+int Compositing::shape_to_sprite(const struct shape *sh)
 {
   int i,j;
   int ix=VGA_X_MAX/2,iy=VGA_Y_MAX/2; // initial sprite position on screen
   int h; // width and height of the sprite
   int sprite_size, line_size; // how much to malloc
   pixel_t color_list[256];
-  char **bmp; // bitmap: array of strings
-  char *clr; // ascii art color pixel pointer
+  const char **bmp; // bitmap: array of strings
+  const char *clr; // ascii art color pixel pointer
   uint16_t x,y; // running coordinates during ascii->pixel conversion
   int content_size;
   // padding to sizeof pixel, assuming sizeof(pixel_t) is power of 2 bytes
   int PAD_STEP = 4 / sizeof(pixel_t);
   pixel_t *new_content, *line_content; // malloc'd contiguous space for the sprite
-  struct charcolors *chc;
+  const struct charcolors *chc;
   // struct sprite *spr = &(Sprite[sprite]), *new_sprite;
   struct sprite *new_sprite;
   // struct shape *sh = &(Shape[shape]); // shape to read from

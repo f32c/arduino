@@ -2,7 +2,7 @@
 #include "shape.h"
 
 // ascii-art of the shapes
-struct charcolors std_colors[] = 
+const struct charcolors std_colors[] =
 { //      RRGGBB
   {'O', RGB2PIXEL(0xFF7F00)}, // orange
   {'R', RGB2PIXEL(0xFF0000)}, // red
@@ -15,7 +15,7 @@ struct charcolors std_colors[] =
   {0, 0}
 };
 
-char *shape_space[] =
+const char *shape_space[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -37,7 +37,7 @@ char *shape_space[] =
 NULL
 };
 
-char *shape_a[] =
+const char *shape_a[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -59,7 +59,7 @@ char *shape_a[] =
 NULL
 };
 
-char *shape_b[] =
+const char *shape_b[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -81,7 +81,7 @@ char *shape_b[] =
 NULL
 };
 
-char *shape_c[] =
+const char *shape_c[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -103,7 +103,7 @@ char *shape_c[] =
 NULL
 };
 
-char *shape_d[] =
+const char *shape_d[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -125,7 +125,7 @@ char *shape_d[] =
 NULL
 };
 
-char *shape_e[] =
+const char *shape_e[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -147,7 +147,7 @@ char *shape_e[] =
 NULL
 };
 
-char *shape_f[] =
+const char *shape_f[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -169,7 +169,7 @@ char *shape_f[] =
 NULL
 };
 
-char *shape_g[] =
+const char *shape_g[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -191,7 +191,7 @@ char *shape_g[] =
 NULL
 };
 
-char *shape_h[] =
+const char *shape_h[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -213,7 +213,7 @@ char *shape_h[] =
 NULL
 };
 
-char *shape_i[] =
+const char *shape_i[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -235,7 +235,7 @@ char *shape_i[] =
 NULL
 };
 
-char *shape_j[] =
+const char *shape_j[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -257,7 +257,7 @@ char *shape_j[] =
 NULL
 };
 
-char *shape_k[] =
+const char *shape_k[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -279,7 +279,7 @@ char *shape_k[] =
 NULL
 };
 
-char *shape_l[] =
+const char *shape_l[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -301,7 +301,7 @@ char *shape_l[] =
 NULL
 };
 
-char *shape_m[] =
+const char *shape_m[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -323,7 +323,7 @@ char *shape_m[] =
 NULL
 };
 
-char *shape_n[] =
+const char *shape_n[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -345,7 +345,7 @@ char *shape_n[] =
 NULL
 };
 
-char *shape_o[] =
+const char *shape_o[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -367,7 +367,7 @@ char *shape_o[] =
 NULL
 };
 
-char *shape_p[] =
+const char *shape_p[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -389,7 +389,7 @@ char *shape_p[] =
 NULL
 };
 
-char *shape_q[] =
+const char *shape_q[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -411,7 +411,7 @@ char *shape_q[] =
 NULL
 };
 
-char *shape_r[] =
+const char *shape_r[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -433,7 +433,7 @@ char *shape_r[] =
 NULL
 };
 
-char *shape_s[] =
+const char *shape_s[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -455,7 +455,7 @@ char *shape_s[] =
 NULL
 };
 
-char *shape_t[] =
+const char *shape_t[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -477,7 +477,7 @@ char *shape_t[] =
 NULL
 };
 
-char *shape_u[] =
+const char *shape_u[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -499,7 +499,7 @@ char *shape_u[] =
 NULL
 };
 
-char *shape_v[] =
+const char *shape_v[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -521,7 +521,7 @@ char *shape_v[] =
 NULL
 };
 
-char *shape_w[] =
+const char *shape_w[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -543,7 +543,7 @@ char *shape_w[] =
 NULL
 };
 
-char *shape_x[] =
+const char *shape_x[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -565,7 +565,7 @@ char *shape_x[] =
 NULL
 };
 
-char *shape_y[] =
+const char *shape_y[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -587,7 +587,7 @@ char *shape_y[] =
 NULL
 };
 
-char *shape_z[] =
+const char *shape_z[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -609,7 +609,7 @@ char *shape_z[] =
 NULL
 };
 
-char *shape_backslash[] =
+const char *shape_backslash[] =
 {/*
  01234567890123456789012345678901 */
 "WW              ",
@@ -631,7 +631,7 @@ char *shape_backslash[] =
 NULL
 };
 
-char *shape_0[] =
+const char *shape_0[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -653,7 +653,7 @@ char *shape_0[] =
 NULL
 };
 
-char *shape_1[] =
+const char *shape_1[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -675,7 +675,7 @@ char *shape_1[] =
 NULL
 };
 
-char *shape_2[] =
+const char *shape_2[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -697,7 +697,7 @@ char *shape_2[] =
 NULL
 };
 
-char *shape_3[] =
+const char *shape_3[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -719,7 +719,7 @@ char *shape_3[] =
 NULL
 };
 
-char *shape_4[] =
+const char *shape_4[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -741,7 +741,7 @@ char *shape_4[] =
 NULL
 };
 
-char *shape_5[] =
+const char *shape_5[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -763,7 +763,7 @@ char *shape_5[] =
 NULL
 };
 
-char *shape_6[] =
+const char *shape_6[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -785,7 +785,7 @@ char *shape_6[] =
 NULL
 };
 
-char *shape_7[] =
+const char *shape_7[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -807,7 +807,7 @@ char *shape_7[] =
 NULL
 };
 
-char *shape_8[] =
+const char *shape_8[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -829,7 +829,7 @@ char *shape_8[] =
 NULL
 };
 
-char *shape_9[] =
+const char *shape_9[] =
 {/*
  01234567890123456789012345678901 */
 "                ",
@@ -851,7 +851,7 @@ char *shape_9[] =
 NULL
 };
 
-struct shape Font[] =
+const struct shape Font[] =
 {
    [0] = { std_colors, shape_space },
    [1] = { std_colors, shape_a },

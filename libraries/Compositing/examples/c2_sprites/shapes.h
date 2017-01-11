@@ -2,7 +2,7 @@
 #include "shape.h"
 
 // ascii-art of the shapes
-struct charcolors std_colors[] = 
+const struct charcolors std_colors[] =
 { //      RRGGBB
   {'O', RGB2PIXEL(0xFF7F00)}, // orange
   {'R', RGB2PIXEL(0xFF0000)}, // red
@@ -15,7 +15,7 @@ struct charcolors std_colors[] =
   {0, 0}
 };
 
-char *shape_ship[] =
+const char *shape_ship[] =
 {/* 
  01234567890123456789012345678901 */
 "   WWW  ",
@@ -38,7 +38,7 @@ char *shape_ship[] =
 NULL
 };
 
-char *shape_invader[] =
+const char *shape_invader[] =
 {/*
  01234567890123456789012345678901 */
 "      GGGG  ",
@@ -60,7 +60,7 @@ char *shape_invader[] =
 NULL
 };
 
-char *shape_invader2[] =
+const char *shape_invader2[] =
 {/*
  01234567890123456789012345678901 */
 "      OOOO  ",
@@ -82,7 +82,7 @@ char *shape_invader2[] =
 NULL
 };
 
-struct shape Shape[] =
+const struct shape Shape[] =
 {
   [0] = { std_colors, shape_ship },
   [1] = { std_colors, shape_invader },

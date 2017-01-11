@@ -2,7 +2,7 @@
 #include "shape.h"
 
 // ascii-art of the shapes
-struct charcolors std_colors[] = 
+const struct charcolors std_colors[] = 
 { 
   {' ', 0}, // transparent/black
   {'.', RGB2PIXEL(0x080808)},
@@ -54,7 +54,7 @@ struct charcolors std_colors[] =
 };
 
 
-char *shape_space[] =
+const char *shape_space[] =
 {/*
  0123456789012345*/
 "                ",
@@ -76,7 +76,7 @@ char *shape_space[] =
 NULL
 };
 
-char *shape_exclamation[] =
+const char *shape_exclamation[] =
 {
 "    .XkkkkkkX.  ",
 "    .XhhhhhXX.  ",
@@ -97,7 +97,7 @@ char *shape_exclamation[] =
 NULL
 };
 
-char *shape_double_quote[] =
+const char *shape_double_quote[] =
 {
 " .XkkkX..XkkkX. ",
 " .XhhhX..XhhhX. ",
@@ -118,7 +118,7 @@ char *shape_double_quote[] =
 NULL
 };
 
-char *shape_hash[] =
+const char *shape_hash[] =
 {
 " .XkkkX.XkkkX...",
 " XXhhhXXXhhhXXX.",
@@ -139,7 +139,7 @@ char *shape_hash[] =
 NULL
 };
 
-char *shape_dollar[] =
+const char *shape_dollar[] =
 {
 ".XXXXXkkkXXXXX..",
 "XXhhhhhhhhhhhXX.",
@@ -160,7 +160,7 @@ char *shape_dollar[] =
 NULL
 };
 
-char *shape_percent[] =
+const char *shape_percent[] =
 {
 "XXkkXX...XXXXXX.",
 "XhhhhX..XXhhhhX.",
@@ -181,7 +181,7 @@ char *shape_percent[] =
 NULL
 };
 
-char *shape_ampersand[] =
+const char *shape_ampersand[] =
 {
 ".XXkkkkkXX..    ",
 "XXhhhhhhhXX.    ",
@@ -202,7 +202,7 @@ char *shape_ampersand[] =
 NULL
 };
 
-char *shape_tick[] =
+const char *shape_tick[] =
 {
 "     .XkkkkX.   ",
 "     .XhhhhX.   ",
@@ -223,7 +223,7 @@ char *shape_tick[] =
 NULL
 };
 
-char *shape_left_parenthesis[] =
+const char *shape_left_parenthesis[] =
 {
 "   ..XXXkkkkkX. ",
 "  ..XXhhhhXXXX. ",
@@ -244,7 +244,7 @@ char *shape_left_parenthesis[] =
 NULL
 };
 
-char *shape_right_parenthesis[] =
+const char *shape_right_parenthesis[] =
 {
 " .XkkkkkXXX..   ",
 " .XXXXhhhhXX..  ",
@@ -265,7 +265,7 @@ char *shape_right_parenthesis[] =
 NULL
 };
 
-char *shape_asterisk[] =
+const char *shape_asterisk[] =
 {
 " ....XkkkX....  ",
 " .XXXXhhhXXXX.  ",
@@ -286,7 +286,7 @@ char *shape_asterisk[] =
 NULL
 };
 
-char *shape_plus[] =
+const char *shape_plus[] =
 {
 "    .XXXXX.     ",
 "    .XhhhX.     ",
@@ -307,7 +307,7 @@ char *shape_plus[] =
 NULL
 };
 
-char *shape_comma[] =
+const char *shape_comma[] =
 {
 "                ",
 "                ",
@@ -328,7 +328,7 @@ char *shape_comma[] =
 NULL
 };
 
-char *shape_minus[] =
+const char *shape_minus[] =
 {
 "                ",
 "                ",
@@ -349,7 +349,7 @@ char *shape_minus[] =
 NULL
 };
 
-char *shape_period[] =
+const char *shape_period[] =
 {
 "                ",
 "                ",
@@ -370,7 +370,7 @@ char *shape_period[] =
 NULL
 };
 
-char *shape_slash[] =
+const char *shape_slash[] =
 {
 "       ..XXXXXX.",
 "      ..XXhhhhX.",
@@ -391,7 +391,7 @@ char *shape_slash[] =
 NULL
 };
 
-char *shape_0[] =
+const char *shape_0[] =
 {
 "                ",
 ".XXkkkkkkkkkkXX.",
@@ -412,7 +412,7 @@ char *shape_0[] =
 NULL
 };
 
-char *shape_1[] =
+const char *shape_1[] =
 {
 "                ",
 "     ..XXkX.    ",
@@ -433,7 +433,7 @@ char *shape_1[] =
 NULL
 };
 
-char *shape_2[] =
+const char *shape_2[] =
 {
 "                ",
 "XXkkkkkkkkkkkXX.",
@@ -454,7 +454,7 @@ char *shape_2[] =
 NULL
 };
 
-char *shape_3[] =
+const char *shape_3[] =
 {
 "                ",
 "XkkkkkkkkkkkkkX.",
@@ -475,7 +475,7 @@ char *shape_3[] =
 NULL
 };
 
-char *shape_4[] =
+const char *shape_4[] =
 {
 "                ",
 "     ...XXXkkkX.",
@@ -496,7 +496,7 @@ char *shape_4[] =
 NULL
 };
 
-char *shape_5[] =
+const char *shape_5[] =
 {
 "                ",
 "XkkkkkkkkkkkkkX.",
@@ -517,7 +517,7 @@ char *shape_5[] =
 NULL
 };
 
-char *shape_6[] =
+const char *shape_6[] =
 {
 "                ",
 " ...XXXkkkkkkX. ",
@@ -538,7 +538,7 @@ char *shape_6[] =
 NULL
 };
 
-char *shape_7[] =
+const char *shape_7[] =
 {
 "                ",
 "XkkkkkkkkkkkkkX.",
@@ -559,7 +559,7 @@ char *shape_7[] =
 NULL
 };
 
-char *shape_8[] =
+const char *shape_8[] =
 {  
 "                ",
 "XXkkkkkkkkkkkkX.",
@@ -580,7 +580,7 @@ char *shape_8[] =
 NULL
 };
 
-char *shape_9[] =
+const char *shape_9[] =
 {
 "                ",
 "XXkkkkkkkkkkkXX.",
@@ -601,7 +601,7 @@ char *shape_9[] =
 NULL
 };
 
-char *shape_colon[] =
+const char *shape_colon[] =
 {
 "    ..XXXX..    ",
 "    .XXhhXX.    ",
@@ -622,7 +622,7 @@ char *shape_colon[] =
 NULL
 };
 
-char *shape_semicolon[] =
+const char *shape_semicolon[] =
 {
 "     ..XXXX..   ",
 "     .XXhhXX.   ",
@@ -643,7 +643,7 @@ char *shape_semicolon[] =
 NULL
 };
 
-char *shape_less[] =
+const char *shape_less[] =
 {
 "     ...XXXkkkX.",
 "   ...XXXhhhhXX.",
@@ -664,7 +664,7 @@ char *shape_less[] =
 NULL
 };
 
-char *shape_equal[] =
+const char *shape_equal[] =
 {
 "                ",
 " .............. ",
@@ -685,7 +685,7 @@ char *shape_equal[] =
 NULL
 };
 
-char *shape_greater[] =
+const char *shape_greater[] =
 {
 "XkkkXXX...      ",
 "XXhhhhXXX...    ",
@@ -706,7 +706,7 @@ char *shape_greater[] =
 NULL
 };
 
-char *shape_question[] =
+const char *shape_question[] =
 {
 "XXkkkkkkkkkkkXX.",
 "XhhhhhhhhhhhhhX.",
@@ -727,7 +727,7 @@ char *shape_question[] =
 NULL
 };
 
-char *shape_at[] =
+const char *shape_at[] =
 {
 "XXkkkkkkkkkkkXX.",
 "XhhhhhhhhhhhhhXX",
@@ -748,7 +748,7 @@ char *shape_at[] =
 NULL
 };
 
-char *shape_A[] =
+const char *shape_A[] =
 {
 "XXkkkkkkkkkkkkX.",
 "XhhhhhhhhhhhhhX.",
@@ -769,7 +769,7 @@ char *shape_A[] =
 NULL
 };
 
-char *shape_B[] =
+const char *shape_B[] =
 {
 "XkkkkkkkkkkkkXX.",
 "XhhhhhhhhhhhhhX.",
@@ -790,7 +790,7 @@ char *shape_B[] =
 NULL
 };
 
-char *shape_C[] =
+const char *shape_C[] =
 {
 "XXkkkkkkkkkkkXX.",
 "XhhhhhhhhhhhhhX.",
@@ -811,7 +811,7 @@ char *shape_C[] =
 NULL
 };
 
-char *shape_D[] =
+const char *shape_D[] =
 {
 "XkkkkkkkkkkkXX..",
 "XhhhhhhhhhhhhXX.",
@@ -832,7 +832,7 @@ char *shape_D[] =
 NULL
 };
 
-char *shape_E[] =
+const char *shape_E[] =
 {
 "XkkkkkkkkkkkkkX.",
 "XhhhhhhhhhhhhhX.",
@@ -853,7 +853,7 @@ char *shape_E[] =
 NULL
 };
 
-char *shape_F[] =
+const char *shape_F[] =
 {
 "XkkkkkkkkkkkkkX.",
 "XhhhhhhhhhhhhhX.",
@@ -874,7 +874,7 @@ char *shape_F[] =
 NULL
 };
 
-char *shape_G[] =
+const char *shape_G[] =
 {
 "XXkkkkkkkkkkkXX.",
 "XhhhhhhhhhhhhhX.",
@@ -895,7 +895,7 @@ char *shape_G[] =
 NULL
 };
 
-char *shape_H[] =
+const char *shape_H[] =
 {
 "XkkkX.   .XkkkX.",
 "XhhhX.   .XhhhX.",
@@ -916,7 +916,7 @@ char *shape_H[] =
 NULL
 };
 
-char *shape_I[] =
+const char *shape_I[] =
 {
 " .XkkkkkkkkkX.  ",
 " .XhhhhhhhhhX.  ",
@@ -937,7 +937,7 @@ char *shape_I[] =
 NULL
 };
 
-char *shape_J[] =
+const char *shape_J[] =
 {
 "      .XkkkkkkX.",
 "      .XhhhhhhX.",
@@ -958,7 +958,7 @@ char *shape_J[] =
 NULL
 };
 
-char *shape_K[] =
+const char *shape_K[] =
 {
 "XkkkkX...XXkkkX.",
 "XhhhXX..XXhhhhX.",
@@ -979,7 +979,7 @@ char *shape_K[] =
 NULL
 };
 
-char *shape_L[] =
+const char *shape_L[] =
 {
 "XkkkkX.         ",
 "XhhhXX.         ",
@@ -1000,7 +1000,7 @@ char *shape_L[] =
 NULL
 };
 
-char *shape_M[] =
+const char *shape_M[] =
 {
 "XkkkXX...XXkkkX.",
 "XhhhhXX.XXhhhhX.",
@@ -1021,7 +1021,7 @@ char *shape_M[] =
 NULL
 };
 
-char *shape_N[] =
+const char *shape_N[] =
 {
 "XkkkXX.. .XkkkX.",
 "XhhhhXX...XhhhX.",
@@ -1042,7 +1042,7 @@ char *shape_N[] =
 NULL
 };
 
-char *shape_O[] =
+const char *shape_O[] =
 {
 "XXkkkkkkkkkkkXX.",
 "XhhhhhhhhhhhhhX.",
@@ -1063,7 +1063,7 @@ char *shape_O[] =
 NULL
 };
 
-char *shape_P[] =
+const char *shape_P[] =
 {
 "XkkkkkkkkkkkkXX.",
 "XhhhhhhhhhhhhhX.",
@@ -1084,7 +1084,7 @@ char *shape_P[] =
 NULL
 };
 
-char *shape_Q[] =
+const char *shape_Q[] =
 {
 "XXkkkkkkkkkkkXX.",
 "XhhhhhhhhhhhhhX.",
@@ -1105,7 +1105,7 @@ char *shape_Q[] =
 NULL
 };
 
-char *shape_R[] =
+const char *shape_R[] =
 {
 "XkkkkkkkkkkkkXX.",
 "XhhhhhhhhhhhhhX.",
@@ -1126,7 +1126,7 @@ char *shape_R[] =
 NULL
 };
 
-char *shape_S[] =
+const char *shape_S[] =
 {
 ".XXkkkkkkkkkkXX.",
 "XXhhhhhhhhhhhhX.",
@@ -1147,7 +1147,7 @@ char *shape_S[] =
 NULL
 };
 
-char *shape_T[] =
+const char *shape_T[] =
 {
 "XkkkkkkkkkkkkkX.",
 "XhhhhhhhhhhhhhX.",
@@ -1168,7 +1168,7 @@ char *shape_T[] =
 NULL
 };
 
-char *shape_U[] =
+const char *shape_U[] =
 {
 "XkkkX.  .XkkkkX.",
 "XhhhX.  .XXhhhX.",
@@ -1189,7 +1189,7 @@ char *shape_U[] =
 NULL
 };
 
-char *shape_V[] =
+const char *shape_V[] =
 {
 "XkkkX.  .XkkkkX.",
 "XhhhX.  .XXhhhX.",
@@ -1210,7 +1210,7 @@ char *shape_V[] =
 NULL
 };
 
-char *shape_W[] =
+const char *shape_W[] =
 {
 "XkkkX.  .XkkkkX.",
 "XhhhX.  .XXhhhX.",
@@ -1231,7 +1231,7 @@ char *shape_W[] =
 NULL
 };
 
-char *shape_X[] =
+const char *shape_X[] =
 {
 "XkkkXX...XXkkkX.",
 "XhhhhXX.XXhhhhX.",
@@ -1252,7 +1252,7 @@ char *shape_X[] =
 NULL
 };
 
-char *shape_Y[] =
+const char *shape_Y[] =
 {
 "XkkkX.  .XkkkkX.",
 "XhhhX.. .XXhhhX.",
@@ -1273,7 +1273,7 @@ char *shape_Y[] =
 NULL
 };
 
-char *shape_Z[] =
+const char *shape_Z[] =
 {
 "XkkkkkkkkkkkkkX.",
 "XhhhhhhhhhhhhhX.",
@@ -1294,7 +1294,7 @@ char *shape_Z[] =
 NULL
 };
 
-char *shape_backslash[] =
+const char *shape_backslash[] =
 {
 "XXXXXX..        ",
 "XhhhhXX..       ",
@@ -1315,7 +1315,7 @@ char *shape_backslash[] =
 NULL
 };
 
-char *shape_underscore[] =
+const char *shape_underscore[] =
 {
 "                ",
 "                ",
@@ -1336,7 +1336,7 @@ char *shape_underscore[] =
 NULL
 };
 
-char *shape_up_triangle[] =
+const char *shape_up_triangle[] =
 {
 "           ..XX1",
 "          ..XX@1",
@@ -1358,7 +1358,7 @@ NULL
 };
 
 
-char *shape_down_triangle[] =
+const char *shape_down_triangle[] =
 {
 "XX..            ",
 "oXX..           ",
@@ -1379,7 +1379,7 @@ char *shape_down_triangle[] =
 NULL
 };
 
-char *shape_backtick[] =
+const char *shape_backtick[] =
 {
 "   .XkkkkkkX.   ",
 "   .XXhhhhhX.   ",
@@ -1400,7 +1400,7 @@ char *shape_backtick[] =
 NULL
 };
 
-char *shape_a[] =
+const char *shape_a[] =
 {
 "  ............. ",
 "  .XXXXXXXXXXX..",
@@ -1421,7 +1421,7 @@ char *shape_a[] =
 NULL
 };
 
-char *shape_b[] =
+const char *shape_b[] =
 {
 "XkkkkX......... ",
 "XhhhXXXXXXXXXX..",
@@ -1442,7 +1442,7 @@ char *shape_b[] =
 NULL
 };
 
-char *shape_c[] =
+const char *shape_c[] =
 {
 "                ",
 "..............  ",
@@ -1464,7 +1464,7 @@ char *shape_c[] =
 NULL
 };
 
-char *shape_d[] =
+const char *shape_d[] =
 {
 "                ",
 ".........XkkkkX.",
@@ -1486,7 +1486,7 @@ char *shape_d[] =
 NULL
 };
 
-char *shape_e[] =
+const char *shape_e[] =
 {
 "                ",
 "............... ",
@@ -1508,7 +1508,7 @@ char *shape_e[] =
 NULL
 };
 
-char *shape_f[] =
+const char *shape_f[] =
 {
 "    .XXkkkkkX.  ",
 "    .XhhhhhhX. .",
@@ -1530,7 +1530,7 @@ char *shape_f[] =
 NULL
 };
 
-char *shape_g[] =
+const char *shape_g[] =
 {
 "                ",
 "................",
@@ -1552,7 +1552,7 @@ char *shape_g[] =
 NULL
 };
 
-char *shape_h[] =
+const char *shape_h[] =
 {
 "                ",
 "XkkkkX......... ",
@@ -1574,7 +1574,7 @@ char *shape_h[] =
 NULL
 };
 
-char *shape_i[] =
+const char *shape_i[] =
 {
 "                ",
 "     .XkkkX.    ",
@@ -1596,7 +1596,7 @@ char *shape_i[] =
 NULL
 };
 
-char *shape_j[] =
+const char *shape_j[] =
 {
 "                ",
 "        .XkkkX. ",
@@ -1618,7 +1618,7 @@ char *shape_j[] =
 NULL
 };
 
-char *shape_k[] =
+const char *shape_k[] =
 {
 "                ",
 "XkkkkX.  .......",
@@ -1640,7 +1640,7 @@ char *shape_k[] =
 NULL
 };
 
-char *shape_l[] =
+const char *shape_l[] =
 {
 "                ",
 " .XkkkkkXX.     ",
@@ -1662,7 +1662,7 @@ char *shape_l[] =
 NULL
 };
 
-char *shape_m[] =
+const char *shape_m[] =
 {
 "                ",
 "............... ",
@@ -1684,7 +1684,7 @@ char *shape_m[] =
 NULL
 };
 
-char *shape_n[] =
+const char *shape_n[] =
 {
 "                ",
 "............... ",
@@ -1706,7 +1706,7 @@ char *shape_n[] =
 NULL
 };
 
-char *shape_o[] =
+const char *shape_o[] =
 {
 "............... ",
 ".XXXXXXXXXXXXX..",
@@ -1727,7 +1727,7 @@ char *shape_o[] =
 NULL
 };
 
-char *shape_p[] =
+const char *shape_p[] =
 {
 "............... ",
 "XXXXXXXXXXXXXX..",
@@ -1748,7 +1748,7 @@ char *shape_p[] =
 NULL
 };
 
-char *shape_q[] =
+const char *shape_q[] =
 {
 "................",
 ".XXXXXXXXXXXXXX.",
@@ -1769,7 +1769,7 @@ char *shape_q[] =
 NULL
 };
 
-char *shape_r[] =
+const char *shape_r[] =
 {
 "............... ",
 "XXXXXXXXXXXXXX..",
@@ -1790,7 +1790,7 @@ char *shape_r[] =
 NULL
 };
 
-char *shape_s[] =
+const char *shape_s[] =
 {
 "..............  ",
 ".XXXXXXXXXXXX.  ",
@@ -1811,7 +1811,7 @@ char *shape_s[] =
 NULL
 };
 
-char *shape_t[] =
+const char *shape_t[] =
 {
 " .XkkkX.......  ",
 " .XhhhXXXXXXX.  ",
@@ -1832,7 +1832,7 @@ char *shape_t[] =
 NULL
 };
 
-char *shape_u[] =
+const char *shape_u[] =
 {
 "......  ........",
 "XXXXX.  .XXXXXX.",
@@ -1853,7 +1853,7 @@ char *shape_u[] =
 NULL
 };
 
-char *shape_v[] =
+const char *shape_v[] =
 {
 "......  ........",
 "XXXXX.  .XXXXXX.",
@@ -1874,7 +1874,7 @@ char *shape_v[] =
 NULL
 };
 
-char *shape_w[] =
+const char *shape_w[] =
 {
 "......  ........",
 "XXXXX.  .XXXXXX.",
@@ -1895,7 +1895,7 @@ char *shape_w[] =
 NULL
 };
 
-char *shape_x[] =
+const char *shape_x[] =
 {
 "......   .......",
 "XXXXX.. ..XXXXX.",
@@ -1916,7 +1916,7 @@ char *shape_x[] =
 NULL
 };
 
-char *shape_y[] =
+const char *shape_y[] =
 {
 "......  ........",
 "XXXXX.  .XXXXXX.",
@@ -1937,7 +1937,7 @@ char *shape_y[] =
 NULL
 };
 
-char *shape_z[] =
+const char *shape_z[] =
 {
 "................",
 "XXXXXXXXXXXXXXX.",
@@ -1958,7 +1958,7 @@ char *shape_z[] =
 NULL
 };
 
-char *shape_left_brace[] =
+const char *shape_left_brace[] =
 {
 "    .XXkkkkX.   ",
 "    .XhhhXXX.   ",
@@ -1979,7 +1979,7 @@ char *shape_left_brace[] =
 NULL
 };
 
-char *shape_copyright[] =
+const char *shape_copyright[] =
 {
 " ..XXXkkkkXXX.. ",
 "..XXhhhXXhhhXX..",
@@ -2000,7 +2000,7 @@ char *shape_copyright[] =
 NULL
 };
 
-char *shape_right_brace[] =
+const char *shape_right_brace[] =
 {
 "   .XkkkkXX.    ",
 "   .XXXhhhX.    ",
@@ -2021,7 +2021,7 @@ char *shape_right_brace[] =
 NULL
 };
 
-char *shape_tilde[] =
+const char *shape_tilde[] =
 {
 ".XXkkkkXX.XkkkX.",
 "XXhhhhhhXXXhhhX.",
@@ -2042,7 +2042,7 @@ char *shape_tilde[] =
 NULL
 };
 
-char *shape_right_triangle[] =
+const char *shape_right_triangle[] =
 {
 "&XXX...         ",
 "-X&XXX...       ",
@@ -2063,7 +2063,7 @@ char *shape_right_triangle[] =
 NULL
 };
 
-struct shape Font[] =
+const struct shape Font[] =
 {
    [0] = { std_colors, shape_space },
    [1] = { std_colors, shape_space },
