@@ -145,17 +145,18 @@ struct fleet Fleet =
   SPEED*FPSCALE/FLEET_DRIFT // initial x-dir
 };
 
-// here ship will publish its x/y coordinates
-struct ship
+
+// easy search that suction is present
+struct suction
 {
   int x,y;
-  int n; // 1-single ship, 2-double ship
+  int countdown; // sucks until 0
 };
 
-struct ship Ship =
+struct suction Suction =
 {
-  391*FPSCALE,400*FPSCALE, // x=392..407 ship coordinates
-  1,
+  0,0,
+  0,
 };
 
 struct path_segment
@@ -415,10 +416,27 @@ struct starship
   int path_state; // state of the current path
   int path_count; // frame countdown until next path state
   int hx, hy; // home position in the fleet
+  struct starship *parent; // who created it (from suction bars to the alien)
 };
 struct starship *Starship;
 
 struct starship *Fighter; // direct pointer to player's ship
+
+// here ship will publish its x/y coordinates
+struct ship
+{
+  int x,y;
+  int n; // 1-single ship, 2-double ship
+  int suction; // suction counter
+  struct starship *sucker; // pointer to alien that sucks this ship
+};
+
+struct ship Ship =
+{
+  391*FPSCALE,400*FPSCALE, // x=392..407 ship coordinates
+  1, // single ship
+  0, // no suction
+};
 
 // defines which members of convoy are to enter the stage
 // their flight path and their position in the fleet
@@ -778,7 +796,20 @@ void missile_move(struct starship *s)
 {
   struct starship *ah = alien_hit(s);
   if(ah != NULL)
+  {
+    if(ah->shape == SH_ALIEN5D) // alien hit have suckered ship on the back
+    {
+      if(Ship.n == 1) // if currently there's single fighter ship
+      {
+        Ship.n = 2; // double fighter ship
+        Fighter->shape = SH_SHIP2; // double ship shape
+        c2.sprite_link_content(Fighter->shape, Fighter->sprite);
+        s->shape = SH_ALIEN5D; // reshape the alien into big one with suckered ship on the back
+        c2.sprite_link_content(s->shape, s->sprite);
+      }
+    }
     kill_alien(ah);
+  }
   if(s->x < 10*FPSCALE || s->x > 640*FPSCALE || s->y > 480*FPSCALE || s->y < 10*FPSCALE || ah != NULL)
   {
     s->state = S_NONE;
@@ -790,7 +821,7 @@ void missile_move(struct starship *s)
   object_angular_move(s);
 }
 
-void suction_create(int x, int y)
+void suction_create(struct starship *ship, int x, int y)
 {
   int i;
   struct starship *s; // suction bar
@@ -807,14 +838,30 @@ void suction_create(int x, int y)
     s->path_state = 0; // y-reset
     s->path_count = (512 - i*SPEED*SUCTION_DISTANCE/4)/SPEED; // suction time
     s->state = S_SUCTION_BAR;
+    s->parent = ship; // the alien ship who created this suction bar
     c2.sprite_link_content(s->shape, s->sprite); // the suction bar
+  }
+  // suctiion tracker
+  Suction.x = ship->x;
+  Suction.y = ship->y;
+  Suction.countdown = ship->path_count;
+}
+
+// tracks (countdowns) suction time for easier search
+void suction_tracker(void)
+{
+  if(Suction.countdown > 0)
+  {
+    Suction.countdown--;
   }
 }
 
 void suction_move(struct starship *s)
 {
   if(s->x < 10*FPSCALE || s->x > 640*FPSCALE || s->y > 480*FPSCALE || s->y < 10*FPSCALE
-  || --s->path_count < 0)
+  || --s->path_count < 0
+  || (Ship.suction == 50) // this will immediately terminate suction bars when ship is taken
+  )
   {
     s->state = S_NONE;
     c2.Sprite[s->sprite]->y = OFF_SCREEN; // off-screen, invisible
@@ -859,7 +906,9 @@ void alien_convoy(struct starship *s)
         {
           int alien_type = s->shape / 4;
           if(alien_type == 3) // is it still alien type 3? (haven't been hit in meantime)
-            suction_create(s->x, s->y + 20 * FPSCALE); // yes, suck
+          {
+            suction_create(s, s->x, s->y + 20 * FPSCALE); // yes, suck
+          }
           else
           { // no type 3 alien, skip suction state
             if( path[s->path_state+1].n > 0 )
@@ -867,17 +916,6 @@ void alien_convoy(struct starship *s)
               s->path_state++;
               s->path_count = path[s->path_state].n;
             }
-          }
-        }
-        else if(s->v == 0) // alien restarts after sucking
-        {
-          if(Ship.n == 1) // currently there's single fighter ship
-          {
-            Ship.n = 2; // double fighter ship
-            Fighter->shape = SH_SHIP2; // double ship shape
-            c2.sprite_link_content(Fighter->shape, Fighter->sprite);
-            s->shape = SH_ALIEN5D; // reshape the alien into big one with suckered ship on the back
-            c2.sprite_link_content(s->shape, s->sprite);
           }
         }
       }
@@ -1151,6 +1189,7 @@ void ship_create(int x, int y)
 //  0 nothing
 // -1 alien in the x-shooting range
 //  1 ship hit by alien or bomb
+//  2 ship sucked by the alien
 int ship_aim_hit(struct starship *s, struct starship **alien)
 {
   uint32_t i;
@@ -1162,18 +1201,23 @@ int ship_aim_hit(struct starship *s, struct starship **alien)
   {
     as = &(Starship[i]);
     // is the alien or bomb near enough to destroy the ship?
-    if((as->state >= S_ALIEN_CONVOY && as->state <= S_ALIEN_ATTACK) || (as->state == S_BOMB))
+    if((as->state >= S_ALIEN_CONVOY && as->state <= S_ALIEN_ATTACK)
+    || (as->state == S_BOMB)
+    || (as->state == S_SUCTION_BAR)
+    )
     {
       if(as->x - xr < s->x && as->x + xr > s->x
       && as->y - yr < s->y && as->y + yr > s->y)
       {
         if(alien != NULL)
           *alien = as;
+        if(as->state == S_SUCTION_BAR)
+          return 2; // suction bar is near - ship should be suckered
         return 1; // alien or bomb near, ship should explode
       }
     }
-    // is the alien above?
-    if(as->state >= S_ALIEN_CONVOY && as->state <= S_ALIEN_ATTACK)
+    // is the alien above? (non-sucking one)
+    if(as->state >= S_ALIEN_CONVOY && as->state <= S_ALIEN_ATTACK && as->path_state != PT_ALIEN_SUCTION)
     {
       if(as->x - xs < s->x && as->x + xs > s->x)
         retval = -1; // alien found above, ship should shoot
@@ -1188,8 +1232,51 @@ void ship_move(struct starship *s)
   uint32_t shooting_freq = 5000000;
   static int xdir = SPEED*FPSCALE/2; // x-direction that ship moves
   struct starship *object_collided;
+  static int immunity = 0; // can't be destroyed
   int collision = ship_aim_hit(s, &object_collided);
-  if(collision == 1)
+  if(Ship.suction > 0)
+  {
+    int up_to_suction_level = 0;
+    if(Ship.sucker != NULL)
+    {
+      if(s->y < Ship.sucker->y)
+        up_to_suction_level = 1;
+    }
+    // ship goes up and joins the sucker alien
+    // after joining: if there's another ship available
+    // it should enter the game
+    Ship.suction--;
+    if(Ship.suction > 0 && up_to_suction_level == 0)
+    { // move up
+      s->y -= SPEED*FPSCALE/4; // move up at suction speed
+      c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
+      immunity = 200;
+      return;
+    }
+    else
+    { // inform the sucker to proceed with taking the ship
+      if(Ship.sucker != NULL && up_to_suction_level == 1) // sanity check
+      {
+        struct path_segment *path;
+        path = Path_types[Ship.sucker->path_type].path;
+        if( path[Ship.sucker->path_state+1].n > 0 )
+        {
+          Ship.sucker->path_state++;
+          Ship.sucker->path_count = path[Ship.sucker->path_state].n;
+          Ship.sucker->shape = SH_ALIEN5D; // reshape the alien into big one with suckered ship on the back
+          c2.sprite_link_content(Ship.sucker->shape, Ship.sucker->sprite);
+        }
+      }
+      // create new ship (if available) at old position
+      s->y = Ship.y;
+      c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
+      immunity = 200;
+      return;
+    }
+  }
+  if(immunity > 0)
+    immunity--;
+  if(collision == 1 && Ship.suction == 0 && immunity == 0) // fatal hit
   {
     if(object_collided)
     {
@@ -1213,6 +1300,17 @@ void ship_move(struct starship *s)
     explosion_create(s->x, s->y, 5, 16); // explosion color type 5 (player ship)
     return;
   }
+  if(collision == 2 && immunity == 0) // enter suction state
+  {
+    Ship.suction = 100; // counter for the ship to move up
+    Ship.sucker = NULL;
+    if(object_collided->state == S_SUCTION_BAR && object_collided->parent != NULL)
+    {
+      if(object_collided->parent->path_type == PT_ALIEN_SUCTION)
+        Ship.sucker = object_collided->parent; // the alien that sucks this ship
+    }
+    return;
+  }
   if(Alien_friendly == 0)
     shooting_freq = 600000000;
   if(s->prepare > 0)
@@ -1220,10 +1318,10 @@ void ship_move(struct starship *s)
   else
   {
     if(rng < shooting_freq)
-    if(collision == -1)
+    if(collision == -1) // alien in the x-shooting range
     {
       s->prepare = SHIP_MISSILE_RELOAD;
-      if(Ship.n == 1) // single ship shingle shots
+      if(Ship.n == 1) // single ship single shots
         missile_create(Ship.x, Ship.y);
       if(Ship.n == 2) // double ship double shots
       {
@@ -1238,6 +1336,7 @@ void ship_move(struct starship *s)
     xdir =  SPEED*FPSCALE/2;
   s->x += xdir;
   Ship.x = s->x; // publish ship's new x coordinate (y stays the same)
+  Ship.y = s->y;
   c2.Sprite[s->sprite]->x = s->x / FPSCALE - Scenter[s->shape].x;
   c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
 }
@@ -1335,6 +1434,7 @@ void loop()
     struct starship *s = &(Starship[i]);
     jumptable_move[s->state](s);
   }
+  suction_tracker();
 
   while((*c2.vblank_reg & 0x80) == 0);
   #if SHOWCASE_SPRITES
