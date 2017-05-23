@@ -32,8 +32,8 @@ void setup()
       //shape_to_sprite(1 + (i % 3),i);
       c2.Sprite[i]->x = 20 + (rand() % 600);
       c2.Sprite[i]->y = 20 + (rand() % 400);
-      Sprite_speed[i].x = (rand() % N_SHAPES)-1;
-      Sprite_speed[i].y = (rand() % N_SHAPES)-1;
+      Sprite_speed[i].x = (rand() % 3)-1;
+      Sprite_speed[i].y = (rand() % 3)-1;
     }
   #endif
 
@@ -86,6 +86,6 @@ void loop()
   while((*c2.vblank_reg & 0x80) == 0);
   c2.sprite_refresh();
   while((*c2.vblank_reg & 0x80) != 0);
-  //delay(400);
+  //delay(15);
 }
 

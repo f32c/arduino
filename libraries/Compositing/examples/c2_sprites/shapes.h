@@ -15,9 +15,67 @@ const struct charcolors std_colors[] =
   {0, 0}
 };
 
-const char *shape_ship[] =
-{/* 
- 01234567890123456789012345678901 */
+
+const char *shape_ship1[] =
+{
+"       W",
+"       W",
+"       W",
+"      WWW",
+"      WWW",
+"   R  WWW  R",
+"   R  WWW  R",
+"   W WWWWW W",
+"R  WBWWRWWBW  R",
+"R  BWWRRRWWB  R",
+"W  WWWRWRWWW  W",
+"W WWWWWWWWWWW W",
+"WWWWWRWWWRWWWWW",
+"WWW RRWWWRR WWW",
+"WW  RR W RR  WW",
+"W      W      W",
+NULL
+};
+
+const char *shape_ship2[] =
+{
+"              WW",
+"              WW",
+"              WW",
+"              WW",
+"              WW",
+"              WW",
+"            WWWWWW",
+"            WWWWWW",
+"            WWWWWW",
+"            WWWWWW",
+"      RR    WWWWWW    RR",
+"      RR    WWWWWW    RR",
+"      RR    WWWWWW    RR",
+"      RR    WWWWWW    RR",
+"      WW  WWWWWWWWWW  WW",
+"      WW  WWWWWWWWWW  WW",
+"RR    WWBBWWWWRRWWWWBBWW    RR",
+"RR    WWBBWWWWRRWWWWBBWW    RR",
+"RR    BBWWWWRRRRRRWWWWBB    RR",
+"RR    BBWWWWRRRRRRWWWWBB    RR",
+"WW    WWWWWWRRWWRRWWWWWW    WW",
+"WW    WWWWWWRRWWRRWWWWWW    WW",
+"WW  WWWWWWWWWWWWWWWWWWWWWW  WW",
+"WW  WWWWWWWWWWWWWWWWWWWWWW  WW",
+"WWWWWWWWWWRRWWWWWWRRWWWWWWWWWW",
+"WWWWWWWWWWRRWWWWWWRRWWWWWWWWWW",
+"WWWWWW  RRRRWWWWWWRRRR  WWWWWW",
+"WWWWWW  RRRRWWWWWWRRRR  WWWWWW",
+"WWWW    RRRR  WW  RRRR    WWWW",
+"WWWW    RRRR  WW  RRRR    WWWW",
+"WW            WW            WW",
+"WW            WW            WW",
+NULL
+};
+
+const char *shape_ship3[] =
+{
 "   WWW  ",
 "   WWWOOOOO ",
 " WWWWWYYYYYYYYYY",
@@ -38,7 +96,7 @@ const char *shape_ship[] =
 NULL
 };
 
-const char *shape_invader[] =
+const char *shape_invader1[] =
 {/*
  01234567890123456789012345678901 */
 "      GGGG  ",
@@ -84,9 +142,11 @@ NULL
 
 const struct shape Shape[] =
 {
-  [0] = { std_colors, shape_ship },
-  [1] = { std_colors, shape_invader },
-  [2] = { std_colors, shape_invader2 },
-//  [3] = { NULL, NULL }
+  [0] = { std_colors, shape_invader1 },
+  [1] = { std_colors, shape_invader2 },
+  [2] = { std_colors, shape_ship1},
+//  [3] = { std_colors, shape_ship2},
+//  [4] = { std_colors, shape_ship3},
+//  [5] = { NULL, NULL }
 };
 
