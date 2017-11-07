@@ -38,15 +38,15 @@ UARTClass::sio_probe_rx()
   s = serbase[IO_SIO_STATUS-IO_SIO_BYTE];
   if (s & SIO_RX_FULL) {
     c = serbase[IO_SIO_BYTE-IO_SIO_BYTE];
-    if (!(tx_xoff & 0x80)) {
+    if ((tx_xoff & 0x80)) {
       if (c == 0x13) {
         /* XOFF */
-        tx_xoff = 1;
+        tx_xoff = 0x81;
         return(s);
       }
       if (c == 0x11) {
         /* XON */
-        tx_xoff = 0;
+        tx_xoff = 0x80;
         return(s);
       }
     }

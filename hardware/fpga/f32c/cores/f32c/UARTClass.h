@@ -39,8 +39,8 @@ class UARTClass : public HardwareSerial
 
     operator bool() {return (true);}; // UART always active
 
-    // f32c extension (default is XON/XOFF enabled - so input is not transparent)
-    void setXoffXon(bool enable) { if (enable) tx_xoff &= ~0x80; else tx_xoff = 0x80; }
+    // f32c extension (default is XON/XOFF disabled - so input is 8-bit transparent)
+    void setXoffXon(bool enable) { if (enable) tx_xoff |= 0x80; else tx_xoff &= ~0x80; }
 
   protected:
     int sio_probe_rx();
@@ -54,7 +54,7 @@ class UARTClass : public HardwareSerial
     };
 
     volatile uint8_t *serbase;  // base address of SIO register for port
-    volatile uint8_t  tx_xoff;  // bit 7 set = disable Xoff/Xon flow control
+    volatile uint8_t  tx_xoff;  // bit 7 set enables Xon/Xoff flow control (default disabled)
     volatile uint8_t  sio_rxbuf_head;
     volatile uint8_t  sio_rxbuf_tail;
     char              sio_rxbuf[SIO_RXBUFSIZE];
