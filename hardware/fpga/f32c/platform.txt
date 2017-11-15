@@ -37,7 +37,7 @@ compiler.ar.cmd={cpu.arch}-elf-ar
 compiler.ar.flags=rcs
 compiler.objcopy.cmd={cpu.arch}-elf-objcopy
 compiler.objcopy.eep.flags=-O srec
-compiler.elf2hex.flags=
+compiler.elf2hex.flags=-R .rel.dyn -R .MIPS.abiflags
 compiler.elf2hex.cmd={cpu.arch}-elf-objcopy
 compiler.size.cmd={cpu.arch}-elf-size
 compiler.define=-DARDUINO=
