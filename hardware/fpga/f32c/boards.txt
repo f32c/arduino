@@ -11,6 +11,7 @@ menu.model=Model
 # FPGArduino ULX2S f32c SoC SRAM
 #
 fpga_ulx2s_sram.name=FER ULX2S (Lattice XP2, 1M SRAM, 81.25 MHz)
+fpga_ulx2s_sram.build.board=F32C_FPGA_ULX2S_SRAM
 fpga_ulx2s_sram.build.extra_flags=--section-start=.init=0x80000000
 fpga_ulx2s_sram.build.f_cpu=81250000
 fpga_ulx2s_sram.build.variant=generic
@@ -39,6 +40,7 @@ fpga_ulx2s_sram.menu.bitstream.pid433.bootloader.file=ulx2s/ulx2s_8e_mips_sram_n
 # FPGArduino ULX2S f32c SoC BRAM
 #
 fpga_ulx2s_bram.name=FER ULX2S (Lattice XP2, 16K BRAM, 81.25 MHz)
+fpga_ulx2s_bram.build.board=F32C_FPGA_ULX2S_BRAM
 fpga_ulx2s_bram.build.f_cpu=81250000
 fpga_ulx2s_bram.build.variant=generic
 fpga_ulx2s_bram.build.mcu=f32c
@@ -67,6 +69,7 @@ fpga_ulx2s_bram.menu.cpu.riscv.bootloader.file=ulx2s/ulx2s_8e_riscv_bram_81mhz.j
 # Terasic DE0-Nano
 #
 fpga_de0_nano_bram.name=Terasic DE0-Nano (Altera Cyclone-IV, 32K BRAM, 100 MHz)
+fpga_de0_nano_bram.build.board=F32C_FPGA_DE0_NANO_BRAM
 fpga_de0_nano_bram.build.f_cpu=100000000
 fpga_de0_nano_bram.build.variant=generic
 fpga_de0_nano_bram.build.mcu=f32c
@@ -92,6 +95,7 @@ fpga_de0_nano_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flag
 # Spartan-3 (3E, 3A, 3AN) Starter Kits
 #
 fpga_s3starter_bram.name=Xilinx Spartan Starter Kits (S3E/S3A, 32K BRAM, 70 MHz)
+fpga_s3starter_bram.build.board=F32C_FPGA_S3STARTER_BRAM
 fpga_s3starter_bram.build.f_cpu=70000000
 fpga_s3starter_bram.build.variant=generic
 fpga_s3starter_bram.build.mcu=f32c
@@ -127,6 +131,7 @@ fpga_s3starter_bram.menu.model.s3e_1600.bitstream.model=s3e_1600
 # Nexys-3
 #
 fpga_nexys3_bram.name=Digilent Nexys-3 (Xilinx Spartan-6, 32K BRAM, 80 MHz)
+fpga_nexys3_bram.build.board=F32C_FPGA_NEXYS3_BRAM
 fpga_nexys3_bram.build.f_cpu=80000000
 fpga_nexys3_bram.build.variant=generic
 fpga_nexys3_bram.build.mcu=f32c
@@ -152,6 +157,7 @@ fpga_nexys3_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 # Basys-3
 #
 fpga_basys3_bram.name=Digilent Basys-3 (Xilinx Artix-7, 128K BRAM, 100 MHz)
+fpga_basys3_bram.build.board=F32C_FPGA_BASYS3_BRAM
 fpga_basys3_bram.build.f_cpu=100000000
 fpga_basys3_bram.build.variant=generic
 fpga_basys3_bram.build.mcu=f32c
@@ -177,6 +183,7 @@ fpga_basys3_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 # ZYBO
 #
 fpga_zybo_bram.name=Digilent ZYBO (Xilinx Zynq 7010, 128K BRAM, 125 MHz)
+fpga_zybo_bram.build.board=F32C_FPGA_ZYBO_BRAM
 fpga_zybo_bram.build.f_cpu=125000000
 fpga_zybo_bram.build.variant=generic
 fpga_zybo_bram.build.mcu=f32c
@@ -212,6 +219,7 @@ fpga_zybo_bram.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.pat
 # Lattice Brevia / Brevia2
 #
 fpga_brevia_bram.name=Lattice Brevia boards (Lattice XP2, 16K BRAM, 81.25 MHz)
+fpga_brevia_bram.build.board=F32C_FPGA_BREVIA_BRAM
 fpga_brevia_bram.build.f_cpu=81250000
 fpga_brevia_bram.build.variant=generic
 fpga_brevia_bram.build.mcu=f32c
@@ -237,6 +245,7 @@ fpga_brevia_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 # E2LP
 #
 fpga_e2lp_bram.name=E2LP (Xilinx Spartan-6, 128K BRAM, 80 MHz)
+fpga_e2lp_bram.build.board=F32C_FPGA_E2LP_BRAM
 fpga_e2lp_bram.build.f_cpu=80000000
 fpga_e2lp_bram.build.variant=generic
 fpga_e2lp_bram.build.mcu=f32c
@@ -262,6 +271,7 @@ fpga_e2lp_bram.menu.cpu.riscv.compiler.ld.flags={f32c.riscv.compiler.ld.flags}
 # Xilinx Scarab Hardware miniSpartan6+ Board (ebay), f32c SoC
 #
 fpga_scarab.name=Scarab miniSpartan6+ (Xilinx Spartan-6 XC6SLX25, 32K BRAM, 81.25/112.5 MHz)
+fpga_scarab.build.board=F32C_FPGA_SCARAB
 fpga_scarab.build.mcu=f32c
 fpga_scarab.build.core=f32c
 fpga_scarab.upload.tool=ujprog
@@ -304,6 +314,7 @@ fpga_scarab.menu.jtag.ft2232.bootloader.openocd.interface={runtime.platform.path
 # Xilinx TB299 Board (ebay), f32c SoC
 #
 fpga_tb299.name=TB299 (Xilinx Spartan-6 XC6SLX9, 32K BRAM, 81.25/112.5 MHz)
+fpga_tb299.build.board=F32C_FPGA_TB299
 fpga_tb299.build.mcu=f32c
 fpga_tb299.build.core=f32c
 fpga_tb299.upload.tool=ujprog
@@ -350,6 +361,7 @@ fpga_tb299.menu.jtag.fpu1.bootloader.openocd.interface={runtime.platform.path}/t
 # Altera TB276 Board (ebay), f32c SoC
 #
 fpga_tb276.name=TB276 (Altera Cyclone IV E EP4CE6, 16K BRAM, 81.25/112.5 MHz)
+fpga_tb276.build.board=F32C_FPGA_TB276
 fpga_tb276.build.mcu=f32c
 fpga_tb276.build.core=f32c
 fpga_tb276.upload.tool=ujprog
@@ -404,6 +416,7 @@ fpga_tb276.menu.bitstream.flashquartus.upload.bitstream.command="quartus_pgm" "-
 # http://www.fleasystems.com
 #
 fpga_fleafpga_uno.name=FleaFPGA-Uno (Lattice MachXO2-7000HC)
+fpga_fleafpga_uno.build.board=F32C_FPGA_FLEAFPGA_UNO
 fpga_fleafpga_uno.build.f_cpu=50000000
 fpga_fleafpga_uno.build.variant=generic
 fpga_fleafpga_uno.build.mcu=f32c
@@ -451,6 +464,7 @@ fpga_fleafpga_uno.menu.bitstream.normal.bootloader.file=FleaFPGA-Uno/FleaFPGA-Un
 # FPGArduino Generic f32c SoC
 #
 fpga_generic.name=Generic FPGA board
+fpga_generic.build.board=F32C_FPGA_GENERIC
 fpga_generic.build.mcu=f32c
 fpga_generic.build.core=f32c
 fpga_generic.upload.tool=ujprog
