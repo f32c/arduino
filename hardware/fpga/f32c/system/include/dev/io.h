@@ -31,7 +31,7 @@
 #ifdef __mips__
 #include <mips/io.h>
 #endif
-#ifdef __riscv__
+#ifdef __riscv
 #include <riscv/io.h>
 #endif
 

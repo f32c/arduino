@@ -47,10 +47,10 @@ void icpFilter(uint32_t pin, uint32_t icp_start, uint32_t icp_stop);
 #define __enable_irq() asm("ei")
 #define __disable_irq() asm("di")
 #endif // __mips__
-#ifdef __riscv__
+#ifdef __riscv
 #define __enable_irq()
 #define __disable_irq()
-#endif // __riscv__
+#endif // __riscv
 
 __END_DECLS
 

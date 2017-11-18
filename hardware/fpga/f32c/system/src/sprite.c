@@ -33,7 +33,7 @@
 #include <fcntl.h>
 #include <sys/queue.h>
 
-#if defined(__mips__) || defined(__riscv__)
+#if defined(__mips__) || defined(__riscv)
 #include <dev/io.h>
 #include <dev/fb.h>
 #include <tjpgd.h>

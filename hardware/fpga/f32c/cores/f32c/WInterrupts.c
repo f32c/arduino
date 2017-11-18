@@ -323,13 +323,13 @@ void detachInterrupt(uint32_t pin)
 }
 #endif // __mips__
 
-#ifdef __riscv__
+#ifdef __riscv
 /* F32C RISC-V is early and currently doesn't have interrupts
-** when implemented, #ifdef __riscv__
+** when implemented, #ifdef __riscv
 ** can be used for code than needs to be specifically compiled
 ** for riscv architecture
 */
 #warning "RISC-V doesn't have interrupts yet. Choose Tools->CPU Architecture->MIPS"
-#endif // __riscv__
+#endif // __riscv
 
 __END_DECLS
