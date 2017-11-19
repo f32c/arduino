@@ -35,3 +35,12 @@ void __cxa_deleted_virtual(void) {
     ;
 }
 
+// EMARD: I'm not sure is "abi.cpp" right place,
+// but for compilation of some libraries like MIDI Library from Forty Seven Effects
+// it will fix errors like:
+// Callbacks.ino.cpp:(.text.startup._GLOBAL__sub_I_MIDI+0xb4): undefined reference to `__dso_handle'
+// Callbacks.ino.cpp:(.text.startup._GLOBAL__sub_I_MIDI+0xbc): undefined reference to `__cxa_atexit'
+__BEGIN_DECLS
+void *__dso_handle = (void*) &__dso_handle;
+int __cxa_atexit(void (_destructor) (void *), void *arg, void *dso) { return (0);}
+__END_DECLS;
