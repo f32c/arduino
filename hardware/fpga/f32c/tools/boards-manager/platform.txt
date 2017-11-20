@@ -13,8 +13,8 @@ f32c.mips.compiler.c.flags=-march=f32c -c -EL -G {build.sdata.size} -Os -fpeel-l
 f32c.mips.compiler.cpp.flags=-march=f32c -c -EL -G {build.sdata.size} -Os -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -fpermissive -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions
 f32c.mips.compiler.ld.flags=-N -EL -gc-sections "--library-path={build.system.path}/mips/lib"
 
-f32c.riscv.compiler.c.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h
-f32c.riscv.compiler.cpp.flags=-c -Os -m32 -msoft-float -mno-muldiv -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -fpermissive -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
+f32c.riscv.compiler.c.flags=-c -Os -march=rv32i -mabi=ilp32 -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -include sys/stdint.h
+f32c.riscv.compiler.cpp.flags=-c -Os -march=rv32i -mabi=ilp32 -fpeel-loops -ffreestanding -ffunction-sections -fdata-sections -fpermissive -Wall -nostdinc "-I{build.system.path}/include" -include sys/param.h -fno-rtti  -fno-exceptions -include sys/stdint.h
 f32c.riscv.compiler.ld.flags=-N -EL -melf32lriscv -gc-sections "--library-path={build.system.path}/riscv/lib"
 
 # f32c from Board Manager JSON automatic installation:
