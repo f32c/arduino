@@ -6,6 +6,22 @@
 #include <Compositing.h>
 #include "shapes.h"
 
+#if 0
+#define BTN_L (5)
+#define BTN_R (6)
+#define BTN_F (1)
+#define BTN_PRESSED (HIGH)
+#endif
+
+#if 1
+#define BTN_L (32+25)
+#define BTN_R (32+26)
+#define BTN_F (32+21)
+#define BTN_PRESSED (LOW)
+#endif
+
+int game_demo = 1; // 0-joystick 1-demo
+
 #define SPRITE_MAX 512
 #define N_SHAPES (sizeof(Shape)/sizeof(Shape[0]))
 
@@ -16,7 +32,7 @@
 #define FPSCALE 256
 
 // global speed 1/2/4 (more=faster)
-#define SPEED 4
+#define SPEED 6
 
 // fleet drift (more = SLOWER)
 #define FLEET_DRIFT 4
@@ -1123,7 +1139,7 @@ void alien_attack(struct starship *s)
   uint16_t rng = rand();
   uint8_t a;
 
-  if(rng < 8000)
+  if(rng < 7000)
   {
     if(s->prepare > 0)
       s->prepare--;
@@ -1234,6 +1250,14 @@ void ship_move(struct starship *s)
   struct starship *object_collided;
   static int immunity = 0; // can't be destroyed
   int collision = ship_aim_hit(s, &object_collided);
+  static int disappeared = 0;
+  if(disappeared > 0)
+  {
+    disappeared--;
+    if(disappeared == 0) // reappear
+      c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
+    return;
+  }
   if(Ship.suction > 0)
   {
     int up_to_suction_level = 0;
@@ -1296,6 +1320,12 @@ void ship_move(struct starship *s)
       s->shape = SH_SHIP1U;
       c2.sprite_link_content(s->shape, s->sprite);   
     }
+    else
+    {
+      disappeared = 200; // remove ship
+      c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y + 100; // invisible
+      Alien_friendly = 1;
+    }
     fireball_create(s->x, s->y, SH_FIREBALLY0);
     explosion_create(s->x, s->y, 5, 16); // explosion color type 5 (player ship)
     return;
@@ -1317,8 +1347,8 @@ void ship_move(struct starship *s)
     s->prepare--;
   else
   {
-    if(rng < shooting_freq)
-    if(collision == -1) // alien in the x-shooting range
+    if((rng < shooting_freq && game_demo > 0 && collision == -1) // alien in the shooting range
+    || (digitalRead(BTN_F)==BTN_PRESSED && game_demo <= 0) )
     {
       s->prepare = SHIP_MISSILE_RELOAD;
       if(Ship.n == 1) // single ship single shots
@@ -1330,15 +1360,26 @@ void ship_move(struct starship *s)
       }
     }
   }
+  if(game_demo > 0)
+  {
   if((s->x > 600*FPSCALE || s->x > Fleet.x + 240*FPSCALE) && xdir > 0)
     xdir = -SPEED*FPSCALE/2;
   if((s->x < 100*FPSCALE || s->x < Fleet.x + 0*FPSCALE)  && xdir < 0)
     xdir =  SPEED*FPSCALE/2;
+  }
+  else
+  {
+    xdir = 0;
+    if(s->x > 100*FPSCALE && digitalRead(BTN_L) == BTN_PRESSED)
+      xdir = -SPEED*FPSCALE/2;
+    if(s->x < 600*FPSCALE && digitalRead(BTN_R) == BTN_PRESSED)
+      xdir = SPEED*FPSCALE/2;
+  }
   s->x += xdir;
   Ship.x = s->x; // publish ship's new x coordinate (y stays the same)
   Ship.y = s->y;
   c2.Sprite[s->sprite]->x = s->x / FPSCALE - Scenter[s->shape].x;
-  c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
+  c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y; // visible
 }
 
 void nothing_move(struct starship *s)
@@ -1371,6 +1412,9 @@ void setup()
   create_atan_table();
   allocate_ships();
 
+  pinMode(BTN_L, INPUT);
+  pinMode(BTN_R, INPUT);
+  pinMode(BTN_F, INPUT);
   #if 1
     // ORIGINAL SHAPE SPRITES
     // first number of sprites will be used only to carry
@@ -1444,5 +1488,10 @@ void loop()
   #endif
   while((*c2.vblank_reg & 0x80) != 0);
   //delay(400);
+  static uint8_t r;
+  r++;
+  if(r == 0)
+    Serial.println(Alien_count);
+  // Serial.print(".");
 }
 
