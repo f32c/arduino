@@ -54,8 +54,8 @@ class Vector_REG
     {
       uint32_t vector_opcode[4] = 
       {
-        0xE0004000, // VECTOR_ADD
-        0xE0404000, // VECTOR_SUB
+        0xE0003000, // VECTOR_ADD
+        0xE0403000, // VECTOR_SUB
         0xE1004000, // VECTOR_MUL
         0xE200B000, // VECTOR_DIV
       };

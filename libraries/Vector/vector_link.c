@@ -349,9 +349,9 @@ void hard_vector_oper(int a, int b, int c, int oper)
   #else
     // hardware math will use vector processor
     if(oper == 0)
-      vector_mmio[4] = 0xE0004000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
+      vector_mmio[4] = 0xE0003000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
     if(oper == 1)
-      vector_mmio[4] = 0xE0404000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
+      vector_mmio[4] = 0xE0403000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
     if(oper == 2)
       vector_mmio[4] = 0xE1004000 | a | (b<<4) | (c<<8); // a=b*c float (selected by index)
     if(oper == 3)

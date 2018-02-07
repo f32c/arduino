@@ -98,7 +98,7 @@ void Vector::add(int a, int b, int c)
 {
   if(vector_present)
   {
-    vector_mmio[4] = 0xE0004000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
+    vector_mmio[4] = 0xE0003000 | a | (b<<4) | (c<<8); // a=b+c float (selected by index)
     wait_vector_mask(1<<a);
   }
   else
@@ -110,7 +110,7 @@ void Vector::sub(int a, int b, int c)
 {
   if(vector_present)
   {
-    vector_mmio[4] = 0xE0404000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
+    vector_mmio[4] = 0xE0403000 | a | (b<<4) | (c<<8); // a=b-c float (selected by index)
     wait_vector_mask(1<<a);
   }
   else
