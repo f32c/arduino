@@ -1,9 +1,7 @@
 #!/bin/sh
 
-# BM_URL_BASE="http://localhost/~guest/fpgarduino/bm"
-# LOCALDIR="."
-BM_URL_BASE="http://www.nxlab.fer.hr/fpgarduino/bm"
-LOCALDIR="bm"
+BM_URL_BASE="http://localhost/~guest/fpgarduino/bm"
+LOCALDIR="."
 
 FPGARDUINO_NAME="FPGArduino"
 FPGARDUINO_VERSION="1.0.0"
@@ -48,12 +46,21 @@ NUMATO_APPLE64="numato-1.0.0-python3.zip"
 NUMATO_LINUX32="numato-1.0.0-python3.zip"
 NUMATO_LINUX64="numato-1.0.0-python3.zip"
 
+POSEDGE1PROG_NAME="posedge1prog"
+POSEDGE1PROG_VERSION="1.0.0"
+POSEDGE1PROG_WIN32="posedge1prog-100.zip"
+POSEDGE1PROG_APPLE64="posedge1prog-100.zip"
+POSEDGE1PROG_LINUX32="posedge1prog-100.zip"
+POSEDGE1PROG_LINUX64="posedge1prog-100.zip"
+
 COMPILER_NAME="f32c-compiler"
 COMPILER_VERSION="1.0.0"
-COMPILER_WIN32="f32c-win-toolchain.zip"
+#COMPILER_WIN32="f32c-win-toolchain.zip"
+COMPILER_WIN32="f32c-win32-toolchain-7_2.zip"
 COMPILER_APPLE64="f32c-osx-toolchain.tar.gz"
 COMPILER_LINUX32="f32c-lin32-toolchain.tar.gz"
-COMPILER_LINUX64="f32c-lin64-toolchain.tar.gz"
+#COMPILER_LINUX64="f32c-lin64-toolchain.tar.gz"
+COMPILER_LINUX64="f32c-lin64-toolchain-7_2.tar.gz"
 
 SHA256()
 {
@@ -124,6 +131,11 @@ cat << EOF
             },
             {
               "packager":"${FPGARDUINO_NAME}",
+              "name":"${POSEDGE1PROG_NAME}",
+              "version":"${POSEDGE1PROG_VERSION}"
+            },
+            {
+              "packager":"${FPGARDUINO_NAME}",
               "name":"${BOOTLOADERS_NAME}",
               "version":"${BOOTLOADERS_VERSION}"
             },
@@ -145,7 +157,7 @@ cat << EOF
         {
           "name":"${XC3SPROG_NAME}",
           "version":"${XC3SPROG_VERSION}",
-          "systems": 
+          "systems":
           [
             {
               "host":"i686-mingw32",
@@ -180,7 +192,7 @@ cat << EOF
         {
           "name":"${OPENOCD_NAME}",
           "version":"${OPENOCD_VERSION}",
-          "systems": 
+          "systems":
           [
             {
               "host":"i686-mingw32",
@@ -283,9 +295,44 @@ cat << EOF
           ]
         },
         {
+          "name":"${POSEDGE1PROG_NAME}",
+          "version":"${POSEDGE1PROG_VERSION}",
+          "systems":
+          [
+            {
+              "host":"i686-mingw32",
+              "url":"${BM_URL_BASE}/${POSEDGE1PROG_WIN32}",
+              "archiveFileName":"${POSEDGE1PROG_WIN32}",
+              "checksum":"SHA-256:$(SHA256 ${POSEDGE1PROG_WIN32})",
+              "size":"$(SIZE ${POSEDGE1PROG_WIN32})"
+            },
+            {
+              "host":"x86_64-apple-darwin",
+              "url":"${BM_URL_BASE}/${POSEDGE1PROG_APPLE64}",
+              "archiveFileName":"${POSEDGE1PROG_APPLE64}",
+              "checksum":"SHA-256:$(SHA256 ${POSEDGE1PROG_APPLE64})",
+              "size":"$(SIZE ${POSEDGE1PROG_APPLE64})"
+            },
+            {
+              "host":"i686-pc-linux-gnu",
+              "url":"${BM_URL_BASE}/${POSEDGE1PROG_LINUX32}",
+              "archiveFileName":"${POSEDGE1PROG_LINUX32}",
+              "checksum":"SHA-256:$(SHA256 ${POSEDGE1PROG_LINUX32})",
+              "size":"$(SIZE ${POSEDGE1PROG_LINUX32})"
+            },
+            {
+              "host":"x86_64-pc-linux-gnu",
+              "url":"${BM_URL_BASE}/${POSEDGE1PROG_LINUX64}",
+              "archiveFileName":"${POSEDGE1PROG_LINUX64}",
+              "checksum":"SHA-256:$(SHA256 ${POSEDGE1PROG_LINUX64})",
+              "size":"$(SIZE ${POSEDGE1PROG_LINUX64})"
+            }
+          ]
+        },
+        {
           "name":"${BOOTLOADERS_NAME}",
           "version":"${BOOTLOADERS_VERSION}",
-          "systems": 
+          "systems":
           [
             {
               "host":"i686-mingw32",
@@ -320,7 +367,7 @@ cat << EOF
         {
           "name":"${UJPROG_NAME}",
           "version":"${UJPROG_VERSION}",
-          "systems": 
+          "systems":
           [
             {
               "host":"i686-mingw32",
@@ -355,7 +402,7 @@ cat << EOF
         {
           "name":"${COMPILER_NAME}",
           "version":"${COMPILER_VERSION}",
-          "systems": 
+          "systems":
           [
             {
               "host":"i686-mingw32",
