@@ -1,15 +1,15 @@
 /* Compositing2 sprite example
  * with some moving vertical color stripes.
  * Workaround for hardware without write-while-read,
- * Such devices are Altera Cyclone-II and Cyclone-V.
- * Under each sprite a "beard" is drawn which acts
- * as trail eraser and quickly fills entire
+ * like Altera Cyclone-II, Cyclone-V.
+ * Under each sprite a 2-pixel thick "beard" is drawn
+ * which acts as trail eraser and quickly fills entire
  * background with its deep blue color.
  */
 #include <Compositing.h>
 #include "shapes.h"
 
-#define SPRITE_MAX 160
+#define SPRITE_MAX 64
 #define N_SHAPES (sizeof(Shape)/sizeof(Shape[0]))
 
 Compositing c2;
