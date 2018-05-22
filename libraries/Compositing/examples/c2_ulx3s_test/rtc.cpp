@@ -4,7 +4,7 @@
  * To enter sleep mode, D18 (GREEN LED) should be OFF
  * D18 is OFF by default when FT231x usb-serial is not enumerated
  * Either plug FPGA into 5V USB charger
- * or reprogram FT231x to drive D18 OFF: :
+ * or reprogram FT231x to drive D18 OFF:
  * ftx_prog --cbus 3 drive_0
  * to restore default D18 state:
  * ftx_prob --cbus 3 sleep
@@ -38,7 +38,7 @@ int regread(uint8_t reg, int8_t n)
 void rtc_clear_interrupts()
 {
   // clear all interrupts
-  regwrite(0x01, B00000000);
+  regwrite(0x01, B00000000); // clear all flags including alarm flag
   regwrite(0x02, B10000000); // use battery backup during power off
 }
 
@@ -80,13 +80,20 @@ void rtc_init() {
 
 void rtc_read(char *a)
 {
-  sprintf(a, "20%02x-%02x-%02x %02x:%02x:%02x ALM *-%02x %02x:%02x:00\n",
+  char *eval;
+  uint8_t yr = regread(0x09,1) & 0xFF;
+  if(yr >= 0x17 && yr <= 0x18)
+    eval = regread(0x01,1) & 8 ? " OK " : "WAIT";
+  else
+    eval = "FAIL";
+  sprintf(a, "20%02x-%02x-%02x %02x:%02x:%02x %s *-%02x %02x:%02x:00\n",
     regread(0x09,1) & 0xFF, // year
     regread(0x08,1) & 0x1F, // month
     regread(0x06,1) & 0x3F, // day
     regread(0x05,1) & 0x3F, // hour
     regread(0x04,1) & 0x7F, // minute
     regread(0x03,1) & 0x7F, // second
+    eval,  // time evaluation and alarm flag
     regread(0x0C,1) & 0x3F, // alarm day
     regread(0x0B,1) & 0x3F, // alarm hour
     regread(0x0A,1) & 0x7F  // alarm minute

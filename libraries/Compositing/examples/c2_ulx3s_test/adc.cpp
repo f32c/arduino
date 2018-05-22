@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 // constants won't change. Used here to set a pin number:
-const int ledPin =  8;// the number of the LED pin
+const int ledPin = 17; // the number of the LED pin
 const int pin = 32+20; // first audio pin
 
 const int SPI_MISO = 20;
@@ -133,7 +133,8 @@ void adc_init()
 
 void adc_read(char *a)
 {
-  static uint16_t reading[10];
+  static uint8_t skip_eval = 5; // skip evaluation for first few readings
+  static uint16_t reading[10], prev_reading[10];
   // alternating LED state will also alternate
   // digital output pins shared with ADC
   // ADC will read digital states
@@ -149,11 +150,33 @@ void adc_read(char *a)
 
     // set the LED with the ledState of the variable:
     digitalWrite(ledPin, ledState);
+
+    // copy previous reading for evaluation
+    for(int i = 0; i < 8; i++)
+      prev_reading[i] = reading[i];
+
     SPIstart();
     delay(1); // wait conversion
     for(int i = 0; i < 9; i++)
       reading[i] = SPISend(0,0);
-    sprintf(a, "%04x %04x %04x %04x %04x %04x %04x %04x\n",
+    // evaluation for ADC readings: OK/FAIL
+    static char *channel_eval[8];
+    for(uint16_t i = 0; i < 8; i++)
+    {
+      if(skip_eval)
+        channel_eval[i] = "WAIT";
+      else if(ledState)
+      {
+        if(reading[i] < ((i << 12) + 0x080) && prev_reading[i] > ((i << 12) + 0xF80) )
+          channel_eval[i] = " OK ";
+        else
+          channel_eval[i] = "FAIL";
+      }
+    }
+    // skip evaluation for first few readings
+    if(skip_eval)
+      skip_eval--;
+    sprintf(a, "%04x %04x %04x %04x %04x %04x %04x %04x\nADC: %s      %s      %s      %s\n",
       reading[0],
       reading[1],
       reading[2],
@@ -161,9 +184,14 @@ void adc_read(char *a)
       reading[4],
       reading[5],
       reading[6],
-      reading[7]
+      reading[7],
+      channel_eval[1],
+      channel_eval[3],
+      channel_eval[5],
+      channel_eval[7]
     );
-    // set the GPIO shared with ADC, adc should pick it up
+    // change GPIO logic levels 0/1, ADC is connected to GPIO
+    // and should convert logic levels
     pinMode(32+14, OUTPUT);
     digitalWrite(32+14, ledState);
     pinMode(32+15, OUTPUT);

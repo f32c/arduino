@@ -91,10 +91,12 @@ void setup()
 {
   video_init();
   rtc_init();
-  adc_init();
-  btn_init();
+  #if 1
   rtc_set_clock();
   rtc_set_alarm();
+  #endif
+  adc_init();
+  btn_init();
 }
 
 void loop()
@@ -102,9 +104,6 @@ void loop()
   static long counter = 99999;
   const int nlines = 4;
   char line[nlines][256];
-  char edid[128];
-  int edid_count = edidreadbytes(edid);
-  uint8_t edid_checksum = edidchecksum(edid);
   rtc_read(line[0]);
   edid_read(line[1]);
   adc_read(line[2]);

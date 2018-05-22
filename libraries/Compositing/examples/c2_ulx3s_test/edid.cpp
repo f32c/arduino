@@ -274,7 +274,7 @@ void edid_read(char *a)
   sprintf(a, "EDID EEPROM:%d CRC=%02x %s\n",
     edid_count,
     edid_checksum,
-    edid_checksum == 0 ? "OK" : "ERROR"
+    edid_checksum == 0 ? "OK" : "FAIL"
   );
 }
 
