@@ -16,8 +16,8 @@ void btn_init()
 
 void btn_read(char *line)
 {
-  static uint8_t led = 0;
   static uint8_t shiftdata = 0;
+  uint8_t led = B10001 << (shiftdata++ & 3);
   sprintf(line, "BTN:%c%c%c%c%c%c%c SW:%c%c%c%c LED:%c%c%c%c%c%c%c%c\n",
     digitalRead(0) ? '_' : '0',
     digitalRead(1) ? '1' : '_',
@@ -41,6 +41,5 @@ void btn_read(char *line)
   );
   for(int i = 0; i < 8; i++)
     digitalWrite(8+i, led & (1<<i) ? 1 : 0);
-  led = (led << 1) | ( (++shiftdata) & 8 ? 0 : 1);
 }
 

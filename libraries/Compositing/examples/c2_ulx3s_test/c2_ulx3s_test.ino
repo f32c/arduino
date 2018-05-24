@@ -2,6 +2,7 @@
 #include "font.h"
 #include "rtc.h"
 #include "adc.h"
+#include "dac.h"
 #include "edid.h"
 #include "btn.h"
 
@@ -91,23 +92,25 @@ void setup()
 {
   video_init();
   rtc_init();
-  #if 1
+  #if 0
   rtc_set_clock();
   rtc_set_alarm();
   #endif
   adc_init();
+  dac_init();
   btn_init();
 }
 
 void loop()
 {
   static long counter = 99999;
-  const int nlines = 4;
+  const int nlines = 5;
   char line[nlines][256];
   rtc_read(line[0]);
   edid_read(line[1]);
   adc_read(line[2]);
-  btn_read(line[3]);
+  dac_read(line[3]);
+  btn_read(line[4]); // buttons. DIP switches and blink LEDs
   for(int i = 0; i < nlines; i++)
     Serial.print(line[i]);
   cls();

@@ -11,6 +11,12 @@ const int SPI_MOSI = 8+18;
 const int SPI_CLK = 8+17;
 const int SPI_CSN = 8+16;
 
+// additional gpio for GN lines (not integrated into arduino yet)
+volatile uint32_t *gpio1_out = (uint32_t *) 0xfffff820;
+volatile uint32_t *gpio1_ctl = (uint32_t *) 0xfffff824;
+volatile uint32_t *gpio1_in  = (uint32_t *) 0xfffff838;
+const uint32_t gpio1_bits = 0x3C000; // bits/pins 14,15,16,17
+
 // constants won't change:
 const long interval = 100; // min interval at which to blink (milliseconds)
 
@@ -167,16 +173,26 @@ void adc_read(char *a)
         channel_eval[i] = "WAIT";
       else if(ledState)
       {
-        if(reading[i] < ((i << 12) + 0x080) && prev_reading[i] > ((i << 12) + 0xF80) )
-          channel_eval[i] = " OK ";
+        if(i & 1)
+        {
+          if(reading[i] < ((i << 12) + 0x080) && prev_reading[i] > ((i << 12) + 0xF80) )
+            channel_eval[i] = " OK ";
+          else
+            channel_eval[i] = "FAIL";
+        }
         else
-          channel_eval[i] = "FAIL";
+        {
+          if(prev_reading[i] < ((i << 12) + 0x080) && reading[i] > ((i << 12) + 0xF80) )
+            channel_eval[i] = " OK ";
+          else
+            channel_eval[i] = "FAIL";
+        }
       }
     }
     // skip evaluation for first few readings
     if(skip_eval)
       skip_eval--;
-    sprintf(a, "%04x %04x %04x %04x %04x %04x %04x %04x\nADC: %s      %s      %s      %s\n",
+    sprintf(a, "%04x %04x %04x %04x %04x %04x %04x %04x\n%s %s %s %s %s %s %s %s\n",
       reading[0],
       reading[1],
       reading[2],
@@ -185,9 +201,13 @@ void adc_read(char *a)
       reading[5],
       reading[6],
       reading[7],
+      channel_eval[0],
       channel_eval[1],
+      channel_eval[2],
       channel_eval[3],
+      channel_eval[4],
       channel_eval[5],
+      channel_eval[6],
       channel_eval[7]
     );
     // change GPIO logic levels 0/1, ADC is connected to GPIO
@@ -200,6 +220,14 @@ void adc_read(char *a)
     digitalWrite(32+16, ledState);
     pinMode(32+17, OUTPUT);
     digitalWrite(32+17, ledState);
+    // same as above but with alternat phase for PN pins
+    // those are not implemented in arduino so we
+    // write directly to hardware registers
+    *gpio1_ctl |= gpio1_bits; // outputs
+    if(ledState)
+      *gpio1_out &= ~gpio1_bits;
+    else
+      *gpio1_out |= gpio1_bits;
   }
 }
 
