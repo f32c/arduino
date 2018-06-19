@@ -5,6 +5,8 @@
 #include "dac.h"
 #include "edid.h"
 #include "btn.h"
+#include "sd.h"
+#include "ram.h"
 
 #define N_LETTERS (sizeof(Font)/sizeof(Font[0]))
 
@@ -92,7 +94,7 @@ void setup()
 {
   video_init();
   rtc_init();
-  #if 0
+  #if 1
   rtc_set_clock();
   rtc_set_alarm();
   #endif
@@ -104,13 +106,16 @@ void setup()
 void loop()
 {
   static long counter = 99999;
-  const int nlines = 5;
+  const int nlines = 6;
   char line[nlines][256];
   rtc_read(line[0]);
   edid_read(line[1]);
   adc_read(line[2]);
   dac_read(line[3]);
   btn_read(line[4]); // buttons. DIP switches and blink LEDs
+  line[5][0]='\0';
+  //sd_read(line[5]); // esp32 must be flashed not to access SD card
+  //ram_test(line[5]); // works but too slow, need 
   for(int i = 0; i < nlines; i++)
     Serial.print(line[i]);
   cls();

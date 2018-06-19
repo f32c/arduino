@@ -1,0 +1,53 @@
+connectivity list testing
+
+Given connectivity list,
+a list of groups of together connected pins or pin "islands"
+program will try many combinations of INPUT_PULLUP and OUTPUT
+and report all pins that deviate from the connectivity list.
+
+Assume we have 32 pins to be tested, we will do bitmap.
+
+Set all output value to 0 and keep it constantly so.
+
+Direct test for each pin:
+
+Set only one pin direction as output at the time and read other
+inputs. Reading pins belonging to an "island" should follow with all 0.
+
+Inverted test for each island: making all other than island all 0 and island as all input
+should result in all 1 at reading values at island.
+
+Deviation from this should be reported as error.
+
+Assume we have 3 connectivity islands and 32 pins in 32-bit registers
+
+const int N_islands = 3;
+uint32_t connected_islands[N_islands]; // e.g. 3 pins connected together B000011100000000
+
+uint32_t island_error[N_islands];
+uint32_t pin_error;
+
+for(i = 0; i < 32; i++) // island counter
+{
+
+for(pin = 0; pin < 32; pin++)
+{
+  uint32_t probe_word = 1 << pin;
+  *gpio_out = probe_word; // one bit output at a time
+  delay(1); // wait 1 ms
+  uint32_t read_word = *gpio_in;
+  // for bits outside of any connected island, reading should be 
+  // probe bit inverted
+  // B111110111111111111
+  // also do inverted probe to make sure no other pins are affected
+  // for probe bits inside of some connected-together island,
+  // multiple bits from island should read 0:
+  // B111111110001111111
+  // program should identify islands which are not in the list
+  // and disconnected pins (those which should make an island but they
+  // don't and drive pins that should work but they don't)
+  // final report should be just list of pins which don't behave as expected
+  pin_error |= read_word ^ connected_islands[i];
+}
+
+}
