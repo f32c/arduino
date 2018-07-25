@@ -94,10 +94,6 @@ void setup()
 {
   video_init();
   rtc_init();
-  #if 1
-  rtc_set_clock();
-  rtc_set_alarm();
-  #endif
   adc_init();
   dac_init();
   btn_init();
@@ -113,9 +109,14 @@ void loop()
   adc_read(line[2]);
   dac_read(line[3]);
   btn_read(line[4]); // buttons. DIP switches and blink LEDs
+  if(line[4][5] == '1') // BTN1 pressed
+  {
+    rtc_set_clock();
+    rtc_set_alarm();
+  }
   line[5][0]='\0';
   //sd_read(line[5]); // esp32 must be flashed not to access SD card
-  //ram_test(line[5]); // works but too slow, need 
+  //ram_test(line[5]); // works but too slow, need speedup
   for(int i = 0; i < nlines; i++)
     Serial.print(line[i]);
   cls();

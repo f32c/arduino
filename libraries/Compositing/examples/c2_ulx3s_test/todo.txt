@@ -27,9 +27,6 @@ uint32_t connected_islands[N_islands]; // e.g. 3 pins connected together B000011
 uint32_t island_error[N_islands];
 uint32_t pin_error;
 
-for(i = 0; i < 32; i++) // island counter
-{
-
 for(pin = 0; pin < 32; pin++)
 {
   uint32_t probe_word = 1 << pin;
