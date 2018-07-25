@@ -1,4 +1,4 @@
-/* RTC DCT8523T test
+/* RTC PCF8523T test
  * Battery required: CR1225 3V
  * Board v1.7 needs changes: D11=RED LED, R4=4.7k
  * To enter sleep mode, D18 (GREEN LED) should be OFF
