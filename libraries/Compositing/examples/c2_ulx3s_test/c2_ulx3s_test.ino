@@ -114,6 +114,11 @@ void loop()
     rtc_set_clock();
     rtc_set_alarm();
   }
+  if(line[4][6] == '2') // BTN2 pressed - shutdown
+  {
+    volatile uint32_t *mem = (uint32_t *)0xFFFFFF10;
+    mem[0] = (1<<13); // bit 13 of simple_out is shutdown
+  }
   line[5][0]='\0';
   //sd_read(line[5]); // esp32 must be flashed not to access SD card
   //ram_test(line[5]); // works but too slow, need speedup
