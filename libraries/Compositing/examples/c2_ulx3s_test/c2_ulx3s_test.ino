@@ -116,14 +116,13 @@ void loop()
   {
     rtc_set_clock();
     rtc_set_alarm();
+    oled_init();
   }
   if(line[4][6] == '2') // BTN2 pressed - shutdown
   {
     volatile uint32_t *simple_out = (uint32_t *)0xFFFFFF10;
     simple_out[0] |= (1<<13); // bit 13 of simple_out is shutdown
   }
-  if(line[4][7] == '3') // BTN3 pressed - oled init
-    oled_init();
   char flash_str[64], sd_str[64], oled_str[64];
   flash_read(flash_str);
   sd_read(sd_str); // esp32 must be flashed not to access SD card

@@ -62,6 +62,7 @@ uint8_t oled_init_sequence[] =
 volatile uint16_t *oled_spi   = (uint16_t *)0xFFFFFB60;
 volatile uint32_t *simple_out = (uint32_t *)0xFFFFFF10;
 
+uint8_t oled_y = 0; // increments y-line to be drawn
 
 void dc(uint8_t state)
 {
@@ -106,6 +107,7 @@ void oled_init()
   for(int i = 0; i < sizeof(oled_init_sequence)/sizeof(oled_init_sequence[0]); i++)
     spi_rxtx(oled_spi, oled_init_sequence[i]);
   oled_fill_screen(0x42);
+  oled_y = 0;
 }
 
 void oled_horizontal_line(uint8_t y, uint8_t color)
@@ -121,13 +123,11 @@ void oled_horizontal_line(uint8_t y, uint8_t color)
 
 uint8_t oled_color_stripes()
 {
-  static uint8_t y = 0;
-  oled_horizontal_line((y+ 0) & 63, 0xFF); // white
-  oled_horizontal_line((y+16) & 63, 0x03); // blue
-  oled_horizontal_line((y+32) & 63, 0x1C); // green
-  oled_horizontal_line((y+48) & 63, 0xE0); // red
-  y++;
-  return y;
+  oled_horizontal_line((oled_y+ 0) & 63, 0xFF); // white
+  oled_horizontal_line((oled_y+16) & 63, 0x03); // blue
+  oled_horizontal_line((oled_y+32) & 63, 0x1C); // green
+  oled_horizontal_line((oled_y+48) & 63, 0xE0); // red
+  return oled_y++ & 63;
 }
 
 
