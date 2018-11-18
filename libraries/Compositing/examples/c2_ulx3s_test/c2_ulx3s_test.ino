@@ -5,7 +5,9 @@
 #include "dac.h"
 #include "edid.h"
 #include "btn.h"
+#include "flash.h"
 #include "sd.h"
+#include "oled.h"
 #include "ram.h"
 
 #define N_LETTERS (sizeof(Font)/sizeof(Font[0]))
@@ -97,6 +99,7 @@ void setup()
   adc_init();
   dac_init();
   btn_init();
+  oled_init();
 }
 
 void loop()
@@ -116,11 +119,17 @@ void loop()
   }
   if(line[4][6] == '2') // BTN2 pressed - shutdown
   {
-    volatile uint32_t *mem = (uint32_t *)0xFFFFFF10;
-    mem[0] = (1<<13); // bit 13 of simple_out is shutdown
+    volatile uint32_t *simple_out = (uint32_t *)0xFFFFFF10;
+    simple_out[0] |= (1<<13); // bit 13 of simple_out is shutdown
   }
-  line[5][0]='\0';
-  //sd_read(line[5]); // esp32 must be flashed not to access SD card
+  if(line[4][7] == '3') // BTN3 pressed - oled init
+    oled_init();
+  char flash_str[64], sd_str[64], oled_str[64];
+  flash_read(flash_str);
+  sd_read(sd_str); // esp32 must be flashed not to access SD card
+  oled_read(oled_str);
+  sprintf(line[5], "%s %s   %s\n", flash_str, oled_str, sd_str);
+  line[6][0]='\0';
   //ram_test(line[5]); // works but too slow, need speedup
   for(int i = 0; i < nlines; i++)
     Serial.print(line[i]);
@@ -131,4 +140,3 @@ void loop()
   c2.sprite_refresh();
   // delay(1000);
 }
-
