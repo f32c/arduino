@@ -131,6 +131,7 @@ void loop()
   sprintf(line[5], "%s %s   %s\n", flash_str, oled_str, sd_str);
   line[6][0]='\0';
   //ram_test(line[5]); // works but too slow, need speedup
+  Serial.println("");
   for(int i = 0; i < nlines; i++)
     Serial.print(line[i]);
   cls();
