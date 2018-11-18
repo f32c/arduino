@@ -49,22 +49,22 @@ void sd_read(char *a)
     switch (card.type())
     {
     case SD_CARD_TYPE_SD1:
-      cardtype = "SD1";
+      cardtype = "1 ";
       break;
     case SD_CARD_TYPE_SD2:
-      cardtype = "SD2";
+      cardtype = "2 ";
       break;
     case SD_CARD_TYPE_SDHC:
-      cardtype = "SDHC";
+      cardtype = "HC";
       break;
     default:
-      cardtype = "Unknown";
+      cardtype = "? ";
     }
     sprintf(a, "SD: %s OK", cardtype);
   }
   else
   {
-    sprintf(a, "SD: FAIL");
+    sprintf(a, "SD: FAIL ");
   }
 }
 #endif
