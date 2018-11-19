@@ -49,7 +49,7 @@ void rtc_set_clock()
   regwrite(0x08, 0x12); // month
   regwrite(0x06, 0x31); // day
   regwrite(0x05, 0x23); // hour
-  regwrite(0x04, 0x58); // minute
+  regwrite(0x04, 0x59); // minute
   regwrite(0x03, 0x00); // second
   rtc_clear_interrupts();
 }
