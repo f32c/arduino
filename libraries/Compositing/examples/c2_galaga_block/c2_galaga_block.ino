@@ -6,21 +6,23 @@
 #include <Compositing.h>
 #include "shapes.h"
 
-#if 0
+#if 1
+// ULX3S onboard buttons
 #define BTN_L (5)
 #define BTN_R (6)
 #define BTN_F (1)
 #define BTN_PRESSED (HIGH)
 #endif
 
-#if 1
+#if 0
+// ULX3S external joystick
 #define BTN_L (32+25)
 #define BTN_R (32+26)
 #define BTN_F (32+21)
 #define BTN_PRESSED (LOW)
 #endif
 
-int game_demo = 1; // 0-joystick 1-demo
+int game_demo = 1; // 0-play 1-demo
 
 #define SPRITE_MAX 512
 #define N_SHAPES (sizeof(Shape)/sizeof(Shape[0]))
@@ -78,6 +80,9 @@ uint8_t *iatan; // arctan table 0-FPSCALE
 int Alien_count = 0; // number of aliens on the screen
 int Alien_friendly = 1; // by default aliens are friendly (they don't attack)
 int Missile_wiggle = 0; // 0-3
+int Hold_fire = 0; // alien hold fire counter
+int Hold_fire_delay = 20; // frames delay between two aliens firing
+int Hold_fire_new_ship = 2000; // frames delay for introduction of the new ship
 
 struct shape_center
 {
@@ -1063,7 +1068,7 @@ void alien_fleet(struct starship *s)
   c2.Sprite[s->sprite]->x = (Fleet.x + s->hx) / FPSCALE - Scenter[s->shape].x;
   c2.Sprite[s->sprite]->y = (Fleet.y + s->hy) / FPSCALE - Scenter[s->shape].y;
 
-  if(Alien_friendly == 0)
+  if(Alien_friendly == 0 && Hold_fire == 0)
   {
     rng = rand();
 
@@ -1078,6 +1083,7 @@ void alien_fleet(struct starship *s)
         {
           s->prepare = ALIEN_BOMB_RELOAD;
           bomb_create(s->x, s->y, a);
+          Hold_fire = Hold_fire_delay;
         }
       }
     }
@@ -1275,6 +1281,7 @@ void ship_move(struct starship *s)
       s->y -= SPEED*FPSCALE/4; // move up at suction speed
       c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
       immunity = 200;
+      Hold_fire = Hold_fire_new_ship;
       return;
     }
     else
@@ -1295,6 +1302,7 @@ void ship_move(struct starship *s)
       s->y = Ship.y;
       c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y;
       immunity = 200;
+      Hold_fire = Hold_fire_new_ship;
       return;
     }
   }
@@ -1322,7 +1330,8 @@ void ship_move(struct starship *s)
     }
     else
     {
-      disappeared = 200; // remove ship
+      disappeared = 50; // ship will disappear for some time
+      // TODO: delete all missiles
       c2.Sprite[s->sprite]->y = s->y / FPSCALE - Scenter[s->shape].y + 100; // invisible
       Alien_friendly = 1;
     }
@@ -1480,6 +1489,8 @@ void loop()
   }
   suction_tracker();
 
+  if(Hold_fire > 0)
+    Hold_fire--;
   while((*c2.vblank_reg & 0x80) == 0);
   #if SHOWCASE_SPRITES
   c2.sprite_refresh(); // display all sprites, originals and clones
@@ -1494,4 +1505,3 @@ void loop()
     Serial.println(Alien_count);
   // Serial.print(".");
 }
-
