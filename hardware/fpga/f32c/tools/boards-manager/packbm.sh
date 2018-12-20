@@ -30,7 +30,7 @@ rm -f ~/.arduino15/staging/packages/fpgarduino.zip
 sha256sum $ARCHIVE
 ls -al $ARCHIVE
 
-cd ~/public_html/fpgarduino
-./mkjson.sh > package_f32c_core_index.json
-cd bm
-./mkjson.sh > package_f32c_core_index.json
+#cd ~/public_html/fpgarduino
+#./mkjson.sh > package_f32c_core_index.json
+#cd bm
+#./mkjson.sh > package_f32c_core_index.json
