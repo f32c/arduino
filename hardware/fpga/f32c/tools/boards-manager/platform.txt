@@ -97,7 +97,7 @@ recipe.size.regex=\s*[0-9]+\s+[0-9]+\s+[0-9]+\s+([0-9]+).*
 # -------------------
 
 #
-# lattice (bootloader FLASH)
+# f32c uploader tool "ujprog"
 #
 tools.ujprog.path={runtime.tools.ujprog.path}
 tools.ujprog.cmd.path={path}/ujprog
@@ -113,3 +113,21 @@ tools.ujprog.erase.pattern={runtime.tools.openocd.path}/bin/openocd --version
 tools.ujprog.bootloader.params.verbose=-v
 tools.ujprog.bootloader.params.quiet=-q
 tools.ujprog.bootloader.pattern={upload.bitstream.command}
+
+#
+# f32c uploader tool "f32cup.py"
+#
+tools.f32cup.path={runtime.tools.f32cup.path}
+tools.f32cup.cmd.path={path}/f32cup.py
+
+tools.f32cup.upload.params.verbose=
+tools.f32cup.upload.params.quiet=
+tools.f32cup.upload.pattern=python3 "{cmd.path}" {upload.params.quiet} {upload.flags} "{build.path}/{build.project_name}.{upload.protocol}"
+
+tools.f32cup.erase.params.verbose=-v
+tools.f32cup.erase.params.quiet=-q
+tools.f32cup.erase.pattern={runtime.tools.openocd.path}/bin/openocd --version
+
+tools.f32cup.bootloader.params.verbose=
+tools.f32cup.bootloader.params.quiet=
+tools.f32cup.bootloader.pattern={upload.bitstream.command}
