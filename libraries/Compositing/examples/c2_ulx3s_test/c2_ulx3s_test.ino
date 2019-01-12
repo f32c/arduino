@@ -9,6 +9,7 @@
 #include "sd.h"
 #include "oled.h"
 #include "ram.h"
+#include "rds.h"
 
 #define N_LETTERS (sizeof(Font)/sizeof(Font[0]))
 
@@ -100,6 +101,7 @@ void setup()
   dac_init();
   btn_init();
   oled_init();
+  rds_init();
 }
 
 void loop()
