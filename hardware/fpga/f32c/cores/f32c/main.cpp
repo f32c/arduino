@@ -43,7 +43,12 @@ void f32c_specific_initialization(void)
 int main( void )
 {
 //	init();
+        // Generic boards will not have f32c specific intialization.
+        // This is support for picorv32+attosoc which should
+        // work when generic RISC-V board is selected
+        #if __F32C__ == 1
         f32c_specific_initialization();
+        #endif
 	setup();
 
 	do {
