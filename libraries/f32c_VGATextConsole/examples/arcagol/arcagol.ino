@@ -39,10 +39,10 @@ volatile uint16_t *vram = (volatile uint16_t *) 0x80006000;
 #define finescroll_reg (*(volatile uint8_t *)0xfffffb8b)
 #define vblank_reg (*(volatile uint8_t *)0xfffffb87)
 
-// 8x8 font, 82*61 screen memory (soft scrolled, but visible 80x60)
-#define RANGE_TILE_X 82
-#define RANGE_TILE_Y 61
+// 8x8 font, 640x480 screen has 82*61 tile memory (soft scrolled, but visible 80x60)
 #define FONT_HEIGHT 8
+#define RANGE_TILE_X (RESOLUTION_X/FONT_HEIGHT+2)
+#define RANGE_TILE_Y (RESOLUTION_Y/FONT_HEIGHT+1)
 
 #if FONT_HEIGHT == 8
   #define F_SCROLL_Y_AND 0x70
