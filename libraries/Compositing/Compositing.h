@@ -48,6 +48,7 @@ class Compositing
     int sprite_clone(int original); // new sprite with clone content from existing sprite
     int sprite_add(struct sprite *s); // new sprite with clone content from existing sprite
     int sprite_fill_rect(int w, int h, pixel_t color);
+    int x_even_size(int x);
     int sprite_from_bitmap(int w, int h, pixel_t *bmp);
     void sprite_position(int sprite, int x, int y);
     void sprite_link_content(int original, int clone);

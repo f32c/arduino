@@ -214,6 +214,16 @@ int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
   return sprite_add(spr);
 }
 
+// extend x pixels (sprite width) to 32-bit even machine storage word
+int Compositing::x_even_size(int x)
+{
+  #define PIXELS_IN_WORD (sizeof(uint32_t) / sizeof(pixel_t))
+  int w_uneven = x % PIXELS_IN_WORD;
+  if(w_uneven)
+    return x + PIXELS_IN_WORD - w_uneven;
+  return x;
+}
+
 // user should allocate bitmap, sprite will
 // be created to point its content to user's allocated bitmap
 // content will not be allocated and copied but just reused
@@ -228,6 +238,7 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
 
   sprite_size = sizeof(struct sprite);
 
+  int w_even = x_even_size(w);
   spr = (struct sprite *)malloc(sprite_size);
   spr->x = 0;
   spr->y = 0;
@@ -242,7 +253,7 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
     spr->line[i].n = w-1;
     spr->line[i].bmp = bmp;
     spr->lxo[i] = 0;
-    bmp += w;
+    bmp += w_even;
   }
   return sprite_add(spr);
 }
