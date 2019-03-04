@@ -156,11 +156,8 @@ int header_allocate_slide(char *slide_path)
   }
   Slide[sprite_index].path = slide_path;
   Slide[sprite_index].x = x_sprite;
-  Serial.print(Slide[sprite_index].x);
-  Serial.print("->");
   Slide[sprite_index].y = y;
   Slide[sprite_index].x_rd = x;
-  Serial.println(Slide[sprite_index].x_rd);
   Slide[sprite_index].y_rd = 0; // no lines read from SD yet
   Slide[sprite_index].pos = dataFile.position();
   dataFile.close();
