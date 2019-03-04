@@ -1,6 +1,6 @@
 /************************************************* 
    SLIDE SHOW PRESENTATION
-   convert slide.jpg -scale 640x480 010pictr.ppm
+   convert slide.jpg -scale 624x480 010pictr.ppm
    copy all slides to SD card, each slide file name
    should be renamed to 8.3 name format FILENAME.PPM
    slides from "/slides" directory will be shown
@@ -18,6 +18,7 @@
 #define BTN_LEFT 5
 #define BTN_RIGHT 6
 
+// max number of slides to be loaded
 #define SPRITE_MAX 100
 
 Compositing c2;
@@ -28,7 +29,9 @@ Compositing c2;
 #define C2_ORANGE RGB2PIXEL(0xFF7F00)
 #define C2_BLUE   RGB2PIXEL(0x4080FF)
 
-#define RESOLUTION_X VGA_X_MAX
+//#define RESOLUTION_X VGA_X_MAX
+// 624x480 16bpp is max useable until SDRAM burst is supported
+#define RESOLUTION_X 624
 #define RESOLUTION_Y VGA_Y_MAX
 #define OFF_SCREEN_Y 2000
 
@@ -50,7 +53,7 @@ struct S_DirEntries DirEntries[NAMES_MAX];
 int DirEntries_count = 0;
 
 File bg_file; // opened file for background_reader
-pixel_t *PPM_line_buf;
+uint8_t *PPM_line_buf;
 
 // description struct for each slide
 struct S_Slide
@@ -58,6 +61,7 @@ struct S_Slide
   char *path; // file path
   size_t pos; // seek() to continue reading
   uint16_t x,y; // x/y size
+  uint16_t x_rd; // x-size on file (sprite size may be limited to resolution_x)
   uint16_t y_rd; // runs from 0 to y while reading image from SD
 };
 struct S_Slide Slide[NAMES_MAX];
@@ -127,13 +131,14 @@ int header_allocate_slide(char *slide_path)
     return -1; // 6 was expected
   }
   // calculate how many pixels in total we have
-  int total_pixels = x * y;
-  int x_even = c2.x_even_size(x);
+  int x_sprite = x < RESOLUTION_X ? x : RESOLUTION_X;
+  int total_pixels = x_sprite * y;
+  int x_even = c2.x_even_size(x_sprite);
   int memory_size = x_even * y * sizeof(pixel_t);
   pixel_t *picture_memory = (pixel_t *)malloc(memory_size);
   Serial.print(" 0x");
   Serial.println((uint32_t)picture_memory, HEX);
-  sprite_index = c2.sprite_from_bitmap(x, y, picture_memory);
+  sprite_index = c2.sprite_from_bitmap(x_sprite, y, picture_memory);
   // make only first sprite visible, others off screen
   if(sprite_index == 0)
   {
@@ -150,8 +155,12 @@ int header_allocate_slide(char *slide_path)
     c2.Sprite[sprite_index]->y = OFF_SCREEN_Y; // off screen
   }
   Slide[sprite_index].path = slide_path;
-  Slide[sprite_index].x = x;
+  Slide[sprite_index].x = x_sprite;
+  Serial.print(Slide[sprite_index].x);
+  Serial.print("->");
   Slide[sprite_index].y = y;
+  Slide[sprite_index].x_rd = x;
+  Serial.println(Slide[sprite_index].x_rd);
   Slide[sprite_index].y_rd = 0; // no lines read from SD yet
   Slide[sprite_index].pos = dataFile.position();
   dataFile.close();
@@ -255,16 +264,16 @@ void background_reader()
     if(Slide[reading_slide].y_rd < Slide[reading_slide].y)
     {
       // load state, read one line, save state and exit
-      int read_remaining = 3*Slide[reading_slide].x;
-      int line_bytes = read_remaining;
+      int read_remaining = 3*Slide[reading_slide].x_rd;
       // ***** WARNING ***** no overwrite LIMIT to PPM_line_buf
       // clamp read remaining and seek at the end
       int seek_skip = 0;
-      if(read_remaining > RESOLUTION_X*3)
+      if(read_remaining > 3*Slide[reading_slide].x)
       {
         seek_skip = bg_file.position() + read_remaining;
-        read_remaining = RESOLUTION_X*3;
-      }  
+        read_remaining = 3*Slide[reading_slide].x;
+      }
+      int line_bytes = read_remaining;
       uint8_t *read_ptr = PPM_line_buf;
       while(bg_file.available() > 0 && read_remaining > 0)
       {
