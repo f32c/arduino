@@ -6,7 +6,7 @@ soft CPU cores (f32c).
 We have preliminary Boards Manager support.
 In File->Preferences->Additional Boards Manager URLs enter:
 
-    http://www.nxlab.fer.hr/fpgarduino/package_f32c_core_index.json
+    https://raw.githubusercontent.com/f32c/fpgarduino/master/package_f32c_core_index.json
 
 Select pull down menu Tools->Board->Board Manager
 and instal FPGArduino (cca 100MB).
@@ -15,7 +15,7 @@ Arduino needs access to usbserial ports. When user who runs
 arduino is member of "dialout" groups, then this udev rules
 might be handy (example from scarab):
 
-    # /etc/udev/rules.d/80-fpga-scarab.rules
+    # /etc/udev/rules.d/80-fpga-ftdi.rules
     # this is for usb-serial tty device
     SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6010", \
        MODE="664", GROUP="dialout"
