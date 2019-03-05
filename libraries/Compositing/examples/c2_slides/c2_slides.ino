@@ -1,12 +1,21 @@
 /************************************************* 
-   SLIDE SHOW PRESENTATION
-   convert slide.jpg -scale 624x480 010pictr.ppm
-   copy all slides to SD card, each slide file name
-   should be renamed to 8.3 name format FILENAME.PPM
-   slides from "/slides" directory will be shown
-   sorted in alphabetical order
-   /slides/010pictr.ppm
-   /slides/020slide.ppm
+   Convert slide.jpg -scale 624x480 010pictr.ppm
+   Copy all slides to SD card. Each slide file
+   should be named in 8.3 format like "FILENAME.PPM".
+
+   Recommended naming is this:
+
+   /slides/000first.ppm
+   /slides/050secnd.ppm
+   ...
+   /slides/999last.ppm
+
+   All slides from "/slides" directory will read from
+   SD card to RAM and shown sorted in alphabetical order.
+   Press BTN RIGHT/LEFT to display next/previous slide.
+   About 50 slides can fit into 32 MB SDRAM for 16bpp display.
+   During reading (3 minutes max), screen may flicker
+   but it will become stable when all slides are read to RAM.
  *************************************************/
 
 #include <Compositing.h>
@@ -286,8 +295,12 @@ void background_reader()
       int x_even = c2.x_even_size(Slide[reading_slide].x);
       pixel_t *pixel_write = c2.Sprite[reading_slide]->line->bmp
       + x_even * Slide[reading_slide].y_rd;
-      for(int i = 0; i < line_bytes; i += 3)
+      int i;
+      for(i = 0; i < line_bytes; i += 3)
         *(pixel_write++) = RGB2PIXEL((PPM_line_buf[i]<<16)+(PPM_line_buf[i+1]<<8)+PPM_line_buf[i+2]); 
+      // fill 0 up to even, to get rid from vertical garbage line at the right
+      for(i = Slide[reading_slide].x; i < x_even; i++)
+        *(pixel_write++) = RGB2PIXEL(0);
       Slide[reading_slide].y_rd++; // next line next time
     }
     else
