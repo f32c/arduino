@@ -1,6 +1,10 @@
 #!/bin/sh
 
-BM_URL_BASE="http://localhost/~guest/fpgarduino/bm"
+# BM_URL_BASE="http://localhost/~guest/fpgarduino/bm"
+#LOCALDIR="."
+#BM_URL_BASE="http://www.nxlab.fer.hr/fpgarduino/bm"
+#LOCALDIR="bm"
+BM_URL_BASE="https://raw.githubusercontent.com/f32c/fpgarduino/master"
 LOCALDIR="."
 
 FPGARDUINO_NAME="FPGArduino"
@@ -19,11 +23,11 @@ UJPROG_LINUX32="ujprog-i686-pc-linux-gnu.tar.bz2"
 UJPROG_LINUX64="ujprog-x86_64-pc-linux-gnu.tar.bz2"
 
 XC3SPROG_NAME="xc3sprog"
-XC3SPROG_VERSION="774"
+XC3SPROG_VERSION="795"
 XC3SPROG_WIN32="xc3sprog-771-win32.zip"
 XC3SPROG_APPLE64="xc3sprog-771-win32.zip"
 XC3SPROG_LINUX32="xc3sprog-774-linux32.tar.bz2"
-XC3SPROG_LINUX64="xc3sprog-774-linux64.tar.bz2"
+XC3SPROG_LINUX64="xc3sprog-795-linux64.tar.bz2"
 
 OPENOCD_NAME="openocd"
 OPENOCD_VERSION="0.9.0"
@@ -34,7 +38,7 @@ OPENOCD_LINUX64="openocd-0.9.0-linux64.tar.bz2"
 
 FLEAFPGA_NAME="FleaFPGA-JTAG"
 FLEAFPGA_VERSION="12.2"
-FLEAFPGA_WIN32="fleafpga-jtag-12.2-linux32.tar.bz2"
+FLEAFPGA_WIN32="fleafpga-jtag-12.2-win32.zip"
 FLEAFPGA_APPLE64="fleafpga-jtag-12.2-linux32.tar.bz2"
 FLEAFPGA_LINUX32="fleafpga-jtag-12.2-linux32.tar.bz2"
 FLEAFPGA_LINUX64="fleafpga-jtag-12.2-linux32.tar.bz2"
@@ -53,13 +57,18 @@ POSEDGE1PROG_APPLE64="posedge1prog-100.zip"
 POSEDGE1PROG_LINUX32="posedge1prog-100.zip"
 POSEDGE1PROG_LINUX64="posedge1prog-100.zip"
 
+F32CUP_NAME="f32cup"
+F32CUP_VERSION="1.0.0"
+F32CUP_WIN32="f32cup-1.0.0-python3.zip"
+F32CUP_APPLE64="f32cup-1.0.0-python3.zip"
+F32CUP_LINUX32="f32cup-1.0.0-python3.zip"
+F32CUP_LINUX64="f32cup-1.0.0-python3.zip"
+
 COMPILER_NAME="f32c-compiler"
 COMPILER_VERSION="1.0.0"
-#COMPILER_WIN32="f32c-win-toolchain.zip"
 COMPILER_WIN32="f32c-win32-toolchain-7_2.zip"
-COMPILER_APPLE64="f32c-osx-toolchain.tar.gz"
-COMPILER_LINUX32="f32c-lin32-toolchain.tar.gz"
-#COMPILER_LINUX64="f32c-lin64-toolchain.tar.gz"
+COMPILER_APPLE64="f32c-osx-toolchain-7_2.tar.gz"
+COMPILER_LINUX32="f32c-lin32-toolchain-7_2.tar.gz"
 COMPILER_LINUX64="f32c-lin64-toolchain-7_2.tar.gz"
 
 SHA256()
@@ -79,9 +88,9 @@ cat << EOF
   [
     {
       "name":"${FPGARDUINO_NAME}",
-      "maintainer":"FER+RIZ+RADIONA",
+      "maintainer":"EMARD",
       "websiteURL":"http://www.nxlab.fer.hr/fpgarduino",
-      "email":"zec@fer.hr",
+      "email":"vordah@gmail.com",
       "help":
       {
         "online":"http://www.nxlab.fer.hr/fpgarduino"
@@ -133,6 +142,11 @@ cat << EOF
               "packager":"${FPGARDUINO_NAME}",
               "name":"${POSEDGE1PROG_NAME}",
               "version":"${POSEDGE1PROG_VERSION}"
+            },
+            {
+              "packager":"${FPGARDUINO_NAME}",
+              "name":"${F32CUP_NAME}",
+              "version":"${F32CUP_VERSION}"
             },
             {
               "packager":"${FPGARDUINO_NAME}",
@@ -326,6 +340,41 @@ cat << EOF
               "archiveFileName":"${POSEDGE1PROG_LINUX64}",
               "checksum":"SHA-256:$(SHA256 ${POSEDGE1PROG_LINUX64})",
               "size":"$(SIZE ${POSEDGE1PROG_LINUX64})"
+            }
+          ]
+        },
+        {
+          "name":"${F32CUP_NAME}",
+          "version":"${F32CUP_VERSION}",
+          "systems":
+          [
+            {
+              "host":"i686-mingw32",
+              "url":"${BM_URL_BASE}/${F32CUP_WIN32}",
+              "archiveFileName":"${F32CUP_WIN32}",
+              "checksum":"SHA-256:$(SHA256 ${F32CUP_WIN32})",
+              "size":"$(SIZE ${F32CUP_WIN32})"
+            },
+            {
+              "host":"x86_64-apple-darwin",
+              "url":"${BM_URL_BASE}/${F32CUP_APPLE64}",
+              "archiveFileName":"${F32CUP_APPLE64}",
+              "checksum":"SHA-256:$(SHA256 ${F32CUP_APPLE64})",
+              "size":"$(SIZE ${F32CUP_APPLE64})"
+            },
+            {
+              "host":"i686-pc-linux-gnu",
+              "url":"${BM_URL_BASE}/${F32CUP_LINUX32}",
+              "archiveFileName":"${F32CUP_LINUX32}",
+              "checksum":"SHA-256:$(SHA256 ${F32CUP_LINUX32})",
+              "size":"$(SIZE ${F32CUP_LINUX32})"
+            },
+            {
+              "host":"x86_64-pc-linux-gnu",
+              "url":"${BM_URL_BASE}/${F32CUP_LINUX64}",
+              "archiveFileName":"${F32CUP_LINUX64}",
+              "checksum":"SHA-256:$(SHA256 ${F32CUP_LINUX64})",
+              "size":"$(SIZE ${F32CUP_LINUX64})"
             }
           ]
         },
