@@ -184,6 +184,10 @@ int Compositing::sprite_clone(int original)
 // in one contiguous memory block of pixel content
 // representing one horizontal lines. All other lines
 // in the sprite will refer to the same content
+// Sprite width 'w' must be 32-bit word aligned in case
+// of 8bpp or 16bpp. The shown sprite content is also
+// 32-bit word aligned.
+// Uneven 'w' sized sprites are not actually possible.
 int Compositing::sprite_fill_rect(int w, int h, pixel_t color)
 {
   int i;
@@ -230,6 +234,8 @@ int Compositing::x_even_size(int x)
 // only sprite metadata (vertical lines) will be allocated
 // when making content, note that its location in memory
 // and its width must be 32-bit word aligned in case of 8bpp or 16bpp
+// the shown sprite content is also 32-bit word aligned
+// Uneven w sized sprites are not actually possible.
 int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
 {
   int i;
@@ -238,7 +244,6 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
 
   sprite_size = sizeof(struct sprite);
 
-  int w_even = x_even_size(w);
   spr = (struct sprite *)malloc(sprite_size);
   spr->x = 0;
   spr->y = 0;
@@ -253,7 +258,7 @@ int Compositing::sprite_from_bitmap(int w, int h, pixel_t *bmp)
     spr->line[i].n = w-1;
     spr->line[i].bmp = bmp;
     spr->lxo[i] = 0;
-    bmp += w_even;
+    bmp += w;
   }
   return sprite_add(spr);
 }

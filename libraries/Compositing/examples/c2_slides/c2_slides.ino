@@ -10,7 +10,7 @@
    ...
    /slides/999last.ppm
 
-   All slides from "/slides" directory will read from
+   All slides from "/slides" directory will be read from
    SD card to RAM and shown sorted in alphabetical order.
    Press BTN RIGHT/LEFT to display next/previous slide.
    About 50 slides can fit into 32 MB SDRAM for 16bpp display.
@@ -147,7 +147,7 @@ int header_allocate_slide(char *slide_path)
   pixel_t *picture_memory = (pixel_t *)malloc(memory_size);
   Serial.print(" 0x");
   Serial.println((uint32_t)picture_memory, HEX);
-  sprite_index = c2.sprite_from_bitmap(x_sprite, y, picture_memory);
+  sprite_index = c2.sprite_from_bitmap(x_even, y, picture_memory);
   // make only first sprite visible, others off screen
   if(sprite_index == 0)
   {
