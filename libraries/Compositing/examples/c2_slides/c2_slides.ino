@@ -1,5 +1,5 @@
 /************************************************* 
-   Convert slide.jpg -scale 624x480 010pictr.ppm
+   convert slide.jpg -scale 624x480 010pictr.ppm
    Copy all slides to SD card. Each slide file
    should be named in 8.3 format like "FILENAME.PPM".
 
