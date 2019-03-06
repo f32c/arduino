@@ -87,7 +87,7 @@ upload binary and FPGA bitstreams (ujprog, openocd, JTAGs).
 
 Precompiled binaries for linux and windows with 
 GCC MIPS and RISC-V can be fetched and installed
-separately, see http://www.nxlab.fer.hr/fpgarduino for 
+separately, see https://github.com/f32c/fpgarduino for 
 further instructions.
 
 There are some short scripts and patches to
