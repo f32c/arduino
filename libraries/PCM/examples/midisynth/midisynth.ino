@@ -5,10 +5,11 @@
 // edit ~/Arduino/libraries/MIDI_Library/src/midi_Settings.h
 // BaudRate = 38400
 // start bridge from alsa to midi serial
+// https://github.com/cjbarnes18/ttymidi
 // ttymidi -b 38400 -v -s /dev/ttyUSB0
 // composer: "musescore"
 // use "midish" to sequence MIDI songs
-// edit .midishrc and set target MIDI stream to ttymidi
+// edit ~/.midishrc and set target MIDI stream to ttymidi
 // dnew 0 "ttymidi:1" wo
 // run midish. At its prompt load MIDI file and play:
 // import "ChildInTime.mid"
