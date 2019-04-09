@@ -10,6 +10,7 @@
 #include "oled.h"
 #include "ram.h"
 #include "rds.h"
+#include "pcm.h"
 
 #define N_LETTERS (sizeof(Font)/sizeof(Font[0]))
 
@@ -102,13 +103,18 @@ void setup()
   btn_init();
   oled_init();
   rds_init();
+  pcm_init();
 }
 
 void loop()
 {
-  static long counter = 99999;
+  static uint8_t counter = 0;
   const int nlines = 6;
   char line[nlines][256];
+  if(1 & ++counter)
+    pcm_tone();
+  else
+    pcm_mute();
   rtc_read(line[0]);
   edid_read(line[1]);
   adc_read(line[2]);
